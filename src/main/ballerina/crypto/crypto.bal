@@ -14,15 +14,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public const RSA = "RSA";
-
-public type KeyAlgorithm RSA;
-
+# Private key used in cryptographic operations.
+#
+# + algorithm - Key algorithm
 public type PrivateKey record {
     string algorithm;
     !...
 };
 
+# Public key used in cryptographic operations.
+#
+# + algorithm - Key algorithm
 public type PublicKey record {
     !...
 };
