@@ -18,24 +18,34 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import org.ballerinalang.jvm.scheduling.Strand;
 import org.ballerinalang.jvm.values.ArrayValue;
 import org.ballerinalang.jvm.values.ArrayValueImpl;
-import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
 /**
- * Extern function ballerina.crypto:hmacSha512.
+ * Extern functions ballerina hmac algorithms.
  *
  * @since 0.990.3
  */
-@BallerinaFunction(
-        orgName = "ballerina", packageName = "crypto",
-        functionName = "hmacSha512", isPublic = true
-)
-public class HmacSha512 {
+public class Hmac {
 
-    public static ArrayValue hmacSha512(Strand strand, ArrayValue inputValue, ArrayValue keyValue) {
+    public static ArrayValue hmacMd5(ArrayValue inputValue, ArrayValue keyValue) {
+        return new ArrayValueImpl(CryptoUtils.hmac("HmacMD5", keyValue.getBytes(), inputValue.getBytes()));
+    }
+
+    public static ArrayValue hmacSha1(ArrayValue inputValue, ArrayValue keyValue) {
+        return new ArrayValueImpl(CryptoUtils.hmac("HmacSHA1", keyValue.getBytes(), inputValue.getBytes()));
+    }
+
+    public static ArrayValue hmacSha256(ArrayValue inputValue, ArrayValue keyValue) {
+        return new ArrayValueImpl(CryptoUtils.hmac("HmacSHA256", keyValue.getBytes(), inputValue.getBytes()));
+    }
+
+    public static ArrayValue hmacSha384(ArrayValue inputValue, ArrayValue keyValue) {
+        return new ArrayValueImpl(CryptoUtils.hmac("HmacSHA384", keyValue.getBytes(), inputValue.getBytes()));
+    }
+
+    public static ArrayValue hmacSha512(ArrayValue inputValue, ArrayValue keyValue) {
         return new ArrayValueImpl(CryptoUtils.hmac("HmacSHA512", keyValue.getBytes(), inputValue.getBytes()));
     }
 }

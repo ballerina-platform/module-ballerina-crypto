@@ -18,10 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import org.ballerinalang.jvm.scheduling.Strand;
 import org.ballerinalang.jvm.values.ArrayValue;
 import org.ballerinalang.jvm.values.MapValue;
-import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
@@ -30,14 +28,44 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 /**
- * Extern function ballerina.crypto:decryptRsaEcb.
+ * Extern functions ballerina decrypt algorithms.
  *
  * @since 0.990.4
  */
-@BallerinaFunction(orgName = "ballerina", packageName = "crypto", functionName = "decryptRsaEcb", isPublic = true)
-public class DecryptRsaEcb {
+public class Decrypt {
 
-    public static Object decryptRsaEcb(Strand strand, ArrayValue inputValue, Object keys, Object padding) {
+    public static Object decryptAesCbc(ArrayValue inputValue, ArrayValue keyValue,
+                                       ArrayValue ivValue, Object padding) {
+        byte[] input = inputValue.getBytes();
+        byte[] key = keyValue.getBytes();
+        byte[] iv = null;
+        if (ivValue != null) {
+            iv = ivValue.getBytes();
+        }
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.CBC, padding.toString(), key,
+                input, iv, -1);
+    }
+
+    public static Object decryptAesEcb(ArrayValue inputValue, ArrayValue keyValue, Object padding) {
+        byte[] input = inputValue.getBytes();
+        byte[] key = keyValue.getBytes();
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
+                input, null, -1);
+    }
+
+    public static Object decryptAesGcm(ArrayValue inputValue, ArrayValue keyValue,
+                                       ArrayValue ivValue,  Object padding, long tagSize) {
+        byte[] input = inputValue.getBytes();
+        byte[] key = keyValue.getBytes();
+        byte[] iv = null;
+        if (ivValue != null) {
+            iv = ivValue.getBytes();
+        }
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.GCM, padding.toString(), key,
+                input, iv, tagSize);
+    }
+
+    public static Object decryptRsaEcb(ArrayValue inputValue, Object keys, Object padding) {
         byte[] input = inputValue.getBytes();
         MapValue<?, ?> keyMap = (MapValue<?, ?>) keys;
         Key key;
@@ -49,6 +77,6 @@ public class DecryptRsaEcb {
             return CryptoUtils.createError("Uninitialized private/public key");
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
-                                             input, null, -1);
+                input, null, -1);
     }
 }
