@@ -17,27 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testPrivateKeyFromP12() {
-    // Check parsing encrypted private-key from a p12 file.
-    KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
-        password: "ballerina"
-    };
-    PrivateKey prk = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    test:assertEquals(prk["algorithm"], "RSA", msg = "Error while check parsing encrypted private-key from a p12 file.");
-
-    // Check attempting to read a private key from a non-existing p12 file.
-    keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
-        password: "ballerina"
-    };
-    test:assertTrue((trap decodePrivateKey(keyStore, "ballerina", "ballerina")) is error,
-        msg = "No error while attempting to read a private key from a non-existing p12 file.");
-}
-
-@test:Config {}
-function testPublicKeyFromP12() {
-    // Check parsing public-key from a p12 file.
+function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
@@ -65,23 +45,14 @@ function testPublicKeyFromP12() {
     test:assertTrue(signature is json[], msg = "Error in the format of signature field from a certificate.");
     test:assertEquals(signingAlgorithm, "SHA256withRSA",
         msg = "Error while checking signingAlgorithm from encrypted public-key from a p12 file.");
+}
 
-    // Check attempting to read a public key from a non-existing p12 file.
-    keyStore = {
+@test:Config {}
+function testReadPublicKeyFromNonExistingP12() {
+    KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
     test:assertTrue((trap decodePublicKey(keyStore, "ballerina")) is error,
         msg = "No error while attempting to read a public key from a non-existing p12 file.");
-}
-
-@test:Config {}
-function testParsingPublicKeyFromJwk() {
-    string modulus = "luZFdW1ynitztkWLC6xKegbRWxky-5P0p4ShYEOkHs30QI2VCuR6Qo4Bz5rTgLBrky03W1GAVrZxuvKRGj9V9-" +
-        "PmjdGtau4CTXu9pLLcqnruaczoSdvBYA3lS9a7zgFU0-s6kMl2EhB-rk7gXluEep7lIOenzfl2f6IoTKa2fVgVd3YKiSGsy" +
-        "L4tztS70vmmX121qm0sTJdKWP4HxXyqK9neolXI9fYyHOYILVNZ69z_73OOVhkh_mvTmWZLM7GM6sApmyLX6OXUp8z0pkY-v" +
-        "T_9-zRxxQs7GurC4_C1nK3rI_0ySUgGEafO1atNjYmlFN-M3tZX6nEcA6g94IavyQ";
-    string exponent = "AQAB";
-    PublicKey pk = checkpanic buildRsaPublicKey(modulus, exponent);
-    test:assertEquals(pk["algorithm"], "RSA", msg = "Error while check parsing public-key from JWK.");
 }
