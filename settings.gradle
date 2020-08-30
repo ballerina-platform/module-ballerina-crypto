@@ -14,7 +14,6 @@ plugins {
 rootProject.name = 'crypto'
 include(':build-config:checkstyle')
 include ':crypto-native', ':crypto-ballerina'
-include 'crypto-native'
 
 gradleEnterprise {
     buildScan {
