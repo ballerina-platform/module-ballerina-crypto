@@ -37,6 +37,30 @@ function testEncryptAndDecryptWithAesGcmNoPadding() {
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES GCM.");
 }
 
+//@test:Config {}
+function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
+    byte[] invalidMessage = "Ballerina crypto test".toBytes();
+    byte[] key = [];
+    byte[] iv = [];
+    int i = 0;
+    while(i < 16) {
+        key[i] = <byte> i;
+        i = i + 1;
+    }
+    i = 0;
+    while(i < 16) {
+        iv[i] = <byte> i;
+        i = i + 1;
+    }
+    byte[]|error result = encryptAesGcm(invalidMessage, key, iv, NONE);
+    if (result is error) {
+        test:assertEquals(extractErrorMessage(result), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+            msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
+    } else {
+        test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES GCM.");
+    }
+}
+
 @test:Config {}
 function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() {
     byte[] message = "Ballerina crypto test           ".toBytes();

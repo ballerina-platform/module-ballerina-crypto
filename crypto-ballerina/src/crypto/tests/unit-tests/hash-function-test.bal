@@ -17,10 +17,17 @@
 import ballerina/test;
 
 @test:Config {}
+function testHashCrc32() {
+    byte[] input = "Ballerina test".toBytes();
+    string expectedCrc32Hash = "d37b9692";
+    test:assertEquals(crc32b(input), expectedCrc32Hash, msg = "Error while Hash with CRC32b.");
+}
+
+@test:Config {}
 function testHashMd5() {
     byte[] input = "Ballerina test".toBytes();
     string expectedMd5Hash = "3B12196DB784CD9F86CC635D32764FDF".toLowerAscii();
-    test:assertEquals(crc32b(input), "d37b9692", msg = "Error while Hash with CRC32b.");
+    test:assertEquals(hashMd5(input).toBase16(), expectedMd5Hash, msg = "Error while Hash with MD5.");
 }
 
 @test:Config {}
