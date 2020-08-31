@@ -1,0 +1,21 @@
+[project]
+org-name = "ballerina"
+version = "@toml.version@"
+
+[platform]
+target = "java8"
+
+    [[platform.libraries]]
+    artifactId = "crypto"
+    version = "@project.version@"
+    path = "../crypto-native/build/libs/crypto-native-@project.version@.jar"
+    groupId = "ballerina"
+    modules = ["crypto"]
+
+    [[platform.libraries]]
+    artifactId = "commons-codec"
+    version = "1.9"
+    path = "./lib/commons-codec-1.9.jar"
+    groupId = "commons-codec"
+    modules = ["crypto"]
+    
