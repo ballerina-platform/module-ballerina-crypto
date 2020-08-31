@@ -21,8 +21,6 @@ description = 'Ballerina - Ballerina Crypto'
 
 configurations {
     jbalTools
-    cryptoBallerinaBirDir
-    cryptoBallerinaJar
     packingJars
 }
 
