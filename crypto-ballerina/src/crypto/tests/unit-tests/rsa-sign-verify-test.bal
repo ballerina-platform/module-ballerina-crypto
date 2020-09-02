@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/test;
+import ballerina/stringutils;
 
 // Signing tests
 
@@ -112,8 +113,8 @@ function testSignRsaSha512() {
 function testSignRsaMd5WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey pk = {algorithm:"RSA"};
-    string errorMessage = "Uninitialized private key: Key must not be null";
-    test:assertEquals(extractErrorMessage(signRsaMd5(payload, pk)), errorMessage,
+    string errorMessage = "Uninitialized private key";
+    test:assertTrue(stringutils:contains(extractErrorMessage(signRsaMd5(payload, pk)), errorMessage),
         msg = "Incorrect output/error when with Signing RSA MD5 with invalid key.");
 }
 
@@ -121,8 +122,8 @@ function testSignRsaMd5WithInvalidKey() {
 function testSignRsaSha1WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey pk = {algorithm:"RSA"};
-    string errorMessage = "Uninitialized private key: Key must not be null";
-    test:assertEquals(extractErrorMessage(signRsaSha1(payload, pk)), errorMessage,
+    string errorMessage = "Uninitialized private key";
+    test:assertTrue(stringutils:contains(extractErrorMessage(signRsaSha1(payload, pk)), errorMessage),
         msg = "Incorrect output/error when with Signing RSA SHA1 with invalid key.");
 }
 
@@ -130,8 +131,8 @@ function testSignRsaSha1WithInvalidKey() {
 function testSignRsaSha256WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey pk = {algorithm:"RSA"};
-    string errorMessage = "Uninitialized private key: Key must not be null";
-    test:assertEquals(extractErrorMessage(signRsaSha256(payload, pk)), errorMessage,
+    string errorMessage = "Uninitialized private key";
+    test:assertTrue(stringutils:contains(extractErrorMessage(signRsaSha256(payload, pk)), errorMessage),
         msg = "Incorrect output/error when with Signing RSA SHA256 with invalid key.");
 }
 
@@ -139,8 +140,8 @@ function testSignRsaSha256WithInvalidKey() {
 function testSignRsaSha384WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey pk = {algorithm:"RSA"};
-    string errorMessage = "Uninitialized private key: Key must not be null";
-    test:assertEquals(extractErrorMessage(signRsaSha384(payload, pk)), errorMessage,
+    string errorMessage = "Uninitialized private key";
+    test:assertTrue(stringutils:contains(extractErrorMessage(signRsaSha384(payload, pk)), errorMessage),
         msg = "Incorrect output/error when with Signing RSA SAH384 with invalid key.");
 }
 
@@ -148,8 +149,8 @@ function testSignRsaSha384WithInvalidKey() {
 function testSignRsaSha512WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey pk = {algorithm:"RSA"};
-    string errorMessage = "Uninitialized private key: Key must not be null";
-    test:assertEquals(extractErrorMessage(signRsaSha512(payload, pk)), errorMessage,
+    string errorMessage = "Uninitialized private key";
+    test:assertTrue(stringutils:contains(extractErrorMessage(signRsaSha512(payload, pk)), errorMessage),
         msg = "Incorrect output/error when with Signing RSA SHA512 with invalid key.");
 }
 
