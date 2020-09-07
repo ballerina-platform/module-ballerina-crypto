@@ -10,7 +10,7 @@ The Crypto library is one of the standard library modules of the<a target="_blan
 
 It provides the necessary utilities that are required to hash content using different hashing mechanisms and algorithms.
 
-For more information go to [The Auth Module](https://ballerina.io/swan-lake/learn/api-docs/ballerina/crypto/index.html).
+For more information go to [The Encoding Module](https://ballerina.io/swan-lake/learn/api-docs/ballerina/crypto/index.html).
 
 For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/swan-lake/learn/by-example/).
 
