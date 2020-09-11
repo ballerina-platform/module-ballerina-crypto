@@ -22,12 +22,12 @@ function testEncryptAndDecryptWithAesCbcNoPadding() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
@@ -42,18 +42,18 @@ function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidKeySize() {
     byte[] iv = [];
     int i = 0;
     byte[] invalidKey = [];
-    while(i < 31) {
+    while (i < 31) {
         invalidKey[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesCbc(message, invalidKey, iv, NONE);
-    if (result is error) {
-        test:assertEquals(extractErrorMessage(result), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+    byte[]|Error result = encryptAesCbc(message, invalidKey, iv, NONE);
+    if (result is Error) {
+        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES CBC.");
     } else {
         test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES CBC.");
@@ -65,19 +65,19 @@ function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidIVLength() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
     byte[] invalidIv = [];
-    while(i < 15) {
+    while (i < 15) {
         invalidIv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesCbc(message, key, invalidIv, NONE);
-    if (result is error) {
-        test:assertEquals(extractErrorMessage(result),
+    byte[]|Error result = encryptAesCbc(message, key, invalidIv, NONE);
+    if (result is Error) {
+        test:assertEquals(result.message(),
             "Error occurred while AES encrypt/decrypt: Wrong IV length: must be 16 bytes long",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES CBC.");
     } else {
@@ -91,18 +91,18 @@ function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidInputLength() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesCbc(invalidMessage, key, iv, NONE);
-    if (result is error) {
-        test:assertEquals(extractErrorMessage(result),
+    byte[]|Error result = encryptAesCbc(invalidMessage, key, iv, NONE);
+    if (result is Error) {
+        test:assertEquals(result.message(),
             "Error occurred while AES encrypt/decrypt: Input length not multiple of 16 bytes",
             msg = "Incorrect error for for invalid input length while No Padding Encryption with AES CBC.");
     } else {
@@ -116,12 +116,12 @@ function testEncryptAndDecryptWithAesCbcPkcs5() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }

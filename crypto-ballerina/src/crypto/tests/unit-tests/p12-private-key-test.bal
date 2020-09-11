@@ -22,9 +22,12 @@ function testParseEncryptedPrivateKeyFromP12() {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
-    PrivateKey prk = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    test:assertEquals(prk["algorithm"], "RSA",
-        msg = "Error while check parsing encrypted private-key from a p12 file.");
+    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding encrypted private-key from a p12 file. " + result.message());
+    }
 }
 
 @test:Config {}
@@ -33,6 +36,12 @@ function testReadPrivateKeyFromNonExistingP12() {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
-    test:assertTrue((trap decodePrivateKey(keyStore, "ballerina", "ballerina")) is error,
-        msg = "No error while attempting to read a private key from a non-existing p12 file.");
+    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina"))
+    if (result is Error) {
+        test:assertEquals(result.message(),
+            "TODO: something",
+            msg = "Incorrect error for reading private key from non existing p12 file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a private key from a non-existing p12 file.");
+    }
 }

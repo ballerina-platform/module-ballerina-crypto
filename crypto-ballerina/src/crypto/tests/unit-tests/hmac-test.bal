@@ -59,8 +59,6 @@ function testHmacSha512() {
     test:assertEquals(hmacSha512(message, key).toBase16(), expectedSha512Hash, msg = "Error while HMAC with SHA512.");
 }
 
-// Empty key tests
-
 @test:Config {}
 function testHmacMd5WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();

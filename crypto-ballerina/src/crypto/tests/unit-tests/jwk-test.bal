@@ -23,6 +23,6 @@ function testParsingPublicKeyFromJwk() {
         "L4tztS70vmmX121qm0sTJdKWP4HxXyqK9neolXI9fYyHOYILVNZ69z_73OOVhkh_mvTmWZLM7GM6sApmyLX6OXUp8z0pkY-v" +
         "T_9-zRxxQs7GurC4_C1nK3rI_0ySUgGEafO1atNjYmlFN-M3tZX6nEcA6g94IavyQ";
     string exponent = "AQAB";
-    PublicKey pk = checkpanic buildRsaPublicKey(modulus, exponent);
-    test:assertEquals(pk["algorithm"], "RSA", msg = "Error while check parsing public-key from JWK.");
+    PublicKey publicKey = checkpanic buildRsaPublicKey(modulus, exponent);
+    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from JWK.");
 }
