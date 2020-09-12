@@ -126,7 +126,6 @@ function testSignRsaSha1WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha1(payload, privateKey);
-    byte[]|Error result = signRsaSha1(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
         test:assertTrue(stringutils:contains(result.message(), errorMessage),

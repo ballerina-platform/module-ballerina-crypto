@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/stringutils;
 import ballerina/test;
 
 @test:Config {}
@@ -36,10 +37,9 @@ function testReadPrivateKeyFromNonExistingP12() {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
-    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina"))
+    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
     if (result is Error) {
-        test:assertEquals(result.message(),
-            "TODO: something",
+        test:assertTrue(stringutils:contains(result.message(), "PKCS12 key store not found at:"),
             msg = "Incorrect error for reading private key from non existing p12 file.");
     } else {
         test:assertFail(msg = "No error while attempting to read a private key from a non-existing p12 file.");

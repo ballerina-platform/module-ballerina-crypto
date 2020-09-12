@@ -38,7 +38,7 @@ function testEncryptAndDecryptWithAesGcmNoPadding() {
 }
 
 @test:Config {
-    enabled: false
+    enable: false
 }
 function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
     byte[] invalidMessage = "Ballerina crypto test".toBytes();
