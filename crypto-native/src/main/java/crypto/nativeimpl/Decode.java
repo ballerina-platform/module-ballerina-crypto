@@ -86,9 +86,9 @@ public class Decode {
                 return CryptoUtils.createError("Not a valid RSA key");
             }
         } catch (FileNotFoundException e) {
-            throw CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
-            throw CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
+            return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Algorithm for key recovery is not found: " + e.getMessage());
         } catch (UnrecoverableKeyException e) {
@@ -108,7 +108,7 @@ public class Decode {
                 keystore.load(fileInputStream, keyStore.get(Constants.KEY_STORE_RECORD_PASSWORD_FIELD).toString()
                         .toCharArray());
             } catch (NoSuchAlgorithmException e) {
-                throw CryptoUtils.createError("Keystore integrity check algorithm is not found: " + e.getMessage());
+                return CryptoUtils.createError("Keystore integrity check algorithm is not found: " + e.getMessage());
             }
 
             Certificate certificate = keystore.getCertificate(keyAlias.getValue());
@@ -160,9 +160,9 @@ public class Decode {
                 return CryptoUtils.createError("Not a valid RSA key");
             }
         } catch (FileNotFoundException e) {
-            throw CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
-            throw CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
+            return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
         }
     }
 
@@ -183,7 +183,7 @@ public class Decode {
         } catch (InvalidKeySpecException e) {
             return CryptoUtils.createError("Invalid modulus or exponent: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
-            throw CryptoUtils.createError("Algorithm of the key factory is not found: " + e.getMessage());
+            return CryptoUtils.createError("Algorithm of the key factory is not found: " + e.getMessage());
         }
     }
 }
