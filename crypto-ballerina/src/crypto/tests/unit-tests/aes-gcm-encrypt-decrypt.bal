@@ -23,12 +23,12 @@ function testEncryptAndDecryptWithAesGcmNoPadding() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
@@ -37,24 +37,26 @@ function testEncryptAndDecryptWithAesGcmNoPadding() {
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES GCM.");
 }
 
-//@test:Config {}
+@test:Config {
+    enable: false
+}
 function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
     byte[] invalidMessage = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesGcm(invalidMessage, key, iv, NONE);
-    if (result is error) {
-        test:assertEquals(extractErrorMessage(result), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+    byte[]|Error result = encryptAesGcm(invalidMessage, key, iv, NONE);
+    if (result is Error) {
+        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
     } else {
         test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES GCM.");
@@ -67,18 +69,18 @@ function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() {
     byte[] iv = [];
     int i = 0;
     byte[] invalidKey = [];
-    while(i < 31) {
+    while (i < 31) {
         invalidKey[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesGcm(message, invalidKey, iv, NONE, 128);
-    if (result is error) {
-        test:assertEquals(extractErrorMessage(result), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+    byte[]|Error result = encryptAesGcm(message, invalidKey, iv, NONE, 128);
+    if (result is Error) {
+        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
     } else {
         test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES GCM.");
@@ -91,12 +93,12 @@ function testEncryptAndDecryptWithAesGcmPkcs5() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
@@ -112,19 +114,18 @@ function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while(i < 16) {
+    while (i < 16) {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while(i < 16) {
+    while (i < 16) {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[]|error result = encryptAesGcm(message, key, iv, "PKCS5", 500);
-    if (result is error) {
-        test:assertTrue(stringutils:contains(extractErrorMessage(result),
-            "Invalid tag size. valid tag sizes in bytes:"),
+    byte[]|Error result = encryptAesGcm(message, key, iv, "PKCS5", 500);
+    if (result is Error) {
+        test:assertTrue(stringutils:contains(result.message(), "Invalid tag size. valid tag sizes in bytes:"),
             msg = "Incorrect error for invalid key while Encryption with AES GCM PKCS5.");
     } else {
         test:assertFail(msg = "No error for invalid tag size while Encryption with AES GCM PKCS5.");

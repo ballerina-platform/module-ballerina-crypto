@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/stringutils;
 import ballerina/test;
 
 @test:Config {}
@@ -22,9 +23,9 @@ function testParsePublicKeyFromP12() {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
-    PublicKey puk = checkpanic decodePublicKey(keyStore, "ballerina");
-    test:assertEquals(puk["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
-    map<json> certificate = <map<json>>puk["certificate"];
+    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
+    map<json> certificate = <map<json>>publicKey["certificate"];
 
     string serial = (<int>certificate["serial"]).toString();
     string issuer = <string>certificate["issuer"];
@@ -53,6 +54,11 @@ function testReadPublicKeyFromNonExistingP12() {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
-    test:assertTrue((trap decodePublicKey(keyStore, "ballerina")) is error,
-        msg = "No error while attempting to read a public key from a non-existing p12 file.");
+    PublicKey|Error result = decodePublicKey(keyStore, "ballerina");
+    if (result is Error) {
+        test:assertTrue(stringutils:contains(result.message(), "PKCS12 key store not found at:"),
+            msg = "Incorrect error for reading public key from non existing p12 file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a public key from a non-existing p12 file.");
+    }
 }
