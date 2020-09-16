@@ -18,8 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
+import org.ballerinalang.jvm.api.values.BMap;
 import org.ballerinalang.jvm.values.ArrayValue;
-import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
@@ -67,7 +67,7 @@ public class Decrypt {
 
     public static Object decryptRsaEcb(ArrayValue inputValue, Object keys, Object padding) {
         byte[] input = inputValue.getBytes();
-        MapValue<?, ?> keyMap = (MapValue<?, ?>) keys;
+        BMap<?, ?> keyMap = (BMap<?, ?>) keys;
         Key key;
         if (keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY) != null) {
             key = (PrivateKey) keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
