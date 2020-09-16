@@ -18,8 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
+import org.ballerinalang.jvm.api.values.BMap;
 import org.ballerinalang.jvm.values.ArrayValue;
-import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
@@ -68,7 +68,7 @@ public class Encrypt {
         byte[] input = inputValue.getBytes();
         // this is a union, but both a record types, so we can safely cast
         // TODO: unify union types when same type is duplicated eg:record:record.
-        MapValue<?, ?> keyMap = (MapValue<?, ?>) keyUnion;
+        BMap<?, ?> keyMap = (BMap<?, ?>) keyUnion;
         Key key;
         if (keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY) != null) {
             key = (PrivateKey) keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
