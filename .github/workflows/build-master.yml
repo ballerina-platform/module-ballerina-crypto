@@ -25,4 +25,3 @@ jobs:
           packagePAT: ${{ secrets.BALLERINA_STDLIB_TOKEN }}
         run: |
           ./gradlew publish
-          
