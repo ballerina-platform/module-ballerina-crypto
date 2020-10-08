@@ -23,7 +23,5 @@ description = 'Ballerina - Crypto Java Utils'
 
 dependencies {
     compile group: 'org.ballerinalang', name: 'ballerina-time', version: "${ballerinaLangVersion}"
-    compile group: 'org.ballerinalang', name: 'ballerina-java', version: "${ballerinaLangVersion}"
-    compile group: 'commons-codec', name: 'commons-codec', version: "${commoncodecVersion}"
     compile group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
 }
