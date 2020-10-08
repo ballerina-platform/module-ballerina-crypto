@@ -15,22 +15,8 @@
  *
  */
 
-plugins {
-    id 'java'
-}
-
-description = 'Ballerina - Crypto Java Utils'
-
-dependencies {
-    compile group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
-    compile group: 'org.ballerinalang', name: 'ballerina-time', version: "${ballerinaLangVersion}"
-}
-
-compileJava {
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath,
-        ]
-        classpath = files()
-    }
+module io.ballerina.stdlib.crypto {
+    requires io.ballerina.jvm;
+    requires io.ballerina.time;
+    exports org.ballerinalang.stdlib.crypto.nativeimpl;
 }
