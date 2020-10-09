@@ -18,7 +18,6 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import org.apache.commons.codec.binary.Base64;
 import org.ballerinalang.jvm.api.BStringUtils;
 import org.ballerinalang.jvm.api.BValueCreator;
 import org.ballerinalang.jvm.api.values.BMap;
@@ -46,6 +45,7 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 
 /**
  * Extern functions ballerina decoding keys.
@@ -168,8 +168,8 @@ public class Decode {
 
     public static Object buildRsaPublicKey(BString modulus, BString exponent) {
         try {
-            byte[] decodedModulus = Base64.decodeBase64(modulus.getValue());
-            byte[] decodedExponent = Base64.decodeBase64(exponent.getValue());
+            byte[] decodedModulus = Base64.getUrlDecoder().decode(modulus.getValue());
+            byte[] decodedExponent = Base64.getUrlDecoder().decode(exponent.getValue());
             RSAPublicKeySpec spec = new RSAPublicKeySpec(new BigInteger(1, decodedModulus),
                                                          new BigInteger(1, decodedExponent));
             RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);

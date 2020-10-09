@@ -7,18 +7,11 @@ version = "@toml.version@"
 "ballerina/stringutils" = "@stdlib.stringutils.version@"
 
 [platform]
-target = "java8"
+target = "java11"
 
     [[platform.libraries]]
     artifactId = "crypto"
     version = "@project.version@"
     path = "../crypto-native/build/libs/crypto-native-@project.version@.jar"
     groupId = "ballerina"
-    modules = ["crypto"]
-
-    [[platform.libraries]]
-    artifactId = "commons-codec"
-    version = "1.9"
-    path = "./lib/commons-codec-1.9.jar"
-    groupId = "commons-codec"
     modules = ["crypto"]
