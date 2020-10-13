@@ -29,9 +29,6 @@ dependencies {
         transitive = false
     }
     compile project(':crypto-native')
-    packingJars (group: 'commons-codec', name: 'commons-codec', version: "${commoncodecVersion}") {
-        transitive = false
-    }
 }
 
 clean {
