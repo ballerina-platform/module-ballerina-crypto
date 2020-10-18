@@ -18,6 +18,35 @@ import ballerina/stringutils;
 import ballerina/test;
 
 @test:Config {}
+function testParseEncryptedPrivateKeyFromP12() {
+    KeyStore keyStore = {
+        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        password: "ballerina"
+    };
+    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding encrypted private-key from a p12 file. " + result.message());
+    }
+}
+
+@test:Config {}
+function testReadPrivateKeyFromNonExistingP12() {
+    KeyStore keyStore = {
+        path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
+        password: "ballerina"
+    };
+    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    if (result is Error) {
+        test:assertTrue(stringutils:contains(result.message(), "PKCS12 key store not found at:"),
+            msg = "Incorrect error for reading private key from non existing p12 file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a private key from a non-existing p12 file.");
+    }
+}
+
+@test:Config {}
 function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -61,4 +90,15 @@ function testReadPublicKeyFromNonExistingP12() {
     } else {
         test:assertFail(msg = "No error while attempting to read a public key from a non-existing p12 file.");
     }
+}
+
+@test:Config {}
+function testBuildPublicKeyFromJwk() {
+    string modulus = "luZFdW1ynitztkWLC6xKegbRWxky-5P0p4ShYEOkHs30QI2VCuR6Qo4Bz5rTgLBrky03W1GAVrZxuvKRGj9V9-" +
+        "PmjdGtau4CTXu9pLLcqnruaczoSdvBYA3lS9a7zgFU0-s6kMl2EhB-rk7gXluEep7lIOenzfl2f6IoTKa2fVgVd3YKiSGsy" +
+        "L4tztS70vmmX121qm0sTJdKWP4HxXyqK9neolXI9fYyHOYILVNZ69z_73OOVhkh_mvTmWZLM7GM6sApmyLX6OXUp8z0pkY-v" +
+        "T_9-zRxxQs7GurC4_C1nK3rI_0ySUgGEafO1atNjYmlFN-M3tZX6nEcA6g94IavyQ";
+    string exponent = "AQAB";
+    PublicKey publicKey = checkpanic buildRsaPublicKey(modulus, exponent);
+    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from JWK.");
 }
