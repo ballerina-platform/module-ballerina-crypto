@@ -18,8 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import org.ballerinalang.jvm.api.values.BMap;
-import org.ballerinalang.jvm.values.ArrayValue;
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.values.ArrayValue;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
