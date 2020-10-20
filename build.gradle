@@ -25,7 +25,6 @@ plugins {
 ext.puppycrawlCheckstyleVersion = project.puppycrawlCheckstyleVersion
 ext.ballerinaLangVersion = project.ballerinaLangVersion
 ext.stdlibTimeVersion = project.stdlibTimeVersion
-ext.stdlibStringUtilsVersion = project.stdlibStringUtilsVersion
 
 allprojects {
     group = 'org.ballerinalang'
@@ -63,14 +62,6 @@ allprojects {
                 password System.getenv("packagePAT")
             }
         }
-
-        maven {
-            url = 'https://maven.pkg.github.com/ballerina-platform/module-ballerina-stringutils'
-            credentials {
-                username System.getenv("packageUser")
-                password System.getenv("packagePAT")
-            }
-        }
     }
 }
 
@@ -83,7 +74,6 @@ subprojects {
     dependencies {
         /* Standard libraries */
         ballerinaStdLibs "org.ballerinalang:time-ballerina:${stdlibTimeVersion}"
-        ballerinaStdLibs "org.ballerinalang:stringutils-ballerina:${stdlibStringUtilsVersion}"
     }
 }
 
