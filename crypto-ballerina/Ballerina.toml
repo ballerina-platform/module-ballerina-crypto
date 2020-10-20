@@ -4,7 +4,6 @@ version = "@toml.version@"
 
 [dependencies]
 "ballerina/time" = "@stdlib.time.version@"
-"ballerina/stringutils" = "@stdlib.stringutils.version@"
 
 [platform]
 target = "java11"
