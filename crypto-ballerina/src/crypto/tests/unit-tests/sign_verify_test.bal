@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/test;
-import ballerina/stringutils;
 
 @test:Config {}
 function testSignRsaMd5() {
@@ -114,7 +113,7 @@ function testSignRsaMd5WithInvalidKey() {
     byte[]|Error result = signRsaMd5(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
-        test:assertTrue(stringutils:contains(result.message(), errorMessage),
+        test:assertTrue(result.message().indexOf(errorMessage) is int,
                         msg = "Incorrect output/error when with signing RSA MD5 with invalid key.");
     } else {
         test:assertFail(msg = "No error while RSA MD5 sign with invalid key.");
@@ -128,7 +127,7 @@ function testSignRsaSha1WithInvalidKey() {
     byte[]|Error result = signRsaSha1(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
-        test:assertTrue(stringutils:contains(result.message(), errorMessage),
+        test:assertTrue(result.message().indexOf(errorMessage) is int,
                         msg = "Incorrect output/error when with signing RSA SHA1 with invalid key.");
     } else {
         test:assertFail(msg = "No error while RSA SHA1 sign with invalid key.");
@@ -142,7 +141,7 @@ function testSignRsaSha256WithInvalidKey() {
     byte[]|Error result = signRsaSha256(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
-        test:assertTrue(stringutils:contains(result.message(), errorMessage),
+        test:assertTrue(result.message().indexOf(errorMessage) is int,
                         msg = "Incorrect output/error when with signing RSA SHA256 with invalid key.");
     } else {
         test:assertFail(msg = "No error while RSA SHA256 sign with invalid key.");
@@ -156,7 +155,7 @@ function testSignRsaSha384WithInvalidKey() {
     byte[]|Error result = signRsaSha384(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
-        test:assertTrue(stringutils:contains(result.message(), errorMessage),
+        test:assertTrue(result.message().indexOf(errorMessage) is int,
                         msg = "Incorrect output/error when with signing RSA SAH384 with invalid key.");
     } else {
         test:assertFail(msg = "No error while RSA SAH384 sign with invalid key.");
@@ -170,7 +169,7 @@ function testSignRsaSha512WithInvalidKey() {
     byte[]|Error result = signRsaSha512(payload, privateKey);
     if (result is Error) {
         string errorMessage = "Uninitialized private key";
-        test:assertTrue(stringutils:contains(result.message(), errorMessage),
+        test:assertTrue(result.message().indexOf(errorMessage) is int,
                         msg = "Incorrect output/error when with signing RSA SHA512 with invalid key.");
     } else {
         test:assertFail(msg = "No error while RSA SHA512 sign with invalid key.");

@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/stringutils;
 import ballerina/test;
 
 @test:Config {}
@@ -125,7 +124,7 @@ function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
     }
     byte[]|Error result = encryptAesGcm(message, key, iv, "PKCS5", 500);
     if (result is Error) {
-        test:assertTrue(stringutils:contains(result.message(), "Invalid tag size. valid tag sizes in bytes:"),
+        test:assertTrue(result.message().indexOf("Invalid tag size. valid tag sizes in bytes:") is int,
             msg = "Incorrect error for invalid key while Encryption with AES GCM PKCS5.");
     } else {
         test:assertFail(msg = "No error for invalid tag size while Encryption with AES GCM PKCS5.");
