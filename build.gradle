@@ -27,7 +27,7 @@ ext.ballerinaLangVersion = project.ballerinaLangVersion
 ext.stdlibTimeVersion = project.stdlibTimeVersion
 
 allprojects {
-    group = 'org.ballerinalang'
+    group = project.group
     version = project.version
 
     apply plugin: 'jacoco'
