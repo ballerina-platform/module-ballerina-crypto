@@ -18,11 +18,10 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import io.ballerina.runtime.api.StringUtils;
-import io.ballerina.runtime.api.ValueCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.values.ArrayValueImpl;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 import org.ballerinalang.stdlib.time.util.TimeUtils;
@@ -138,7 +137,7 @@ public class Decode {
                                                                StringUtils.fromString(Constants.TIMEZONE_GMT)));
 
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_SIGNATURE_FIELD),
-                                    new ArrayValueImpl(x509Certificate.getSignature()));
+                                    ValueCreator.createArrayValue(x509Certificate.getSignature()));
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD),
                                     StringUtils.fromString(x509Certificate.getSigAlgName()));
             }
