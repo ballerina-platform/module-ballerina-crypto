@@ -17,10 +17,10 @@
  */
 package org.ballerinalang.stdlib.crypto;
 
-import io.ballerina.runtime.api.ErrorCreator;
-import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.api.creators.ErrorCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BError;
-import io.ballerina.runtime.values.ArrayValueImpl;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -127,7 +127,7 @@ public class CryptoUtils {
             Signature sig = Signature.getInstance(algorithm);
             sig.initSign(privateKey);
             sig.update(input);
-            return new ArrayValueImpl(sig.sign());
+            return ValueCreator.createArrayValue(sig.sign());
         } catch (InvalidKeyException e) {
             return CryptoUtils.createError("Uninitialized private key: " + e.getMessage());
         } catch (NoSuchAlgorithmException | SignatureException e) {
@@ -191,7 +191,7 @@ public class CryptoUtils {
             Cipher cipher = Cipher.getInstance(Constants.RSA + "/" + transformedAlgorithmMode + "/"
                     + transformedAlgorithmPadding);
             initCipher(cipher, cipherMode, key, paramSpec);
-            return new ArrayValueImpl(cipher.doFinal(input));
+            return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Unsupported algorithm: RSA " + algorithmMode + " " + algorithmPadding +
                     ": " + e.getMessage());
@@ -233,7 +233,7 @@ public class CryptoUtils {
             AlgorithmParameterSpec paramSpec = buildParameterSpec(transformedAlgorithmMode, iv, (int) tagSize);
             Cipher cipher = Cipher.getInstance("AES/" + transformedAlgorithmMode + "/" + transformedAlgorithmPadding);
             initCipher(cipher, cipherMode, keySpec, paramSpec);
-            return new ArrayValueImpl(cipher.doFinal(input));
+            return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Unsupported algorithm: AES " + algorithmMode + " " + algorithmPadding +
                     ": " + e.getMessage());

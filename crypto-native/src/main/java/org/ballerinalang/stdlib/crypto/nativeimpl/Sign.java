@@ -18,8 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.values.ArrayValue;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
@@ -33,37 +33,37 @@ import java.security.PublicKey;
  */
 public class Sign {
 
-    public static Object signRsaMd5(ArrayValue inputValue, BMap<?, ?> privateKey) {
+    public static Object signRsaMd5(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("MD5withRSA", key, input);
     }
 
-    public static Object signRsaSha1(ArrayValue inputValue, BMap<?, ?> privateKey) {
+    public static Object signRsaSha1(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA1withRSA", key, input);
     }
 
-    public static Object signRsaSha256(ArrayValue inputValue, BMap<?, ?> privateKey) {
+    public static Object signRsaSha256(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA256withRSA", key, input);
     }
 
-    public static Object signRsaSha384(ArrayValue inputValue, BMap<?, ?> privateKey) {
+    public static Object signRsaSha384(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA384withRSA", key, input);
     }
 
-    public static Object signRsaSha512(ArrayValue inputValue, BMap<?, ?> privateKey) {
+    public static Object signRsaSha512(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA512withRSA", key, input);
     }
 
-    public static Object verifyRsaMd5Signature(ArrayValue dataValue, ArrayValue signatureValue,
+    public static Object verifyRsaMd5Signature(BArray dataValue, BArray signatureValue,
                                                BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
@@ -71,7 +71,7 @@ public class Sign {
         return CryptoUtils.verify("MD5withRSA", key, data, signature);
     }
 
-    public static Object verifyRsaSha1Signature(ArrayValue dataValue, ArrayValue signatureValue,
+    public static Object verifyRsaSha1Signature(BArray dataValue, BArray signatureValue,
                                                 BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
@@ -79,7 +79,7 @@ public class Sign {
         return CryptoUtils.verify("SHA1withRSA", key, data, signature);
     }
 
-    public static Object verifyRsaSha256Signature(ArrayValue dataValue, ArrayValue signatureValue,
+    public static Object verifyRsaSha256Signature(BArray dataValue, BArray signatureValue,
                                                   BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
@@ -87,7 +87,7 @@ public class Sign {
         return CryptoUtils.verify("SHA256withRSA", key, data, signature);
     }
 
-    public static Object verifyRsaSha384Signature(ArrayValue dataValue, ArrayValue signatureValue,
+    public static Object verifyRsaSha384Signature(BArray dataValue, BArray signatureValue,
                                                   BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
@@ -95,7 +95,7 @@ public class Sign {
         return CryptoUtils.verify("SHA384withRSA", key, data, signature);
     }
 
-    public static Object verifyRsaSha512Signature(ArrayValue dataValue, ArrayValue signatureValue,
+    public static Object verifyRsaSha512Signature(BArray dataValue, BArray signatureValue,
                                                   BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
