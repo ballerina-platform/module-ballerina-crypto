@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testParseEncryptedPrivateKeyFromP12() {
+isolated function testParseEncryptedPrivateKeyFromP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
@@ -31,7 +31,7 @@ function testParseEncryptedPrivateKeyFromP12() {
 }
 
 @test:Config {}
-function testReadPrivateKeyFromNonExistingP12() {
+isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
@@ -46,7 +46,7 @@ function testReadPrivateKeyFromNonExistingP12() {
 }
 
 @test:Config {}
-function testParsePublicKeyFromP12() {
+isolated function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
@@ -77,7 +77,7 @@ function testParsePublicKeyFromP12() {
 }
 
 @test:Config {}
-function testReadPublicKeyFromNonExistingP12() {
+isolated function testReadPublicKeyFromNonExistingP12() {
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
@@ -92,7 +92,7 @@ function testReadPublicKeyFromNonExistingP12() {
 }
 
 @test:Config {}
-function testBuildPublicKeyFromJwk() {
+isolated function testBuildPublicKeyFromJwk() {
     string modulus = "luZFdW1ynitztkWLC6xKegbRWxky-5P0p4ShYEOkHs30QI2VCuR6Qo4Bz5rTgLBrky03W1GAVrZxuvKRGj9V9-" +
         "PmjdGtau4CTXu9pLLcqnruaczoSdvBYA3lS9a7zgFU0-s6kMl2EhB-rk7gXluEep7lIOenzfl2f6IoTKa2fVgVd3YKiSGsy" +
         "L4tztS70vmmX121qm0sTJdKWP4HxXyqK9neolXI9fYyHOYILVNZ69z_73OOVhkh_mvTmWZLM7GM6sApmyLX6OXUp8z0pkY-v" +

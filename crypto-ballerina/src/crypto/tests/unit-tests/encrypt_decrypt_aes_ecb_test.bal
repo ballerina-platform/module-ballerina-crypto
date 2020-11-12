@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testEncryptAndDecryptWithAesEcbNoPadding() {
+isolated function testEncryptAndDecryptWithAesEcbNoPadding() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     int i = 0;
@@ -31,7 +31,7 @@ function testEncryptAndDecryptWithAesEcbNoPadding() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidKeySize() {
+isolated function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidKeySize() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     int i = 0;
     byte[] invalidKey = [];
@@ -49,7 +49,7 @@ function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidKeySize() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidInputLength() {
+isolated function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidInputLength() {
     byte[] invalidMessage = "Ballerina crypto test".toBytes();
     byte[] key = [];
     int i = 0;
@@ -68,7 +68,7 @@ function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidInputLength() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesEcbPkcs5() {
+isolated function testEncryptAndDecryptWithAesEcbPkcs5() {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     int i = 0;
