@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testEncryptAndDecryptWithAesGcmNoPadding() {
+isolated function testEncryptAndDecryptWithAesGcmNoPadding() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -39,7 +39,7 @@ function testEncryptAndDecryptWithAesGcmNoPadding() {
 @test:Config {
     enable: false
 }
-function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
+isolated function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
     byte[] invalidMessage = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -63,7 +63,7 @@ function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() {
+isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] iv = [];
     int i = 0;
@@ -87,7 +87,7 @@ function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesGcmPkcs5() {
+isolated function testEncryptAndDecryptWithAesGcmPkcs5() {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -108,7 +108,7 @@ function testEncryptAndDecryptWithAesGcmPkcs5() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
+isolated function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];

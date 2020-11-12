@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testSignRsaMd5() {
+isolated function testSignRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -35,7 +35,7 @@ function testSignRsaMd5() {
 }
 
 @test:Config {}
-function testSignRsaSha1() {
+isolated function testSignRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -53,7 +53,7 @@ function testSignRsaSha1() {
 }
 
 @test:Config {}
-function testSignRsaSha256() {
+isolated function testSignRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -71,7 +71,7 @@ function testSignRsaSha256() {
 }
 
 @test:Config {}
-function testSignRsaSha384() {
+isolated function testSignRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -89,7 +89,7 @@ function testSignRsaSha384() {
 }
 
 @test:Config {}
-function testSignRsaSha512() {
+isolated function testSignRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -107,7 +107,7 @@ function testSignRsaSha512() {
 }
 
 @test:Config {}
-function testSignRsaMd5WithInvalidKey() {
+isolated function testSignRsaMd5WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaMd5(payload, privateKey);
@@ -121,7 +121,7 @@ function testSignRsaMd5WithInvalidKey() {
 }
 
 @test:Config {}
-function testSignRsaSha1WithInvalidKey() {
+isolated function testSignRsaSha1WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha1(payload, privateKey);
@@ -135,7 +135,7 @@ function testSignRsaSha1WithInvalidKey() {
 }
 
 @test:Config {}
-function testSignRsaSha256WithInvalidKey() {
+isolated function testSignRsaSha256WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha256(payload, privateKey);
@@ -149,7 +149,7 @@ function testSignRsaSha256WithInvalidKey() {
 }
 
 @test:Config {}
-function testSignRsaSha384WithInvalidKey() {
+isolated function testSignRsaSha384WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha384(payload, privateKey);
@@ -163,7 +163,7 @@ function testSignRsaSha384WithInvalidKey() {
 }
 
 @test:Config {}
-function testSignRsaSha512WithInvalidKey() {
+isolated function testSignRsaSha512WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha512(payload, privateKey);
@@ -177,7 +177,7 @@ function testSignRsaSha512WithInvalidKey() {
 }
 
 @test:Config {}
-function testVerifyRsaMd5() {
+isolated function testVerifyRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -196,7 +196,7 @@ function testVerifyRsaMd5() {
 }
 
 @test:Config {}
-function testVerifyRsaSha1() {
+isolated function testVerifyRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -215,7 +215,7 @@ function testVerifyRsaSha1() {
 }
 
 @test:Config {}
-function testVerifyRsaSha256() {
+isolated function testVerifyRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -234,7 +234,7 @@ function testVerifyRsaSha256() {
 }
 
 @test:Config {}
-function testVerifyRsaSha384() {
+isolated function testVerifyRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -253,7 +253,7 @@ function testVerifyRsaSha384() {
 }
 
 @test:Config {}
-function testVerifyRsaSha512() {
+isolated function testVerifyRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",

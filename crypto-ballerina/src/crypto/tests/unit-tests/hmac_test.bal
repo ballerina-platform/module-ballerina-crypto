@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testHmacMd5() {
+isolated function testHmacMd5() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedMd5Hash = "3D5AC29160F2905A5C8153597798A4C1".toLowerAscii();
@@ -25,7 +25,7 @@ function testHmacMd5() {
 }
 
 @test:Config {}
-function testHmacSha1() {
+isolated function testHmacSha1() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha1Hash = "13DD8D54D0EB702EDC6E8EDCAF616837D3A51499".toLowerAscii();
@@ -33,7 +33,7 @@ function testHmacSha1() {
 }
 
 @test:Config {}
-function testHmacSha256() {
+isolated function testHmacSha256() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha256Hash =
@@ -42,7 +42,7 @@ function testHmacSha256() {
 }
 
 @test:Config {}
-function testHmacSha384() {
+isolated function testHmacSha384() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha384Hash = ("c27a281dffed3d4d176646d7261e9f6268a3d40a237cd274fc2f5970f637f1c" +
@@ -51,7 +51,7 @@ function testHmacSha384() {
 }
 
 @test:Config {}
-function testHmacSha512() {
+isolated function testHmacSha512() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha512Hash = ("78d99bf3e5277fc893af6cd6b0487c33ed3abc4f956fdd1fada302f135b012a" +
@@ -60,31 +60,31 @@ function testHmacSha512() {
 }
 
 @test:Config {}
-function testHmacMd5WithInvalidKey() {
+isolated function testHmacMd5WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     test:assertTrue((trap hmacMd5(message, [])) is error, msg = "No error for empty key while HMAC with MD5.");
 }
 
 @test:Config {}
-function testHmacSha1WithInvalidKey() {
+isolated function testHmacSha1WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     test:assertTrue((trap hmacSha1(message, [])) is error, msg = "No error for empty key while HMAC with SHA1.");
 }
 
 @test:Config {}
-function testHmacSha256WithInvalidKey() {
+isolated function testHmacSha256WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     test:assertTrue((trap hmacSha256(message, [])) is error, msg = "No error for empty key while HMAC with SHA256.");
 }
 
 @test:Config {}
-function testHmacSha384WithInvalidKey() {
+isolated function testHmacSha384WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     test:assertTrue((trap hmacSha384(message, [])) is error, msg = "No error for empty key while HMAC with SHA384.");
 }
 
 @test:Config {}
-function testHmacSha512WithInvalidKey() {
+isolated function testHmacSha512WithInvalidKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     test:assertTrue((trap hmacSha512(message, [])) is error, msg = "No error for empty key while HMAC with SHA512.");
 }

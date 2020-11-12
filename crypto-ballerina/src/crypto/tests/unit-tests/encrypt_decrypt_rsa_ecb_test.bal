@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbPkcs1() {
+isolated function testEncryptAndDecryptWithRsaEcbPkcs1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -32,7 +32,7 @@ function testEncryptAndDecryptWithRsaEcbPkcs1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -47,7 +47,7 @@ function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -62,7 +62,7 @@ function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -77,7 +77,7 @@ function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -92,7 +92,7 @@ function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -107,7 +107,7 @@ function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
 }
 
 @test:Config {}
-function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() {
+isolated function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
@@ -122,7 +122,7 @@ function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() {
 }
 
 @test:Config {}
-function testEncryptAndDecryptWithRsaEcbPkcs1WithAnInvalidKey() {
+isolated function testEncryptAndDecryptWithRsaEcbPkcs1WithAnInvalidKey() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     PrivateKey invalidPrk = {algorithm:"RSA"};
     byte[]|Error result = encryptRsaEcb(message, invalidPrk, "PKCS1");
