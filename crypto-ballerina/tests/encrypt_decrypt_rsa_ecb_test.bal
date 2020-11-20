@@ -20,7 +20,7 @@ import ballerina/test;
 isolated function testEncryptAndDecryptWithRsaEcbPkcs1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -35,7 +35,7 @@ isolated function testEncryptAndDecryptWithRsaEcbPkcs1() {
 isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -50,7 +50,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
 isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -65,7 +65,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
 isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -80,7 +80,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
 isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -95,7 +95,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
 isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -110,7 +110,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
 isolated function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");

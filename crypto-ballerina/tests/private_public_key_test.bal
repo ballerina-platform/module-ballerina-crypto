@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromP12() {
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
@@ -33,7 +33,7 @@ isolated function testParseEncryptedPrivateKeyFromP12() {
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
     PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
@@ -48,7 +48,7 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
 @test:Config {}
 isolated function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
@@ -79,7 +79,7 @@ isolated function testParsePublicKeyFromP12() {
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "src/crypto/tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
     PublicKey|Error result = decodePublicKey(keyStore, "ballerina");

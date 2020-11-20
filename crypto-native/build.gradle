@@ -28,7 +28,7 @@ dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${puppycrawlCheckstyleVersion}"
 
     compile group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
-    compile group: 'org.ballerinalang', name: 'ballerina-time', version: "${ballerinaLangVersion}"
+    compile group: 'org.ballerinalang', name: 'time-native', version: "${stdlibTimeVersion}"
 }
 
 checkstyle {
