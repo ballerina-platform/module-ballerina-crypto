@@ -24,7 +24,7 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
-import org.ballerinalang.stdlib.time.util.TimeUtils;
+import org.ballerinalang.stdlib.crypto.util.TimeUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

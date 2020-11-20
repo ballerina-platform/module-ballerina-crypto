@@ -1,16 +1,15 @@
-[project]
-org-name = "ballerina"
+[package]
+org = "ballerina"
+name = "crypto"
 version = "@toml.version@"
 
-[dependencies]
-"ballerina/time" = "@stdlib.time.version@"
+[[dependency]]
+org = "ballerina"
+name = "time"
+version = "@stdlib.time.version@"
 
-[platform]
-target = "java11"
-
-    [[platform.libraries]]
-    artifactId = "crypto"
-    version = "@project.version@"
-    path = "../crypto-native/build/libs/crypto-native-@project.version@.jar"
-    groupId = "ballerina"
-    modules = ["crypto"]
+[[platform.java11.dependency]]
+path = "../crypto-native/build/libs/crypto-native-@project.version@.jar"
+groupId = "ballerina"
+artifactId = "crypto"
+version = "@project.version@"
