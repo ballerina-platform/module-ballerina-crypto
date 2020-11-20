@@ -118,18 +118,4 @@ public class Constants {
 
     // RSA encryption algorithm
     public static final String RSA = "RSA";
-
-
-    public static final String KEY_ZONED_DATETIME = "ZonedDateTime";
-    public static final String TIME_FIELD = "time";
-    public static final String ZONE_FIELD = "zone";
-    public static final String ZONE_ID_FIELD = "id";
-
-    public static final String TIME_PACKAGE_VERSION = "1.0.3";
-    public static final Module TIME_PACKAGE_ID = new Module(BALLERINA_BUILTIN_PKG_PREFIX, "time",
-            TIME_PACKAGE_VERSION);
-    public static final String STRUCT_TYPE_TIME = "Time";
-    public static final String STRUCT_TYPE_TIMEZONE = "TimeZone";
-
-    public static final String TIME_ERROR = "TimeError";
 }

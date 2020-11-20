@@ -17,6 +17,6 @@
 
 module io.ballerina.stdlib.crypto {
     requires io.ballerina.runtime;
+    requires io.ballerina.stdlib.time;
     exports org.ballerinalang.stdlib.crypto.nativeimpl;
-    exports org.ballerinalang.stdlib.crypto.util;
 }
