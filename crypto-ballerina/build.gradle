@@ -128,7 +128,7 @@ task ballerinaTest {
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                 commandLine 'cmd', '/c', "$distributionBinPath/ballerina.bat test ${debugParams} && exit %%ERRORLEVEL%%"
             } else {
-                commandLine 'sh', '-c', "$distributionBinPath/ballerina test"
+                commandLine 'sh', '-c', "$distributionBinPath/ballerina test ${debugParams}"
             }
         }
     }
