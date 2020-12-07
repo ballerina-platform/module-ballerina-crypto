@@ -33,7 +33,7 @@ public class Constants {
 
     // Name of the Ballerina crypto module, used to create struct instances.
     public static final String PACKAGE_NAME = "crypto";
-    public static final Module CRYPTO_PACKAGE_ID = new Module(BALLERINA_BUILTIN_PKG_PREFIX, PACKAGE_NAME, "1.0.3");
+    public static final Module CRYPTO_PACKAGE_ID = new Module(BALLERINA_BUILTIN_PKG_PREFIX, PACKAGE_NAME, "1.0.4");
 
     // Record used to reference to a private key.
     public static final String PRIVATE_KEY_RECORD = "PrivateKey";
