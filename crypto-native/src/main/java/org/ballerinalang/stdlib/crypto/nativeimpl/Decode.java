@@ -76,7 +76,7 @@ public class Decode {
             //TODO: Add support for DSA/ECDSA keys and associated crypto operations
             if (privateKey.getAlgorithm().equals("RSA")) {
                 BMap<BString, Object> privateKeyRecord = ValueCreator.
-                        createRecordValue(Constants.CRYPTO_PACKAGE_ID, Constants.PRIVATE_KEY_RECORD);
+                        createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
                 privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
                 privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
                                      StringUtils.fromString(privateKey.getAlgorithm()));
@@ -115,7 +115,7 @@ public class Decode {
                 return CryptoUtils.createError("Certificate cannot be recovered by using given key alias: " + keyAlias);
             }
             BMap<BString, Object> certificateBMap = ValueCreator.
-                    createRecordValue(Constants.CRYPTO_PACKAGE_ID, Constants.CERTIFICATE_RECORD);
+                    createRecordValue(ModuleUtils.getModule(), Constants.CERTIFICATE_RECORD);
             if (certificate instanceof X509Certificate) {
                 X509Certificate x509Certificate = (X509Certificate) certificate;
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_ISSUER_FIELD),
@@ -145,7 +145,7 @@ public class Decode {
             //TODO: Add support for DSA/ECDSA keys and associated crypto operations
             if (publicKey.getAlgorithm().equals("RSA")) {
                 BMap<BString, Object> publicKeyMap = ValueCreator.
-                        createRecordValue(Constants.CRYPTO_PACKAGE_ID, Constants.PUBLIC_KEY_RECORD);
+                        createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
                 publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
                 publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY_CERTIFICATE, certificate);
                 publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_ALGORITHM_FIELD),
@@ -174,7 +174,7 @@ public class Decode {
             RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);
 
             BMap<BString, Object> publicKeyMap = ValueCreator.
-                    createRecordValue(Constants.CRYPTO_PACKAGE_ID, Constants.PUBLIC_KEY_RECORD);
+                    createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
             publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
             publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_ALGORITHM_FIELD),
                              StringUtils.fromString(publicKey.getAlgorithm()));

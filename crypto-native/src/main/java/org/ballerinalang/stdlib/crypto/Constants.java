@@ -18,11 +18,8 @@
 
 package org.ballerinalang.stdlib.crypto;
 
-import io.ballerina.runtime.api.Module;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
-
-import static io.ballerina.runtime.api.constants.RuntimeConstants.BALLERINA_BUILTIN_PKG_PREFIX;
 
 /**
  * Constants related to Ballerina crypto stdlib.
@@ -30,10 +27,6 @@ import static io.ballerina.runtime.api.constants.RuntimeConstants.BALLERINA_BUIL
  * @since 0.990.3
  */
 public class Constants {
-
-    // Name of the Ballerina crypto module, used to create struct instances.
-    public static final String PACKAGE_NAME = "crypto";
-    public static final Module CRYPTO_PACKAGE_ID = new Module(BALLERINA_BUILTIN_PKG_PREFIX, PACKAGE_NAME, "1.0.4");
 
     // Record used to reference to a private key.
     public static final String PRIVATE_KEY_RECORD = "PrivateKey";
