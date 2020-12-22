@@ -21,6 +21,7 @@ import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BError;
+import org.ballerinalang.stdlib.crypto.nativeimpl.ModuleUtils;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -47,7 +48,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import static org.ballerinalang.stdlib.crypto.Constants.CRYPTO_ERROR;
-import static org.ballerinalang.stdlib.crypto.Constants.CRYPTO_PACKAGE_ID;
 
 /**
  * Utility functions relevant to crypto operations.
@@ -164,7 +164,7 @@ public class CryptoUtils {
      * @return conversion error
      */
     public static BError createError(String errMsg) {
-        return ErrorCreator.createDistinctError(CRYPTO_ERROR, CRYPTO_PACKAGE_ID, StringUtils.fromString(errMsg));
+        return ErrorCreator.createDistinctError(CRYPTO_ERROR, ModuleUtils.getModule(), StringUtils.fromString(errMsg));
     }
 
     /**
