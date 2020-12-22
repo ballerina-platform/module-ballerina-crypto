@@ -17,9 +17,9 @@
 import ballerina/java;
 
 isolated function init() {
-    initModule();
+    setModule();
 }
 
-public isolated function initModule() = @java:Method {
+isolated function setModule() = @java:Method {
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.ModuleUtils"
 } external;
