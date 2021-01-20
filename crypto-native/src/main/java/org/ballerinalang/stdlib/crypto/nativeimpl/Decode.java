@@ -128,12 +128,10 @@ public class Decode {
                                     x509Certificate.getSerialNumber().longValue());
 
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_NOT_BEFORE_FIELD),
-                                    TimeUtils.createTimeRecord(TimeUtils.getTimeZoneRecord(), TimeUtils.getTimeRecord(),
-                                                               x509Certificate.getNotBefore().getTime(),
+                                    TimeUtils.createTimeRecord(x509Certificate.getNotBefore().getTime(),
                                                                StringUtils.fromString(Constants.TIMEZONE_GMT)));
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_NOT_AFTER_FIELD),
-                                    TimeUtils.createTimeRecord(TimeUtils.getTimeZoneRecord(), TimeUtils.getTimeRecord(),
-                                                               x509Certificate.getNotAfter().getTime(),
+                                    TimeUtils.createTimeRecord(x509Certificate.getNotAfter().getTime(),
                                                                StringUtils.fromString(Constants.TIMEZONE_GMT)));
 
                 certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_SIGNATURE_FIELD),
