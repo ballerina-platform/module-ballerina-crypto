@@ -1,0 +1,4 @@
+[[dependency]]
+org = "ballerina"
+name = "time"
+version = "@stdlib.time.version@"
