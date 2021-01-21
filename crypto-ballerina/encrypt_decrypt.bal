@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/java;
+import ballerina/jballerina.java;
 
 # Padding algorithms supported by AES encryption and decryption.
 public type AesPadding NONE|PKCS5;

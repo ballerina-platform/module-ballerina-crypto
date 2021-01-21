@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/java;
+import ballerina/jballerina.java;
 
 # Returns the HMAC using the MD-5 hash function of the given data.
 # ```ballerina
