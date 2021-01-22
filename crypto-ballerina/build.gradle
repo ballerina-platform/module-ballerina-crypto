@@ -83,6 +83,7 @@ task copyStdlibs(type: Copy) {
 def packageName = "crypto"
 def packageOrg = "ballerina"
 def ballerinaConfigFile = new File("$project.projectDir/Ballerina.toml")
+def ballerinaDependencyFile = new File("$project.projectDir/Dependencies.toml")
 def artifactBallerinaDocs = file("$project.projectDir/build/docs_parent/")
 def artifactCacheParent = file("$project.projectDir/build/cache_parent/")
 def artifactLibParent = file("$project.projectDir/build/lib_parent/")
@@ -96,8 +97,10 @@ task updateTomlVersions {
 
         def newConfig = ballerinaConfigFile.text.replace("@project.version@", project.version)
         newConfig = newConfig.replace("@toml.version@", tomlVersion)
-        newConfig = newConfig.replace("@stdlib.time.version@", stdlibDependentTimeVersion)
         ballerinaConfigFile.text = newConfig
+
+        def newDependencyConfig = ballerinaDependencyFile.text.replace("@stdlib.time.version@", stdlibDependentTimeVersion)
+        ballerinaDependencyFile.text = newDependencyConfig
     }
 }
 
