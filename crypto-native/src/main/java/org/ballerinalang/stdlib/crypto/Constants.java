@@ -89,6 +89,12 @@ public class Constants {
     // PKCS12 keystore type
     public static final String KEYSTORE_TYPE_PKCS12 = "PKCS12";
 
+    // X509 certificate type
+    public static final String CERTIFICATE_TYPE_X509 = "X.509";
+
+    // RSA key algorithm
+    public static final String RSA_ALGORITHM = "RSA";
+
     // GMT timezone name used for X509 validity times
     public static final String TIMEZONE_GMT = "GMT";
 

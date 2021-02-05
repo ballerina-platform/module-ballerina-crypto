@@ -65,7 +65,6 @@ import java.util.Base64;
  */
 public class Decode {
 
-    @SuppressWarnings("unchecked")
     public static Object decodeRsaPrivateKey(Object config) {
         BMap<BString, Object> configMap = (BMap<BString, Object>) config;
         if (configMap.containsKey(Constants.KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD)) {
@@ -142,7 +141,7 @@ public class Decode {
     }
 
     private static Object buildPrivateKeyRecord(PrivateKey privateKey) {
-        if (privateKey.getAlgorithm().equals("RSA")) {
+        if (privateKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
             BMap<BString, Object> privateKeyRecord = ValueCreator.
                     createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
             privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
@@ -150,11 +149,10 @@ public class Decode {
                                  StringUtils.fromString(privateKey.getAlgorithm()));
             return privateKeyRecord;
         } else {
-            return CryptoUtils.createError("Not a valid RSA key");
+            return CryptoUtils.createError("Not a valid RSA key.");
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static Object decodeRsaPublicKey(Object config) {
         BMap<BString, Object> configMap = (BMap<BString, Object>) config;
         if (configMap.containsKey(Constants.TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD)) {
@@ -195,7 +193,7 @@ public class Decode {
     private static Object decodePublicKeyWithCertFile(BString path) {
         File certFile = new File(path.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
             return buildPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
@@ -232,7 +230,7 @@ public class Decode {
                                 StringUtils.fromString(x509Certificate.getSigAlgName()));
         }
         PublicKey publicKey = certificate.getPublicKey();
-        if (publicKey.getAlgorithm().equals("RSA")) {
+        if (publicKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
             BMap<BString, Object> publicKeyMap = ValueCreator.
                     createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
             publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
@@ -245,7 +243,7 @@ public class Decode {
             }
             return publicKeyMap;
         } else {
-            return CryptoUtils.createError("Not a valid RSA key");
+            return CryptoUtils.createError("Not a valid RSA key.");
         }
     }
 
@@ -255,7 +253,8 @@ public class Decode {
             byte[] decodedExponent = Base64.getUrlDecoder().decode(exponent.getValue());
             RSAPublicKeySpec spec = new RSAPublicKeySpec(new BigInteger(1, decodedModulus),
                                                          new BigInteger(1, decodedExponent));
-            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);
+            RSAPublicKey publicKey =
+                    (RSAPublicKey) KeyFactory.getInstance(Constants.RSA_ALGORITHM).generatePublic(spec);
 
             BMap<BString, Object> publicKeyMap = ValueCreator.
                     createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
