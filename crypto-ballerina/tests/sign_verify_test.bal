@@ -20,7 +20,7 @@ import ballerina/test;
 isolated function testSignRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -38,7 +38,7 @@ isolated function testSignRsaMd5() {
 isolated function testSignRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -56,7 +56,7 @@ isolated function testSignRsaSha1() {
 isolated function testSignRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -74,7 +74,7 @@ isolated function testSignRsaSha256() {
 isolated function testSignRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -92,7 +92,7 @@ isolated function testSignRsaSha384() {
 isolated function testSignRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -180,7 +180,7 @@ isolated function testSignRsaSha512WithInvalidKey() {
 isolated function testVerifyRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -199,7 +199,7 @@ isolated function testVerifyRsaMd5() {
 isolated function testVerifyRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -218,7 +218,7 @@ isolated function testVerifyRsaSha1() {
 isolated function testVerifyRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -237,7 +237,7 @@ isolated function testVerifyRsaSha256() {
 isolated function testVerifyRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -256,7 +256,7 @@ isolated function testVerifyRsaSha384() {
 isolated function testVerifyRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey privateKey = checkpanic decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });

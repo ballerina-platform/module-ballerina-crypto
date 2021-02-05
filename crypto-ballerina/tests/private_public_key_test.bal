@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -33,7 +33,7 @@ isolated function testParseEncryptedPrivateKeyFromP12() {
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/keystore.p12.invalid",
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
@@ -99,7 +99,7 @@ isolated function testReadPrivateKeyFromNonExistingKeyFile() {
 @test:Config {}
 isolated function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
@@ -130,7 +130,7 @@ isolated function testParsePublicKeyFromP12() {
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/keystore.p12.invalid",
         password: "ballerina"
     };
     PublicKey|Error result = decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
