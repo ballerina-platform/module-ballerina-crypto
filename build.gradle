@@ -23,6 +23,7 @@ plugins {
 }
 
 ext.puppycrawlCheckstyleVersion = project.puppycrawlCheckstyleVersion
+ext.bouncycastleVersion = project.bouncycastleVersion
 ext.ballerinaLangVersion = project.ballerinaLangVersion
 ext.stdlibTimeVersion = project.stdlibTimeVersion
 
