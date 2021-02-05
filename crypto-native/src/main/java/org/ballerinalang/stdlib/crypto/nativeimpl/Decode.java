@@ -198,7 +198,7 @@ public class Decode {
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
             return buildPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("Cert file not found at: " + certFile.getAbsolutePath());
+            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {
             return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
         }

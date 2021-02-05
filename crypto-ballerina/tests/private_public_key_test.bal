@@ -143,6 +143,44 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 }
 
 @test:Config {}
+isolated function testParsePublicKeyFromCertFile() {
+    PublicKey publicKey = checkpanic decodeRsaPublicKey("tests/resources/datafiles/public.crt");
+    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
+    map<json> certificate = <map<json>>publicKey["certificate"];
+
+    string serial = (<int>certificate["serial"]).toString();
+    string issuer = <string>certificate["issuer"];
+    string subject = <string>certificate["subject"];
+    var notBefore = certificate["notBefore"];
+    var notAfter = certificate["notAfter"];
+    var signature = certificate["signature"];
+    string signingAlgorithm = <string>certificate["signingAlgorithm"];
+
+    test:assertEquals(serial, "2097012467",
+        msg = "Error while checking serial from public-key from a cert file.");
+    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
+        msg = "Error while checking issuer from public-key from a cert file.");
+    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
+        msg = "Error while checking subject from public-key from a cert file.");
+    test:assertTrue(notBefore is map<json>, msg = "Error in the format of notBefore field from a certificate.");
+    test:assertTrue(notAfter is map<json>, msg = "Error in the format of notAfter field from a certificate.");
+    test:assertTrue(signature is json[], msg = "Error in the format of signature field from a certificate.");
+    test:assertEquals(signingAlgorithm, "SHA256withRSA",
+        msg = "Error while checking signingAlgorithm from public-key from a cert file.");
+}
+
+@test:Config {}
+isolated function testReadPublicKeyFromNonExistingCertFile() {
+    PublicKey|Error result = decodeRsaPublicKey("tests/resources/datafiles/public.crt.invalid");
+    if (result is Error) {
+        test:assertTrue(result.message().includes("Certificate file not found at:"),
+            msg = "Incorrect error for reading public key from non existing cert file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a public key from a non-existing cert file.");
+    }
+}
+
+@test:Config {}
 isolated function testBuildPublicKeyFromJwk() {
     string modulus = "luZFdW1ynitztkWLC6xKegbRWxky-5P0p4ShYEOkHs30QI2VCuR6Qo4Bz5rTgLBrky03W1GAVrZxuvKRGj9V9-" +
         "PmjdGtau4CTXu9pLLcqnruaczoSdvBYA3lS9a7zgFU0-s6kMl2EhB-rk7gXluEep7lIOenzfl2f6IoTKa2fVgVd3YKiSGsy" +
