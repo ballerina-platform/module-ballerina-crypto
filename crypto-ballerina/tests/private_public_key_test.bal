@@ -102,7 +102,7 @@ isolated function testParsePublicKeyFromP12() {
         path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -133,7 +133,7 @@ isolated function testReadPublicKeyFromNonExistingP12() {
         path: "tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
-    PublicKey|Error result = decodePublicKey(keyStore, "ballerina");
+    PublicKey|Error result = decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
             msg = "Incorrect error for reading public key from non existing p12 file.");
