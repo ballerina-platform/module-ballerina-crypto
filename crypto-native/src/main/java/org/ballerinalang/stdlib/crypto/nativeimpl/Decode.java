@@ -25,18 +25,29 @@ import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 import org.ballerinalang.stdlib.time.util.TimeUtils;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMDecryptorProvider;
+import org.bouncycastle.openssl.PEMEncryptedKeyPair;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -54,9 +65,26 @@ import java.util.Base64;
 public class Decode {
 
     @SuppressWarnings("unchecked")
-    public static Object decodePrivateKey(Object keyStoreValue, BString keyAlias, BString keyPassword) {
-        BMap<BString, Object> keyStore = (BMap<BString, Object>) keyStoreValue;
+    public static Object decodeRsaPrivateKey(Object config) {
+        BMap<BString, Object> configMap = (BMap<BString, Object>) config;
+        if (configMap.containsKey(Constants.KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD)) {
+            BMap<BString, BString> keyStore =
+                    (BMap<BString, BString>) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD);
+            BString keyAlias = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_ALIAS_FIELD);
+            BString keyPassword = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_PASSWORD_FIELD);
+            return decodePrivateKeyWithKeyStore(keyStore, keyAlias, keyPassword);
+        } else {
+            BString keyFile = (BString) configMap.get(Constants.PRIVATE_KEY_CONFIG_RECORD_KEY_FILE_FIELD);
+            BString keyPassword = null;
+            if (configMap.containsKey(Constants.PRIVATE_KEY_CONFIG_RECORD_KEY_PASSWORD_FIELD)) {
+                keyPassword = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_PASSWORD_FIELD);
+            }
+            return decodePrivateKeyWithPrivateKey(keyFile, keyPassword);
+        }
+    }
 
+    private static Object decodePrivateKeyWithKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
+                                                       BString keyPassword) {
         File keyStoreFile = new File(CryptoUtils.substituteVariables(
                 keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString()));
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
@@ -73,17 +101,7 @@ public class Decode {
             if (privateKey == null) {
                 return CryptoUtils.createError("Key cannot be recovered by using given key alias: " + keyAlias);
             }
-            //TODO: Add support for DSA/ECDSA keys and associated crypto operations
-            if (privateKey.getAlgorithm().equals("RSA")) {
-                BMap<BString, Object> privateKeyRecord = ValueCreator.
-                        createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
-                privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
-                privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
-                                     StringUtils.fromString(privateKey.getAlgorithm()));
-                return privateKeyRecord;
-            } else {
-                return CryptoUtils.createError("Not a valid RSA key");
-            }
+            return buildPrivateKeyRecord(privateKey);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
@@ -92,6 +110,46 @@ public class Decode {
             return CryptoUtils.createError("Algorithm for key recovery is not found: " + e.getMessage());
         } catch (UnrecoverableKeyException e) {
             return CryptoUtils.createError("Key cannot be recovered: " + e.getMessage());
+        }
+    }
+
+    private static Object decodePrivateKeyWithPrivateKey(BString keyFile, BString keyPassword) {
+        Security.addProvider(new BouncyCastleProvider());
+        File privateKeyFile = new File(keyFile.getValue());
+        try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
+            Object obj = pemParser.readObject();
+            JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+            PrivateKeyInfo privateKeyInfo;
+            if (obj instanceof PEMEncryptedKeyPair) {
+                if (keyPassword == null) {
+                    return CryptoUtils.createError("Failed to read the encrypted private key without password.");
+                }
+                char[] pwd = keyPassword.getValue().toCharArray();
+                PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder().build(pwd);
+                PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
+                privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
+            } else {
+                privateKeyInfo = (PrivateKeyInfo) obj;
+            }
+            PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
+            return buildPrivateKeyRecord(privateKey);
+        } catch (FileNotFoundException e) {
+            return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
+        } catch (IOException e) {
+            return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
+        }
+    }
+
+    private static Object buildPrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals("RSA")) {
+            BMap<BString, Object> privateKeyRecord = ValueCreator.
+                    createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
+            privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
+            privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
+                                 StringUtils.fromString(privateKey.getAlgorithm()));
+            return privateKeyRecord;
+        } else {
+            return CryptoUtils.createError("Not a valid RSA key");
         }
     }
 

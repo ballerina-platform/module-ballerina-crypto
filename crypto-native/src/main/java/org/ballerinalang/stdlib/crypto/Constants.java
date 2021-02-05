@@ -46,50 +46,42 @@ public class Constants {
     // Native data key for private key within the PublicKey record.
     public static final String NATIVE_DATA_PUBLIC_KEY_CERTIFICATE = "NATIVE_DATA_PUBLIC_KEY_CERTIFICATE";
 
-    // Path field in KEY_STORE_RECORD record.
+    // Fields of `KeyStore` record.
     public static final BString KEY_STORE_RECORD_PATH_FIELD = StringUtils.fromString("path");
-
-    // Password field in KEY_STORE_RECORD record.
     public static final BString KEY_STORE_RECORD_PASSWORD_FIELD = StringUtils.fromString("password");
 
-    // Algorithm field in PRIVATE_KEY_RECORD.
+    // Fields of `PrivateKey` record.
     public static final String PRIVATE_KEY_RECORD_ALGORITHM_FIELD = "algorithm";
 
-    // Algorithm field in PUBLIC_KEY_RECORD.
+    // Fields of `PublicKey` record.
     public static final String PUBLIC_KEY_RECORD_ALGORITHM_FIELD = "algorithm";
-
-    // Algorithm field in PUBLIC_KEY_RECORD.
     public static final String PUBLIC_KEY_RECORD_CERTIFICATE_FIELD = "certificate";
 
-    // Version field in CERTIFICATE_RECORD.
+    // Fields of `Certificate` record.
     public static final String CERTIFICATE_RECORD_VERSION_FIELD = "version0";
-
-    // Serial field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_SERIAL_FIELD = "serial";
-
-    // Issuer field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_ISSUER_FIELD = "issuer";
-
-    // Subject field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_SUBJECT_FIELD = "subject";
-
-    // NotBefore field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_NOT_BEFORE_FIELD = "notBefore";
-
-    // NotAfter field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_NOT_AFTER_FIELD = "notAfter";
-
-    // Signature field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_SIGNATURE_FIELD = "signature";
-
-    // SigningAlgorithm field in CERTIFICATE_RECORD.
     public static final String CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD = "signingAlgorithm";
+
+    // Fields of `KeyStoreConfig` record.
+    public static final BString KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD = StringUtils.fromString("keyStore");
+    public static final BString KEY_STORE_CONFIG_RECORD_KEY_ALIAS_FIELD = StringUtils.fromString("keyAlias");
+    public static final BString KEY_STORE_CONFIG_RECORD_KEY_PASSWORD_FIELD = StringUtils.fromString("keyPassword");
+
+    // Fields of `TrustStoreConfig` record.
+    public static final BString TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD = StringUtils.fromString("trustStore");
+    public static final BString TRUST_STORE_CONFIG_RECORD_CERT_ALIAS_FIELD = StringUtils.fromString("certAlias");
+
+    // Fields of `PrivateKeyConfig` record.
+    public static final BString PRIVATE_KEY_CONFIG_RECORD_KEY_FILE_FIELD = StringUtils.fromString("keyFile");
+    public static final BString PRIVATE_KEY_CONFIG_RECORD_KEY_PASSWORD_FIELD = StringUtils.fromString("keyPassword");
 
     // Crypto error type ID
     static final String CRYPTO_ERROR = "CryptoError";
-
-    // Message field within error record.
-    public static final String MESSAGE = "message";
 
     // PKCS12 keystore type
     public static final String KEYSTORE_TYPE_PKCS12 = "PKCS12";
@@ -97,18 +89,10 @@ public class Constants {
     // GMT timezone name used for X509 validity times
     public static final String TIMEZONE_GMT = "GMT";
 
-    // CBC encryption mode
+    // Encryption modes
     public static final String CBC = "CBC";
-
-    // ECB encryption mode
     public static final String ECB = "ECB";
-
-    // GCM encryption mode
     public static final String GCM = "GCM";
-
-    // AES encryption algorithm
     public static final String AES = "AES";
-
-    // RSA encryption algorithm
     public static final String RSA = "RSA";
 }
