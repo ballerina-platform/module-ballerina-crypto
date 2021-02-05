@@ -156,14 +156,15 @@ public class Decode {
 
     @SuppressWarnings("unchecked")
     public static Object decodeRsaPublicKey(Object config) {
-        if (config instanceof BString) {
-            return decodePublicKeyWithCertFile((BString) config);
-        } else {
-            BMap<BString, Object> configMap = (BMap<BString, Object>) config;
+        BMap<BString, Object> configMap = (BMap<BString, Object>) config;
+        if (configMap.containsKey(Constants.TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD)) {
             BMap<BString, BString> trustStore =
                     (BMap<BString, BString>) configMap.get(Constants.TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD);
             BString keyAlias = (BString) configMap.get(Constants.TRUST_STORE_CONFIG_RECORD_CERT_ALIAS_FIELD);
             return decodePublicKeyWithTrustStore(trustStore, keyAlias);
+        } else {
+            BString certFile = (BString) configMap.get(Constants.PUBLIC_KEY_CONFIG_RECORD_CERT_FILE_FIELD);
+            return decodePublicKeyWithCertFile(certFile);
         }
     }
 

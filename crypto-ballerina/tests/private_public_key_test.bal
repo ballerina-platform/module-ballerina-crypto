@@ -144,7 +144,7 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 
 @test:Config {}
 isolated function testParsePublicKeyFromCertFile() {
-    PublicKey publicKey = checkpanic decodeRsaPublicKey("tests/resources/datafiles/public.crt");
+    PublicKey publicKey = checkpanic decodeRsaPublicKey({ certFile: "tests/resources/datafiles/public.crt" });
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -171,7 +171,7 @@ isolated function testParsePublicKeyFromCertFile() {
 
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
-    PublicKey|Error result = decodeRsaPublicKey("tests/resources/datafiles/public.crt.invalid");
+    PublicKey|Error result = decodeRsaPublicKey({ certFile: "tests/resources/datafiles/public.crt.invalid" });
     if (result is Error) {
         test:assertTrue(result.message().includes("Certificate file not found at:"),
             msg = "Incorrect error for reading public key from non existing cert file.");

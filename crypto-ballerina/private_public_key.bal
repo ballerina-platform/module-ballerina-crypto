@@ -107,6 +107,13 @@ public type PrivateKeyConfig record {|
     string keyPassword?;
 |};
 
+# Public key configurations.
+#
+# + certFile - Public cert file
+public type PublicKeyConfig record {|
+    string certFile;
+|};
+
 # Reads a private key from the provided key store configurations or private key configurations.
 # ```ballerina
 #  crypto:KeyStore keyStore = {
@@ -124,7 +131,7 @@ public isolated function decodeRsaPrivateKey(KeyStoreConfig|PrivateKeyConfig con
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided trust store configurations or public cert file.
+# Reads a public key from the provided trust store configurations or public key configurations.
 # ```ballerina
 #  crypto:TrustStore trustStore = {
 #      path: "/home/ballerina/truststore.p12",
@@ -133,9 +140,9 @@ public isolated function decodeRsaPrivateKey(KeyStoreConfig|PrivateKeyConfig con
 #  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKey({ trustStore: trustStore, keyAlias: "keyAlias");
 # ```
 #
-# + config - Trust store configurations or public cert file.
+# + config - Trust store configurations or public key configurations.
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
-public isolated function decodeRsaPublicKey(TrustStoreConfig|string config) returns PublicKey|Error = @java:Method {
+public isolated function decodeRsaPublicKey(TrustStoreConfig|PublicKeyConfig config) returns PublicKey|Error = @java:Method {
     name: "decodeRsaPublicKey",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
