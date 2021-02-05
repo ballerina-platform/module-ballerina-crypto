@@ -22,7 +22,7 @@ isolated function testParseEncryptedPrivateKeyFromP12() {
         path: "tests/resources/datafiles/testKeystore.p12",
         password: "ballerina"
     };
-    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey|Error result = decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -36,7 +36,7 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
         path: "tests/resources/datafiles/testKeystore.p12.invalid",
         password: "ballerina"
     };
-    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey|Error result = decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "ballerina", keyPassword: "ballerina" });
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
             msg = "Incorrect error for reading private key from non existing p12 file.");
