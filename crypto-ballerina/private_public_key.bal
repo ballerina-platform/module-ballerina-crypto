@@ -125,13 +125,8 @@ public isolated function decodeRsaPrivateKey(KeyStoreConfig|PrivateKeyConfig con
 # + keyStore - Key store or Trust store configurations
 # + keyAlias - Key alias
 # + return - Reference to the public key or else a `crypto:Error` if the private key was unreadable
-//public isolated function decodeRsaPublicKey(TrustStoreConfig|string config) returns PublicKey|Error = @java:Method {
-//    name: "decodeRsaPublicKey",
-//    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
-//} external;
-public isolated function decodePublicKey(KeyStore|TrustStore keyStore, string keyAlias)
-                                         returns PublicKey|Error = @java:Method {
-    name: "decodePublicKey",
+public isolated function decodeRsaPublicKey(TrustStoreConfig|string config) returns PublicKey|Error = @java:Method {
+    name: "decodeRsaPublicKey",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
