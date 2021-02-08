@@ -102,7 +102,7 @@ isolated function testParsePublicKeyFromP12() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -133,7 +133,7 @@ isolated function testReadPublicKeyFromNonExistingP12() {
         path: "tests/resources/datafiles/keystore.p12.invalid",
         password: "ballerina"
     };
-    PublicKey|Error result = decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
             msg = "Incorrect error for reading public key from non existing p12 file.");
@@ -144,7 +144,7 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 
 @test:Config {}
 isolated function testParsePublicKeyFromCertFile() {
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ certFile: "tests/resources/datafiles/public.crt" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -171,7 +171,7 @@ isolated function testParsePublicKeyFromCertFile() {
 
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
-    PublicKey|Error result = decodeRsaPublicKey({ certFile: "tests/resources/datafiles/public.crt.invalid" });
+    PublicKey|Error result = decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt.invalid");
     if (result is Error) {
         test:assertTrue(result.message().includes("Certificate file not found at:"),
             msg = "Incorrect error for reading public key from non existing cert file.");

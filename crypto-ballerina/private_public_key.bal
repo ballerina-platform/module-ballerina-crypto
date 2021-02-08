@@ -78,22 +78,6 @@ public type Certificate record {|
     string signingAlgorithm;
 |};
 
-# Trust store configurations.
-#
-# + trustStore - Trust store
-# + certAlias - Certificate alias
-public type TrustStoreConfig record {|
-    TrustStore trustStore;
-    string certAlias;
-|};
-
-# Public key configurations.
-#
-# + certFile - Public cert file
-public type PublicKeyConfig record {|
-    string certFile;
-|};
-
 # Reads a private key from the provided key store configurations.
 # ```ballerina
 #  crypto:KeyStore keyStore = {
@@ -126,19 +110,32 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided trust store configurations or public key configurations.
+# Reads a public key from the provided trust store configurations.
 # ```ballerina
 #  crypto:TrustStore trustStore = {
 #      path: "/home/ballerina/truststore.p12",
 #      password: "truststorePassword"
 #  };
-#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKey({ trustStore: trustStore, keyAlias: "keyAlias");
+#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + config - Trust store configurations or public key configurations.
+# + trustStore - Trust store configurations
+# + keyAlias - Key alias
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
-public isolated function decodeRsaPublicKey(TrustStoreConfig|PublicKeyConfig config) returns PublicKey|Error = @java:Method {
-    name: "decodeRsaPublicKey",
+public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
+                                                          returns PublicKey|Error = @java:Method {
+    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Reads a public key from the provided public key configurations.
+# ```ballerina
+#  string certFile = "/home/ballerina/public.cert";
+#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromCertFile(certFile);
+# ```
+#
+# + certFile - Path to the ceritificate file
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 

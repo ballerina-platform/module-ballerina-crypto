@@ -23,7 +23,7 @@ isolated function testEncryptAndDecryptWithRsaEcbPkcs1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "PKCS1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "PKCS1");
@@ -38,7 +38,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithMD5andMGF1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithMD5andMGF1");
@@ -53,7 +53,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPWithSHA1AndMGF1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA1AndMGF1");
@@ -68,7 +68,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPWithSHA256AndMGF1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA256AndMGF1");
@@ -83,7 +83,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithSHA384andMGF1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA384andMGF1");
@@ -98,7 +98,7 @@ isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithSHA512andMGF1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA512andMGF1");
@@ -113,7 +113,7 @@ isolated function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkc
         path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKey({ trustStore: keyStore, certAlias: "ballerina" });
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     byte[] cipherText = checkpanic encryptRsaEcb(message, privateKey, "PKCS1");
     byte[] plainText = checkpanic decryptRsaEcb(cipherText, publicKey, "PKCS1");

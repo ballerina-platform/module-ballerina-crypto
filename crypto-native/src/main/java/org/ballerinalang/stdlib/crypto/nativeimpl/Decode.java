@@ -135,20 +135,7 @@ public class Decode {
         }
     }
 
-    public static Object decodeRsaPublicKey(Object config) {
-        BMap<BString, Object> configMap = (BMap<BString, Object>) config;
-        if (configMap.containsKey(Constants.TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD)) {
-            BMap<BString, BString> trustStore =
-                    (BMap<BString, BString>) configMap.get(Constants.TRUST_STORE_CONFIG_RECORD_TRUST_STORE_FIELD);
-            BString keyAlias = (BString) configMap.get(Constants.TRUST_STORE_CONFIG_RECORD_CERT_ALIAS_FIELD);
-            return decodePublicKeyWithTrustStore(trustStore, keyAlias);
-        } else {
-            BString certFile = (BString) configMap.get(Constants.PUBLIC_KEY_CONFIG_RECORD_CERT_FILE_FIELD);
-            return decodePublicKeyWithCertFile(certFile);
-        }
-    }
-
-    private static Object decodePublicKeyWithTrustStore(BMap<BString, BString> trustStore, BString keyAlias) {
+    public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStore, BString keyAlias) {
         File keyStoreFile = new File(CryptoUtils.substituteVariables(
                 trustStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString()));
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
@@ -172,8 +159,8 @@ public class Decode {
         }
     }
 
-    private static Object decodePublicKeyWithCertFile(BString path) {
-        File certFile = new File(path.getValue());
+    public static Object decodeRsaPublicKeyFromCertFile(BString certFilePath) {
+        File certFile = new File(certFilePath.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
