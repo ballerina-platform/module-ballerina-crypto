@@ -78,7 +78,7 @@ public type Certificate record {|
     string signingAlgorithm;
 |};
 
-# Reads a private key from the provided key store configurations.
+# Reads a private key from the provided PKCS#12 archive file.
 # ```ballerina
 #  crypto:KeyStore keyStore = {
 #      path: "/home/ballerina/keystore.p12",
@@ -96,7 +96,7 @@ public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, stri
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a private key from the provided private key configurations.
+# Reads a private key from the provided private key and private key password.
 # ```ballerina
 #  string keyFile = "/home/ballerina/private.key";
 #  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
@@ -110,7 +110,7 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided trust store configurations.
+# Reads a public key from the provided PKCS#12 archive file.
 # ```ballerina
 #  crypto:TrustStore trustStore = {
 #      path: "/home/ballerina/truststore.p12",
@@ -127,7 +127,7 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided public key configurations.
+# Reads a public key from the provided public certificate file.
 # ```ballerina
 #  string certFile = "/home/ballerina/public.cert";
 #  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromCertFile(certFile);
