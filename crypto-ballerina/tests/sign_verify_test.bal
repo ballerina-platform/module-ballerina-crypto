@@ -20,10 +20,10 @@ import ballerina/test;
 isolated function testSignRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     string expectedMd5Signature = "457050eca794baf2149f53631f373525fbc7b40de83e0af5b03473e7b726064b" +
         "3eb6a8b7ce48218e4adaf2b598429236192a458ad5cef1ab2f456164f2646ba57a1ce6b858403504ddc49915bf8bf34558" +
         "0366bd9f7d1d777572fcacd3aa935267af6cf5dc988668b8cea0f57cd0e286658f0ca7c060d7a68b6330bc590b6db59489" +
@@ -38,10 +38,10 @@ isolated function testSignRsaMd5() {
 isolated function testSignRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     string expectedSha1Signature = "70728d6d37fd83704bcb2649d93cfd20dbadb83a9d2169965d2a241795a131f" +
         "cfdb8b1b4f35f5de3c1f6f1d71ea0c9f80e494627b4c01d6e670ae4698b774171e8a017d62847c92aa47e868c230532af" +
         "9fc3a681387eead94578d2287674940df2e2f4a28f59688257254dfaab81c17617357ae05b42898412136abed116d6b86" +
@@ -56,10 +56,10 @@ isolated function testSignRsaSha1() {
 isolated function testSignRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     string expectedSha256Signature = "34477f0e0a5457ca1a95049da10d59baa33ee4fa9e1bb8be3d3c70d82b980850" +
         "fd017a1c9984a97384736aacfe33d39ff8d63e01b952972910c86135b7558a2274c6d772f0d2fcdc0ac4aabc75f3978edb" +
         "d4aabd17d6447fb88e83b055bbff24d8212125b760c8bf88e9e4908645434f53a2ab0e3d5517c8e3241d8ebabbc767e7d9" +
@@ -74,10 +74,10 @@ isolated function testSignRsaSha256() {
 isolated function testSignRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     string expectedSha384Signature = ("4981CC5213F384E8DB7950BF76C97AE20FA2A34244A517FC585B2381B9E88" +
         "278E447B92F6F452332BCA65DD5D6CCE04B5AC51D92E7E820B6FB826870DFBA437BBDA7F0E5850C02F72A8644DA8382" +
         "237E8C1ABD50A4BAEE179C8C838EA4AC53D2223B3C57D7D463A8E1BBFFC43F3F3C44494850377A8668E156B2D23B6E0" +
@@ -92,10 +92,10 @@ isolated function testSignRsaSha384() {
 isolated function testSignRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     string expectedSha512Signature = "6995ba8d2382a8c4f0ed513033126b2305df419a8b105ee60483243229d2c496" +
         "b7f670783c52068cd2b4b8c2392f2932c682f30057cb4d8d616ba3a142356b0394747b2a3642da4d23447bb997eacb086f" +
         "173b4045ee8ee014e1e667e34522defb7a4ac1b5b3f175d40a409d947d562fcf7b2b2631d273751a0f8c658bd8c1d1d23a" +
@@ -180,11 +180,11 @@ isolated function testSignRsaSha512WithInvalidKey() {
 isolated function testVerifyRsaMd5() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     string expectedMd5Signature = "457050eca794baf2149f53631f373525fbc7b40de83e0af5b03473e7b726064b" +
         "3eb6a8b7ce48218e4adaf2b598429236192a458ad5cef1ab2f456164f2646ba57a1ce6b858403504ddc49915bf8bf34558" +
         "0366bd9f7d1d777572fcacd3aa935267af6cf5dc988668b8cea0f57cd0e286658f0ca7c060d7a68b6330bc590b6db59489" +
@@ -199,11 +199,11 @@ isolated function testVerifyRsaMd5() {
 isolated function testVerifyRsaSha1() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     string expectedSha1Signature = "70728d6d37fd83704bcb2649d93cfd20dbadb83a9d2169965d2a241795a131f" +
         "cfdb8b1b4f35f5de3c1f6f1d71ea0c9f80e494627b4c01d6e670ae4698b774171e8a017d62847c92aa47e868c230532af" +
         "9fc3a681387eead94578d2287674940df2e2f4a28f59688257254dfaab81c17617357ae05b42898412136abed116d6b86" +
@@ -218,11 +218,11 @@ isolated function testVerifyRsaSha1() {
 isolated function testVerifyRsaSha256() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     string expectedSha256Signature = "34477f0e0a5457ca1a95049da10d59baa33ee4fa9e1bb8be3d3c70d82b980850" +
         "fd017a1c9984a97384736aacfe33d39ff8d63e01b952972910c86135b7558a2274c6d772f0d2fcdc0ac4aabc75f3978edb" +
         "d4aabd17d6447fb88e83b055bbff24d8212125b760c8bf88e9e4908645434f53a2ab0e3d5517c8e3241d8ebabbc767e7d9" +
@@ -237,11 +237,11 @@ isolated function testVerifyRsaSha256() {
 isolated function testVerifyRsaSha384() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     string expectedSha384Signature = ("4981CC5213F384E8DB7950BF76C97AE20FA2A34244A517FC585B2381B9E88" +
         "278E447B92F6F452332BCA65DD5D6CCE04B5AC51D92E7E820B6FB826870DFBA437BBDA7F0E5850C02F72A8644DA8382" +
         "237E8C1ABD50A4BAEE179C8C838EA4AC53D2223B3C57D7D463A8E1BBFFC43F3F3C44494850377A8668E156B2D23B6E0" +
@@ -256,11 +256,11 @@ isolated function testVerifyRsaSha384() {
 isolated function testVerifyRsaSha512() {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey privateKey = checkpanic decodePrivateKey(keyStore, "ballerina", "ballerina");
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     string expectedSha512Signature = "6995ba8d2382a8c4f0ed513033126b2305df419a8b105ee60483243229d2c496" +
         "b7f670783c52068cd2b4b8c2392f2932c682f30057cb4d8d616ba3a142356b0394747b2a3642da4d23447bb997eacb086f" +
         "173b4045ee8ee014e1e667e34522defb7a4ac1b5b3f175d40a409d947d562fcf7b2b2631d273751a0f8c658bd8c1d1d23a" +

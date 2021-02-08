@@ -19,10 +19,10 @@ import ballerina/test;
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -33,10 +33,10 @@ isolated function testParseEncryptedPrivateKeyFromP12() {
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/keystore.p12.invalid",
         password: "ballerina"
     };
-    PrivateKey|Error result = decodePrivateKey(keyStore, "ballerina", "ballerina");
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
             msg = "Incorrect error for reading private key from non existing p12 file.");
@@ -46,12 +46,63 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
 }
 
 @test:Config {}
+isolated function testParsePrivateKeyFromKeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/private.key");
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromKeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key", "ballerina");
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key", "invalid-password");
+    if (result is Error) {
+        test:assertEquals(result.message(), "Unable to do private key operations: exception using cipher - please check password and data.");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key");
+    if (result is Error) {
+        test:assertEquals(result.message(), "Failed to read the encrypted private key without password.");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+    }
+}
+
+@test:Config {}
+isolated function testReadPrivateKeyFromNonExistingKeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/private.key.invalid");
+    if (result is Error) {
+        test:assertTrue(result.message().includes("Key file not found at:"),
+            msg = "Incorrect error for reading private key from non existing key file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a private key from a non-existing key file.");
+    }
+}
+
+@test:Config {}
 isolated function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12",
+        path: "tests/resources/datafiles/keystore.p12",
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodePublicKey(keyStore, "ballerina");
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -79,15 +130,53 @@ isolated function testParsePublicKeyFromP12() {
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/testKeystore.p12.invalid",
+        path: "tests/resources/datafiles/keystore.p12.invalid",
         password: "ballerina"
     };
-    PublicKey|Error result = decodePublicKey(keyStore, "ballerina");
+    PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
             msg = "Incorrect error for reading public key from non existing p12 file.");
     } else {
         test:assertFail(msg = "No error while attempting to read a public key from a non-existing p12 file.");
+    }
+}
+
+@test:Config {}
+isolated function testParsePublicKeyFromCertFile() {
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt");
+    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
+    map<json> certificate = <map<json>>publicKey["certificate"];
+
+    string serial = (<int>certificate["serial"]).toString();
+    string issuer = <string>certificate["issuer"];
+    string subject = <string>certificate["subject"];
+    var notBefore = certificate["notBefore"];
+    var notAfter = certificate["notAfter"];
+    var signature = certificate["signature"];
+    string signingAlgorithm = <string>certificate["signingAlgorithm"];
+
+    test:assertEquals(serial, "2097012467",
+        msg = "Error while checking serial from public-key from a cert file.");
+    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
+        msg = "Error while checking issuer from public-key from a cert file.");
+    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
+        msg = "Error while checking subject from public-key from a cert file.");
+    test:assertTrue(notBefore is map<json>, msg = "Error in the format of notBefore field from a certificate.");
+    test:assertTrue(notAfter is map<json>, msg = "Error in the format of notAfter field from a certificate.");
+    test:assertTrue(signature is json[], msg = "Error in the format of signature field from a certificate.");
+    test:assertEquals(signingAlgorithm, "SHA256withRSA",
+        msg = "Error while checking signingAlgorithm from public-key from a cert file.");
+}
+
+@test:Config {}
+isolated function testReadPublicKeyFromNonExistingCertFile() {
+    PublicKey|Error result = decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt.invalid");
+    if (result is Error) {
+        test:assertTrue(result.message().includes("Certificate file not found at:"),
+            msg = "Incorrect error for reading public key from non existing cert file.");
+    } else {
+        test:assertFail(msg = "No error while attempting to read a public key from a non-existing cert file.");
     }
 }
 

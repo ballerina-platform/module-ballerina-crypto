@@ -21,7 +21,7 @@ description = 'Ballerina - Ballerina Crypto'
 
 configurations {
     jbalTools
-    packingJars
+    externalJars
 }
 
 dependencies {
@@ -29,6 +29,12 @@ dependencies {
         transitive = false
     }
     compile project(':crypto-native')
+    externalJars (group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "1.58") {
+        transitive = false
+    }
+    externalJars (group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "1.58") {
+        transitive = false
+    }
 }
 
 clean {
@@ -41,9 +47,9 @@ jar {
     }
 }
 
-task copyPackingJarsToLib(type: Copy) {
+task copyToLib(type: Copy) {
     into "$project.projectDir/lib"
-    from configurations.packingJars
+    from configurations.externalJars
 }
 
 task unpackJballerinaTools(type: Copy) {
@@ -98,9 +104,11 @@ def distributionBinPath =  project.projectDir.absolutePath + "/build/target/extr
 task updateTomlVersions {
     doLast {
         def stdlibDependentTimeVersion = project.stdlibTimeVersion.split("-")[0]
+        def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
 
         def newConfig = ballerinaConfigFile.text.replace("@project.version@", project.version)
         newConfig = newConfig.replace("@toml.version@", tomlVersion)
+        newConfig = newConfig.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
         ballerinaConfigFile.text = newConfig
 
         def newDependencyConfig = ballerinaDependencyFile.text.replace("@stdlib.time.version@", stdlibDependentTimeVersion)
@@ -249,6 +257,7 @@ publishing {
     }
 }
 
+unpackJballerinaTools.dependsOn copyToLib
 unpackStdLibs.dependsOn unpackJballerinaTools
 copyStdlibs.dependsOn unpackStdLibs
 updateTomlVersions.dependsOn copyStdlibs

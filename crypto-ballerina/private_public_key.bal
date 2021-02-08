@@ -34,8 +34,8 @@ public type KeyStore record {|
 
 # Trust store related configurations.
 #
-# + path - Path to the key store file
-# + password - Key store password
+# + path - Path to the trust store file
+# + password - Trust store password
 public type TrustStore record {|
     string path;
     string password;
@@ -84,34 +84,58 @@ public type Certificate record {|
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - Key store or Trust store configurations
+# + keyStore - Key store configurations
 # + keyAlias - Key alias
 # + keyPassword - Key password
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
-public isolated function decodePrivateKey(KeyStore|TrustStore keyStore, string keyAlias, string keyPassword)
-                                          returns PrivateKey|Error = @java:Method {
-    name: "decodePrivateKey",
+public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
+                                                         returns PrivateKey|Error = @java:Method {
+    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Reads a private key from the provided private key and private key password.
+# ```ballerina
+#  string keyFile = "/home/ballerina/private.key";
+#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
+# ```
+#
+# + keyFile - Path to the key file
+# + keyPassword - Password of the key file if it is encrypted
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
+                                                        returns PrivateKey|Error = @java:Method {
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
 # Reads a public key from the provided PKCS#12 archive file.
 # ```ballerina
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
+#  crypto:TrustStore trustStore = {
+#      path: "/home/ballerina/truststore.p12",
+#      password: "truststorePassword"
 #  };
-#  crypto:PublicKey|crypto:Error publicKey = crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + keyStore - Key store or Trust store configurations
+# + trustStore - Trust store configurations
 # + keyAlias - Key alias
-# + return - Reference to the public key or else a `crypto:Error` if the private key was unreadable
-public isolated function decodePublicKey(KeyStore|TrustStore keyStore, string keyAlias)
-                                         returns PublicKey|Error = @java:Method {
-    name: "decodePublicKey",
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
+                                                          returns PublicKey|Error = @java:Method {
+    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Reads a public key from the provided public certificate file.
+# ```ballerina
+#  string certFile = "/home/ballerina/public.cert";
+#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromCertFile(certFile);
+# ```
+#
+# + certFile - Path to the ceritificate file
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
