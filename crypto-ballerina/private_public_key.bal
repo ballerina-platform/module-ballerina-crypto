@@ -34,8 +34,8 @@ public type KeyStore record {|
 
 # Trust store related configurations.
 #
-# + path - Path to the key store file
-# + password - Key store password
+# + path - Path to the trust store file
+# + password - Trust store password
 public type TrustStore record {|
     string path;
     string password;
@@ -78,17 +78,6 @@ public type Certificate record {|
     string signingAlgorithm;
 |};
 
-# Key store configurations.
-#
-# + keyStore - Key store
-# + keyAlias - Key alias
-# + keyPassword - Key password
-public type KeyStoreConfig record {|
-    KeyStore keyStore;
-    string keyAlias;
-    string keyPassword;
-|};
-
 # Trust store configurations.
 #
 # + trustStore - Trust store
@@ -98,15 +87,6 @@ public type TrustStoreConfig record {|
     string certAlias;
 |};
 
-# Private key configurations.
-#
-# + keyFile - Private key file
-# + keyPassword - Private key password if encrypted
-public type PrivateKeyConfig record {|
-    string keyFile;
-    string keyPassword?;
-|};
-
 # Public key configurations.
 #
 # + certFile - Public cert file
@@ -114,20 +94,35 @@ public type PublicKeyConfig record {|
     string certFile;
 |};
 
-# Reads a private key from the provided key store configurations or private key configurations.
+# Reads a private key from the provided key store configurations.
 # ```ballerina
 #  crypto:KeyStore keyStore = {
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKey({ keyStore: keyStore, keyAlias: "keyAlias", keyPassword: "keyPassword" });
+#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + config - Key store configurations or private key configurations
+# + keyStore - Key store configurations
+# + keyAlias - Key alias
+# + keyPassword - Key password
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
-public isolated function decodeRsaPrivateKey(KeyStoreConfig|PrivateKeyConfig config)
-                                             returns PrivateKey|Error = @java:Method {
-    name: "decodeRsaPrivateKey",
+public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
+                                                         returns PrivateKey|Error = @java:Method {
+    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Reads a private key from the provided private key configurations.
+# ```ballerina
+#  string keyFile = "/home/ballerina/private.key";
+#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
+# ```
+#
+# + keyFile - Path to the key file
+# + keyPassword - Password of the key file if it is encrypted
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
+                                                        returns PrivateKey|Error = @java:Method {
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 

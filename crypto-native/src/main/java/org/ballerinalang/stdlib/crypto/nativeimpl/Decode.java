@@ -65,26 +65,8 @@ import java.util.Base64;
  */
 public class Decode {
 
-    public static Object decodeRsaPrivateKey(Object config) {
-        BMap<BString, Object> configMap = (BMap<BString, Object>) config;
-        if (configMap.containsKey(Constants.KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD)) {
-            BMap<BString, BString> keyStore =
-                    (BMap<BString, BString>) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD);
-            BString keyAlias = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_ALIAS_FIELD);
-            BString keyPassword = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_PASSWORD_FIELD);
-            return decodePrivateKeyWithKeyStore(keyStore, keyAlias, keyPassword);
-        } else {
-            BString keyFile = (BString) configMap.get(Constants.PRIVATE_KEY_CONFIG_RECORD_KEY_FILE_FIELD);
-            BString keyPassword = null;
-            if (configMap.containsKey(Constants.PRIVATE_KEY_CONFIG_RECORD_KEY_PASSWORD_FIELD)) {
-                keyPassword = (BString) configMap.get(Constants.KEY_STORE_CONFIG_RECORD_KEY_PASSWORD_FIELD);
-            }
-            return decodePrivateKeyWithPrivateKey(keyFile, keyPassword);
-        }
-    }
-
-    private static Object decodePrivateKeyWithKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
-                                                       BString keyPassword) {
+    public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
+                                                         BString keyPassword) {
         File keyStoreFile = new File(CryptoUtils.substituteVariables(
                 keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString()));
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
@@ -113,9 +95,9 @@ public class Decode {
         }
     }
 
-    private static Object decodePrivateKeyWithPrivateKey(BString keyFile, BString keyPassword) {
+    public static Object decodeRsaPrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
         Security.addProvider(new BouncyCastleProvider());
-        File privateKeyFile = new File(keyFile.getValue());
+        File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
             JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
@@ -124,7 +106,7 @@ public class Decode {
                 if (keyPassword == null) {
                     return CryptoUtils.createError("Failed to read the encrypted private key without password.");
                 }
-                char[] pwd = keyPassword.getValue().toCharArray();
+                char[] pwd = ((BString) keyPassword).getValue().toCharArray();
                 PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder().build(pwd);
                 PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
                 privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
