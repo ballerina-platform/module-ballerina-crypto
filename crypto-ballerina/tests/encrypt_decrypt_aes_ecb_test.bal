@@ -41,7 +41,7 @@ isolated function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidKeySize() 
     }
     byte[]|Error result = encryptAesEcb(message, invalidKey, NONE);
     if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES ECB.");
     } else {
         test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES ECB.");

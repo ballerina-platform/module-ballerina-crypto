@@ -18,7 +18,6 @@
 
 package org.ballerinalang.stdlib.crypto.nativeimpl;
 
-import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.values.BArray;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
 
@@ -29,26 +28,23 @@ import org.ballerinalang.stdlib.crypto.CryptoUtils;
  */
 public class Hmac {
 
-    public static BArray hmacMd5(BArray inputValue, BArray keyValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hmac("HmacMD5", keyValue.getBytes(), inputValue.getBytes()));
+    public static Object hmacMd5(BArray inputValue, BArray keyValue) {
+        return CryptoUtils.hmac("HmacMD5", keyValue.getBytes(), inputValue.getBytes());
     }
 
-    public static BArray hmacSha1(BArray inputValue, BArray keyValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hmac("HmacSHA1", keyValue.getBytes(), inputValue.getBytes()));
+    public static Object hmacSha1(BArray inputValue, BArray keyValue) {
+        return CryptoUtils.hmac("HmacSHA1", keyValue.getBytes(), inputValue.getBytes());
     }
 
-    public static BArray hmacSha256(BArray inputValue, BArray keyValue) {
-        return ValueCreator
-                .createArrayValue(CryptoUtils.hmac("HmacSHA256", keyValue.getBytes(), inputValue.getBytes()));
+    public static Object hmacSha256(BArray inputValue, BArray keyValue) {
+        return CryptoUtils.hmac("HmacSHA256", keyValue.getBytes(), inputValue.getBytes());
     }
 
-    public static BArray hmacSha384(BArray inputValue, BArray keyValue) {
-        return ValueCreator
-                .createArrayValue(CryptoUtils.hmac("HmacSHA384", keyValue.getBytes(), inputValue.getBytes()));
+    public static Object hmacSha384(BArray inputValue, BArray keyValue) {
+        return CryptoUtils.hmac("HmacSHA384", keyValue.getBytes(), inputValue.getBytes());
     }
 
-    public static BArray hmacSha512(BArray inputValue, BArray keyValue) {
-        return ValueCreator
-                .createArrayValue(CryptoUtils.hmac("HmacSHA512", keyValue.getBytes(), inputValue.getBytes()));
+    public static Object hmacSha512(BArray inputValue, BArray keyValue) {
+        return CryptoUtils.hmac("HmacSHA512", keyValue.getBytes(), inputValue.getBytes());
     }
 }
