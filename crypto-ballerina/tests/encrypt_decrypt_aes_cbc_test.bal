@@ -53,7 +53,7 @@ isolated function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidKeySize() 
     }
     byte[]|Error result = encryptAesCbc(message, invalidKey, iv, NONE);
     if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES CBC.");
     } else {
         test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES CBC.");

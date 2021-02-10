@@ -55,7 +55,7 @@ isolated function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
     }
     byte[]|Error result = encryptAesGcm(invalidMessage, key, iv, NONE);
     if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
     } else {
         test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES GCM.");
@@ -79,7 +79,7 @@ isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() 
     }
     byte[]|Error result = encryptAesGcm(message, invalidKey, iv, NONE, 128);
     if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. valid key sizes in bytes: [16, 24, 32]",
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
             msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
     } else {
         test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES GCM.");
@@ -124,7 +124,7 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
     }
     byte[]|Error result = encryptAesGcm(message, key, iv, "PKCS5", 500);
     if (result is Error) {
-        test:assertTrue(result.message().includes("Invalid tag size. valid tag sizes in bytes:"),
+        test:assertTrue(result.message().includes("Invalid tag size. Valid tag sizes in bytes:"),
             msg = "Incorrect error for invalid key while Encryption with AES GCM PKCS5.");
     } else {
         test:assertFail(msg = "No error for invalid tag size while Encryption with AES GCM PKCS5.");

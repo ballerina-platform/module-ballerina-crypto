@@ -63,7 +63,7 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 # + key - Private or public key used for encryption
 # + padding - The padding
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = "PKCS1")
+public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "encryptRsaEcb",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
@@ -89,7 +89,7 @@ public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # + iv - Initialization vector
 # + padding - The padding
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = "PKCS5")
+public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesCbc",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
@@ -110,7 +110,7 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # + key - Encryption key
 # + padding - The padding
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = "PKCS5")
+public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesEcb",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
@@ -137,7 +137,7 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 # + padding - The padding
 # + tagSize - Tag size
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = "PKCS5",
+public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "encryptAesGcm",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
@@ -161,7 +161,7 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # + key - Private or public key used for encryption
 # + padding - The padding
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
-public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = "PKCS1")
+public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "decryptRsaEcb",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
@@ -188,7 +188,7 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # + iv - Initialization vector
 # + padding - The padding
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
-public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = "PKCS5")
+public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesCbc",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
@@ -210,7 +210,7 @@ public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # + key - Encryption key
 # + padding - The padding
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
-public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padding = "PKCS5")
+public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesEcb",
    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
@@ -238,7 +238,7 @@ public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padd
 # + padding - The padding
 # + tagSize - Tag size
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
-public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = "PKCS5",
+public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "decryptAesGcm",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
