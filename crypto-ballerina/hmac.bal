@@ -27,8 +27,8 @@ import ballerina/jballerina.java;
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output
-public isolated function hmacMd5(byte[] input, byte[] key) returns byte[] = @java:Method {
+# + return - HMAC output or `crypto:Error`
+public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacMd5",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
 } external;
@@ -44,8 +44,8 @@ public isolated function hmacMd5(byte[] input, byte[] key) returns byte[] = @jav
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output
-public isolated function hmacSha1(byte[] input, byte[] key) returns byte[] = @java:Method {
+# + return - HMAC output or `crypto:Error`
+public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha1",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
 } external;
@@ -61,8 +61,8 @@ public isolated function hmacSha1(byte[] input, byte[] key) returns byte[] = @ja
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output
-public isolated function hmacSha256(byte[] input, byte[] key) returns byte[] = @java:Method {
+# + return - HMAC output or `crypto:Error`
+public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha256",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
 } external;
@@ -78,8 +78,8 @@ public isolated function hmacSha256(byte[] input, byte[] key) returns byte[] = @
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output
-public isolated function hmacSha384(byte[] input, byte[] key) returns byte[] = @java:Method {
+# + return - HMAC output or `crypto:Error`
+public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha384",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
 } external;
@@ -95,8 +95,8 @@ public isolated function hmacSha384(byte[] input, byte[] key) returns byte[] = @
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output
-public isolated function hmacSha512(byte[] input, byte[] key) returns byte[] = @java:Method {
+# + return - HMAC output or `crypto:Error`
+public isolated function hmacSha512(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha512",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
 } external;

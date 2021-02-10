@@ -83,15 +83,17 @@ public class CryptoUtils {
      * @param algorithm algorithm used during HMAC generation
      * @param key       key used during HMAC generation
      * @param input     input byte array for HMAC generation
-     * @return calculated HMAC value
+     * @return calculated HMAC value or error if key is invalid
      */
-    public static byte[] hmac(String algorithm, byte[] key, byte[] input) {
+    public static Object hmac(String algorithm, byte[] key, byte[] input) {
         try {
             SecretKey secretKey = new SecretKeySpec(key, algorithm);
             Mac mac = Mac.getInstance(algorithm);
             mac.init(secretKey);
-            return mac.doFinal(input);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            return ValueCreator.createArrayValue(mac.doFinal(input));
+        } catch (InvalidKeyException | IllegalArgumentException e) {
+            return CryptoUtils.createError("Error occurred while calculating HMAC: " + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating HMAC: " + e.getMessage());
         }
     }
@@ -105,8 +107,7 @@ public class CryptoUtils {
      */
     public static byte[] hash(String algorithm, byte[] input) {
         try {
-            MessageDigest messageDigest;
-            messageDigest = MessageDigest.getInstance(algorithm);
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             messageDigest.update(input);
             return messageDigest.digest();
         } catch (NoSuchAlgorithmException e) {
