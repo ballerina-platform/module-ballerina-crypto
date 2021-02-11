@@ -66,12 +66,12 @@ public class CryptoUtils {
     /**
      * Valid tag sizes usable with GCM mode encryption.
      */
-    private static final int[] VALID_GCM_TAG_SIZES = new int[] { 32, 63, 96, 104, 112, 120, 128 };
+    private static final int[] VALID_GCM_TAG_SIZES = new int[]{32, 63, 96, 104, 112, 120, 128};
 
     /**
      * Valid AES key sizes.
      */
-    private static final int[] VALID_AES_KEY_SIZES = new int[] { 16, 24, 32 };
+    private static final int[] VALID_AES_KEY_SIZES = new int[]{16, 24, 32};
 
     private CryptoUtils() {
 
@@ -83,15 +83,17 @@ public class CryptoUtils {
      * @param algorithm algorithm used during HMAC generation
      * @param key       key used during HMAC generation
      * @param input     input byte array for HMAC generation
-     * @return calculated HMAC value
+     * @return calculated HMAC value or error if key is invalid
      */
-    public static byte[] hmac(String algorithm, byte[] key, byte[] input) {
+    public static Object hmac(String algorithm, byte[] key, byte[] input) {
         try {
             SecretKey secretKey = new SecretKeySpec(key, algorithm);
             Mac mac = Mac.getInstance(algorithm);
             mac.init(secretKey);
-            return mac.doFinal(input);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            return ValueCreator.createArrayValue(mac.doFinal(input));
+        } catch (InvalidKeyException | IllegalArgumentException e) {
+            return CryptoUtils.createError("Error occurred while calculating HMAC: " + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating HMAC: " + e.getMessage());
         }
     }
@@ -105,8 +107,7 @@ public class CryptoUtils {
      */
     public static byte[] hash(String algorithm, byte[] input) {
         try {
-            MessageDigest messageDigest;
-            messageDigest = MessageDigest.getInstance(algorithm);
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             messageDigest.update(input);
             return messageDigest.digest();
         } catch (NoSuchAlgorithmException e) {
@@ -189,15 +190,15 @@ public class CryptoUtils {
             }
             AlgorithmParameterSpec paramSpec = buildParameterSpec(transformedAlgorithmMode, iv, (int) tagSize);
             Cipher cipher = Cipher.getInstance(Constants.RSA + "/" + transformedAlgorithmMode + "/"
-                    + transformedAlgorithmPadding);
+                                                       + transformedAlgorithmPadding);
             initCipher(cipher, cipherMode, key, paramSpec);
             return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Unsupported algorithm: RSA " + algorithmMode + " " + algorithmPadding +
-                    ": " + e.getMessage());
+                                                   ": " + e.getMessage());
         } catch (NoSuchPaddingException e) {
             return CryptoUtils.createError("Unsupported padding scheme defined in the algorithm: RSA "
-                    + algorithmMode + " " + algorithmPadding + ": " + e.getMessage());
+                                                   + algorithmMode + " " + algorithmPadding + ": " + e.getMessage());
         } catch (InvalidKeyException | InvalidAlgorithmParameterException | BadPaddingException |
                 IllegalBlockSizeException | BError e) {
             return CryptoUtils.createError("Error occurred while RSA encrypt/decrypt: " + e.getMessage());
@@ -220,15 +221,15 @@ public class CryptoUtils {
                                            String algorithmPadding, byte[] key, byte[] input, byte[] iv, long tagSize) {
         try {
             if (Arrays.stream(VALID_AES_KEY_SIZES).noneMatch(validSize -> validSize == key.length)) {
-                return CryptoUtils.createError("Invalid key size. valid key sizes in bytes: " +
-                        Arrays.toString(VALID_AES_KEY_SIZES));
+                return CryptoUtils.createError("Invalid key size. Valid key sizes in bytes: " +
+                                                       Arrays.toString(VALID_AES_KEY_SIZES));
             }
             String transformedAlgorithmMode = transformAlgorithmMode(algorithmMode);
             String transformedAlgorithmPadding = transformAlgorithmPadding(algorithmPadding);
             SecretKeySpec keySpec = new SecretKeySpec(key, Constants.AES);
             if (tagSize != -1 && Arrays.stream(VALID_GCM_TAG_SIZES).noneMatch(validSize -> validSize == tagSize)) {
-                return CryptoUtils.createError("Invalid tag size. valid tag sizes in bytes: " +
-                        Arrays.toString(VALID_GCM_TAG_SIZES));
+                return CryptoUtils.createError("Invalid tag size. Valid tag sizes in bytes: " +
+                                                       Arrays.toString(VALID_GCM_TAG_SIZES));
             }
             AlgorithmParameterSpec paramSpec = buildParameterSpec(transformedAlgorithmMode, iv, (int) tagSize);
             Cipher cipher = Cipher.getInstance("AES/" + transformedAlgorithmMode + "/" + transformedAlgorithmPadding);
@@ -236,10 +237,10 @@ public class CryptoUtils {
             return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Unsupported algorithm: AES " + algorithmMode + " " + algorithmPadding +
-                    ": " + e.getMessage());
+                                                   ": " + e.getMessage());
         } catch (NoSuchPaddingException e) {
             return CryptoUtils.createError("Unsupported padding scheme defined in  the algorithm: AES " +
-                    algorithmMode + " " + algorithmPadding + ": " + e.getMessage());
+                                                   algorithmMode + " " + algorithmPadding + ": " + e.getMessage());
         } catch (BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException |
                 InvalidKeyException | BError e) {
             return CryptoUtils.createError("Error occurred while AES encrypt/decrypt: " + e.getMessage());
@@ -362,12 +363,12 @@ public class CryptoUtils {
     }
 
     /**
-     * Replace system property holders in the property values.
-     * e.g. Replace ${ballerina.home} with value of the ballerina.home system property.
+     * Replace system property holders in the property values. e.g. Replace ${ballerina.home} with value of the
+     * ballerina.home system property.
      * <p>
-     * This logic is originally from http-transport-utils. Since, HTTP stdlib depends on http-transport,
-     * HTTP stdlib directly uses this method form the original utility. This is added here, not to make Auth stdlib
-     * depend on http-transport.
+     * This logic is originally from http-transport-utils. Since, HTTP stdlib depends on http-transport, HTTP stdlib
+     * directly uses this method form the original utility. This is added here, not to make Auth stdlib depend on
+     * http-transport.
      *
      * @param value string value to substitute
      * @return String substituted string
@@ -389,7 +390,8 @@ public class CryptoUtils {
 
                 sysPropValue = sysPropValue.replace("\\", "\\\\");
                 matcher.appendReplacement(sb, sysPropValue);
-            } while (matcher.find());
+            }
+            while (matcher.find());
 
             matcher.appendTail(sb);
             return sb.toString();
