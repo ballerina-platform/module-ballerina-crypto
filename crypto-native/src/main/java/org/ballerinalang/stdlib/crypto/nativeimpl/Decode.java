@@ -33,6 +33,10 @@ import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
+import org.bouncycastle.operator.InputDecryptorProvider;
+import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
+import org.bouncycastle.pkcs.PKCSException;
+import org.bouncycastle.pkcs.jcajce.JcePKCSPBEInputDecryptorProviderBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -107,9 +111,18 @@ public class Decode {
                     return CryptoUtils.createError("Failed to read the encrypted private key without password.");
                 }
                 char[] pwd = ((BString) keyPassword).getValue().toCharArray();
-                PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder().build(pwd);
+                PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
                 PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
                 privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
+            } else if (obj instanceof PKCS8EncryptedPrivateKeyInfo) {
+                if (keyPassword == null) {
+                    return CryptoUtils.createError("Failed to read the encrypted private key without password.");
+                }
+                char[] pwd = ((BString) keyPassword).getValue().toCharArray();
+                InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
+                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+                privateKeyInfo = ((PKCS8EncryptedPrivateKeyInfo) obj).decryptPrivateKeyInfo(decryptorProvider);
             } else {
                 privateKeyInfo = (PrivateKeyInfo) obj;
             }
@@ -117,7 +130,7 @@ public class Decode {
             return buildPrivateKeyRecord(privateKey);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
-        } catch (IOException e) {
+        } catch (PKCSException | IOException e) {
             return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
         }
     }
