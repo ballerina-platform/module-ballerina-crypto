@@ -60,6 +60,28 @@ tasks.withType(Checkstyle) {
     exclude excludePattern
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId "crypto-native"
+            version = project.version
+            artifact jar
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerina-crypto")
+            credentials {
+                username = System.getenv("packageUser")
+                password = System.getenv("packagePAT")
+            }
+        }
+    }
+}
+
 compileJava {
     doFirst {
         options.compilerArgs = [
