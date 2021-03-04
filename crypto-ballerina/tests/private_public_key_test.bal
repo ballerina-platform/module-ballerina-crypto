@@ -79,7 +79,7 @@ isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithInvalidPasswor
 isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithNoPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH);
     if (result is Error) {
-        test:assertEquals(result.message(), "Failed to read the encrypted private key without password.");
+        test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
         test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
     }
@@ -109,7 +109,7 @@ isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithInvalidPasswor
 isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithNoPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH);
     if (result is Error) {
-        test:assertEquals(result.message(), "Failed to read the encrypted private key without password.");
+        test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
         test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
     }
