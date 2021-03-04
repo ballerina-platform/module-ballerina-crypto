@@ -108,7 +108,7 @@ public class Decode {
             PrivateKeyInfo privateKeyInfo;
             if (obj instanceof PEMEncryptedKeyPair) {
                 if (keyPassword == null) {
-                    return CryptoUtils.createError("Failed to read the encrypted private key without password.");
+                    return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
                 }
                 char[] pwd = ((BString) keyPassword).getValue().toCharArray();
                 PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
@@ -117,7 +117,7 @@ public class Decode {
                 privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
             } else if (obj instanceof PKCS8EncryptedPrivateKeyInfo) {
                 if (keyPassword == null) {
-                    return CryptoUtils.createError("Failed to read the encrypted private key without password.");
+                    return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
                 }
                 char[] pwd = ((BString) keyPassword).getValue().toCharArray();
                 InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
