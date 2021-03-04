@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/keystore.p12",
+        path: KEYSTORE_PATH,
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
@@ -33,7 +33,7 @@ isolated function testParseEncryptedPrivateKeyFromP12() {
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/keystore.p12.invalid",
+        path: INVALID_KEYSTORE_PATH,
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
@@ -46,8 +46,8 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
 }
 
 @test:Config {}
-isolated function testParsePrivateKeyFromKeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/private.key");
+isolated function testParsePrivateKeyFromPkcs8KeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_PRIVATE_KEY_PATH);
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -56,8 +56,8 @@ isolated function testParsePrivateKeyFromKeyFile() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromKeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key", "ballerina");
+isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -66,8 +66,38 @@ isolated function testParseEncryptedPrivateKeyFromKeyFile() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key", "invalid-password");
+isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithInvalidPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
+    if (result is Error) {
+        test:assertEquals(result.message(), "Unable to do private key operations: unable to read encrypted data: javax.crypto.BadPaddingException: pad block corrupted");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithNoPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH);
+    if (result is Error) {
+        test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
+    }
+}
+
+@test:Config {}
+isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithInvalidPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
     if (result is Error) {
         test:assertEquals(result.message(), "Unable to do private key operations: exception using cipher - please check password and data.");
     } else {
@@ -76,10 +106,10 @@ isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/encrypted-private.key");
+isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithNoPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH);
     if (result is Error) {
-        test:assertEquals(result.message(), "Failed to read the encrypted private key without password.");
+        test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
         test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
     }
@@ -87,7 +117,7 @@ isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
 
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile("tests/resources/datafiles/private.key.invalid");
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
     if (result is Error) {
         test:assertTrue(result.message().includes("Key file not found at:"),
             msg = "Incorrect error for reading private key from non existing key file.");
@@ -99,7 +129,7 @@ isolated function testReadPrivateKeyFromNonExistingKeyFile() {
 @test:Config {}
 isolated function testParsePublicKeyFromP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/keystore.p12",
+        path: KEYSTORE_PATH,
         password: "ballerina"
     };
     PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
@@ -130,7 +160,7 @@ isolated function testParsePublicKeyFromP12() {
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingP12() {
     KeyStore keyStore = {
-        path: "tests/resources/datafiles/keystore.p12.invalid",
+        path: INVALID_KEYSTORE_PATH,
         password: "ballerina"
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
@@ -143,8 +173,8 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 }
 
 @test:Config {}
-isolated function testParsePublicKeyFromCertFile() {
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt");
+isolated function testParsePublicKeyFromX509CertFile() {
+    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
     map<json> certificate = <map<json>>publicKey["certificate"];
 
@@ -171,7 +201,7 @@ isolated function testParsePublicKeyFromCertFile() {
 
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
-    PublicKey|Error result = decodeRsaPublicKeyFromCertFile("tests/resources/datafiles/public.crt.invalid");
+    PublicKey|Error result = decodeRsaPublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
     if (result is Error) {
         test:assertTrue(result.message().includes("Certificate file not found at:"),
             msg = "Incorrect error for reading public key from non existing cert file.");
