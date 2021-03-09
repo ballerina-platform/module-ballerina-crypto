@@ -84,7 +84,7 @@ public class Constants {
     public static final BString PUBLIC_KEY_CONFIG_RECORD_CERT_FILE_FIELD = StringUtils.fromString("certFile");
 
     // Crypto error type ID
-    static final String CRYPTO_ERROR = "CryptoError";
+    static final String CRYPTO_ERROR = "Error";
 
     // PKCS12 keystore type
     public static final String KEYSTORE_TYPE_PKCS12 = "PKCS12";
