@@ -24,7 +24,7 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.stdlib.crypto.Constants;
 import org.ballerinalang.stdlib.crypto.CryptoUtils;
-import org.ballerinalang.stdlib.time.util.TimeUtils;
+import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
@@ -200,11 +200,9 @@ public class Decode {
                                 x509Certificate.getSerialNumber().longValue());
 
             certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_NOT_BEFORE_FIELD),
-                                TimeUtils.createTimeRecord(x509Certificate.getNotBefore().getTime(),
-                                                           StringUtils.fromString(Constants.TIMEZONE_GMT)));
+                                TimeValueHandler.createUtcFromMilliSeconds(x509Certificate.getNotBefore().getTime()));
             certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_NOT_AFTER_FIELD),
-                                TimeUtils.createTimeRecord(x509Certificate.getNotAfter().getTime(),
-                                                           StringUtils.fromString(Constants.TIMEZONE_GMT)));
+                                TimeValueHandler.createUtcFromMilliSeconds(x509Certificate.getNotAfter().getTime()));
 
             certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_SIGNATURE_FIELD),
                                 ValueCreator.createArrayValue(x509Certificate.getSignature()));

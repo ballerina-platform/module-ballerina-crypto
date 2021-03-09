@@ -72,8 +72,8 @@ public type Certificate record {|
     int serial;
     string issuer;
     string subject;
-    time:Time notBefore;
-    time:Time notAfter;
+    time:Utc notBefore;
+    time:Utc notAfter;
     byte[] signature;
     string signingAlgorithm;
 |};
