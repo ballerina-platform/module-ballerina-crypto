@@ -15,7 +15,4 @@
 // under the License.
 
 # Represents the Crypto error.
-public type CryptoError distinct error;
-
-# The union of all the Crypto related errors
-public type Error CryptoError;
+public type Error distinct error;
