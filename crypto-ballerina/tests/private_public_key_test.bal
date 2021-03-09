@@ -134,14 +134,11 @@ isolated function testParsePublicKeyFromP12() {
     };
     PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
-    map<json> certificate = <map<json>>publicKey["certificate"];
+    Certificate certificate = <Certificate>publicKey["certificate"];
 
     string serial = (<int>certificate["serial"]).toString();
     string issuer = <string>certificate["issuer"];
     string subject = <string>certificate["subject"];
-    var notBefore = certificate["notBefore"];
-    var notAfter = certificate["notAfter"];
-    var signature = certificate["signature"];
     string signingAlgorithm = <string>certificate["signingAlgorithm"];
 
     test:assertEquals(serial, "2097012467",
@@ -150,9 +147,6 @@ isolated function testParsePublicKeyFromP12() {
         msg = "Error while checking issuer from encrypted public-key from a p12 file.");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
         msg = "Error while checking subject from encrypted public-key from a p12 file.");
-    test:assertTrue(notBefore is map<json>, msg = "Error in the format of notBefore field from a certificate.");
-    test:assertTrue(notAfter is map<json>, msg = "Error in the format of notAfter field from a certificate.");
-    test:assertTrue(signature is json[], msg = "Error in the format of signature field from a certificate.");
     test:assertEquals(signingAlgorithm, "SHA256withRSA",
         msg = "Error while checking signingAlgorithm from encrypted public-key from a p12 file.");
 }
@@ -176,14 +170,11 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 isolated function testParsePublicKeyFromX509CertFile() {
     PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
-    map<json> certificate = <map<json>>publicKey["certificate"];
+    Certificate certificate = <Certificate>publicKey["certificate"];
 
     string serial = (<int>certificate["serial"]).toString();
     string issuer = <string>certificate["issuer"];
     string subject = <string>certificate["subject"];
-    var notBefore = certificate["notBefore"];
-    var notAfter = certificate["notAfter"];
-    var signature = certificate["signature"];
     string signingAlgorithm = <string>certificate["signingAlgorithm"];
 
     test:assertEquals(serial, "2097012467",
@@ -192,9 +183,6 @@ isolated function testParsePublicKeyFromX509CertFile() {
         msg = "Error while checking issuer from public-key from a cert file.");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
         msg = "Error while checking subject from public-key from a cert file.");
-    test:assertTrue(notBefore is map<json>, msg = "Error in the format of notBefore field from a certificate.");
-    test:assertTrue(notAfter is map<json>, msg = "Error in the format of notAfter field from a certificate.");
-    test:assertTrue(signature is json[], msg = "Error in the format of signature field from a certificate.");
     test:assertEquals(signingAlgorithm, "SHA256withRSA",
         msg = "Error while checking signingAlgorithm from public-key from a cert file.");
 }
