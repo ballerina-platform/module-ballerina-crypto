@@ -18,7 +18,7 @@
 module io.ballerina.stdlib.crypto {
     requires io.ballerina.runtime;
     requires io.ballerina.stdlib.time;
-    requires bcpkix.jdk15on;
-    requires bcprov.jdk15on;
+    requires org.bouncycastle.provider;
+    requires org.bouncycastle.pkix;
     exports org.ballerinalang.stdlib.crypto.nativeimpl;
 }
