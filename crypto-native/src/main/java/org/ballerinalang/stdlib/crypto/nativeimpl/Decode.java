@@ -89,7 +89,7 @@ public class Decode {
             }
             return buildPrivateKeyRecord(privateKey);
         } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 keystore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
             return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -166,7 +166,7 @@ public class Decode {
             }
             return buildPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("PKCS12 key store not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 keystore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
             return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
         }

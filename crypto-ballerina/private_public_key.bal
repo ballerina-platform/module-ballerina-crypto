@@ -23,19 +23,19 @@ public type KeyAlgorithm RSA;
 # The `RSA` algorithm.
 public const RSA = "RSA";
 
-# Key store related configurations.
+# KeyStore related configurations.
 #
-# + path - Path to the key store file
-# + password - Key store password
+# + path - Path to the KeyStore file
+# + password - KeyStore password
 public type KeyStore record {|
     string path;
     string password;
 |};
 
-# Trust store related configurations.
+# TrustStore related configurations.
 #
-# + path - Path to the trust store file
-# + password - Trust store password
+# + path - Path to the TrustStore file
+# + password - TrustStore password
 public type TrustStore record {|
     string path;
     string password;
@@ -87,7 +87,7 @@ public type Certificate record {|
 #  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - Key store configurations
+# + keyStore - KeyStore configurations
 # + keyAlias - Key alias
 # + keyPassword - Key password
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
@@ -119,7 +119,7 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
 #  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + trustStore - Trust store configurations
+# + trustStore - TrustStore configurations
 # + keyAlias - Key alias
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)

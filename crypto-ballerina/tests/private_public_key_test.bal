@@ -38,7 +38,7 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     if (result is Error) {
-        test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
+        test:assertTrue(result.message().includes("PKCS12 keystore not found at:"),
             msg = "Incorrect error for reading private key from non existing p12 file.");
     } else {
         test:assertFail(msg = "No error while attempting to read a private key from a non-existing p12 file.");
@@ -159,7 +159,7 @@ isolated function testReadPublicKeyFromNonExistingP12() {
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     if (result is Error) {
-        test:assertTrue(result.message().includes("PKCS12 key store not found at:"),
+        test:assertTrue(result.message().includes("PKCS12 keystore not found at:"),
             msg = "Incorrect error for reading public key from non existing p12 file.");
     } else {
         test:assertFail(msg = "No error while attempting to read a public key from a non-existing p12 file.");
