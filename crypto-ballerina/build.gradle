@@ -44,10 +44,10 @@ dependencies {
         transitive = false
     }
     compile project(":${packageName}-native")
-    externalJars (group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "1.58") {
+    externalJars (group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "${bouncycastleVersion}") {
         transitive = false
     }
-    externalJars (group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "1.58") {
+    externalJars (group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "${bouncycastleVersion}") {
         transitive = false
     }
 }
