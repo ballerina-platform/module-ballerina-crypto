@@ -127,12 +127,12 @@ isolated function testReadPrivateKeyFromNonExistingKeyFile() {
 }
 
 @test:Config {}
-isolated function testParsePublicKeyFromP12() {
+isolated function testParsePublicKeyFromP12() returns Error? {
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
     Certificate certificate = <Certificate>publicKey["certificate"];
 
@@ -167,8 +167,8 @@ isolated function testReadPublicKeyFromNonExistingP12() {
 }
 
 @test:Config {}
-isolated function testParsePublicKeyFromX509CertFile() {
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
+isolated function testParsePublicKeyFromX509CertFile() returns Error? {
+    PublicKey publicKey = check decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
     Certificate certificate = <Certificate>publicKey["certificate"];
 
@@ -199,12 +199,12 @@ isolated function testReadPublicKeyFromNonExistingCertFile() {
 }
 
 @test:Config {}
-isolated function testBuildPublicKeyFromJwk() {
+isolated function testBuildPublicKeyFromJwk() returns Error? {
     string modulus = "luZFdW1ynitztkWLC6xKegbRWxky-5P0p4ShYEOkHs30QI2VCuR6Qo4Bz5rTgLBrky03W1GAVrZxuvKRGj9V9-" +
         "PmjdGtau4CTXu9pLLcqnruaczoSdvBYA3lS9a7zgFU0-s6kMl2EhB-rk7gXluEep7lIOenzfl2f6IoTKa2fVgVd3YKiSGsy" +
         "L4tztS70vmmX121qm0sTJdKWP4HxXyqK9neolXI9fYyHOYILVNZ69z_73OOVhkh_mvTmWZLM7GM6sApmyLX6OXUp8z0pkY-v" +
         "T_9-zRxxQs7GurC4_C1nK3rI_0ySUgGEafO1atNjYmlFN-M3tZX6nEcA6g94IavyQ";
     string exponent = "AQAB";
-    PublicKey publicKey = checkpanic buildRsaPublicKey(modulus, exponent);
+    PublicKey publicKey = check buildRsaPublicKey(modulus, exponent);
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from JWK.");
 }
