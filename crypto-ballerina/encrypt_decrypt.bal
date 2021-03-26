@@ -55,7 +55,7 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PublicKey publicKey = checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  byte[]|crypto:Error cipherText = crypto:encryptRsaEcb(data, publicKey);
 # ```
 #
@@ -75,11 +75,11 @@ public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[]|crypto:Error cipherText = crypto:encryptAesCbc(data, key, initialVector);
 # ```
@@ -101,7 +101,7 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[]|crypto:Error cipherText = crypto:encryptAesEcb(data, key);
 # ```
@@ -122,11 +122,11 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[]|crypto:Error cipherText = crypto:encryptAesGcm(data, key, initialVector);
 # ```
@@ -151,10 +151,10 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PublicKey publicKey = checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] cipherText = checkpanic crypto:encryptRsaEcb(data, publicKey);
-#  byte[]|crypto:Error plainText = checkpanic crypto:decryptRsaEcb(cipherText, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
+#  byte[]|crypto:Error plainText = check crypto:decryptRsaEcb(cipherText, privateKey);
 # ```
 #
 # + input - The content to be decrypted
@@ -173,13 +173,13 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
-#  byte[] cipherText = checkpanic crypto:encryptAesCbc(data, key, initialVector);
+#  byte[] cipherText = check crypto:encryptAesCbc(data, key, initialVector);
 #  byte[]|crypto:Error plainText = crypto:decryptAesCbc(cipherText, key, initialVector);
 # ```
 #
@@ -200,9 +200,9 @@ public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
-#  byte[] cipherText = checkpanic crypto:encryptAesEcb(data, key);
+#  byte[] cipherText = check crypto:encryptAesEcb(data, key);
 #  byte[]|crypto:Error plainText = crypto:decryptAesEcb(cipherText, key);
 # ```
 #
@@ -222,13 +222,13 @@ public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padd
 #  byte[] data = dataString.toBytes();
 #  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      key[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      key[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
 #  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 #  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(checkpanic random:createIntInRange(0, 255);
+#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
 #  }
-#  byte[] cipherText = checkpanic crypto:encryptAesGcm(data, key, initialVector);
+#  byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
 #  byte[]|crypto:Error plainText = crypto:decryptAesGcm(cipherText, key, initialVector);
 # ```
 #

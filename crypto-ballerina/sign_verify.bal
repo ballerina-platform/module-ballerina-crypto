@@ -24,8 +24,7 @@ import ballerina/jballerina.java;
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey =
-#      checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 #  byte[]|crypto:Error signature = crypto:signRsaMd5(data, privateKey);
 # ```
 #
@@ -45,8 +44,7 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey =
-#      checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 #  byte[]|crypto:Error signature = crypto:signRsaSha1(data, privateKey);
 # ```
 #
@@ -66,8 +64,7 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey =
-#      checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 #  byte[]|crypto:Error signature = crypto:signRsaSha256(data, privateKey);
 # ```
 #
@@ -87,8 +84,7 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey =
-#      checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 #  byte[]|crypto:Error signature = crypto:signRsaSha384(data, privateKey);
 # ```
 #
@@ -108,8 +104,7 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey =
-#      checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 #  byte[]|crypto:Error signature = crypto:signRsaSha512(data, privateKey);
 # ```
 #
@@ -129,9 +124,9 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = checkpanic crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey =  checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword")
+#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  boolean|crypto:Error validity = crypto:verifyRsaMd5Signature(data, signature, publicKey);
 # ```
 #
@@ -153,9 +148,9 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = checkpanic crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey =  checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  boolean|crypto:Error validity = crypto:verifyRsaSha1Signature(data, signature, publicKey);
 # ```
 #
@@ -177,9 +172,9 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = checkpanic crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey =  checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  boolean|crypto:Error validity = crypto:verifyRsaSha256Signature(data, signature, publicKey);
 # ```
 #
@@ -201,9 +196,9 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = checkpanic crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey =  checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  boolean|crypto:Error validity = crypto:verifyRsaSha384Signature(data, signature, publicKey);
 # ```
 #
@@ -225,9 +220,9 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 #      path: "/home/ballerina/keystore.p12",
 #      password: "keystorePassword"
 #  };
-#  crypto:PrivateKey privateKey = checkpanic crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = checkpanic crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey =  checkpanic crypto:decodePublicKey(keyStore, "keyAlias");
+#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
+#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 #  boolean|crypto:Error validity = crypto:verifyRsaSha512Signature(data, signature, publicKey);
 # ```
 #
