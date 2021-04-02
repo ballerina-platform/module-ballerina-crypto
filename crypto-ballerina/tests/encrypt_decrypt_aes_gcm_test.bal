@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithAesGcmNoPadding() {
+isolated function testEncryptAndDecryptWithAesGcmNoPadding() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -31,8 +31,8 @@ isolated function testEncryptAndDecryptWithAesGcmNoPadding() {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[] cipherText = checkpanic encryptAesGcm(message, key, iv, NONE, 128);
-    byte[] plainText = checkpanic decryptAesGcm(cipherText, key, iv, NONE, 128);
+    byte[] cipherText = check encryptAesGcm(message, key, iv, NONE, 128);
+    byte[] plainText = check decryptAesGcm(cipherText, key, iv, NONE, 128);
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES GCM.");
 }
 
@@ -87,7 +87,7 @@ isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() 
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithAesGcmPkcs5() {
+isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -101,8 +101,8 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5() {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[] cipherText = checkpanic encryptAesGcm(message, key, iv, "PKCS5");
-    byte[] plainText = checkpanic decryptAesGcm(cipherText, key, iv, "PKCS5");
+    byte[] cipherText = check encryptAesGcm(message, key, iv, "PKCS5");
+    byte[] plainText = check decryptAesGcm(cipherText, key, iv, "PKCS5");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with AES GCM PKCS5.");
 }

@@ -17,7 +17,7 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithAesCbcNoPadding() {
+isolated function testEncryptAndDecryptWithAesCbcNoPadding() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -31,8 +31,8 @@ isolated function testEncryptAndDecryptWithAesCbcNoPadding() {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[] cipherText = checkpanic encryptAesCbc(message, key, iv, NONE);
-    byte[] plainText = checkpanic decryptAesCbc(cipherText, key, iv, NONE);
+    byte[] cipherText = check encryptAesCbc(message, key, iv, NONE);
+    byte[] plainText = check decryptAesCbc(cipherText, key, iv, NONE);
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES CBC.");
 }
 
@@ -111,7 +111,7 @@ isolated function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidInputLengt
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithAesCbcPkcs5() {
+isolated function testEncryptAndDecryptWithAesCbcPkcs5() returns Error? {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     byte[] iv = [];
@@ -125,8 +125,8 @@ isolated function testEncryptAndDecryptWithAesCbcPkcs5() {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[] cipherText = checkpanic encryptAesCbc(message, key, iv, "PKCS5");
-    byte[] plainText = checkpanic decryptAesCbc(cipherText, key, iv, "PKCS5");
+    byte[] cipherText = check encryptAesCbc(message, key, iv, "PKCS5");
+    byte[] plainText = check decryptAesCbc(cipherText, key, iv, "PKCS5");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with AES CBC PKCS5.");
 }

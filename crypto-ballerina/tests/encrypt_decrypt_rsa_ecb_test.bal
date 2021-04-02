@@ -17,106 +17,106 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbPkcs1() {
+isolated function testEncryptAndDecryptWithRsaEcbPkcs1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "PKCS1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "PKCS1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "PKCS1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "PKCS1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB PKCS1.");
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOAEPwithMd5andMgf1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithMD5andMGF1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithMD5andMGF1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "OAEPwithMD5andMGF1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "OAEPwithMD5andMGF1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB OAEPwithMD5andMGF1.");
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha1AndMgf1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPWithSHA1AndMGF1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA1AndMGF1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "OAEPWithSHA1AndMGF1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA1AndMGF1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB OAEPWithSHA1AndMGF1.");
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha256AndMgf1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPWithSHA256AndMGF1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA256AndMGF1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "OAEPWithSHA256AndMGF1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "OAEPWithSHA256AndMGF1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB OAEPWithSHA256AndMGF1.");
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha384andMgf1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithSHA384andMGF1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA384andMGF1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "OAEPwithSHA384andMGF1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA384andMGF1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB OAEPwithSHA384andMGF1.");
 }
 
 @test:Config {}
-isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() {
+isolated function testEncryptAndDecryptWithRsaEcbOaepWithSha512andMgf1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, publicKey, "OAEPwithSHA512andMGF1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA512andMGF1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, publicKey, "OAEPwithSHA512andMGF1");
+    byte[] plainText = check decryptRsaEcb(cipherText, privateKey, "OAEPwithSHA512andMGF1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB OAEPwithSHA512andMGF1.");
 }
 
 @test:Config {}
-isolated function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() {
+isolated function testEncryptWithPrivateKeyAndDecryptWithPublicKeyUsingRsaEcbPkcs1() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = checkpanic decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
-    PrivateKey privateKey = checkpanic decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    byte[] cipherText = checkpanic encryptRsaEcb(message, privateKey, "PKCS1");
-    byte[] plainText = checkpanic decryptRsaEcb(cipherText, publicKey, "PKCS1");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] cipherText = check encryptRsaEcb(message, privateKey, "PKCS1");
+    byte[] plainText = check decryptRsaEcb(cipherText, publicKey, "PKCS1");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with RSA ECB PKCS1.");
 }
