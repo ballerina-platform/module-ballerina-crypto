@@ -128,11 +128,11 @@ isolated function testReadPrivateKeyFromNonExistingKeyFile() {
 
 @test:Config {}
 isolated function testParsePublicKeyFromP12() returns Error? {
-    KeyStore keyStore = {
+    TrustStore trustStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
     Certificate certificate = <Certificate>publicKey["certificate"];
 
@@ -153,11 +153,11 @@ isolated function testParsePublicKeyFromP12() returns Error? {
 
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingP12() {
-    KeyStore keyStore = {
+    TrustStore trustStore = {
         path: INVALID_KEYSTORE_PATH,
         password: "ballerina"
     };
-    PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
     if (result is Error) {
         test:assertTrue(result.message().includes("PKCS12 keystore not found at:"),
             msg = "Incorrect error for reading public key from non existing p12 file.");
