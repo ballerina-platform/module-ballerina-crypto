@@ -37,10 +37,8 @@ public class Hash {
     public static BString crc32b(BArray input) {
         Checksum checksum = new CRC32();
         byte[] bytes = input.getBytes();
-        long checksumVal;
-
         checksum.update(bytes, 0, bytes.length);
-        checksumVal = checksum.getValue();
+        long checksumVal = checksum.getValue();
         return StringUtils.fromString(Long.toHexString(checksumVal));
     }
 

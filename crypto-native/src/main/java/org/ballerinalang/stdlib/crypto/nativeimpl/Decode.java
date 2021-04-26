@@ -71,8 +71,7 @@ public class Decode {
 
     public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
                                                          BString keyPassword) {
-        File keyStoreFile = new File(CryptoUtils.substituteVariables(
-                keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString()));
+        File keyStoreFile = new File(keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
             KeyStore keystore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
             try {
@@ -149,8 +148,7 @@ public class Decode {
     }
 
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStore, BString keyAlias) {
-        File keyStoreFile = new File(CryptoUtils.substituteVariables(
-                trustStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString()));
+        File keyStoreFile = new File(trustStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
             KeyStore keystore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
             try {

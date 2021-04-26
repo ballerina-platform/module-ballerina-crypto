@@ -34,14 +34,10 @@ import java.security.PublicKey;
  */
 public class Decrypt {
 
-    public static Object decryptAesCbc(BArray inputValue, BArray keyValue,
-                                       BArray ivValue, Object padding) {
+    public static Object decryptAesCbc(BArray inputValue, BArray keyValue, BArray ivValue, Object padding) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
-        byte[] iv = null;
-        if (ivValue != null) {
-            iv = ivValue.getBytes();
-        }
+        byte[] iv = ivValue.getBytes();
         return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.CBC, padding.toString(), key,
                 input, iv, -1);
     }
@@ -53,14 +49,11 @@ public class Decrypt {
                 input, null, -1);
     }
 
-    public static Object decryptAesGcm(BArray inputValue, BArray keyValue,
-                                       BArray ivValue,  Object padding, long tagSize) {
+    public static Object decryptAesGcm(BArray inputValue, BArray keyValue, BArray ivValue,  Object padding,
+                                       long tagSize) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
-        byte[] iv = null;
-        if (ivValue != null) {
-            iv = ivValue.getBytes();
-        }
+        byte[] iv = ivValue.getBytes();
         return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.GCM, padding.toString(), key,
                 input, iv, tagSize);
     }

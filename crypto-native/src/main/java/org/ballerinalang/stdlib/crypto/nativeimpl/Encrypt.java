@@ -64,11 +64,9 @@ public class Encrypt {
                 input, iv, tagSize);
     }
 
-    public static Object encryptRsaEcb(BArray inputValue, Object keyUnion, Object padding) {
+    public static Object encryptRsaEcb(BArray inputValue, Object keys, Object padding) {
         byte[] input = inputValue.getBytes();
-        // this is a union, but both a record types, so we can safely cast
-        // TODO: unify union types when same type is duplicated eg:record:record.
-        BMap<?, ?> keyMap = (BMap<?, ?>) keyUnion;
+        BMap<?, ?> keyMap = (BMap<?, ?>) keys;
         Key key;
         if (keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY) != null) {
             key = (PrivateKey) keyMap.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
