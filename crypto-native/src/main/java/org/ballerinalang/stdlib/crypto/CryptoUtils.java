@@ -69,9 +69,7 @@ public class CryptoUtils {
      */
     private static final int[] VALID_AES_KEY_SIZES = new int[]{16, 24, 32};
 
-    private CryptoUtils() {
-
-    }
+    private CryptoUtils() {}
 
     /**
      * Generate HMAC of a byte array based on the provided HMAC algorithm.

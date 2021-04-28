@@ -33,6 +33,8 @@ import java.security.PublicKey;
  */
 public class Sign {
 
+    private Sign() {}
+
     public static Object signRsaMd5(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);

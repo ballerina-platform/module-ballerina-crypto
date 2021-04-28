@@ -69,6 +69,8 @@ import java.util.Base64;
  */
 public class Decode {
 
+    private Decode() {}
+
     public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
                                                          BString keyPassword) {
         File keyStoreFile = new File(keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());

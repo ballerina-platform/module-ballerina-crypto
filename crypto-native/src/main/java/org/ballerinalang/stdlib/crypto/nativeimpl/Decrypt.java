@@ -34,6 +34,8 @@ import java.security.PublicKey;
  */
 public class Decrypt {
 
+    private Decrypt() {}
+
     public static Object decryptAesCbc(BArray inputValue, BArray keyValue, BArray ivValue, Object padding) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
