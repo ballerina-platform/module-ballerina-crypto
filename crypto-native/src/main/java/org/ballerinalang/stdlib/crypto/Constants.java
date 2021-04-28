@@ -28,6 +28,8 @@ import io.ballerina.runtime.api.values.BString;
  */
 public class Constants {
 
+    private Constants() {}
+
     // Record used to reference to a private key.
     public static final String PRIVATE_KEY_RECORD = "PrivateKey";
 

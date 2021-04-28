@@ -34,8 +34,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -56,8 +54,6 @@ import static org.ballerinalang.stdlib.crypto.Constants.CRYPTO_ERROR;
  */
 public class CryptoUtils {
 
-    private static final Pattern varPattern = Pattern.compile("\\$\\{([^}]*)}");
-
     /**
      * Cipher mode that is used to decide if encryption or decryption operation should be performed.
      */
@@ -73,9 +69,7 @@ public class CryptoUtils {
      */
     private static final int[] VALID_AES_KEY_SIZES = new int[]{16, 24, 32};
 
-    private CryptoUtils() {
-
-    }
+    private CryptoUtils() {}
 
     /**
      * Generate HMAC of a byte array based on the provided HMAC algorithm.
@@ -183,14 +177,12 @@ public class CryptoUtils {
     public static Object rsaEncryptDecrypt(CipherMode cipherMode, String algorithmMode,
                                            String algorithmPadding, Key key, byte[] input, byte[] iv, long tagSize) {
         try {
-            String transformedAlgorithmMode = transformAlgorithmMode(algorithmMode);
             String transformedAlgorithmPadding = transformAlgorithmPadding(algorithmPadding);
             if (tagSize != -1 && Arrays.stream(VALID_GCM_TAG_SIZES).noneMatch(i -> tagSize == i)) {
                 return CryptoUtils.createError("Valid tag sizes are: " + Arrays.toString(VALID_GCM_TAG_SIZES));
             }
-            AlgorithmParameterSpec paramSpec = buildParameterSpec(transformedAlgorithmMode, iv, (int) tagSize);
-            Cipher cipher = Cipher.getInstance(Constants.RSA + "/" + transformedAlgorithmMode + "/"
-                                                       + transformedAlgorithmPadding);
+            AlgorithmParameterSpec paramSpec = buildParameterSpec(algorithmMode, iv, (int) tagSize);
+            Cipher cipher = Cipher.getInstance(Constants.RSA + "/" + algorithmMode + "/" + transformedAlgorithmPadding);
             initCipher(cipher, cipherMode, key, paramSpec);
             return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
@@ -224,15 +216,14 @@ public class CryptoUtils {
                 return CryptoUtils.createError("Invalid key size. Valid key sizes in bytes: " +
                                                        Arrays.toString(VALID_AES_KEY_SIZES));
             }
-            String transformedAlgorithmMode = transformAlgorithmMode(algorithmMode);
             String transformedAlgorithmPadding = transformAlgorithmPadding(algorithmPadding);
             SecretKeySpec keySpec = new SecretKeySpec(key, Constants.AES);
             if (tagSize != -1 && Arrays.stream(VALID_GCM_TAG_SIZES).noneMatch(validSize -> validSize == tagSize)) {
                 return CryptoUtils.createError("Invalid tag size. Valid tag sizes in bytes: " +
                                                        Arrays.toString(VALID_GCM_TAG_SIZES));
             }
-            AlgorithmParameterSpec paramSpec = buildParameterSpec(transformedAlgorithmMode, iv, (int) tagSize);
-            Cipher cipher = Cipher.getInstance("AES/" + transformedAlgorithmMode + "/" + transformedAlgorithmPadding);
+            AlgorithmParameterSpec paramSpec = buildParameterSpec(algorithmMode, iv, (int) tagSize);
+            Cipher cipher = Cipher.getInstance("AES/" + algorithmMode + "/" + transformedAlgorithmPadding);
             initCipher(cipher, cipherMode, keySpec, paramSpec);
             return ValueCreator.createArrayValue(cipher.doFinal(input));
         } catch (NoSuchAlgorithmException e) {
@@ -289,38 +280,12 @@ public class CryptoUtils {
     private static AlgorithmParameterSpec buildParameterSpec(String algorithmMode, byte[] iv, int tagSize) {
         switch (algorithmMode) {
             case Constants.GCM:
-                if (iv == null) {
-                    throw CryptoUtils.createError("GCM mode requires 16 byte IV");
-                } else {
-                    return new GCMParameterSpec(tagSize, iv);
-                }
+                return new GCMParameterSpec(tagSize, iv);
             case Constants.CBC:
-                if (iv == null) {
-                    throw CryptoUtils.createError("CBC mode requires 16 byte IV");
-                } else {
-                    return new IvParameterSpec(iv);
-                }
-            case Constants.ECB:
-                if (iv != null) {
-                    throw CryptoUtils.createError("ECB mode cannot use IV");
-                }
+                return new IvParameterSpec(iv);
+            default:
+                return null;
         }
-        return null;
-    }
-
-    /**
-     * Transform Ballerina algorithm mode names to Java algorithm mode names.
-     *
-     * @param algorithmMode algorithm mode
-     * @return transformed algorithm mode
-     * @throws BError if algorithm mode is not supported
-     */
-    private static String transformAlgorithmMode(String algorithmMode) throws BError {
-        if (!algorithmMode.equals(Constants.CBC) && !algorithmMode.equals(Constants.ECB)
-                && !algorithmMode.equals(Constants.GCM)) {
-            throw CryptoUtils.createError("Unsupported mode: " + algorithmMode);
-        }
-        return algorithmMode;
     }
 
     /**
@@ -360,51 +325,5 @@ public class CryptoUtils {
                 throw CryptoUtils.createError("Unsupported padding: " + algorithmPadding);
         }
         return algorithmPadding;
-    }
-
-    /**
-     * Replace system property holders in the property values. e.g. Replace ${ballerina.home} with value of the
-     * ballerina.home system property.
-     * <p>
-     * This logic is originally from http-transport-utils. Since, HTTP stdlib depends on http-transport, HTTP stdlib
-     * directly uses this method form the original utility. This is added here, not to make Auth stdlib depend on
-     * http-transport.
-     *
-     * @param value string value to substitute
-     * @return String substituted string
-     */
-    public static String substituteVariables(String value) {
-        Matcher matcher = varPattern.matcher(value);
-        boolean found = matcher.find();
-        if (!found) {
-            return value;
-        } else {
-            StringBuffer sb = new StringBuffer();
-
-            do {
-                String sysPropKey = matcher.group(1);
-                String sysPropValue = getSystemVariableValue(sysPropKey, null);
-                if (sysPropValue == null || sysPropValue.length() == 0) {
-                    throw new RuntimeException("System property " + sysPropKey + " is not specified");
-                }
-
-                sysPropValue = sysPropValue.replace("\\", "\\\\");
-                matcher.appendReplacement(sb, sysPropValue);
-            }
-            while (matcher.find());
-
-            matcher.appendTail(sb);
-            return sb.toString();
-        }
-    }
-
-    private static String getSystemVariableValue(String variableName, String defaultValue) {
-        if (System.getProperty(variableName) != null) {
-            return System.getProperty(variableName);
-        } else if (System.getenv(variableName) != null) {
-            return System.getenv(variableName);
-        } else {
-            return defaultValue;
-        }
     }
 }

@@ -28,6 +28,8 @@ import org.ballerinalang.stdlib.crypto.CryptoUtils;
  */
 public class Hmac {
 
+    private Hmac() {}
+
     public static Object hmacMd5(BArray inputValue, BArray keyValue) {
         return CryptoUtils.hmac("HmacMD5", keyValue.getBytes(), inputValue.getBytes());
     }
