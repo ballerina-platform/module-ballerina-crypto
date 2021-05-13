@@ -16,16 +16,16 @@
 
 import ballerina/jballerina.java;
 
-# Returns the RSA-MD5-based signature value for the given data.
+# Returns the RSA-MD5 based signature value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[]|crypto:Error signature = crypto:signRsaMd5(data, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
 # ```
 #
 # + input - The content to be signed
@@ -36,16 +36,16 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Returns the RSA-SHA1-based signature value for the given data.
+# Returns the RSA-SHA1 based signature value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[]|crypto:Error signature = crypto:signRsaSha1(data, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha1(data, privateKey);
 # ```
 #
 # + input - The content to be signed
@@ -56,16 +56,16 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Returns the RSA-SHA256-based signature value for the given data.
+# Returns the RSA-SHA256 based signature value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[]|crypto:Error signature = crypto:signRsaSha256(data, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha256(data, privateKey);
 # ```
 #
 # + input - The content to be signed
@@ -76,16 +76,16 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Returns the RSA-SHA384-based signature value for the given data.
+# Returns the RSA-SHA384 based signature value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[]|crypto:Error signature = crypto:signRsaSha384(data, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha384(data, privateKey);
 # ```
 #
 # + input - The content to be signed
@@ -96,16 +96,16 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Returns the RSA-SHA512-based signature value for the given data.
+# Returns the RSA-SHA512 based signature value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[]|crypto:Error signature = crypto:signRsaSha512(data, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha512(data, privateKey);
 # ```
 #
 # + input - The content to be signed
@@ -116,18 +116,18 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Verifies the RSA-MD5-based signature.
+# Verifies the RSA-MD5 based signature.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword")
-#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  boolean|crypto:Error validity = crypto:verifyRsaMd5Signature(data, signature, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword")
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaMd5Signature(data, signature, publicKey);
 # ```
 #
 # + data - The content to be verified
@@ -140,18 +140,18 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Verifies the RSA-SHA1-based signature.
+# Verifies the RSA-SHA1 based signature.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  boolean|crypto:Error validity = crypto:verifyRsaSha1Signature(data, signature, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaSha1Signature(data, signature, publicKey);
 # ```
 #
 # + data - The content to be verified
@@ -164,18 +164,18 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Verifies the RSA-SHA256-based signature.
+# Verifies the RSA-SHA256 based signature.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  boolean|crypto:Error validity = crypto:verifyRsaSha256Signature(data, signature, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaSha256Signature(data, signature, publicKey);
 # ```
 #
 # + data - The content to be verified
@@ -188,18 +188,18 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Verifies the RSA-SHA384-based signature.
+# Verifies the RSA-SHA384 based signature.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  boolean|crypto:Error validity = crypto:verifyRsaSha384Signature(data, signature, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaSha384Signature(data, signature, publicKey);
 # ```
 #
 # + data - The content to be verified
@@ -212,18 +212,18 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
 } external;
 
-# Verifies the RSA-SHA512-based signature.
+# Verifies the RSA-SHA512 based signature.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] signature = check crypto:signRsaMd5(data, privateKey);
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  boolean|crypto:Error validity = crypto:verifyRsaSha512Signature(data, signature, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaMd5(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaSha512Signature(data, signature, publicKey);
 # ```
 #
 # + data - The content to be verified

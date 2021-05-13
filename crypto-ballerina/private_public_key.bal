@@ -80,11 +80,11 @@ public type Certificate record {|
 
 # Reads a private key from the provided PKCS#12 archive file.
 # ```ballerina
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
 # + keyStore - KeyStore configurations
@@ -98,8 +98,8 @@ public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, stri
 
 # Reads a private key from the provided private key and private key password.
 # ```ballerina
-#  string keyFile = "/home/ballerina/private.key";
-#  crypto:PrivateKey|crypto:Error privateKey = crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
+# string keyFile = "/path/to/private.key";
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
 # ```
 #
 # + keyFile - Path to the key file
@@ -112,11 +112,11 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
 
 # Reads a public key from the provided PKCS#12 archive file.
 # ```ballerina
-#  crypto:TrustStore trustStore = {
-#      path: "/home/ballerina/truststore.p12",
-#      password: "truststorePassword"
-#  };
-#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
+# crypto:TrustStore trustStore = {
+#     path: "/path/tp/truststore.p12",
+#     password: "truststorePassword"
+# };
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
 # + trustStore - TrustStore configurations
@@ -129,8 +129,8 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
 
 # Reads a public key from the provided public certificate file.
 # ```ballerina
-#  string certFile = "/home/ballerina/public.cert";
-#  crypto:PublicKey|crypto:Error publicKey = crypto:decodeRsaPublicKeyFromCertFile(certFile);
+# string certFile = "/path/to/public.cert";
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromCertFile(certFile);
 # ```
 #
 # + certFile - Path to the ceritificate file
@@ -139,11 +139,11 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Returns the `crypto:PublicKey` created with the modulus and exponent retrieved from the JWK's endpoint.
+# Returns the `crypto:PublicKey` created with the modulus and exponent retrieved from the JWKs endpoint.
 # ```ballerina
 # string modulus = "luZFdW1ynitztkWLC6xKegbRWxky...";
 # string exponent = "AQAB";
-# crypto:PublicKey|crypto:Error publicKey = crypto:buildRsaPublicKey(modulus, exponent);
+# crypto:PublicKey publicKey = check crypto:buildRsaPublicKey(modulus, exponent);
 # ```
 #
 # + modulus - JWK modulus value ('n' parameter) for the RSA public key

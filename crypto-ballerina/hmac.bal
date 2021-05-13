@@ -16,18 +16,18 @@
 
 import ballerina/jballerina.java;
 
-# Returns the HMAC using the MD-5 hash function of the given data.
+# Returns the HMAC using the MD5 hash function of the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  string keyString = "some-secret";
-#  byte[] key = keyString.toBytes();
-#  byte[] hmac = crypto:hmacMd5(data, key);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hmac = crypto:hmacMd5(data, key);
 # ```
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output or `crypto:Error`
+# + return - HMAC output or `crypto:Error` if an error occurred
 public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacMd5",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
@@ -35,16 +35,16 @@ public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error 
 
 # Returns the HMAC using the SHA-1 hash function of the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  string keyString = "some-secret";
-#  byte[] key = keyString.toBytes();
-#  byte[] hmac = crypto:hmacSha1(data, key);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hmac = crypto:hmacSha1(data, key);
 # ```
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output or `crypto:Error`
+# + return - HMAC output or `crypto:Error` if an error occurred
 public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha1",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
@@ -52,16 +52,16 @@ public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error
 
 # Returns the HMAC using the SHA-256 hash function of the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  string keyString = "some-secret";
-#  byte[] key = keyString.toBytes();
-#  byte[] hmac = crypto:hmacSha256(data, key);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hmac = crypto:hmacSha256(data, key);
 # ```
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output or `crypto:Error`
+# + return - HMAC output or `crypto:Error` if an error occurred
 public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha256",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
@@ -69,16 +69,16 @@ public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Err
 
 # Returns the HMAC using the SHA-384 hash function of the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  string keyString = "some-secret";
-#  byte[] key = keyString.toBytes();
-#  byte[] hmac = crypto:hmacSha384(data, key);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hmac = crypto:hmacSha384(data, key);
 # ```
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output or `crypto:Error`
+# + return - HMAC output or `crypto:Error` if an error occurred
 public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha384",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
@@ -86,16 +86,16 @@ public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Err
 
 # Returns the HMAC using the SHA-512 hash function of the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  string keyString = "some-secret";
-#  byte[] key = keyString.toBytes();
-#  byte[] hmac = crypto:hmacSha512(data, key);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hmac = crypto:hmacSha512(data, key);
 # ```
 #
 # + input - Value to be hashed
 # + key - Key used for HMAC generation
-# + return - HMAC output or `crypto:Error`
+# + return - HMAC output or `crypto:Error` if an error occurred
 public isolated function hmacSha512(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha512",
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
