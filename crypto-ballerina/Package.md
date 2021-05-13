@@ -4,8 +4,6 @@ The Crypto library is one of the standard library modules of the [Ballerina](htt
 
 The Ballerina Crypto module facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, digitally signing data and verifying digitally signed data etc. with different cryptographic algorithms.
 
-For more information go to [The Crypto Module](https://docs.central.ballerina.io/ballerina/crypto/latest).
-
 ### Report Issues
 
 To report bugs, request new features, start new discussions, view project boards, etc. please visit Ballerina
