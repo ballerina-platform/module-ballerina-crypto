@@ -9,9 +9,9 @@ Ballerina Crypto Library
 
 The Crypto library is one of the standard library modules of the [Ballerina](https://ballerina.io/) language.
 
-The Ballerina Crypto module facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, digitally signing data and verifying digitally signed data, etc. with different cryptographic algorithms.
+The Ballerina Crypto module facilitates APIs to perform operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
 
-For more information go to [The Crypto Module](https://docs.central.ballerina.io/ballerina/crypto/latest).
+For more information go to the [Crypto module](https://docs.central.ballerina.io/ballerina/crypto/latest).
 
 For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/learn/by-example/).
 
@@ -33,7 +33,7 @@ This repository only contains the source code for the module.
    
         > **Note:** Set the JAVA_HOME environment variable to the path name of the directory into which you installed JDK.
 
-2. Export GitHub Personal Access Token (PAT) with 'read package' permission as follows:
+2. Export your GitHub Personal Access Token (PAT) with the `read package` permission as follows:
 
     ```
     export packageUser=<Username>
