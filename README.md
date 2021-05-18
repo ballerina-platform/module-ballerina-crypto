@@ -7,7 +7,7 @@ Ballerina Crypto Library
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto/branch/master/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto)
 
-The Crypto library is one of the standard library modules of the [Ballerina](https://ballerina.io/) language.
+The `crypto` library is one of the standard library modules of the [Ballerina](https://ballerina.io/) language.
 
 The Ballerina Crypto module facilitates APIs to perform operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
 
