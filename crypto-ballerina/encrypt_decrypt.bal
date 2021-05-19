@@ -49,19 +49,19 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 
 # Returns the RSA-encrypted value for the given data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  byte[]|crypto:Error cipherText = crypto:encryptRsaEcb(data, publicKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
 # ```
 #
 # + input - The content to be encrypted
 # + key - Private or public key used for encryption
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
@@ -71,23 +71,23 @@ public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 
 # Returns the AES-CBC-encrypted value for the given data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[]|crypto:Error cipherText = crypto:encryptAesCbc(data, key, initialVector);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     initialVector[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesCbc(data, key, initialVector);
 # ```
 #
 # + input - The content to be encrypted
 # + key - Encryption key
 # + iv - Initialization vector
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
@@ -97,18 +97,18 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 
 # Returns the AES-ECB-encrypted value for the given data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[]|crypto:Error cipherText = crypto:encryptAesEcb(data, key);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesEcb(data, key);
 # ```
 #
 # + input - The content to be encrypted
 # + key - Encryption key
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
@@ -118,23 +118,23 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 
 # Returns the AES-GCM-encrypted value for the given data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[]|crypto:Error cipherText = crypto:encryptAesGcm(data, key, initialVector);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     initialVector[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
 # ```
 #
 # + input - The content to be encrypted
 # + key - Encryption key
 # + iv - Initialization vector
-# + padding - The padding
+# + padding - The padding algorithm
 # + tagSize - Tag size
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
@@ -145,21 +145,21 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 
 # Returns the RSA-decrypted value for the given RSA-encrypted data.
 # ```ballerina
-#  string stringData = "Hello Ballerina";
-#  byte[] data = stringData.toBytes();
-#  crypto:KeyStore keyStore = {
-#      path: "/home/ballerina/keystore.p12",
-#      password: "keystorePassword"
-#  };
-#  crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
-#  crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-#  byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
-#  byte[]|crypto:Error plainText = check crypto:decryptRsaEcb(cipherText, privateKey);
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keystore.p12",
+#     password: "keystorePassword"
+# };
+# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
+# byte[] plainText = check crypto:decryptRsaEcb(cipherText, privateKey);
 # ```
 #
 # + input - The content to be decrypted
 # + key - Private or public key used for encryption
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
@@ -169,24 +169,24 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 
 # Returns the AES-CBC-decrypted value for the given AES-CBC-encrypted data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[] cipherText = check crypto:encryptAesCbc(data, key, initialVector);
-#  byte[]|crypto:Error plainText = crypto:decryptAesCbc(cipherText, key, initialVector);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     initialVector[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesCbc(data, key, initialVector);
+# byte[] plainText = check crypto:decryptAesCbc(cipherText, key, initialVector);
 # ```
 #
 # + input - The content to be decrypted
 # + key - Encryption key
 # + iv - Initialization vector
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
@@ -196,19 +196,19 @@ public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 
 # Returns the AES-ECB-decrypted value for the given AES-ECB-encrypted data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[] cipherText = check crypto:encryptAesEcb(data, key);
-#  byte[]|crypto:Error plainText = crypto:decryptAesEcb(cipherText, key);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesEcb(data, key);
+# byte[] plainText = check crypto:decryptAesEcb(cipherText, key);
 # ```
 #
 # + input - The content to be decrypted
 # + key - Encryption key
-# + padding - The padding
+# + padding - The padding algorithm
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
@@ -218,24 +218,24 @@ public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padd
 
 # Returns the AES-GCM-decrypted value for the given AES-GCM-encrypted data.
 # ```ballerina
-#  string dataString = "Hello Ballerina!";
-#  byte[] data = dataString.toBytes();
-#  byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      key[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-#  foreach var i in 0...15 {
-#      initialVector[i] = <byte>(check random:createIntInRange(0, 255);
-#  }
-#  byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
-#  byte[]|crypto:Error plainText = crypto:decryptAesGcm(cipherText, key, initialVector);
+# string dataString = "Hello Ballerina!";
+# byte[] data = dataString.toBytes();
+# byte[16] key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     key[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[16] initialVector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+# foreach int i in 0...15 {
+#     initialVector[i] = <byte>(check random:createIntInRange(0, 255);
+# }
+# byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
+# byte[] plainText = check crypto:decryptAesGcm(cipherText, key, initialVector);
 # ```
 #
 # + input - The content to be decrypted
 # + key - Encryption key
 # + iv - Initialization vector
-# + padding - The padding
+# + padding - The padding algorithm
 # + tagSize - Tag size
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,

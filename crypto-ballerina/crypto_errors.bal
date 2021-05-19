@@ -14,5 +14,5 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the Crypto error.
+# Represents the error type of the module.
 public type Error distinct error;
