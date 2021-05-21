@@ -17,13 +17,13 @@
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# Represents the key algorithms supported.
+# Represents the supported key algorithms.
 public type KeyAlgorithm RSA;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
 
-# Represents the keystore related configurations.
+# Represents the keystore-related configurations.
 #
 # + path - Path to the KeyStore file
 # + password - KeyStore password
@@ -32,7 +32,7 @@ public type KeyStore record {|
     string password;
 |};
 
-# Represents the truststore related configurations.
+# Represents the truststore-related configurations.
 #
 # + path - Path to the TrustStore file
 # + password - TrustStore password
@@ -139,7 +139,7 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Build the RSA public key from the given modulus and exponent parameters.
+# Builds the RSA public key from the given modulus and exponent parameters.
 # ```ballerina
 # string modulus = "luZFdW1ynitztkWLC6xKegbRWxky...";
 # string exponent = "AQAB";
