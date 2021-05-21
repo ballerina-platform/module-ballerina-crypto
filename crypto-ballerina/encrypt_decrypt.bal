@@ -16,10 +16,10 @@
 
 import ballerina/jballerina.java;
 
-# Padding algorithms supported by AES encryption and decryption.
+# Represents the padding algorithms supported by AES encryption and decryption.
 public type AesPadding NONE|PKCS5;
 
-# Padding algorithms supported with RSA encryption and decryption.
+# Represents the padding algorithms supported with RSA encryption and decryption.
 public type RsaPadding PKCS1|OAEPwithMD5andMGF1|OAEPWithSHA1AndMGF1|OAEPWithSHA256AndMGF1|OAEPwithSHA384andMGF1|
                        OAEPwithSHA512andMGF1;
 
