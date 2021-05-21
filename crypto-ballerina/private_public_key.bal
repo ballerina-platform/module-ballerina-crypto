@@ -17,13 +17,13 @@
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# The key algorithms supported by the Crypto module.
+# Represents the supported key algorithms.
 public type KeyAlgorithm RSA;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
 
-# KeyStore related configurations.
+# Represents the keystore-related configurations.
 #
 # + path - Path to the KeyStore file
 # + password - KeyStore password
@@ -32,7 +32,7 @@ public type KeyStore record {|
     string password;
 |};
 
-# TrustStore related configurations.
+# Represents the truststore-related configurations.
 #
 # + path - Path to the TrustStore file
 # + password - TrustStore password
@@ -41,14 +41,14 @@ public type TrustStore record {|
     string password;
 |};
 
-# Private key used in cryptographic operations.
+# Represents the private key used in cryptographic operations.
 #
 # + algorithm - Key algorithm
 public type PrivateKey record {|
     KeyAlgorithm algorithm;
 |};
 
-# Public key used in cryptographic operations.
+# Represents the public key used in cryptographic operations.
 #
 # + algorithm - Key algorithm
 # + certificate - Public key certificate
@@ -57,7 +57,7 @@ public type PublicKey record {|
     Certificate certificate?;
 |};
 
-# X509 public key certificate information.
+# Represents the X509 public key certificate information.
 #
 # + version0 - Version number
 # + serial - Serial number
@@ -78,7 +78,7 @@ public type Certificate record {|
     string signingAlgorithm;
 |};
 
-# Reads a private key from the provided PKCS#12 archive file.
+# Decodes the RSA private key from the given PKCS#12 archive file.
 # ```ballerina
 # crypto:KeyStore keyStore = {
 #     path: "/path/to/keystore.p12",
@@ -96,7 +96,7 @@ public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, stri
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a private key from the provided private key and private key password.
+# Decodes the RSA private key from the given private key and private key password.
 # ```ballerina
 # string keyFile = "/path/to/private.key";
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
@@ -110,7 +110,7 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided PKCS#12 archive file.
+# Decodes the RSA public key from the given PKCS#12 archive file.
 # ```ballerina
 # crypto:TrustStore trustStore = {
 #     path: "/path/tp/truststore.p12",
@@ -127,7 +127,7 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Reads a public key from the provided public certificate file.
+# Decodes the RSA public key from the given public certificate file.
 # ```ballerina
 # string certFile = "/path/to/public.cert";
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromCertFile(certFile);
@@ -139,15 +139,15 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
 } external;
 
-# Returns the `crypto:PublicKey` created with the modulus and exponent retrieved from the JWKs endpoint.
+# Builds the RSA public key from the given modulus and exponent parameters.
 # ```ballerina
 # string modulus = "luZFdW1ynitztkWLC6xKegbRWxky...";
 # string exponent = "AQAB";
 # crypto:PublicKey publicKey = check crypto:buildRsaPublicKey(modulus, exponent);
 # ```
 #
-# + modulus - JWK modulus value ('n' parameter) for the RSA public key
-# + exponent - JWK exponent value ('e' paramenter) for the RSA public key
+# + modulus - Modulus value ('n' parameter) for the RSA public key
+# + exponent - Exponent value ('e' paramenter) for the RSA public key
 # + return - Reference to the public key or else a `crypto:Error` if the modulus or exponent is invalid
 public isolated function buildRsaPublicKey(string modulus, string exponent) returns PublicKey|Error = @java:Method {
     name: "buildRsaPublicKey",

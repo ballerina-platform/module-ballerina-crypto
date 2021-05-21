@@ -86,7 +86,7 @@ public isolated function hashSha512(byte[] input) returns byte[] = @java:Method 
     'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
 } external;
 
-# Returns the Hex-encoded CRC32B value for the provided element.
+# Returns the Hex-encoded CRC32B value for the given data.
 # ```ballerina
 # string stringData = "Hello Ballerina";
 # byte[] data = stringData.toBytes();
