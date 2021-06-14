@@ -46,14 +46,7 @@ allprojects {
             url = 'https://repo.maven.apache.org/maven2'
         }
         maven {
-            url = 'https://maven.pkg.github.com/ballerina-platform/ballerina-lang'
-            credentials {
-                username System.getenv("packageUser")
-                password System.getenv("packagePAT")
-            }
-        }
-        maven {
-            url = 'https://maven.pkg.github.com/ballerina-platform/module-ballerina-time'
+            url = 'https://maven.pkg.github.com/ballerina-platform/*'
             credentials {
                 username System.getenv("packageUser")
                 password System.getenv("packagePAT")
