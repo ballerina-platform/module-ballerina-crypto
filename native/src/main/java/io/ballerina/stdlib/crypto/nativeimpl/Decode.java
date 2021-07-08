@@ -24,7 +24,7 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
-import org.ballerinalang.stdlib.time.util.TimeValueHandler;
+import io.ballerina.stdlib.time.util.TimeValueHandler;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
