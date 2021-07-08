@@ -27,7 +27,7 @@ import ballerina/jballerina.java;
 # + return - Hashed output
 public isolated function hashMd5(byte[] input) returns byte[] = @java:Method {
     name: "hashMd5",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
 # Returns the SHA-1 hash of the given data.
@@ -41,7 +41,7 @@ public isolated function hashMd5(byte[] input) returns byte[] = @java:Method {
 # + return - Hashed output
 public isolated function hashSha1(byte[] input) returns byte[] = @java:Method {
     name: "hashSha1",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
 # Returns the SHA-256 hash of the given data.
@@ -55,7 +55,7 @@ public isolated function hashSha1(byte[] input) returns byte[] = @java:Method {
 # + return - Hashed output
 public isolated function hashSha256(byte[] input) returns byte[] = @java:Method {
     name: "hashSha256",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
 # Returns the SHA-384 hash of the given data.
@@ -69,7 +69,7 @@ public isolated function hashSha256(byte[] input) returns byte[] = @java:Method 
 # + return - Hashed output
 public isolated function hashSha384(byte[] input) returns byte[] = @java:Method {
     name: "hashSha384",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
 # Returns the SHA-512 hash of the given data.
@@ -83,7 +83,7 @@ public isolated function hashSha384(byte[] input) returns byte[] = @java:Method 
 # + return - Hashed output
 public isolated function hashSha512(byte[] input) returns byte[] = @java:Method {
     name: "hashSha512",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
 # Returns the Hex-encoded CRC32B value for the given data.
@@ -97,5 +97,5 @@ public isolated function hashSha512(byte[] input) returns byte[] = @java:Method 
 # + return - The generated checksum
 public isolated function crc32b(byte[] input) returns string = @java:Method {
     name: "crc32b",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hash"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;

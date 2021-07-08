@@ -16,57 +16,51 @@
  * under the License.
  */
 
-package org.ballerinalang.stdlib.crypto.nativeimpl;
+package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
-import org.ballerinalang.stdlib.crypto.Constants;
-import org.ballerinalang.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.Constants;
+import io.ballerina.stdlib.crypto.CryptoUtils;
 
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 /**
- * Extern functions ballerina encrypt algorithms.
+ * Extern functions ballerina decrypt algorithms.
  *
  * @since 0.990.4
  */
-public class Encrypt {
+public class Decrypt {
 
-    private Encrypt() {}
+    private Decrypt() {}
 
-    public static Object encryptAesCbc(BArray inputValue, BArray keyValue, BArray ivValue, Object padding) {
+    public static Object decryptAesCbc(BArray inputValue, BArray keyValue, BArray ivValue, Object padding) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
-        byte[] iv = null;
-        if (ivValue != null) {
-            iv = ivValue.getBytes();
-        }
-        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.ENCRYPT, Constants.CBC, padding.toString(), key,
+        byte[] iv = ivValue.getBytes();
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.CBC, padding.toString(), key,
                 input, iv, -1);
     }
 
-    public static Object encryptAesEcb(BArray inputValue, BArray keyValue,  Object padding) {
+    public static Object decryptAesEcb(BArray inputValue, BArray keyValue, Object padding) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
-        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.ENCRYPT, Constants.ECB, padding.toString(), key,
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
     }
 
-    public static Object encryptAesGcm(BArray inputValue, BArray keyValue,
-                                       BArray ivValue, Object padding, long tagSize) {
+    public static Object decryptAesGcm(BArray inputValue, BArray keyValue, BArray ivValue,  Object padding,
+                                       long tagSize) {
         byte[] input = inputValue.getBytes();
         byte[] key = keyValue.getBytes();
-        byte[] iv = null;
-        if (ivValue != null) {
-            iv = ivValue.getBytes();
-        }
-        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.ENCRYPT, Constants.GCM, padding.toString(), key,
+        byte[] iv = ivValue.getBytes();
+        return CryptoUtils.aesEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.GCM, padding.toString(), key,
                 input, iv, tagSize);
     }
 
-    public static Object encryptRsaEcb(BArray inputValue, Object keys, Object padding) {
+    public static Object decryptRsaEcb(BArray inputValue, Object keys, Object padding) {
         byte[] input = inputValue.getBytes();
         BMap<?, ?> keyMap = (BMap<?, ?>) keys;
         Key key;
@@ -77,7 +71,7 @@ public class Encrypt {
         } else {
             return CryptoUtils.createError("Uninitialized private/public key");
         }
-        return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.ENCRYPT, Constants.ECB, padding.toString(), key,
+        return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
     }
 }

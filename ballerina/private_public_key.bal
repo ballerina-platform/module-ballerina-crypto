@@ -93,7 +93,7 @@ public type Certificate record {|
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
                                                          returns PrivateKey|Error = @java:Method {
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
 # Decodes the RSA private key from the given private key and private key password.
@@ -107,7 +107,7 @@ public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, stri
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
 # Decodes the RSA public key from the given PKCS#12 archive file.
@@ -124,7 +124,7 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
                                                           returns PublicKey|Error = @java:Method {
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
 # Decodes the RSA public key from the given public certificate file.
@@ -136,7 +136,7 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
 # + certFile - Path to the ceritificate file
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
 # Builds the RSA public key from the given modulus and exponent parameters.
@@ -151,5 +151,5 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
 # + return - Reference to the public key or else a `crypto:Error` if the modulus or exponent is invalid
 public isolated function buildRsaPublicKey(string modulus, string exponent) returns PublicKey|Error = @java:Method {
     name: "buildRsaPublicKey",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decode"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;

@@ -33,7 +33,7 @@ import ballerina/jballerina.java;
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaMd5",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Returns the RSA-SHA1 based signature value for the given data.
@@ -53,7 +53,7 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha1",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Returns the RSA-SHA256 based signature value for the given data.
@@ -73,7 +73,7 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha256",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Returns the RSA-SHA384 based signature value for the given data.
@@ -93,7 +93,7 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha384",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Returns the RSA-SHA512 based signature value for the given data.
@@ -113,7 +113,7 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha512",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Verifies the RSA-MD5 based signature.
@@ -137,7 +137,7 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                returns boolean|Error = @java:Method {
     name: "verifyRsaMd5Signature",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Verifies the RSA-SHA1 based signature.
@@ -161,7 +161,7 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                 returns boolean|Error = @java:Method {
     name: "verifyRsaSha1Signature",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Verifies the RSA-SHA256 based signature.
@@ -185,7 +185,7 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
     name: "verifyRsaSha256Signature",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Verifies the RSA-SHA384 based signature.
@@ -209,7 +209,7 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
     name: "verifyRsaSha384Signature",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
 # Verifies the RSA-SHA512 based signature.
@@ -233,5 +233,5 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
     name: "verifyRsaSha512Signature",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Sign"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;

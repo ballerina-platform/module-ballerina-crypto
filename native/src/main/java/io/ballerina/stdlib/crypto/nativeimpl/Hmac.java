@@ -16,10 +16,10 @@
  * under the License.
  */
 
-package org.ballerinalang.stdlib.crypto.nativeimpl;
+package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.values.BArray;
-import org.ballerinalang.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.CryptoUtils;
 
 /**
  * Extern functions ballerina hmac algorithms.

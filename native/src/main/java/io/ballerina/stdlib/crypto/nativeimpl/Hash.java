@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package org.ballerinalang.stdlib.crypto.nativeimpl;
+package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.CryptoUtils;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;

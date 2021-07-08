@@ -1,0 +1,13 @@
+[package]
+org = "ballerina"
+name = "crypto"
+version = "@toml.version@"
+
+[[platform.java11.dependency]]
+path = "../native/build/libs/crypto-native-@project.version@.jar"
+
+[[platform.java11.dependency]]
+path = "./lib/bcpkix-jdk15on-@bouncycastle.version@.jar"
+
+[[platform.java11.dependency]]
+path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"

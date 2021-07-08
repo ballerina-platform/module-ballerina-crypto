@@ -66,7 +66,7 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "encryptRsaEcb",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
 # Returns the AES-CBC-encrypted value for the given data.
@@ -92,7 +92,7 @@ public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesCbc",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
 # Returns the AES-ECB-encrypted value for the given data.
@@ -113,7 +113,7 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesEcb",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
 # Returns the AES-GCM-encrypted value for the given data.
@@ -140,7 +140,7 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "encryptAesGcm",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Encrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
 # Returns the RSA-decrypted value for the given RSA-encrypted data.
@@ -164,7 +164,7 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "decryptRsaEcb",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 
 # Returns the AES-CBC-decrypted value for the given AES-CBC-encrypted data.
@@ -191,7 +191,7 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesCbc",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 
 # Returns the AES-ECB-decrypted value for the given AES-ECB-encrypted data.
@@ -213,7 +213,7 @@ public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesEcb",
-   'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
+   'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 
 # Returns the AES-GCM-decrypted value for the given AES-GCM-encrypted data.
@@ -241,5 +241,5 @@ public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padd
 public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "decryptAesGcm",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Decrypt"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;

@@ -12,8 +12,14 @@ plugins {
 }
 
 rootProject.name = 'crypto'
-include(':build-config:checkstyle')
-include ':crypto-native', ':crypto-ballerina'
+
+include ':checkstyle'
+include ':crypto-native'
+include ':crypto-ballerina'
+
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
+project(':crypto-native').projectDir = file('native')
+project(':crypto-ballerina').projectDir = file('ballerina')
 
 gradleEnterprise {
     buildScan {
