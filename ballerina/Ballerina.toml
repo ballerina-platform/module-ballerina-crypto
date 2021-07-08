@@ -5,18 +5,9 @@ version = "@toml.version@"
 
 [[platform.java11.dependency]]
 path = "../native/build/libs/crypto-native-@project.version@.jar"
-groupId = "ballerina"
-artifactId = "crypto"
-version = "@project.version@"
 
 [[platform.java11.dependency]]
 path = "./lib/bcpkix-jdk15on-@bouncycastle.version@.jar"
-groupId = "org.bouncycastle"
-artifactId = "bcpkix-jdk15on"
-version = "@bouncycastle.version@"
 
 [[platform.java11.dependency]]
 path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"
-groupId = "org.bouncycastle"
-artifactId = "bcprov-jdk15on"
-version = "@bouncycastle.version@"
