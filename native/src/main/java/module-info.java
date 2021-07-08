@@ -20,5 +20,5 @@ module io.ballerina.stdlib.crypto {
     requires io.ballerina.stdlib.time;
     requires org.bouncycastle.provider;
     requires org.bouncycastle.pkix;
-    exports org.ballerinalang.stdlib.crypto.nativeimpl;
+    exports io.ballerina.stdlib.crypto.nativeimpl;
 }

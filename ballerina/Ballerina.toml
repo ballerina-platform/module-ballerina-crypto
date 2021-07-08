@@ -4,7 +4,7 @@ name = "crypto"
 version = "@toml.version@"
 
 [[platform.java11.dependency]]
-path = "../crypto-native/build/libs/crypto-native-@project.version@.jar"
+path = "../native/build/libs/crypto-native-@project.version@.jar"
 groupId = "ballerina"
 artifactId = "crypto"
 version = "@project.version@"

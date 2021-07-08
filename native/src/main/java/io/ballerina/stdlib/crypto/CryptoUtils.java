@@ -15,13 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.ballerinalang.stdlib.crypto;
+package io.ballerina.stdlib.crypto;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BError;
-import org.ballerinalang.stdlib.crypto.nativeimpl.ModuleUtils;
+import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -45,7 +45,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static org.ballerinalang.stdlib.crypto.Constants.CRYPTO_ERROR;
+import static io.ballerina.stdlib.crypto.Constants.CRYPTO_ERROR;
 
 /**
  * Utility functions relevant to crypto operations.

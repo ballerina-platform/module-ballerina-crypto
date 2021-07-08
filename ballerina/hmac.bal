@@ -30,7 +30,7 @@ import ballerina/jballerina.java;
 # + return - The HMAC output or a `crypto:Error` if an error occurred
 public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacMd5",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
 } external;
 
 # Returns the HMAC using the SHA-1 hash function of the given data.
@@ -47,7 +47,7 @@ public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error 
 # + return - The HMAC output or a `crypto:Error` if an error occurred
 public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha1",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
 } external;
 
 # Returns the HMAC using the SHA-256 hash function of the given data.
@@ -64,7 +64,7 @@ public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error
 # + return - The HMAC output or a `crypto:Error` if an error occurred
 public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha256",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
 } external;
 
 # Returns the HMAC using the SHA-384 hash function of the given data.
@@ -81,7 +81,7 @@ public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Err
 # + return - The HMAC output or a `crypto:Error` if an error occurred
 public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha384",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
 } external;
 
 # Returns the HMAC using the SHA-512 hash function of the given data.
@@ -98,5 +98,5 @@ public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Err
 # + return - The HMAC output or a `crypto:Error` if an error occurred
 public isolated function hmacSha512(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha512",
-    'class: "org.ballerinalang.stdlib.crypto.nativeimpl.Hmac"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
 } external;

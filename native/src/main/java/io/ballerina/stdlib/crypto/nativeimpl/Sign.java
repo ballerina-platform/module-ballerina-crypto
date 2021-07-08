@@ -16,12 +16,12 @@
  * under the License.
  */
 
-package org.ballerinalang.stdlib.crypto.nativeimpl;
+package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
-import org.ballerinalang.stdlib.crypto.Constants;
-import org.ballerinalang.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.Constants;
+import io.ballerina.stdlib.crypto.CryptoUtils;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

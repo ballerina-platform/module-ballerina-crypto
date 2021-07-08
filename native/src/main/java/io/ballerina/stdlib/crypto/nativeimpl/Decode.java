@@ -16,14 +16,14 @@
  * under the License.
  */
 
-package org.ballerinalang.stdlib.crypto.nativeimpl;
+package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.stdlib.crypto.Constants;
-import org.ballerinalang.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.Constants;
+import io.ballerina.stdlib.crypto.CryptoUtils;
 import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
