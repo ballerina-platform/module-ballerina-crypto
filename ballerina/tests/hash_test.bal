@@ -60,3 +60,46 @@ isolated function testHashSha512() {
         "E26731DC1CB091FAADA8C5D6433CB1544690804CC046A55D6AFED8BE0B901062").toLowerAscii();
     test:assertEquals(hashSha512(input).toBase16(), expectedSha512Hash, msg = "Error while Hash with SHA512.");
 }
+
+@test:Config {}
+isolated function testHashMd5WithSalt() {
+    byte[] input = "Ballerina test".toBytes();
+    byte[] salt = "s3cr3t".toBytes();
+    string expectedMd5Hash = "6B8DC4929448297E9C9FBE5638CBF85E".toLowerAscii();
+    test:assertEquals(hashMd5(input, salt).toBase16(), expectedMd5Hash, msg = "Error while Hash with MD5.");
+}
+
+@test:Config {}
+isolated function testHashSha1WithSalt() {
+    byte[] input = "Ballerina test".toBytes();
+    byte[] salt = "s3cr3t".toBytes();
+    string expectedSha1Hash = "3A5119055B9593CEC2463E03EDA41FCF7A770D1A".toLowerAscii();
+    test:assertEquals(hashSha1(input, salt).toBase16(), expectedSha1Hash, msg = "Error while Hash with SHA1.");
+}
+
+@test:Config {}
+isolated function testHashSha256WithSalt() {
+    byte[] input = "Ballerina test".toBytes();
+    byte[] salt = "s3cr3t".toBytes();
+    string expectedSha256Hash =
+        "3E28D04139D80A125175A353729982B698B3B0044CD758E896B672A2D224373F".toLowerAscii();
+    test:assertEquals(hashSha256(input, salt).toBase16(), expectedSha256Hash, msg = "Error while Hash with SHA256.");
+}
+
+@test:Config {}
+isolated function testHashSha384WithSalt() {
+    byte[] input = "Ballerina test".toBytes();
+    byte[] salt = "s3cr3t".toBytes();
+    string expectedSha384Hash = ("D3DA4A915288D3E1A8748746E8B24DE38E40289DB6C8205AF14856BDDE2658E8" +
+        "64440DDB5396E76C9D319E983A71FF0E").toLowerAscii();
+    test:assertEquals(hashSha384(input, salt).toBase16(), expectedSha384Hash, msg = "Error while Hash with SHA384.");
+}
+
+@test:Config {}
+isolated function testHashSha512WithSalt() {
+    byte[] input = "Ballerina test".toBytes();
+    byte[] salt = "s3cr3t".toBytes();
+    string expectedSha512Hash = ("7C67E0D9D453D0599B270D9DEE45910E971AD537D5B8BA06B347F1F82D2BE48F" +
+        "5E78702995D181042420860B111781AFEE88ACD455CAA0367271C78DAE0F69DA").toLowerAscii();
+    test:assertEquals(hashSha512(input, salt).toBase16(), expectedSha512Hash, msg = "Error while Hash with SHA512.");
+}
