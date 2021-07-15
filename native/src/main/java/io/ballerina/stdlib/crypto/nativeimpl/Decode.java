@@ -129,7 +129,8 @@ public class Decode {
             } else if (obj instanceof PrivateKeyInfo) {
                 privateKeyInfo = (PrivateKeyInfo) obj;
             } else {
-                return CryptoUtils.createError("Failed to parse private key information from: " + keyFilePath.getValue());
+                return CryptoUtils.createError("Failed to parse private key information from: " +
+                        keyFilePath.getValue());
             }
             PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
             return buildPrivateKeyRecord(privateKey);

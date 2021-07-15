@@ -161,6 +161,16 @@ isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithNoPassword() {
 }
 
 @test:Config {}
+isolated function testParsePrivateKeyFromKeyPairFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(KEY_PAIR_PATH);
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
+    }
+}
+
+@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
     if (result is Error) {

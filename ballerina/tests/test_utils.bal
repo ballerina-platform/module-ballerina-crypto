@@ -16,6 +16,7 @@
 
 const string KEYSTORE_PATH = "tests/resources/keystore.p12";
 const string ENCRYPTED_KEY_PAIR_PATH = "tests/resources/encryptedKeyPair.pem";
+const string KEY_PAIR_PATH = "tests/resources/keyPair.pem";
 const string ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/encryptedPrivate.key";
 const string PRIVATE_KEY_PATH = "tests/resources/private.key";
 const string X509_PUBLIC_CERT_PATH = "tests/resources/x509Public.crt";
