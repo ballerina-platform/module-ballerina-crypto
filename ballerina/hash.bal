@@ -24,8 +24,9 @@ import ballerina/jballerina.java;
 # ```
 #
 # + input - Value to be hashed
+# + salt - Salt to be added
 # + return - Hashed output
-public isolated function hashMd5(byte[] input) returns byte[] = @java:Method {
+public isolated function hashMd5(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashMd5",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
@@ -38,8 +39,9 @@ public isolated function hashMd5(byte[] input) returns byte[] = @java:Method {
 # ```
 #
 # + input - Value to be hashed
+# + salt - Salt to be added
 # + return - Hashed output
-public isolated function hashSha1(byte[] input) returns byte[] = @java:Method {
+public isolated function hashSha1(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha1",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
@@ -52,8 +54,9 @@ public isolated function hashSha1(byte[] input) returns byte[] = @java:Method {
 # ```
 #
 # + input - Value to be hashed
+# + salt - Salt to be added
 # + return - Hashed output
-public isolated function hashSha256(byte[] input) returns byte[] = @java:Method {
+public isolated function hashSha256(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
@@ -66,8 +69,9 @@ public isolated function hashSha256(byte[] input) returns byte[] = @java:Method 
 # ```
 #
 # + input - Value to be hashed
+# + salt - Salt to be added
 # + return - Hashed output
-public isolated function hashSha384(byte[] input) returns byte[] = @java:Method {
+public isolated function hashSha384(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha384",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
@@ -80,8 +84,9 @@ public isolated function hashSha384(byte[] input) returns byte[] = @java:Method 
 # ```
 #
 # + input - Value to be hashed
+# + salt - Salt to be added
 # + return - Hashed output
-public isolated function hashSha512(byte[] input) returns byte[] = @java:Method {
+public isolated function hashSha512(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha512",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;

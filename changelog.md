@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- [Improve hash APIs for cryptographic salt](https://github.com/ballerina-platform/ballerina-standard-library/issues/1517)
+
 ### Fixed
 - [Fails to decode unencrypted RSA private key from PEM encoded key pair](https://github.com/ballerina-platform/ballerina-standard-library/issues/1658)
 

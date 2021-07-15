@@ -44,24 +44,24 @@ public class Hash {
         return StringUtils.fromString(Long.toHexString(checksumVal));
     }
 
-    public static BArray hashMd5(BArray inputValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("MD5", inputValue.getBytes()));
+    public static BArray hashMd5(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("MD5", inputValue.getBytes(), saltValue));
     }
 
-    public static BArray hashSha1(BArray inputValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-1", inputValue.getBytes()));
+    public static BArray hashSha1(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-1", inputValue.getBytes(), saltValue));
     }
 
-    public static BArray hashSha256(BArray inputValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-256", inputValue.getBytes()));
+    public static BArray hashSha256(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-256", inputValue.getBytes(), saltValue));
     }
 
-    public static BArray hashSha384(BArray inputValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-384", inputValue.getBytes()));
+    public static BArray hashSha384(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-384", inputValue.getBytes(), saltValue));
     }
 
-    public static BArray hashSha512(BArray inputValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-512", inputValue.getBytes()));
+    public static BArray hashSha512(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-512", inputValue.getBytes(), saltValue));
     }
 
 }
