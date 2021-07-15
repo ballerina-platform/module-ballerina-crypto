@@ -91,8 +91,8 @@ isolated function testReadPrivateKeyFromP12WithInvalidKeyPassword() {
 }
 
 @test:Config {}
-isolated function testParsePrivateKeyFromPkcs8KeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_PRIVATE_KEY_PATH);
+isolated function testParsePrivateKeyFromKeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -101,8 +101,8 @@ isolated function testParsePrivateKeyFromPkcs8KeyFile() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
+isolated function testParseEncryptedPrivateKeyFromKeyFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -111,8 +111,8 @@ isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFile() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithInvalidPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
+isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
     if (result is Error) {
         test:assertEquals(result.message(), "Unable to do private key operations: unable to read encrypted data: javax.crypto.BadPaddingException: pad block corrupted");
     } else {
@@ -121,8 +121,8 @@ isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithInvalidPasswor
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithNoPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS8_ENCRYPTED_PRIVATE_KEY_PATH);
+isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH);
     if (result is Error) {
         test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
@@ -131,8 +131,8 @@ isolated function testParseEncryptedPrivateKeyFromPkcs8KeyFileWithNoPassword() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
+isolated function testParseEncryptedPrivateKeyFromKeyPairFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "ballerina");
     if (result is PrivateKey) {
         test:assertEquals(result["algorithm"], "RSA");
     } else {
@@ -141,8 +141,8 @@ isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFile() {
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithInvalidPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
+isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithInvalidPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "invalid-password");
     if (result is Error) {
         test:assertEquals(result.message(), "Unable to do private key operations: exception using cipher - please check password and data.");
     } else {
@@ -151,12 +151,22 @@ isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithInvalidPasswor
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromPkcs1KeyFileWithNoPassword() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PKCS1_ENCRYPTED_PRIVATE_KEY_PATH);
+isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithNoPassword() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH);
     if (result is Error) {
         test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
         test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+    }
+}
+
+@test:Config {}
+isolated function testParsePrivateKeyFromKeyPairFile() {
+    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(KEY_PAIR_PATH);
+    if (result is PrivateKey) {
+        test:assertEquals(result["algorithm"], "RSA");
+    } else {
+        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
     }
 }
 

@@ -15,9 +15,10 @@
 // under the License.
 
 const string KEYSTORE_PATH = "tests/resources/keystore.p12";
-const string PKCS1_ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/pkcs1EncryptedPrivate.key";
-const string PKCS8_ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/pkcs8EncryptedPrivate.key";
-const string PKCS8_PRIVATE_KEY_PATH = "tests/resources/pkcs8Private.key";
+const string ENCRYPTED_KEY_PAIR_PATH = "tests/resources/encryptedKeyPair.pem";
+const string KEY_PAIR_PATH = "tests/resources/keyPair.pem";
+const string ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/encryptedPrivate.key";
+const string PRIVATE_KEY_PATH = "tests/resources/private.key";
 const string X509_PUBLIC_CERT_PATH = "tests/resources/x509Public.crt";
 
 const string INVALID_KEYSTORE_PATH = "tests/resources/cert/keystore.p12.invalid";
