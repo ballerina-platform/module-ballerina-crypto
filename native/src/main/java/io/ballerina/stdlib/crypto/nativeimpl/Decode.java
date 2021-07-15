@@ -124,8 +124,13 @@ public class Decode {
                 InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
                         .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
                 privateKeyInfo = ((PKCS8EncryptedPrivateKeyInfo) obj).decryptPrivateKeyInfo(decryptorProvider);
-            } else {
+            } else if (obj instanceof PEMKeyPair) {
+                privateKeyInfo = ((PEMKeyPair) obj).getPrivateKeyInfo();
+            } else if (obj instanceof PrivateKeyInfo) {
                 privateKeyInfo = (PrivateKeyInfo) obj;
+            } else {
+                return CryptoUtils.createError("Failed to parse private key information from: " +
+                        keyFilePath.getValue());
             }
             PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
             return buildPrivateKeyRecord(privateKey);
