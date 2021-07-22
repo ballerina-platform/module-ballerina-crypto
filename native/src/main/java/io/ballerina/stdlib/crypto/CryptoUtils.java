@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
 
@@ -97,13 +98,16 @@ public class CryptoUtils {
      *
      * @param algorithm algorithm used during hashing
      * @param input     input byte array for hashing
+     * @param salt      salt byte array for hashing
      * @return calculated hash value
      */
-    public static byte[] hash(String algorithm, byte[] input) {
+    public static byte[] hash(String algorithm, byte[] input, Object salt) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
-            messageDigest.update(input);
-            return messageDigest.digest();
+            if (salt != null) {
+                messageDigest.update(((BArray) salt).getBytes());
+            }
+            return messageDigest.digest(input);
         } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating hash: " + e.getMessage());
         }
