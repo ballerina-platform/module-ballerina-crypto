@@ -114,7 +114,7 @@ isolated function testParseEncryptedPrivateKeyFromKeyFile() {
 isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
     if (result is Error) {
-        test:assertEquals(result.message(), "Unable to do private key operations: unable to read encrypted data: javax.crypto.BadPaddingException: pad block corrupted");
+        test:assertEquals(result.message(), "Unable to do private key operations: unable to read encrypted data: Error finalising cipher");
     } else {
         test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
     }
