@@ -14,6 +14,9 @@
  * limitations under the License.
  *
  */
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
 buildscript {
     repositories {
         maven {
@@ -34,8 +37,8 @@ description = 'Ballerina - Ballerina Crypto'
 def packageName = "crypto"
 def packageOrg = "ballerina"
 def tomlVersion = stripBallerinaExtensionVersion("${project.version}")
-def ballerinaConfigFile = new File("$project.projectDir/Ballerina.toml")
-def originalConfig = ballerinaConfigFile.text
+def ballerinaTomlFile = new File("$project.projectDir/Ballerina.toml")
+def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/Ballerina.toml")
 
 def stripBallerinaExtensionVersion(String extVersion) {
     if (extVersion.matches(project.ext.timestampedVersionRegex)) {
@@ -76,16 +79,23 @@ task updateTomlFiles {
     doLast {
         def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
 
-        def newConfig = ballerinaConfigFile.text.replace("@project.version@", project.version)
-        newConfig = newConfig.replace("@toml.version@", tomlVersion)
-        newConfig = newConfig.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
-        ballerinaConfigFile.text = newConfig
+        def newBallerinaToml = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
+        newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
+        ballerinaTomlFile.text = newBallerinaToml
     }
 }
 
-task revertTomlFiles {
+task commitTomlFiles {
     doLast {
-        ballerinaConfigFile.text = originalConfig
+        project.exec {
+            ignoreExitValue true
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                commandLine 'cmd', '/c', "git commit Ballerina.toml Dependencies.toml -m '[Automated] Update the native jar versions'"
+            } else {
+                commandLine 'sh', '-c', "git commit Ballerina.toml Dependencies.toml -m '[Automated] Update the native jar versions'"
+            }
+        }
     }
 }
 
