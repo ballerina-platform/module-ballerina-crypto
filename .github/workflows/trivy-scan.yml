@@ -1,4 +1,4 @@
-name: Daily Trivy scan
+name: Trivy
 
 on:
   workflow_dispatch:
