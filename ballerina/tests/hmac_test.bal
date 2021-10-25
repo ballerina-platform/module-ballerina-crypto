@@ -24,6 +24,7 @@ isolated function testHmacMd5() returns Error? {
     byte[]|Error hmac = hmacMd5(message, key);
     test:assertTrue(hmac is byte[]);
     test:assertEquals((check hmac).toBase16(), expectedMd5Hash, msg = "Error while HMAC with MD5.");
+    return;
 }
 
 @test:Config {}
@@ -34,6 +35,7 @@ isolated function testHmacSha1() returns Error? {
     byte[]|Error hmac = hmacSha1(message, key);
     test:assertTrue(hmac is byte[]);
     test:assertEquals((check hmac).toBase16(), expectedSha1Hash, msg = "Error while HMAC with SHA1.");
+    return;
 }
 
 @test:Config {}
@@ -44,6 +46,7 @@ isolated function testHmacSha256() returns Error? {
     byte[]|Error hmac = hmacSha256(message, key);
     test:assertTrue(hmac is byte[]);
     test:assertEquals((check hmac).toBase16(), expectedSha256Hash, msg = "Error while HMAC with SHA256.");
+    return;
 }
 
 @test:Config {}
@@ -55,6 +58,7 @@ isolated function testHmacSha384() returns Error? {
     byte[]|Error hmac = hmacSha384(message, key);
     test:assertTrue(hmac is byte[]);
     test:assertEquals((check hmac).toBase16(), expectedSha384Hash, msg = "Error while HMAC with SHA384.");
+    return;
 }
 
 @test:Config {}
@@ -66,6 +70,7 @@ isolated function testHmacSha512() returns Error? {
     byte[]|Error hmac = hmacSha512(message, key);
     test:assertTrue(hmac is byte[]);
     test:assertEquals((check hmac).toBase16(), expectedSha512Hash, msg = "Error while HMAC with SHA512.");
+    return;
 }
 
 @test:Config {}

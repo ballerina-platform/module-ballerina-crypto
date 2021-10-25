@@ -34,6 +34,7 @@ isolated function testEncryptAndDecryptWithAesCbcNoPadding() returns Error? {
     byte[] cipherText = check encryptAesCbc(message, key, iv, NONE);
     byte[] plainText = check decryptAesCbc(cipherText, key, iv, NONE);
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES CBC.");
+    return;
 }
 
 @test:Config {}
@@ -108,6 +109,7 @@ isolated function testEncryptAndDecryptWithAesCbcNoPaddingUsingInvalidInputLengt
     } else {
         test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES CBC.");
     }
+    return;
 }
 
 @test:Config {}
@@ -129,4 +131,5 @@ isolated function testEncryptAndDecryptWithAesCbcPkcs5() returns Error? {
     byte[] plainText = check decryptAesCbc(cipherText, key, iv, "PKCS5");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with AES CBC PKCS5.");
+    return;
 }

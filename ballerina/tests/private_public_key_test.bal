@@ -204,6 +204,7 @@ isolated function testParsePublicKeyFromP12() returns Error? {
         msg = "Error while checking subject from encrypted public-key from a p12 file.");
     test:assertEquals(signingAlgorithm, "SHA256withRSA",
         msg = "Error while checking signingAlgorithm from encrypted public-key from a p12 file.");
+    return;
 }
 
 @test:Config {}
@@ -270,6 +271,7 @@ isolated function testParsePublicKeyFromX509CertFile() returns Error? {
         msg = "Error while checking subject from public-key from a cert file.");
     test:assertEquals(signingAlgorithm, "SHA256withRSA",
         msg = "Error while checking signingAlgorithm from public-key from a cert file.");
+    return;
 }
 
 @test:Config {}
@@ -303,6 +305,7 @@ isolated function testBuildPublicKeyFromJwk() returns Error? {
     string exponent = "AQAB";
     PublicKey publicKey = check buildRsaPublicKey(modulus, exponent);
     test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while building public key from JWK.");
+    return;
 }
 
 @test:Config {}

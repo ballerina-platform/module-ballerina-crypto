@@ -34,6 +34,7 @@ isolated function testEncryptAndDecryptWithAesGcmNoPadding() returns Error? {
     byte[] cipherText = check encryptAesGcm(message, key, iv, NONE, 128);
     byte[] plainText = check decryptAesGcm(cipherText, key, iv, NONE, 128);
     test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES GCM.");
+    return;
 }
 
 @test:Config {
@@ -105,6 +106,7 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
     byte[] plainText = check decryptAesGcm(cipherText, key, iv, "PKCS5");
     test:assertEquals(plainText.toBase16(), message.toBase16(),
         msg = "Error while Encrypt/Decrypt with AES GCM PKCS5.");
+    return;
 }
 
 @test:Config {}
