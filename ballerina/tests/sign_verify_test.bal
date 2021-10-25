@@ -32,6 +32,7 @@ isolated function testSignRsaMd5() returns Error? {
         "67145ec0e6e8abfc3f7f10122cc278b5469eb970034483839f290eec";
     byte[] md5Signature = check signRsaMd5(payload, privateKey);
     test:assertEquals(md5Signature.toBase16(), expectedMd5Signature, msg = "Error while RSA sign with MD5.");
+    return;
 }
 
 @test:Config {}
@@ -50,6 +51,7 @@ isolated function testSignRsaSha1() returns Error? {
         "02f7840f8991b8c335b0332b3b4bd658030ec3007f6f36c190b8663d3b746";
     byte[] sha1Signature = check signRsaSha1(payload, privateKey);
     test:assertEquals(sha1Signature.toBase16(), expectedSha1Signature, msg = "Error while RSA sign with SHA1.");
+    return;
 }
 
 @test:Config {}
@@ -68,6 +70,7 @@ isolated function testSignRsaSha256() returns Error? {
         "0c11ef2a0d32088d4683d915005c9dcc8137611e5bff9dc4a5db6f87";
     byte[] sha256Signature = check signRsaSha256(payload, privateKey);
     test:assertEquals(sha256Signature.toBase16(), expectedSha256Signature, msg = "Error while RSA sign with SHA256.");
+    return;
 }
 
 @test:Config {}
@@ -86,6 +89,7 @@ isolated function testSignRsaSha384() returns Error? {
         "EF7D8F8BF0659E1D6B77916B4AEEC79989AFDAA2F5B8983DE476C1A0FFBB2B647DE449E").toLowerAscii();
     byte[] sha384Signature = check signRsaSha384(payload, privateKey);
     test:assertEquals(sha384Signature.toBase16(), expectedSha384Signature, msg = "Error while RSA sign with SHA384.");
+    return;
 }
 
 @test:Config {}
@@ -104,6 +108,7 @@ isolated function testSignRsaSha512() returns Error? {
         "9cb2e6e669ec3352073a8933a2a0cac6056b4997b3628132f7a7e553";
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertEquals(sha512Signature.toBase16(), expectedSha512Signature, msg = "Error while RSA sign with SHA512.");
+    return;
 }
 
 @test:Config {}
@@ -193,6 +198,7 @@ isolated function testVerifyRsaMd5() returns Error? {
         "67145ec0e6e8abfc3f7f10122cc278b5469eb970034483839f290eec";
     byte[] md5Signature = check signRsaMd5(payload, privateKey);
     test:assertTrue(check verifyRsaMd5Signature(payload, md5Signature, publicKey));
+    return;
 }
 
 @test:Config {}
@@ -212,6 +218,7 @@ isolated function testVerifyRsaSha1() returns Error? {
         "02f7840f8991b8c335b0332b3b4bd658030ec3007f6f36c190b8663d3b746";
     byte[] sha1Signature = check signRsaSha1(payload, privateKey);
     test:assertTrue(check verifyRsaSha1Signature(payload, sha1Signature, publicKey));
+    return;
 }
 
 @test:Config {}
@@ -231,6 +238,7 @@ isolated function testVerifyRsaSha256() returns Error? {
         "0c11ef2a0d32088d4683d915005c9dcc8137611e5bff9dc4a5db6f87";
     byte[] sha256Signature = check signRsaSha256(payload, privateKey);
     test:assertTrue(check verifyRsaSha256Signature(payload, sha256Signature, publicKey));
+    return;
 }
 
 @test:Config {}
@@ -250,6 +258,7 @@ isolated function testVerifyRsaSha384() returns Error? {
         "EF7D8F8BF0659E1D6B77916B4AEEC79989AFDAA2F5B8983DE476C1A0FFBB2B647DE449E").toLowerAscii();
     byte[] sha384Signature = check signRsaSha384(payload, privateKey);
     test:assertTrue(check verifyRsaSha384Signature(payload, sha384Signature, publicKey));
+    return;
 }
 
 @test:Config {}
@@ -269,4 +278,5 @@ isolated function testVerifyRsaSha512() returns Error? {
         "9cb2e6e669ec3352073a8933a2a0cac6056b4997b3628132f7a7e553";
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertTrue(check verifyRsaSha512Signature(payload, sha512Signature, publicKey));
+    return;
 }
