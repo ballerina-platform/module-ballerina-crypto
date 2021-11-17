@@ -1,6 +1,6 @@
 ## Overview
 
-This module provides the common cryptographic mechanisms with different algorithms.
+This module provides common cryptographic mechanisms based on different algorithms.
 
 The Ballerina `crypto` module facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
 
