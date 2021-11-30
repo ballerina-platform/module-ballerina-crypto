@@ -88,7 +88,7 @@ public class Constants {
     // Crypto error type ID
     static final String CRYPTO_ERROR = "Error";
 
-    // PKCS12 keystore type
+    // PKCS12 KeyStore type
     public static final String KEYSTORE_TYPE_PKCS12 = "PKCS12";
 
     // X509 certificate type

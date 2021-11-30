@@ -69,7 +69,7 @@ public class Decrypt {
         } else if (keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY) != null) {
             key = (PublicKey) keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         } else {
-            return CryptoUtils.createError("Uninitialized private/public key");
+            return CryptoUtils.createError("Uninitialized private/public key.");
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);

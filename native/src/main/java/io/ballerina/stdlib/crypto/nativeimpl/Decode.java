@@ -71,28 +71,28 @@ public class Decode {
 
     private Decode() {}
 
-    public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStore, BString keyAlias,
+    public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                          BString keyPassword) {
-        File keyStoreFile = new File(keyStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
+        File keyStoreFile = new File(keyStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
-            KeyStore keystore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
+            KeyStore keyStore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
             try {
-                keystore.load(fileInputStream, keyStore.get(Constants.KEY_STORE_RECORD_PASSWORD_FIELD).toString()
+                keyStore.load(fileInputStream, keyStoreRecord.get(Constants.KEY_STORE_RECORD_PASSWORD_FIELD).toString()
                         .toCharArray());
             } catch (NoSuchAlgorithmException e) {
                 return CryptoUtils.createError("Keystore integrity check algorithm is not found: " + e.getMessage());
             }
 
-            PrivateKey privateKey = (PrivateKey) keystore.getKey(keyAlias.getValue(),
+            PrivateKey privateKey = (PrivateKey) keyStore.getKey(keyAlias.getValue(),
                                                                  keyPassword.getValue().toCharArray());
             if (privateKey == null) {
                 return CryptoUtils.createError("Key cannot be recovered by using given key alias: " + keyAlias);
             }
             return buildPrivateKeyRecord(privateKey);
         } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("PKCS12 keystore not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 KeyStore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
-            return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
+            return CryptoUtils.createError("Unable to open KeyStore: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Algorithm for key recovery is not found: " + e.getMessage());
         } catch (UnrecoverableKeyException e) {
@@ -154,26 +154,26 @@ public class Decode {
         }
     }
 
-    public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStore, BString keyAlias) {
-        File keyStoreFile = new File(trustStore.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
+    public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
+        File keyStoreFile = new File(trustStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
-            KeyStore keystore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
+            KeyStore keyStore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
             try {
-                keystore.load(fileInputStream, trustStore.get(Constants.KEY_STORE_RECORD_PASSWORD_FIELD).toString()
-                        .toCharArray());
+                keyStore.load(fileInputStream, trustStoreRecord.get(Constants.KEY_STORE_RECORD_PASSWORD_FIELD)
+                        .toString().toCharArray());
             } catch (NoSuchAlgorithmException e) {
                 return CryptoUtils.createError("Keystore integrity check algorithm is not found: " + e.getMessage());
             }
 
-            Certificate certificate = keystore.getCertificate(keyAlias.getValue());
+            Certificate certificate = keyStore.getCertificate(keyAlias.getValue());
             if (certificate == null) {
                 return CryptoUtils.createError("Certificate cannot be recovered by using given key alias: " + keyAlias);
             }
             return buildPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("PKCS12 keystore not found at: " + keyStoreFile.getAbsoluteFile());
+            return CryptoUtils.createError("PKCS12 KeyStore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
-            return CryptoUtils.createError("Unable to open keystore: " + e.getMessage());
+            return CryptoUtils.createError("Unable to open KeyStore: " + e.getMessage());
         }
     }
 

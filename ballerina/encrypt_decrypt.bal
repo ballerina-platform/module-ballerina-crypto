@@ -52,8 +52,8 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 # byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
@@ -148,8 +148,8 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
