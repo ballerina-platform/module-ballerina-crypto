@@ -17,17 +17,13 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromP12() {
+isolated function testParseEncryptedPrivateKeyFromP12() returns Error? {
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
         password: "ballerina"
     };
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    if (result is PrivateKey) {
-        test:assertEquals(result["algorithm"], "RSA");
-    } else {
-        test:assertFail(msg = "Error while decoding encrypted private-key from a p12 file. " + result.message());
-    }
+    PrivateKey result = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    test:assertEquals(result["algorithm"], "RSA");
 }
 
 @test:Config {}
@@ -37,11 +33,10 @@ isolated function testReadPrivateKeyFromNonExistingP12() {
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("PKCS12 keystore not found at:"),
-            msg = "Incorrect error for reading private key from non existing p12 file.");
+    if result is Error {
+        test:assertTrue(result.message().includes("PKCS12 KeyStore not found at:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a private key from a non-existing p12 file.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -52,11 +47,10 @@ isolated function testReadPrivateKeyFromP12WithInvalidKeyStorePassword() {
         password: "invalid"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "invalid", "ballerina");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Unable to open keystore:"),
-            msg = "Incorrect error for reading private key from a p12 file with invalid keystore password.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a private key from a p12 file with keystore password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -67,11 +61,10 @@ isolated function testReadPrivateKeyFromP12WithInvalidAlias() {
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "invalid", "ballerina");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Key cannot be recovered by using given key alias:"),
-            msg = "Incorrect error for reading private key from a p12 file with invalid alias.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Key cannot be recovered by using given key alias:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a private key from a p12 file with invalid alias.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -82,102 +75,84 @@ isolated function testReadPrivateKeyFromP12WithInvalidKeyPassword() {
         password: "ballerina"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "invalid");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Key cannot be recovered:"),
-            msg = "Incorrect error for reading private key from a p12 file with invalid key password.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Key cannot be recovered:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a private key from a p12 file with key password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
-isolated function testParsePrivateKeyFromKeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
-    if (result is PrivateKey) {
-        test:assertEquals(result["algorithm"], "RSA");
-    } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
-    }
+isolated function testParsePrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
+    test:assertEquals(result["algorithm"], "RSA");
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromKeyFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
-    if (result is PrivateKey) {
-        test:assertEquals(result["algorithm"], "RSA");
-    } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
-    }
+isolated function testParseEncryptedPrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
+    test:assertEquals(result["algorithm"], "RSA");
 }
 
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyFileWithInvalidPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "invalid-password");
-    if (result is Error) {
+    if result is Error {
         test:assertEquals(result.message(), "Unable to do private key operations: unable to read encrypted data: Error finalising cipher");
     } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH);
-    if (result is Error) {
+    if result is Error {
         test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
-isolated function testParseEncryptedPrivateKeyFromKeyPairFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "ballerina");
-    if (result is PrivateKey) {
-        test:assertEquals(result["algorithm"], "RSA");
-    } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
-    }
+isolated function testParseEncryptedPrivateKeyFromKeyPairFile() returns Error? {
+    PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "ballerina");
+    test:assertEquals(result["algorithm"], "RSA");
 }
 
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithInvalidPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "invalid-password");
-    if (result is Error) {
+    if result is Error {
         test:assertEquals(result.message(), "Unable to do private key operations: exception using cipher - please check password and data.");
     } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithNoPassword() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH);
-    if (result is Error) {
+    if result is Error {
         test:assertEquals(result.message(), "Failed to read the encrypted private key without a password.");
     } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file with invalid password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
-isolated function testParsePrivateKeyFromKeyPairFile() {
-    PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(KEY_PAIR_PATH);
-    if (result is PrivateKey) {
-        test:assertEquals(result["algorithm"], "RSA");
-    } else {
-        test:assertFail(msg = "Error while decoding private-key from a key file. " + result.message());
-    }
+isolated function testParsePrivateKeyFromKeyPairFile() returns Error? {
+    PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(KEY_PAIR_PATH);
+    test:assertEquals(result["algorithm"], "RSA");
 }
 
 @test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Key file not found at:"),
-            msg = "Incorrect error for reading private key from non existing key file.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Key file not found at:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a private key from a non-existing key file.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -188,7 +163,7 @@ isolated function testParsePublicKeyFromP12() returns Error? {
         password: "ballerina"
     };
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
-    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing encrypted public-key from a p12 file.");
+    test:assertEquals(publicKey["algorithm"], "RSA");
     Certificate certificate = <Certificate>publicKey["certificate"];
 
     string serial = (<int>certificate["serial"]).toString();
@@ -196,15 +171,10 @@ isolated function testParsePublicKeyFromP12() returns Error? {
     string subject = <string>certificate["subject"];
     string signingAlgorithm = <string>certificate["signingAlgorithm"];
 
-    test:assertEquals(serial, "2097012467",
-        msg = "Error while checking serial from encrypted public-key from a p12 file.");
-    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
-        msg = "Error while checking issuer from encrypted public-key from a p12 file.");
-    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
-        msg = "Error while checking subject from encrypted public-key from a p12 file.");
-    test:assertEquals(signingAlgorithm, "SHA256withRSA",
-        msg = "Error while checking signingAlgorithm from encrypted public-key from a p12 file.");
-    return;
+    test:assertEquals(serial, "2097012467");
+    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(signingAlgorithm, "SHA256withRSA");
 }
 
 @test:Config {}
@@ -214,11 +184,10 @@ isolated function testReadPublicKeyFromNonExistingP12() {
         password: "ballerina"
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("PKCS12 keystore not found at:"),
-            msg = "Incorrect error for reading public key from non existing p12 file.");
+    if result is Error {
+        test:assertTrue(result.message().includes("PKCS12 KeyStore not found at:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a public key from a non-existing p12 file.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -229,11 +198,10 @@ isolated function testReadPublicKeyFromP12WithInvalidTrustStorePassword() {
         password: "invalid"
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Unable to open keystore:"),
-            msg = "Incorrect error for reading public key from a p12 file with invalid keystore password.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a public key from a p12 file with keystore password.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -244,18 +212,17 @@ isolated function testReadPublicKeyFromP12WithInvalidAlias() {
         password: "ballerina"
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(trustStore, "invalid");
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Certificate cannot be recovered by using given key alias:"),
-            msg = "Incorrect error for reading public key from a p12 file with invalid alias.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Certificate cannot be recovered by using given key alias:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a public key from a p12 file with invalid alias.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
 isolated function testParsePublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
-    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while check parsing public-key from a cert file.");
+    test:assertEquals(publicKey["algorithm"], "RSA");
     Certificate certificate = <Certificate>publicKey["certificate"];
 
     string serial = (<int>certificate["serial"]).toString();
@@ -263,36 +230,29 @@ isolated function testParsePublicKeyFromX509CertFile() returns Error? {
     string subject = <string>certificate["subject"];
     string signingAlgorithm = <string>certificate["signingAlgorithm"];
 
-    test:assertEquals(serial, "2097012467",
-        msg = "Error while checking serial from public-key from a cert file.");
-    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
-        msg = "Error while checking issuer from public-key from a cert file.");
-    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US",
-        msg = "Error while checking subject from public-key from a cert file.");
-    test:assertEquals(signingAlgorithm, "SHA256withRSA",
-        msg = "Error while checking signingAlgorithm from public-key from a cert file.");
-    return;
+    test:assertEquals(serial, "2097012467");
+    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(signingAlgorithm, "SHA256withRSA");
 }
 
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
     PublicKey|Error result = decodeRsaPublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Certificate file not found at:"),
-            msg = "Incorrect error for reading public key from non-existing cert file.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Certificate file not found at:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a public key from a non-existing cert file.");
+        test:assertFail("Expected error not found.");
     }
 }
 
 @test:Config {}
 isolated function testReadPublicKeyFromInvalidCertFile() {
     PublicKey|Error result = decodeRsaPublicKeyFromCertFile(KEYSTORE_PATH);
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Unable to do public key operations:"),
-            msg = "Incorrect error for reading public key from invalid cert file.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Unable to do public key operations:"));
     } else {
-        test:assertFail(msg = "No error while attempting to read a public key from a invalid cert file.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -304,8 +264,7 @@ isolated function testBuildPublicKeyFromJwk() returns Error? {
         "T_9-zRxxQs7GurC4_C1nK3rI_0ySUgGEafO1atNjYmlFN-M3tZX6nEcA6g94IavyQ";
     string exponent = "AQAB";
     PublicKey publicKey = check buildRsaPublicKey(modulus, exponent);
-    test:assertEquals(publicKey["algorithm"], "RSA", msg = "Error while building public key from JWK.");
-    return;
+    test:assertEquals(publicKey["algorithm"], "RSA");
 }
 
 @test:Config {}
@@ -313,10 +272,9 @@ isolated function testBuildPublicKeyFromJwkWithInvalidModulus() {
     string modulus = "invalid";
     string exponent = "AQAB";
     PublicKey|Error result = buildRsaPublicKey(modulus, exponent);
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Invalid modulus or exponent:"),
-            msg = "Incorrect error while building public key from invalid modulus.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Invalid modulus or exponent:"));
     } else {
-        test:assertFail(msg = "No error while attempting to build public key from invalid modulus.");
+        test:assertFail("Expected error not found.");
     }
 }

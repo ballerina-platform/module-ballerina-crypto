@@ -21,14 +21,13 @@ isolated function testEncryptAndDecryptWithAesEcbNoPadding() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     byte[] key = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     byte[] cipherText = check encryptAesEcb(message, key, NONE);
     byte[] plainText = check decryptAesEcb(cipherText, key, NONE);
-    test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES ECB.");
-    return;
+    test:assertEquals(plainText.toBase16(), message.toBase16());
 }
 
 @test:Config {}
@@ -36,16 +35,15 @@ isolated function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidKeySize() 
     byte[] message = "Ballerina crypto test           ".toBytes();
     int i = 0;
     byte[] invalidKey = [];
-    while (i < 31) {
+    while i < 31 {
         invalidKey[i] = <byte> i;
         i = i + 1;
     }
     byte[]|Error result = encryptAesEcb(message, invalidKey, NONE);
-    if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
-            msg = "Incorrect error for invalid key while No Padding Encryption with AES ECB.");
+    if result is Error {
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]");
     } else {
-        test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES ECB.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -54,17 +52,16 @@ isolated function testEncryptAndDecryptWithAesEcbNoPaddingUsingInvalidInputLengt
     byte[] invalidMessage = "Ballerina crypto test".toBytes();
     byte[] key = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     byte[]|Error result = encryptAesEcb(invalidMessage, key, NONE);
-    if (result is Error) {
+    if result is Error {
         test:assertEquals(result.message(),
-            "Error occurred while AES encrypt/decrypt: Input length not multiple of 16 bytes",
-            msg = "Incorrect error for for invalid input length while No Padding Encryption with AES ECB.");
+            "Error occurred while AES encrypt/decrypt: Input length not multiple of 16 bytes");
     } else {
-        test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES ECB.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -73,12 +70,11 @@ isolated function testEncryptAndDecryptWithAesEcbPkcs5() returns Error? {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     byte[] cipherText = check encryptAesEcb(message, key, "PKCS5");
     byte[] plainText = check decryptAesEcb(cipherText, key, "PKCS5");
-    test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES ECB PKCS5.");
-    return;
+    test:assertEquals(plainText.toBase16(), message.toBase16());
 }

@@ -23,7 +23,7 @@ public type KeyAlgorithm RSA;
 # The `RSA` algorithm.
 public const RSA = "RSA";
 
-# Represents the keystore-related configurations.
+# Represents the KeyStore-related configurations.
 #
 # + path - Path to the KeyStore file
 # + password - KeyStore password
@@ -81,8 +81,8 @@ public type Certificate record {|
 # Decodes the RSA private key from the given PKCS#12 archive file.
 # ```ballerina
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```

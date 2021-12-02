@@ -21,8 +21,8 @@ import ballerina/jballerina.java;
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
@@ -41,8 +41,8 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha1(data, privateKey);
@@ -61,8 +61,8 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha256(data, privateKey);
@@ -81,8 +81,8 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha384(data, privateKey);
@@ -101,8 +101,8 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha512(data, privateKey);
@@ -121,8 +121,8 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword")
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
@@ -145,8 +145,8 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
@@ -169,8 +169,8 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
@@ -193,8 +193,8 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
@@ -217,8 +217,8 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
 # crypto:KeyStore keyStore = {
-#     path: "/path/to/keystore.p12",
-#     password: "keystorePassword"
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);

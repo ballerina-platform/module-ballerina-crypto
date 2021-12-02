@@ -14,13 +14,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-const string KEYSTORE_PATH = "tests/resources/keystore.p12";
+const string KEYSTORE_PATH = "tests/resources/keyStore.p12";
 const string ENCRYPTED_KEY_PAIR_PATH = "tests/resources/encryptedKeyPair.pem";
 const string KEY_PAIR_PATH = "tests/resources/keyPair.pem";
 const string ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/encryptedPrivate.key";
 const string PRIVATE_KEY_PATH = "tests/resources/private.key";
 const string X509_PUBLIC_CERT_PATH = "tests/resources/public.crt";
 
-const string INVALID_KEYSTORE_PATH = "tests/resources/cert/keystore.p12.invalid";
+const string INVALID_KEYSTORE_PATH = "tests/resources/cert/keyStore.p12.invalid";
 const string INVALID_PRIVATE_KEY_PATH = "tests/resources/cert/private.key.invalid";
 const string INVALID_PUBLIC_CERT_PATH = "tests/resources/cert/public.crt.invalid";

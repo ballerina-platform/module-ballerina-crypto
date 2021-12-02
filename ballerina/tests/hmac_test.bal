@@ -21,10 +21,8 @@ isolated function testHmacMd5() returns Error? {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedMd5Hash = "3D5AC29160F2905A5C8153597798A4C1".toLowerAscii();
-    byte[]|Error hmac = hmacMd5(message, key);
-    test:assertTrue(hmac is byte[]);
-    test:assertEquals((check hmac).toBase16(), expectedMd5Hash, msg = "Error while HMAC with MD5.");
-    return;
+    byte[] hmac = check hmacMd5(message, key);
+    test:assertEquals(hmac.toBase16(), expectedMd5Hash);
 }
 
 @test:Config {}
@@ -32,10 +30,8 @@ isolated function testHmacSha1() returns Error? {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha1Hash = "13DD8D54D0EB702EDC6E8EDCAF616837D3A51499".toLowerAscii();
-    byte[]|Error hmac = hmacSha1(message, key);
-    test:assertTrue(hmac is byte[]);
-    test:assertEquals((check hmac).toBase16(), expectedSha1Hash, msg = "Error while HMAC with SHA1.");
-    return;
+    byte[] hmac = check hmacSha1(message, key);
+    test:assertEquals(hmac.toBase16(), expectedSha1Hash);
 }
 
 @test:Config {}
@@ -43,10 +39,8 @@ isolated function testHmacSha256() returns Error? {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha256Hash = "2651203E18BF0088D3EF1215022D147E2534FD4BAD5689C9E5F12436E9758B15".toLowerAscii();
-    byte[]|Error hmac = hmacSha256(message, key);
-    test:assertTrue(hmac is byte[]);
-    test:assertEquals((check hmac).toBase16(), expectedSha256Hash, msg = "Error while HMAC with SHA256.");
-    return;
+    byte[] hmac = check hmacSha256(message, key);
+    test:assertEquals(hmac.toBase16(), expectedSha256Hash);
 }
 
 @test:Config {}
@@ -55,10 +49,8 @@ isolated function testHmacSha384() returns Error? {
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha384Hash = ("c27a281dffed3d4d176646d7261e9f6268a3d40a237cd274fc2f5970f637f1c" +
         "bc20a3835d7b7aa7401308737f23a9bf7").toLowerAscii();
-    byte[]|Error hmac = hmacSha384(message, key);
-    test:assertTrue(hmac is byte[]);
-    test:assertEquals((check hmac).toBase16(), expectedSha384Hash, msg = "Error while HMAC with SHA384.");
-    return;
+    byte[] hmac = check hmacSha384(message, key);
+    test:assertEquals(hmac.toBase16(), expectedSha384Hash);
 }
 
 @test:Config {}
@@ -67,48 +59,61 @@ isolated function testHmacSha512() returns Error? {
     byte[] key = "abcdefghijk".toBytes();
     string expectedSha512Hash = ("78d99bf3e5277fc893af6cd6b0487c33ed3abc4f956fdd1fada302f135b012a" +
         "3c71cadaaeb462e51ff281202bdfa8807719b91f69742c3f71f036c469ac5b918").toLowerAscii();
-    byte[]|Error hmac = hmacSha512(message, key);
-    test:assertTrue(hmac is byte[]);
-    test:assertEquals((check hmac).toBase16(), expectedSha512Hash, msg = "Error while HMAC with SHA512.");
-    return;
+    byte[] hmac = check hmacSha512(message, key);
+    test:assertEquals(hmac.toBase16(), expectedSha512Hash);
 }
 
 @test:Config {}
 isolated function testHmacMd5WithEmptyKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[]|Error hmac = hmacMd5(message, []);
-    test:assertTrue(hmac is Error);
-    test:assertEquals((<Error>hmac).message(), "Error occurred while calculating HMAC: Empty key");
+    if hmac is Error {
+        test:assertEquals(hmac.message(), "Error occurred while calculating HMAC: Empty key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
 }
 
 @test:Config {}
 isolated function testHmacSha1WithEmptyKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[]|Error hmac = hmacSha1(message, []);
-    test:assertTrue(hmac is Error);
-    test:assertEquals((<Error>hmac).message(), "Error occurred while calculating HMAC: Empty key");
+    if hmac is Error {
+        test:assertEquals(hmac.message(), "Error occurred while calculating HMAC: Empty key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
 }
 
 @test:Config {}
 isolated function testHmacSha256WithEmptyKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[]|Error hmac = hmacSha256(message, []);
-    test:assertTrue(hmac is Error);
-    test:assertEquals((<Error>hmac).message(), "Error occurred while calculating HMAC: Empty key");
+    if hmac is Error {
+        test:assertEquals(hmac.message(), "Error occurred while calculating HMAC: Empty key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
 }
 
 @test:Config {}
 isolated function testHmacSha384WithEmptyKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[]|Error hmac = hmacSha384(message, []);
-    test:assertTrue(hmac is Error);
-    test:assertEquals((<Error>hmac).message(), "Error occurred while calculating HMAC: Empty key");
+    if hmac is Error {
+        test:assertEquals(hmac.message(), "Error occurred while calculating HMAC: Empty key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
 }
 
 @test:Config {}
 isolated function testHmacSha512WithEmptyKey() {
     byte[] message = "Ballerina HMAC test".toBytes();
     byte[]|Error hmac = hmacSha512(message, []);
-    test:assertTrue(hmac is Error);
-    test:assertEquals((<Error>hmac).message(), "Error occurred while calculating HMAC: Empty key");
+    if hmac is Error {
+        test:assertEquals(hmac.message(), "Error occurred while calculating HMAC: Empty key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
 }

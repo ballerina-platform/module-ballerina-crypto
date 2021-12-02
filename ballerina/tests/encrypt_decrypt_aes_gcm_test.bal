@@ -22,19 +22,18 @@ isolated function testEncryptAndDecryptWithAesGcmNoPadding() returns Error? {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while (i < 16) {
+    while i < 16 {
         iv[i] = <byte> i;
         i = i + 1;
     }
     byte[] cipherText = check encryptAesGcm(message, key, iv, NONE, 128);
     byte[] plainText = check decryptAesGcm(cipherText, key, iv, NONE, 128);
-    test:assertEquals(plainText.toBase16(), message.toBase16(), msg = "Error while Encrypt/Decrypt with AES GCM.");
-    return;
+    test:assertEquals(plainText.toBase16(), message.toBase16());
 }
 
 @test:Config {
@@ -45,21 +44,20 @@ isolated function testEncryptWithAesGcmNoPaddingUsingInvalidInputLength() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while (i < 16) {
+    while i < 16 {
         iv[i] = <byte> i;
         i = i + 1;
     }
     byte[]|Error result = encryptAesGcm(invalidMessage, key, iv, NONE);
-    if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
-            msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
+    if result is Error {
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]");
     } else {
-        test:assertFail(msg = "No error for invalid input length while No Padding Encryption with AES GCM.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -69,21 +67,20 @@ isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() 
     byte[] iv = [];
     int i = 0;
     byte[] invalidKey = [];
-    while (i < 31) {
+    while i < 31 {
         invalidKey[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while (i < 16) {
+    while i < 16 {
         iv[i] = <byte> i;
         i = i + 1;
     }
     byte[]|Error result = encryptAesGcm(message, invalidKey, iv, NONE, 128);
-    if (result is Error) {
-        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]",
-            msg = "Incorrect error for invalid key while No Padding Encryption with AES GCM.");
+    if result is Error {
+        test:assertEquals(result.message(), "Invalid key size. Valid key sizes in bytes: [16, 24, 32]");
     } else {
-        test:assertFail(msg = "No error for invalid key while No Padding Encryption with AES GCM.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -93,20 +90,18 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while (i < 16) {
+    while i < 16 {
         iv[i] = <byte> i;
         i = i + 1;
     }
     byte[] cipherText = check encryptAesGcm(message, key, iv, "PKCS5");
     byte[] plainText = check decryptAesGcm(cipherText, key, iv, "PKCS5");
-    test:assertEquals(plainText.toBase16(), message.toBase16(),
-        msg = "Error while Encrypt/Decrypt with AES GCM PKCS5.");
-    return;
+    test:assertEquals(plainText.toBase16(), message.toBase16());
 }
 
 @test:Config {}
@@ -115,20 +110,19 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
     byte[] key = [];
     byte[] iv = [];
     int i = 0;
-    while (i < 16) {
+    while i < 16 {
         key[i] = <byte> i;
         i = i + 1;
     }
     i = 0;
-    while (i < 16) {
+    while i < 16 {
         iv[i] = <byte> i;
         i = i + 1;
     }
     byte[]|Error result = encryptAesGcm(message, key, iv, "PKCS5", 500);
-    if (result is Error) {
-        test:assertTrue(result.message().includes("Invalid tag size. Valid tag sizes in bytes:"),
-            msg = "Incorrect error for invalid key while Encryption with AES GCM PKCS5.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Invalid tag size. Valid tag sizes in bytes:"));
     } else {
-        test:assertFail(msg = "No error for invalid tag size while Encryption with AES GCM PKCS5.");
+        test:assertFail("Expected error not found.");
     }
 }

@@ -31,8 +31,7 @@ isolated function testSignRsaMd5() returns Error? {
         "ae3603c158cbd32ff9298df71f930cebdda8564199e948f1ac03173e9f9d425240c7f99857d5f469dd0b23c0248b4fa42e" +
         "67145ec0e6e8abfc3f7f10122cc278b5469eb970034483839f290eec";
     byte[] md5Signature = check signRsaMd5(payload, privateKey);
-    test:assertEquals(md5Signature.toBase16(), expectedMd5Signature, msg = "Error while RSA sign with MD5.");
-    return;
+    test:assertEquals(md5Signature.toBase16(), expectedMd5Signature);
 }
 
 @test:Config {}
@@ -50,8 +49,7 @@ isolated function testSignRsaSha1() returns Error? {
         "27c6f61828437d5491549b05025e9a98bf27825dc6002068678dde1e7d365407881b2b1a4d4e522a53f69e5b43202299e" +
         "02f7840f8991b8c335b0332b3b4bd658030ec3007f6f36c190b8663d3b746";
     byte[] sha1Signature = check signRsaSha1(payload, privateKey);
-    test:assertEquals(sha1Signature.toBase16(), expectedSha1Signature, msg = "Error while RSA sign with SHA1.");
-    return;
+    test:assertEquals(sha1Signature.toBase16(), expectedSha1Signature);
 }
 
 @test:Config {}
@@ -69,8 +67,7 @@ isolated function testSignRsaSha256() returns Error? {
         "6a2b507fc538bd16bccabc2f3b95137370dcca31e80866533bf445cf7f63aec6a9fa596333abb3a59d9b327891c7e6016e" +
         "0c11ef2a0d32088d4683d915005c9dcc8137611e5bff9dc4a5db6f87";
     byte[] sha256Signature = check signRsaSha256(payload, privateKey);
-    test:assertEquals(sha256Signature.toBase16(), expectedSha256Signature, msg = "Error while RSA sign with SHA256.");
-    return;
+    test:assertEquals(sha256Signature.toBase16(), expectedSha256Signature);
 }
 
 @test:Config {}
@@ -88,8 +85,7 @@ isolated function testSignRsaSha384() returns Error? {
         "5BF70A40C12B7BC765F6209C9640A60B9E978AD8DEC551983F5773A72327DF1A6256BEB8DF50A03F89443123E1354A9" +
         "EF7D8F8BF0659E1D6B77916B4AEEC79989AFDAA2F5B8983DE476C1A0FFBB2B647DE449E").toLowerAscii();
     byte[] sha384Signature = check signRsaSha384(payload, privateKey);
-    test:assertEquals(sha384Signature.toBase16(), expectedSha384Signature, msg = "Error while RSA sign with SHA384.");
-    return;
+    test:assertEquals(sha384Signature.toBase16(), expectedSha384Signature);
 }
 
 @test:Config {}
@@ -107,8 +103,7 @@ isolated function testSignRsaSha512() returns Error? {
         "4c1e62d9d4b0b39fa664b8c3a32155c7c1966ef3d55993ad8f7f3bf4d929cf047ab91344facefeba944b043e1e31496753" +
         "9cb2e6e669ec3352073a8933a2a0cac6056b4997b3628132f7a7e553";
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
-    test:assertEquals(sha512Signature.toBase16(), expectedSha512Signature, msg = "Error while RSA sign with SHA512.");
-    return;
+    test:assertEquals(sha512Signature.toBase16(), expectedSha512Signature);
 }
 
 @test:Config {}
@@ -116,12 +111,10 @@ isolated function testSignRsaMd5WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaMd5(payload, privateKey);
-    if (result is Error) {
-        string errorMessage = "Uninitialized private key";
-        test:assertTrue(result.message().includes(errorMessage),
-                        msg = "Incorrect output/error when with signing RSA MD5 with invalid key.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
-        test:assertFail(msg = "No error while RSA MD5 sign with invalid key.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -130,12 +123,10 @@ isolated function testSignRsaSha1WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha1(payload, privateKey);
-    if (result is Error) {
-        string errorMessage = "Uninitialized private key";
-        test:assertTrue(result.message().includes(errorMessage),
-                        msg = "Incorrect output/error when with signing RSA SHA1 with invalid key.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
-        test:assertFail(msg = "No error while RSA SHA1 sign with invalid key.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -144,12 +135,10 @@ isolated function testSignRsaSha256WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha256(payload, privateKey);
-    if (result is Error) {
-        string errorMessage = "Uninitialized private key";
-        test:assertTrue(result.message().includes(errorMessage),
-                        msg = "Incorrect output/error when with signing RSA SHA256 with invalid key.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
-        test:assertFail(msg = "No error while RSA SHA256 sign with invalid key.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -158,12 +147,10 @@ isolated function testSignRsaSha384WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha384(payload, privateKey);
-    if (result is Error) {
-        string errorMessage = "Uninitialized private key";
-        test:assertTrue(result.message().includes(errorMessage),
-                        msg = "Incorrect output/error when with signing RSA SAH384 with invalid key.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
-        test:assertFail(msg = "No error while RSA SAH384 sign with invalid key.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -172,12 +159,10 @@ isolated function testSignRsaSha512WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha512(payload, privateKey);
-    if (result is Error) {
-        string errorMessage = "Uninitialized private key";
-        test:assertTrue(result.message().includes(errorMessage),
-                        msg = "Incorrect output/error when with signing RSA SHA512 with invalid key.");
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
-        test:assertFail(msg = "No error while RSA SHA512 sign with invalid key.");
+        test:assertFail("Expected error not found.");
     }
 }
 
@@ -192,7 +177,6 @@ isolated function testVerifyRsaMd5() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] md5Signature = check signRsaMd5(payload, privateKey);
     test:assertTrue(check verifyRsaMd5Signature(payload, md5Signature, publicKey));
-    return;
 }
 
 @test:Config {}
@@ -206,7 +190,6 @@ isolated function testVerifyRsaSha1() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] sha1Signature = check signRsaSha1(payload, privateKey);
     test:assertTrue(check verifyRsaSha1Signature(payload, sha1Signature, publicKey));
-    return;
 }
 
 @test:Config {}
@@ -220,7 +203,6 @@ isolated function testVerifyRsaSha256() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] sha256Signature = check signRsaSha256(payload, privateKey);
     test:assertTrue(check verifyRsaSha256Signature(payload, sha256Signature, publicKey));
-    return;
 }
 
 @test:Config {}
@@ -234,7 +216,6 @@ isolated function testVerifyRsaSha384() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] sha384Signature = check signRsaSha384(payload, privateKey);
     test:assertTrue(check verifyRsaSha384Signature(payload, sha384Signature, publicKey));
-    return;
 }
 
 @test:Config {}
@@ -248,5 +229,4 @@ isolated function testVerifyRsaSha512() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertTrue(check verifyRsaSha512Signature(payload, sha512Signature, publicKey));
-    return;
 }
