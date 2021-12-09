@@ -129,7 +129,9 @@ public class CryptoUtils {
             return ValueCreator.createArrayValue(sig.sign());
         } catch (InvalidKeyException e) {
             return CryptoUtils.createError("Uninitialized private key: " + e.getMessage());
-        } catch (NoSuchAlgorithmException | SignatureException e) {
+        } catch (SignatureException e) {
+            return CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         }
     }
@@ -151,7 +153,9 @@ public class CryptoUtils {
             return sig.verify(signature);
         } catch (InvalidKeyException e) {
             return CryptoUtils.createError("Uninitialized public key: " + e.getMessage());
-        } catch (NoSuchAlgorithmException | SignatureException e) {
+        } catch (SignatureException e) {
+            return CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         }
     }
