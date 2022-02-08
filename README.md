@@ -7,13 +7,29 @@ Ballerina Crypto Library
   [![GitHub issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/crypto.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fcrypto)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto/branch/master/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto)
 
-The `crypto` library is one of the standard library modules of the [Ballerina](https://ballerina.io/) language.
+This library provides common cryptographic mechanisms based on different algorithms.
 
-The Ballerina Crypto module facilitates APIs to perform operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
+The Ballerina `crypto` library facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
 
-For more information go to the [`crypto` module](https://docs.central.ballerina.io/ballerina/crypto/latest).
+### Hashes
 
-For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/learn/by-example/).
+The `crypto` library supports generating hashes with 5 different hash algorithms MD5, SHA1, SHA256, SHA384, and SHA512. Also, it supports generating the CRC32B checksum.
+
+### HMAC
+
+The `crypto` library supports generating HMAC with 5 different hash algorithms: MD5, SHA1, SHA256, SHA384, and SHA512.
+
+### Decode Private/Public Key
+
+The `crypto` library supports decoding the RSA private key from a `.p12` file and a key file in the `PEM` format. Also, it supports decoding a public key from a `.p12` file and a certificate file in the `X509` format. Additionally, this supports building an RSA public key with the modulus and exponent parameters.
+
+### Encrypt and Decrypt
+
+The `crypto` library supports both symmetric key encryption/decryption and asymmetric key encryption/decryption. The RSA algorithm can be used for symmetric-key encryption/decryption with the use of private and public keys. The AES algorithm can be used for asymmetric-key encryption/decryption with the use of a shared key.
+
+### Sign and Verify
+
+The `crypto` library supports signing data using the RSA private key and verification of the signature using the RSA public key. This supports MD5, SHA1, SHA256, SHA384, and SHA512 digesting algorithms as well.
 
 ## Issues and Projects
 
@@ -95,5 +111,7 @@ All contributors are encouraged to read the [Ballerina Code of Conduct](https://
 
 ## Useful Links
 
+* For more information go to the [`crypto` library](https://lib.ballerina.io/ballerina/crypto/latest).
+* For example demonstrations of the usage, go to [Ballerina By Examples](https://ballerina.io/learn/by-example/).
 * Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
 * Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.
