@@ -18,7 +18,7 @@ The `crypto` package supports decoding the RSA private key from a `.p12` file an
 
 ### Encrypt and decrypt
 
-The `crypto` package supports both symmetric key encryption/decryption and asymmetric key encryption/decryption. The RSA algorithm can be used for symmetric-key encryption/decryption with the use of private and public keys. The AES algorithm can be used for asymmetric-key encryption/decryption with the use of a shared key.
+The `crypto` package supports both symmetric key encryption/decryption and asymmetric key encryption/decryption. The RSA algorithm can be used for asymmetric-key encryption/decryption with the use of private and public keys. The AES algorithm can be used for symmetric-key encryption/decryption with the use of a shared key.
 
 ### Sign and verify
 
