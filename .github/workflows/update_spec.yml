@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - master
     paths:
-      - ${{ env.SPEC_FOLDER_PATH }}
+      - 'docs/spec/**'
 
 jobs:
   update_specs:
