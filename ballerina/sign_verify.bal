@@ -24,7 +24,7 @@ import ballerina/jballerina.java;
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
 # ```
 #
@@ -44,7 +44,7 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha1(data, privateKey);
 # ```
 #
@@ -64,7 +64,7 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha256(data, privateKey);
 # ```
 #
@@ -84,7 +84,7 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha384(data, privateKey);
 # ```
 #
@@ -104,7 +104,7 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaSha512(data, privateKey);
 # ```
 #
@@ -124,9 +124,9 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword")
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # byte[] signature = check crypto:signRsaMd5(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifyRsaMd5Signature(data, signature, publicKey);
 # ```
 #
@@ -148,9 +148,9 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-# byte[] signature = check crypto:signRsaMd5(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha1(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifyRsaSha1Signature(data, signature, publicKey);
 # ```
 #
@@ -172,9 +172,9 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-# byte[] signature = check crypto:signRsaMd5(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha256(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifyRsaSha256Signature(data, signature, publicKey);
 # ```
 #
@@ -196,9 +196,9 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-# byte[] signature = check crypto:signRsaMd5(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha384(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifyRsaSha384Signature(data, signature, publicKey);
 # ```
 #
@@ -220,9 +220,9 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodePrivateKey(keyStore, "keyAlias", "keyPassword");
-# byte[] signature = check crypto:signRsaMd5(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodePublicKey(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSha512(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifyRsaSha512Signature(data, signature, publicKey);
 # ```
 #
