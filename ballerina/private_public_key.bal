@@ -133,7 +133,7 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromCertFile(certFile);
 # ```
 #
-# + certFile - Path to the ceritificate file
+# + certFile - Path to the certificate file
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"

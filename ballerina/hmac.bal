@@ -22,7 +22,7 @@ import ballerina/jballerina.java;
 # byte[] data = input.toBytes();
 # string secret = "some-secret";
 # byte[] key = secret.toBytes();
-# byte[] hmac = crypto:hmacMd5(data, key);
+# byte[] hmac = check crypto:hmacMd5(data, key);
 # ```
 #
 # + input - Value to be hashed
@@ -39,7 +39,7 @@ public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error 
 # byte[] data = input.toBytes();
 # string secret = "some-secret";
 # byte[] key = secret.toBytes();
-# byte[] hmac = crypto:hmacSha1(data, key);
+# byte[] hmac = check crypto:hmacSha1(data, key);
 # ```
 #
 # + input - Value to be hashed
@@ -56,7 +56,7 @@ public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error
 # byte[] data = input.toBytes();
 # string secret = "some-secret";
 # byte[] key = secret.toBytes();
-# byte[] hmac = crypto:hmacSha256(data, key);
+# byte[] hmac = check crypto:hmacSha256(data, key);
 # ```
 #
 # + input - Value to be hashed
@@ -73,7 +73,7 @@ public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Err
 # byte[] data = input.toBytes();
 # string secret = "some-secret";
 # byte[] key = secret.toBytes();
-# byte[] hmac = crypto:hmacSha384(data, key);
+# byte[] hmac = check crypto:hmacSha384(data, key);
 # ```
 #
 # + input - Value to be hashed
@@ -90,7 +90,7 @@ public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Err
 # byte[] data = input.toBytes();
 # string secret = "some-secret";
 # byte[] key = secret.toBytes();
-# byte[] hmac = crypto:hmacSha512(data, key);
+# byte[] hmac = check crypto:hmacSha512(data, key);
 # ```
 #
 # + input - Value to be hashed
