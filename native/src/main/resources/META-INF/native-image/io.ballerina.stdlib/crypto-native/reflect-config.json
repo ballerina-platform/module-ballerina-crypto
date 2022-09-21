@@ -1,64 +1,5 @@
 [
   {
-    "name":"[B"
-  },
-  {
-    "name":"[Lsun.security.pkcs.SignerInfo;"
-  },
-  {
-    "name":"apple.security.AppleProvider",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"com.sun.crypto.provider.HmacPKCS12PBECore$HmacPKCS12PBE_SHA1",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"com.sun.crypto.provider.PBEKeyFactory$PBEWithMD5AndDES",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"com.sun.crypto.provider.PBEParameters",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"com.sun.crypto.provider.PKCS12PBECipherCore$PBEWithSHA1AndDESede",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"com.sun.crypto.provider.PKCS12PBECipherCore$PBEWithSHA1AndRC2_40",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"java.security.AlgorithmParametersSpi"
-  },
-  {
-    "name":"java.security.KeyStoreSpi"
-  },
-  {
-    "name":"java.security.MessageDigestSpi"
-  },
-  {
-    "name":"java.security.SecureRandomParameters"
-  },
-  {
-    "name":"java.security.cert.PKIXRevocationChecker"
-  },
-  {
-    "name":"java.security.interfaces.RSAPrivateKey"
-  },
-  {
-    "name":"java.security.interfaces.RSAPublicKey"
-  },
-  {
-    "name":"javax.crypto.spec.GCMParameterSpec"
-  },
-  {
-    "name":"javax.security.auth.x500.X500Principal",
-    "fields":[{"name":"thisX500Name"}],
-    "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
-  },
-  {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.COMPOSITE$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
@@ -409,51 +350,5 @@
   {
     "name":"org.bouncycastle.jcajce.provider.symmetric.Zuc$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.pkcs12.PKCS12KeyStore",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.provider.MD5",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.provider.NativePRNG",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.provider.SHA",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.provider.X509Factory",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.rsa.RSAKeyFactory$Legacy",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.rsa.RSASignature$MD5withRSA",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
-    "name":"sun.security.util.ObjectIdentifier"
-  },
-  {
-    "name":"sun.security.x509.CertificateExtensions"
-  },
-  {
-    "name":"sun.security.x509.KeyUsageExtension",
-    "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
-  },
-  {
-    "name":"sun.security.x509.SubjectKeyIdentifierExtension",
-    "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
   }
 ]
