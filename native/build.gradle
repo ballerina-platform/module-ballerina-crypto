@@ -31,6 +31,7 @@ dependencies {
     implementation group: 'io.ballerina.stdlib', name: 'time-native', version: "${stdlibTimeVersion}"
     implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "${bouncycastleVersion}"
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "${bouncycastleVersion}"
+    compileOnly group: 'org.graalvm.nativeimage', name: 'svm', version: "${nativeImageVersion}"
 }
 
 checkstyle {
