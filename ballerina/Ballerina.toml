@@ -1,19 +1,19 @@
 [package]
 org = "ballerina"
 name = "crypto"
-version = "2.2.3"
+version = "2.3.0"
 authors = ["Ballerina"]
 keywords = ["security", "hash", "hmac", "sign", "encrypt", "decrypt", "private key", "public key"]
 repository = "https://github.com/ballerina-platform/module-ballerina-crypto"
 icon = "icon.png"
 license = ["Apache-2.0"]
-distribution = "2201.0.4"
+distribution = "2201.3.0"
 
 [[platform.java11.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "crypto-native"
-version = "2.2.3"
-path = "../native/build/libs/crypto-native-2.2.3-SNAPSHOT.jar"
+version = "2.3.0"
+path = "../native/build/libs/crypto-native-2.3.0-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/bcpkix-jdk15on-1.69.jar"
