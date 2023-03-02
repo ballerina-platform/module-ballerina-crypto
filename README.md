@@ -1,4 +1,4 @@
-Ballerina Crypto Library
+Ballerina Crypto Librar
 ===================
 
   [![Build](https://github.com/ballerina-platform/module-ballerina-crypto/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerina-crypto/actions/workflows/build-timestamped-master.yml)
