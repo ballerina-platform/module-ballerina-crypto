@@ -20,3 +20,6 @@ path = "./lib/bcpkix-jdk15on-1.69.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/bcprov-jdk15on-1.69.jar"
+
+[[platform.java11.dependency]]
+path = "./lib/bc-fips-1.0.2.3.jar"
