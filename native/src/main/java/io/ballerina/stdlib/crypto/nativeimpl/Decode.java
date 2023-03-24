@@ -26,7 +26,7 @@ import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.time.util.TimeValueHandler;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -101,11 +101,11 @@ public class Decode {
     }
 
     public static Object decodeRsaPrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
-        Security.addProvider(new BouncyCastleProvider());
+        Security.addProvider(new BouncyCastleFipsProvider());
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
-            JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+            JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BCFIPS");
             PrivateKeyInfo privateKeyInfo;
             if (obj instanceof PEMEncryptedKeyPair) {
                 if (keyPassword == null) {
@@ -113,7 +113,7 @@ public class Decode {
                 }
                 char[] pwd = ((BString) keyPassword).getValue().toCharArray();
                 PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+                        .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pwd);
                 PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
                 privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
             } else if (obj instanceof PKCS8EncryptedPrivateKeyInfo) {
@@ -122,7 +122,7 @@ public class Decode {
                 }
                 char[] pwd = ((BString) keyPassword).getValue().toCharArray();
                 InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+                        .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pwd);
                 privateKeyInfo = ((PKCS8EncryptedPrivateKeyInfo) obj).decryptPrivateKeyInfo(decryptorProvider);
             } else if (obj instanceof PEMKeyPair) {
                 privateKeyInfo = ((PEMKeyPair) obj).getPrivateKeyInfo();

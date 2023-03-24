@@ -16,7 +16,10 @@ version = "@toml.version@"
 path = "../native/build/libs/crypto-native-@project.version@.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcpkix-jdk15on-@bouncycastle.version@.jar"
+path = "./lib/bcpkix-fips-@bouncycastlepkix.version@.jar"
+
+# [[platform.java11.dependency]]
+# path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"
+path = "./lib/bc-fips-@bouncycastlefips.version@.jar"

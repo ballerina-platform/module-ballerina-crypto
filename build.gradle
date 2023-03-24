@@ -23,7 +23,9 @@ plugins {
 }
 
 ext.puppycrawlCheckstyleVersion = project.puppycrawlCheckstyleVersion
-ext.bouncycastleVersion = project.bouncycastleVersion
+//ext.bouncycastleVersion = project.bouncycastleVersion
+ext.bouncycastlePkixVersion = project.bouncycastlePkixVersion
+ext.bouncycastleFipsVersion = project.bouncycastleFipsVersion
 ext.ballerinaLangVersion = project.ballerinaLangVersion
 ext.stdlibTimeVersion = project.stdlibTimeVersion
 
