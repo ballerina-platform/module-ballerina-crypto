@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Changed
+
+- [Replace Bouncy Castle usage with Bouncy Castle FIPS](https://github.com/ballerina-platform/ballerina-standard-library/issues/4212)
+
+## [2.2.2] - 2022-10-20
+
+### Changed
 - [API docs updated](https://github.com/ballerina-platform/ballerina-standard-library/issues/3463)
 
 ## [2.0.0] - 2021-10-10

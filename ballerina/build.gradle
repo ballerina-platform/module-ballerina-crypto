@@ -67,21 +67,23 @@ configurations {
 }
 
 dependencies {
-    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpkix-fips', version: "${bouncycastlePkixVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bc-fips', version: "${bouncycastleFipsVersion}") {
         transitive = false
     }
 }
 
 task updateTomlFiles {
     doLast {
-        def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
+        def stdlibDependentBouncycastlePkixVersion = project.bouncycastlePkixVersion
+        def stdlibDependentBouncycastleFipsVersion = project.bouncycastleFipsVersion
 
         def newBallerinaToml = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
-        newBallerinaToml = newBallerinaToml.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastlefips.version@", stdlibDependentBouncycastleFipsVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastlepkix.version@", stdlibDependentBouncycastlePkixVersion)
         ballerinaTomlFile.text = newBallerinaToml
     }
 }

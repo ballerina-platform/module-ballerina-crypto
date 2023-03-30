@@ -1,7 +1,7 @@
 [package]
 org = "ballerina"
 name = "crypto"
-version = "2.3.0"
+version = "2.3.1"
 authors = ["Ballerina"]
 keywords = ["security", "hash", "hmac", "sign", "encrypt", "decrypt", "private key", "public key"]
 repository = "https://github.com/ballerina-platform/module-ballerina-crypto"
@@ -12,11 +12,11 @@ distribution = "2201.3.0"
 [[platform.java11.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "crypto-native"
-version = "2.3.0"
-path = "../native/build/libs/crypto-native-2.3.0.jar"
+version = "2.3.1"
+path = "../native/build/libs/crypto-native-2.3.1-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcpkix-jdk15on-1.69.jar"
+path = "./lib/bcpkix-fips-1.0.3.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcprov-jdk15on-1.69.jar"
+path = "./lib/bc-fips-1.0.2.3.jar"
