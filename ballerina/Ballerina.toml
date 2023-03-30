@@ -18,8 +18,5 @@ path = "../native/build/libs/crypto-native-2.3.11.jar"
 [[platform.java11.dependency]]
 path = "./lib/bcpkix-fips-1.0.3.jar"
 
-# [[platform.java11.dependency]]
-# path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"
-
 [[platform.java11.dependency]]
 path = "./lib/bc-fips-1.0.2.3.jar"
