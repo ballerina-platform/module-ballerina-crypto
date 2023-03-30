@@ -18,7 +18,6 @@
 module io.ballerina.stdlib.crypto {
     requires io.ballerina.runtime;
     requires io.ballerina.stdlib.time;
-//    requires org.bouncycastle.provider;
     requires org.graalvm.sdk;
     requires org.graalvm.nativeimage.builder;
     requires org.bouncycastle.fips.core;
