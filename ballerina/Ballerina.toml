@@ -9,17 +9,17 @@ icon = "icon.png"
 license = ["Apache-2.0"]
 distribution = "2201.7.0"
 
-[platform.java11]
+[platform.java17]
 graalvmCompatible = true
 
-[[platform.java11.dependency]]
+[[platform.java17.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "crypto-native"
 version = "2.4.0"
 path = "../native/build/libs/crypto-native-2.4.0-SNAPSHOT.jar"
 
-[[platform.java11.dependency]]
-path = "./lib/bcpkix-jdk15on-1.69.jar"
+[[platform.java17.dependency]]
+path = "./lib/bcpkix-jdk15on-1.75.jar"
 
-[[platform.java11.dependency]]
-path = "./lib/bcprov-jdk15on-1.69.jar"
+[[platform.java17.dependency]]
+path = "./lib/bcprov-jdk15on-1.75.jar"
