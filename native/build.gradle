@@ -29,8 +29,8 @@ dependencies {
 
     implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
     implementation group: 'io.ballerina.stdlib', name: 'time-native', version: "${stdlibTimeVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "${bouncycastleVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "${bouncycastleVersion}"
+    implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15to18', version: "${bouncycastleVersion}"
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15to18', version: "${bouncycastleVersion}"
     compileOnly group: 'org.graalvm.nativeimage', name: 'svm', version: "${nativeImageVersion}"
 }
 
