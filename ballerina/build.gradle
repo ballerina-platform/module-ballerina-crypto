@@ -67,10 +67,10 @@ configurations {
 }
 
 dependencies {
-    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk15to18', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: "${bouncycastleVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk15to18', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: "${bouncycastleVersion}") {
         transitive = false
     }
 }

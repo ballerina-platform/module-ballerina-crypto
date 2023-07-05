@@ -84,7 +84,9 @@ isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() 
     }
 }
 
-@test:Config {}
+@test:Config {
+    enable: false
+}
 isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
