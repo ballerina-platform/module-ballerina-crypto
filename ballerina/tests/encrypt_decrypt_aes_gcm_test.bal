@@ -84,9 +84,7 @@ isolated function testEncryptAndDecryptWithAesGcmNoPaddingUsingInvalidKeySize() 
     }
 }
 
-@test:Config {
-    enable: false
-}
+@test:Config {}
 isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
     byte[] message = "Ballerina crypto test".toBytes();
     byte[] key = [];
@@ -101,8 +99,8 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5() returns Error? {
         iv[i] = <byte> i;
         i = i + 1;
     }
-    byte[] cipherText = check encryptAesGcm(message, key, iv, "PKCS5");
-    byte[] plainText = check decryptAesGcm(cipherText, key, iv, "PKCS5");
+    byte[] cipherText = check encryptAesGcm(message, key, iv, "NONE");
+    byte[] plainText = check decryptAesGcm(cipherText, key, iv, "NONE");
     test:assertEquals(plainText.toBase16(), message.toBase16());
 }
 
