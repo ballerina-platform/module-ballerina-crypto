@@ -137,7 +137,7 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 # + padding - The padding algorithm
 # + tagSize - Tag size
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
+public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = NONE,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "encryptAesGcm",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"

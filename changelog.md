@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+- [Remove support for AES/GCM/PKCS5ZPadding algorithm](https://github.com/ballerina-platform/ballerina-standard-library/issues/4775)
+
 ## [2.4.0] - 2023-06-30
 
 - This version maintains the latest dependency versions.
