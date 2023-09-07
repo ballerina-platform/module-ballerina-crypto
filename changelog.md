@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Fixed
+- [Address CVE-2023-33201 Bouncy Castle vulnerability](https://github.com/ballerina-platform/ballerina-standard-library/issues/4776)
+
+## [2.4.0] - 2023-06-30
+
+- This version maintains the latest dependency versions.
+
 ## [2.3.1] - 2023-06-01
 
 - This version maintains the latest dependency versions.
