@@ -13,7 +13,7 @@ distribution = "2201.0.4"
 path = "../native/build/libs/crypto-native-@project.version@.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcpkix-jdk15on-@bouncycastle.version@.jar"
+path = "./lib/bcpkix-jdk18on-@bouncycastle.version@.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/bcprov-jdk15on-@bouncycastle.version@.jar"
+path = "./lib/bcprov-jdk18on-@bouncycastle.version@.jar"
