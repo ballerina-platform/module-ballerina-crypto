@@ -78,9 +78,8 @@ public class Decode {
         if (decodedPrivateKey instanceof PrivateKey) {
             PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
             return buildRsPrivateKeyRecord(privateKey);
-        } else {
-            return decodedPrivateKey;
         }
+        return decodedPrivateKey;
     }
 
     public static Object decodeEcPrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
@@ -90,9 +89,8 @@ public class Decode {
         if (decodedPrivateKey instanceof PrivateKey) {
             PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
             return buildEcPrivateKeyRecord(privateKey);
-        } else {
-            return decodedPrivateKey;
         }
+        return decodedPrivateKey;
     }
 
     private static Object getPrivateKey(BMap<BString, BString> keyStoreRecord, BString keyAlias, BString keyPassword) {
@@ -168,7 +166,7 @@ public class Decode {
         if (privateKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
-            return CryptoUtils.createError("Not a valid RSA key.");
+            return CryptoUtils.createError("Not a valid RSA key");
         }
     }
 
@@ -185,7 +183,7 @@ public class Decode {
         if (privateKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
-            return CryptoUtils.createError("Not a valid EC key.");
+            return CryptoUtils.createError("Not a valid EC key");
         }
     }
 
@@ -247,7 +245,7 @@ public class Decode {
         if (publicKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid RSA public key.");
+        return CryptoUtils.createError("Not a valid RSA public key");
     }
 
     private static Object buildEcPublicKeyRecord(Certificate certificate) {
@@ -256,7 +254,7 @@ public class Decode {
         if (publicKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid EC public key.");
+        return CryptoUtils.createError("Not a valid EC public key");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,

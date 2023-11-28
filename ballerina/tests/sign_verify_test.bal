@@ -252,9 +252,9 @@ isolated function testDecodeRsaPrivateKeyError() returns Error? {
     };
     PrivateKey|Error privateKey = decodeRsaPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
     if privateKey is Error {
-        test:assertEquals(privateKey.message(), "Not a valid RSA key.");
+        test:assertEquals(privateKey.message(), "Not a valid RSA key");
     } else {
-        test:assertFail("Expected error not found.");
+        test:assertFail("Expected error not found");
     }
 }
 
@@ -266,9 +266,9 @@ isolated function testDecodeEcPrivateKeyError() returns Error? {
     };
     PrivateKey|Error privateKey = decodeEcPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
     if privateKey is Error {
-        test:assertEquals(privateKey.message(), "Not a valid EC key.");
+        test:assertEquals(privateKey.message(), "Not a valid EC key");
     } else {
-        test:assertFail("Expected error not found.");
+        test:assertFail("Expected error not found");
     }
 }
 
@@ -280,7 +280,7 @@ isolated function testDecodeEcPublicKeyError() returns Error? {
     };
     PublicKey|Error publicKey = decodeEcPublicKeyFromTrustStore(keyStore, "ballerina");
     if publicKey is Error {
-        test:assertEquals(publicKey.message(), "Not a valid EC public key.");
+        test:assertEquals(publicKey.message(), "Not a valid EC public key");
     } else {
         test:assertFail("Expected error not found");
     }
@@ -294,7 +294,7 @@ isolated function testDecodeRsaPublicKeyError() returns Error? {
     };
     PublicKey|Error publicKey = decodeRsaPublicKeyFromTrustStore(keyStore, "ec-keypair");
     if publicKey is Error {
-        test:assertEquals(publicKey.message(), "Not a valid RSA public key.");
+        test:assertEquals(publicKey.message(), "Not a valid RSA public key");
     } else {
         test:assertFail("Expected error not found");
     }
