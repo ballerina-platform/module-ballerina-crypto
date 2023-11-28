@@ -247,7 +247,7 @@ public class Decode {
         if (publicKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid RSA key.");
+        return CryptoUtils.createError("Not a valid RSA public key.");
     }
 
     private static Object buildEcPublicKeyRecord(Certificate certificate) {
@@ -256,7 +256,7 @@ public class Decode {
         if (publicKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid EC key.");
+        return CryptoUtils.createError("Not a valid EC public key.");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,
