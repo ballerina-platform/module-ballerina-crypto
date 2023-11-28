@@ -230,3 +230,16 @@ isolated function testVerifyRsaSha512() returns Error? {
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertTrue(check verifyRsaSha512Signature(payload, sha512Signature, publicKey));
 }
+
+@test:Config {}
+isolated function testVerifySha384withEcdsa() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: EC_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeEcPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
+    PublicKey publicKey = check decodeEcPublicKeyFromTrustStore(keyStore, "ec-keypair");
+    byte[] sha384withEcdsaSignature = check signSha384withEcdsa(payload, privateKey);
+    test:assertTrue(check verifySha384withEcdsaSignature(payload, sha384withEcdsaSignature, publicKey));
+}

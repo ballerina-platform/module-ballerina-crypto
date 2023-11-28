@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
@@ -73,6 +74,28 @@ public class Decode {
 
     public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                          BString keyPassword) {
+        Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey) {
+            PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
+            return buildRsPrivateKeyRecord(privateKey);
+        } else {
+            return decodedPrivateKey;
+        }
+    }
+
+    public static Object decodeEcPrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
+                                                         BString keyPassword) {
+
+        Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey) {
+            PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
+            return buildEcPrivateKeyRecord(privateKey);
+        } else {
+            return decodedPrivateKey;
+        }
+    }
+
+    private static Object getPrivateKey(BMap<BString, BString> keyStoreRecord, BString keyAlias, BString keyPassword) {
         File keyStoreFile = new File(keyStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
             KeyStore keyStore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
@@ -84,11 +107,11 @@ public class Decode {
             }
 
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(keyAlias.getValue(),
-                                                                 keyPassword.getValue().toCharArray());
+                    keyPassword.getValue().toCharArray());
             if (privateKey == null) {
                 return CryptoUtils.createError("Key cannot be recovered by using given key alias: " + keyAlias);
             }
-            return buildPrivateKeyRecord(privateKey);
+            return privateKey;
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("PKCS12 KeyStore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
@@ -133,7 +156,7 @@ public class Decode {
                         keyFilePath.getValue());
             }
             PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
-            return buildPrivateKeyRecord(privateKey);
+            return buildRsPrivateKeyRecord(privateKey);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
@@ -141,20 +164,48 @@ public class Decode {
         }
     }
 
-    private static Object buildPrivateKeyRecord(PrivateKey privateKey) {
+    private static Object buildRsPrivateKeyRecord(PrivateKey privateKey) {
         if (privateKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
-            BMap<BString, Object> privateKeyRecord = ValueCreator.
-                    createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
-            privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
-            privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
-                                 StringUtils.fromString(privateKey.getAlgorithm()));
-            return privateKeyRecord;
+            return getPrivateKeyRecord(privateKey);
         } else {
             return CryptoUtils.createError("Not a valid RSA key.");
         }
     }
 
+    private static Object getPrivateKeyRecord(PrivateKey privateKey) {
+        BMap<BString, Object> privateKeyRecord = ValueCreator.
+                createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
+        privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
+        privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
+                             StringUtils.fromString(privateKey.getAlgorithm()));
+        return privateKeyRecord;
+    }
+
+    private static Object buildEcPrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
+            return getPrivateKeyRecord(privateKey);
+        } else {
+            return CryptoUtils.createError("Not a valid EC key.");
+        }
+    }
+
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
+        Object certificate = getPublicKey(trustStoreRecord, keyAlias);
+        if (certificate instanceof Certificate) {
+            return buildRsaPublicKeyRecord((Certificate) certificate);
+        }
+        return certificate;
+    }
+
+    public static Object decodeEcPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
+        Object certificate = getPublicKey(trustStoreRecord, keyAlias);
+        if (certificate instanceof Certificate) {
+            return buildEcPublicKeyRecord((Certificate) certificate);
+        }
+        return certificate;
+    }
+
+    private static Object getPublicKey(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
         File keyStoreFile = new File(trustStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
             KeyStore keyStore = KeyStore.getInstance(Constants.KEYSTORE_TYPE_PKCS12);
@@ -169,7 +220,7 @@ public class Decode {
             if (certificate == null) {
                 return CryptoUtils.createError("Certificate cannot be recovered by using given key alias: " + keyAlias);
             }
-            return buildPublicKeyRecord(certificate);
+            return certificate;
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("PKCS12 KeyStore not found at: " + keyStoreFile.getAbsoluteFile());
         } catch (KeyStoreException | CertificateException | IOException e) {
@@ -182,7 +233,7 @@ public class Decode {
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildPublicKeyRecord(certificate);
+            return buildRsaPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {
@@ -190,7 +241,40 @@ public class Decode {
         }
     }
 
-    private static Object buildPublicKeyRecord(Certificate certificate) {
+    private static Object buildRsaPublicKeyRecord(Certificate certificate) {
+        BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
+        PublicKey publicKey = certificate.getPublicKey();
+        if (publicKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
+        }
+        return CryptoUtils.createError("Not a valid RSA key.");
+    }
+
+    private static Object buildEcPublicKeyRecord(Certificate certificate) {
+        BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
+        PublicKey publicKey = certificate.getPublicKey();
+        if (publicKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
+        }
+        return CryptoUtils.createError("Not a valid EC key.");
+    }
+
+    private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,
+                                             PublicKey publicKey) {
+        BMap<BString, Object> publicKeyMap = ValueCreator.
+                createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
+        publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
+        publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY_CERTIFICATE, certificate);
+        publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_ALGORITHM_FIELD),
+                         StringUtils.fromString(publicKey.getAlgorithm()));
+        if (certificateBMap.size() > 0) {
+            publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_CERTIFICATE_FIELD),
+                    certificateBMap);
+        }
+        return publicKeyMap;
+    }
+
+    private static BMap<BString, Object> enrichPublicKeyInfo(Certificate certificate) {
         BMap<BString, Object> certificateBMap = ValueCreator.
                 createRecordValue(ModuleUtils.getModule(), Constants.CERTIFICATE_RECORD);
         if (certificate instanceof X509Certificate) {
@@ -214,22 +298,7 @@ public class Decode {
             certificateBMap.put(StringUtils.fromString(Constants.CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD),
                                 StringUtils.fromString(x509Certificate.getSigAlgName()));
         }
-        PublicKey publicKey = certificate.getPublicKey();
-        if (publicKey.getAlgorithm().equals(Constants.RSA_ALGORITHM)) {
-            BMap<BString, Object> publicKeyMap = ValueCreator.
-                    createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
-            publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
-            publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY_CERTIFICATE, certificate);
-            publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_ALGORITHM_FIELD),
-                             StringUtils.fromString(publicKey.getAlgorithm()));
-            if (certificateBMap.size() > 0) {
-                publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_CERTIFICATE_FIELD),
-                                 certificateBMap);
-            }
-            return publicKeyMap;
-        } else {
-            return CryptoUtils.createError("Not a valid RSA key.");
-        }
+        return certificateBMap;
     }
 
     public static Object buildRsaPublicKey(BString modulus, BString exponent) {
@@ -252,5 +321,9 @@ public class Decode {
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Algorithm of the key factory is not found: " + e.getMessage());
         }
+    }
+
+    public static Object generateBCryptHash(BArray input, int cost) {
+        return new Object();
     }
 }
