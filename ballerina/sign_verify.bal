@@ -264,9 +264,9 @@ public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature,
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
-# byte[] signature = check crypto:signRsaSha512(data, privateKey);
-# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeEcPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signSha384withEcdsa(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeEcPublicKeyFromTrustStore(keyStore, "keyAlias");
 # boolean validity = check crypto:verifySha384withEcdsaSignature(data, signature, publicKey);
 # ```
 #

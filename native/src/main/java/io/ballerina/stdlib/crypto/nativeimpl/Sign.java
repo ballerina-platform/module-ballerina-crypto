@@ -111,8 +111,7 @@ public class Sign {
         return CryptoUtils.verify("SHA512withRSA", key, data, signature);
     }
 
-    public static Object verifySha384withEcdsaSignature(BArray dataValue, BArray signatureValue,
-                                                  BMap<?, ?> publicKey) {
+    public static Object verifySha384withEcdsaSignature(BArray dataValue, BArray signatureValue, BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
