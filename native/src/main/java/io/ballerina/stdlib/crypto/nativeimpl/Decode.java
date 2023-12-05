@@ -20,7 +20,6 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
@@ -75,8 +74,7 @@ public class Decode {
     public static Object decodeRsaPrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                          BString keyPassword) {
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
-        if (decodedPrivateKey instanceof PrivateKey) {
-            PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildRsPrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
@@ -86,8 +84,7 @@ public class Decode {
                                                          BString keyPassword) {
 
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
-        if (decodedPrivateKey instanceof PrivateKey) {
-            PrivateKey privateKey = (PrivateKey) decodedPrivateKey;
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildEcPrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
@@ -182,23 +179,22 @@ public class Decode {
     private static Object buildEcPrivateKeyRecord(PrivateKey privateKey) {
         if (privateKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
-        } else {
-            return CryptoUtils.createError("Not a valid EC key");
         }
+        return CryptoUtils.createError("Not a valid EC key");
     }
 
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
-        if (certificate instanceof Certificate) {
-            return buildRsaPublicKeyRecord((Certificate) certificate);
+        if (certificate instanceof Certificate publicKey) {
+            return buildRsaPublicKeyRecord(publicKey);
         }
         return certificate;
     }
 
     public static Object decodeEcPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
-        if (certificate instanceof Certificate) {
-            return buildEcPublicKeyRecord((Certificate) certificate);
+        if (certificate instanceof Certificate publicKey) {
+            return buildEcPublicKeyRecord(publicKey);
         }
         return certificate;
     }
@@ -319,9 +315,5 @@ public class Decode {
         } catch (NoSuchAlgorithmException e) {
             return CryptoUtils.createError("Algorithm of the key factory is not found: " + e.getMessage());
         }
-    }
-
-    public static Object generateBCryptHash(BArray input, int cost) {
-        return new Object();
     }
 }
