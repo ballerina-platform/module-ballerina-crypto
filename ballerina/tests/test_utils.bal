@@ -15,6 +15,7 @@
 // under the License.
 
 const string KEYSTORE_PATH = "tests/resources/keyStore.p12";
+const string EC_KEYSTORE_PATH = "tests/resources/ec-keystore.pkcs12";
 const string ENCRYPTED_KEY_PAIR_PATH = "tests/resources/encryptedKeyPair.pem";
 const string KEY_PAIR_PATH = "tests/resources/keyPair.pem";
 const string ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/encryptedPrivate.key";

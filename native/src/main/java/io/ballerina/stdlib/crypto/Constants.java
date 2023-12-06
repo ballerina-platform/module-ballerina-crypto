@@ -42,6 +42,8 @@ public class Constants {
     // Native data key for private key within the PrivateKey record.
     public static final String NATIVE_DATA_PRIVATE_KEY = "NATIVE_DATA_PRIVATE_KEY";
 
+    public static final String NATIVE_DATA_EC_PRIVATE_KEY = "NATIVE_DATA_EC_PRIVATE_KEY";
+
     // Native data key for private key within the PublicKey record.
     public static final String NATIVE_DATA_PUBLIC_KEY = "NATIVE_DATA_PUBLIC_KEY";
 
@@ -96,6 +98,9 @@ public class Constants {
 
     // RSA key algorithm
     public static final String RSA_ALGORITHM = "RSA";
+
+    // EC key algorithm
+    public static final String EC_ALGORITHM = "EC";
 
     // GMT timezone name used for X509 validity times
     public static final String TIMEZONE_GMT = "GMT";

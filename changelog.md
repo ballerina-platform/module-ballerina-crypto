@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- [Introduce new APIs to interact with EC private keys and public keys](https://github.com/ballerina-platform/ballerina-library/issues/5821)
+
 ## [2.5.0] - 2023-09-15
 
 ### Changed

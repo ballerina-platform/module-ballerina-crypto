@@ -230,3 +230,72 @@ isolated function testVerifyRsaSha512() returns Error? {
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertTrue(check verifyRsaSha512Signature(payload, sha512Signature, publicKey));
 }
+
+@test:Config {}
+isolated function testVerifySha384withEcdsa() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: EC_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeEcPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
+    PublicKey publicKey = check decodeEcPublicKeyFromTrustStore(keyStore, "ec-keypair");
+    byte[] sha384withEcdsaSignature = check signSha384withEcdsa(payload, privateKey);
+    test:assertTrue(check verifySha384withEcdsaSignature(payload, sha384withEcdsaSignature, publicKey));
+}
+
+@test:Config {}
+isolated function testDecodeRsaPrivateKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: EC_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey|Error privateKey = decodeRsaPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
+    if privateKey is Error {
+        test:assertEquals(privateKey.message(), "Not a valid RSA key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeEcPrivateKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey|Error privateKey = decodeEcPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    if privateKey is Error {
+        test:assertEquals(privateKey.message(), "Not a valid EC key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeEcPublicKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PublicKey|Error publicKey = decodeEcPublicKeyFromTrustStore(keyStore, "ballerina");
+    if publicKey is Error {
+        test:assertEquals(publicKey.message(), "Not a valid EC public key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeRsaPublicKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: EC_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PublicKey|Error publicKey = decodeRsaPublicKeyFromTrustStore(keyStore, "ec-keypair");
+    if publicKey is Error {
+        test:assertEquals(publicKey.message(), "Not a valid RSA public key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
