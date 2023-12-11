@@ -166,8 +166,7 @@ public class Decode {
                 return CryptoUtils.createError("Failed to parse private key information from: " +
                         keyFilePath.getValue());
             }
-            PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
-            return privateKey;
+            return converter.getPrivateKey(privateKeyInfo);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
