@@ -40,7 +40,7 @@ The conforming implementation of the specification is released and included in t
    * 4.6. [Decode EC Private key using Private key and Password](#46-decode-ec-private-key-using-private-key-and-password)
    * 4.7. [Decode EC Public key from PKCS12 file](#47-decode-ec-public-key-from-pkcs12-file)
    * 4.8. [Decode EC Public key from the certificate file](#48-decode-ec-public-key-from-the-certificate-file)
-   * 4.9. [Build RSA Public key from modulus and exponent parameters](#45-build-rsa-public-key-from-modulus-and-exponent-parameters)
+   * 4.9. [Build RSA Public key from modulus and exponent parameters](#49-build-rsa-public-key-from-modulus-and-exponent-parameters)
 5. [Encrypt-Decrypt](#5-encrypt-decrypt)   
    * 5.1. [Encryption](#51-encryption)
      * 5.1.1. [RSA](#511-rsa)
