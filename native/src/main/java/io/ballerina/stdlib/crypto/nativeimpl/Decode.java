@@ -119,6 +119,22 @@ public class Decode {
     }
 
     public static Object decodeRsaPrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildRsPrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
+    public static Object decodeEcPrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildEcPrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
+    private static Object getPrivateKey(BString keyFilePath, Object keyPassword) {
         Security.addProvider(new BouncyCastleProvider());
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
@@ -151,7 +167,7 @@ public class Decode {
                         keyFilePath.getValue());
             }
             PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
-            return buildRsPrivateKeyRecord(privateKey);
+            return privateKey;
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
@@ -177,7 +193,7 @@ public class Decode {
     }
 
     private static Object buildEcPrivateKeyRecord(PrivateKey privateKey) {
-        if (privateKey.getAlgorithm().equals(Constants.EC_ALGORITHM)) {
+        if (privateKey.getAlgorithm().startsWith(Constants.EC_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         }
         return CryptoUtils.createError("Not a valid EC key");
@@ -228,6 +244,19 @@ public class Decode {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
             return buildRsaPublicKeyRecord(certificate);
+        } catch (FileNotFoundException e) {
+            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
+        } catch (CertificateException | IOException e) {
+            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
+        }
+    }
+
+    public static Object decodeEcPublicKeyFromCertFile(BString certFilePath) {
+        File certFile = new File(certFilePath.getValue());
+        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
+            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
+            return buildEcPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {

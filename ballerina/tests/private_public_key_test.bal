@@ -147,6 +147,12 @@ isolated function testParsePrivateKeyFromKeyPairFile() returns Error? {
 }
 
 @test:Config {}
+isolated function testParseEcPrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeEcPrivateKeyFromKeyFile(EC_PRIVATE_KEY_PATH);
+    test:assertEquals(result["algorithm"], "ECDSA");
+}
+
+@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
     if result is Error {
@@ -234,6 +240,22 @@ isolated function testParsePublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(signingAlgorithm, "SHA256withRSA");
+}
+
+@test:Config {}
+isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
+    PublicKey publicKey = check decodeEcPublicKeyFromCertFile(EC_CERT_PATH);
+    test:assertEquals(publicKey["algorithm"], "EC");
+    Certificate certificate = <Certificate>publicKey["certificate"];
+
+    string serial = (<int>certificate["serial"]).toString();
+    string issuer = <string>certificate["issuer"];
+    string subject = <string>certificate["subject"];
+    string signingAlgorithm = <string>certificate["signingAlgorithm"];
+
+    test:assertEquals(serial, "813081972327485475");
+    test:assertEquals(issuer, "CN=sigstore-intermediate,O=sigstore.dev");
+    test:assertEquals(signingAlgorithm, "SHA384withECDSA");
 }
 
 @test:Config {}
