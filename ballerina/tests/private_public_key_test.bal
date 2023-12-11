@@ -153,6 +153,26 @@ isolated function testParseEcPrivateKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
+isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
+    PrivateKey|Error result = decodeEcPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid EC key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
+    PublicKey|Error result = decodeEcPublicKeyFromCertFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
     if result is Error {
