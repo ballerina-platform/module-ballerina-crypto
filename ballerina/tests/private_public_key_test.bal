@@ -23,7 +23,7 @@ isolated function testParseEncryptedPrivateKeyFromP12() returns Error? {
         password: "ballerina"
     };
     PrivateKey result = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
-    test:assertEquals(result["algorithm"], "RSA");
+    test:assertEquals(result.algorithm, "RSA");
 }
 
 @test:Config {}
@@ -85,13 +85,13 @@ isolated function testReadPrivateKeyFromP12WithInvalidKeyPassword() {
 @test:Config {}
 isolated function testParsePrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
-    test:assertEquals(result["algorithm"], "RSA");
+    test:assertEquals(result.algorithm, "RSA");
 }
 
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_PRIVATE_KEY_PATH, "ballerina");
-    test:assertEquals(result["algorithm"], "RSA");
+    test:assertEquals(result.algorithm, "RSA");
 }
 
 @test:Config {}
@@ -117,7 +117,7 @@ isolated function testParseEncryptedPrivateKeyFromKeyFileWithNoPassword() {
 @test:Config {}
 isolated function testParseEncryptedPrivateKeyFromKeyPairFile() returns Error? {
     PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(ENCRYPTED_KEY_PAIR_PATH, "ballerina");
-    test:assertEquals(result["algorithm"], "RSA");
+    test:assertEquals(result.algorithm, "RSA");
 }
 
 @test:Config {}
@@ -143,7 +143,33 @@ isolated function testParseEncryptedPrivateKeyFromKeyPairFileWithNoPassword() {
 @test:Config {}
 isolated function testParsePrivateKeyFromKeyPairFile() returns Error? {
     PrivateKey result = check decodeRsaPrivateKeyFromKeyFile(KEY_PAIR_PATH);
-    test:assertEquals(result["algorithm"], "RSA");
+    test:assertEquals(result.algorithm, "RSA");
+}
+
+@test:Config {}
+isolated function testParseEcPrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeEcPrivateKeyFromKeyFile(EC_PRIVATE_KEY_PATH);
+    test:assertEquals(result.algorithm, "ECDSA");
+}
+
+@test:Config {}
+isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
+    PrivateKey|Error result = decodeEcPrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid EC key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
+    PublicKey|Error result = decodeEcPublicKeyFromCertFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
+    } else {
+        test:assertFail("Expected error not found");
+    }
 }
 
 @test:Config {}
@@ -163,13 +189,13 @@ isolated function testParsePublicKeyFromP12() returns Error? {
         password: "ballerina"
     };
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
-    test:assertEquals(publicKey["algorithm"], "RSA");
-    Certificate certificate = <Certificate>publicKey["certificate"];
+    test:assertEquals(publicKey.algorithm, "RSA");
+    Certificate certificate = <Certificate>publicKey.certificate;
 
-    string serial = (<int>certificate["serial"]).toString();
-    string issuer = <string>certificate["issuer"];
-    string subject = <string>certificate["subject"];
-    string signingAlgorithm = <string>certificate["signingAlgorithm"];
+    string serial = (<int>certificate.serial).toString();
+    string issuer = <string>certificate.issuer;
+    string subject = <string>certificate.subject;
+    string signingAlgorithm = <string>certificate.signingAlgorithm;
 
     test:assertEquals(serial, "2097012467");
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
@@ -222,18 +248,34 @@ isolated function testReadPublicKeyFromP12WithInvalidAlias() {
 @test:Config {}
 isolated function testParsePublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromCertFile(X509_PUBLIC_CERT_PATH);
-    test:assertEquals(publicKey["algorithm"], "RSA");
-    Certificate certificate = <Certificate>publicKey["certificate"];
+    test:assertEquals(publicKey.algorithm, "RSA");
+    Certificate certificate = <Certificate>publicKey.certificate;
 
-    string serial = (<int>certificate["serial"]).toString();
-    string issuer = <string>certificate["issuer"];
-    string subject = <string>certificate["subject"];
-    string signingAlgorithm = <string>certificate["signingAlgorithm"];
+    string serial = (<int>certificate.serial).toString();
+    string issuer = <string>certificate.issuer;
+    string subject = <string>certificate.subject;
+    string signingAlgorithm = <string>certificate.signingAlgorithm;
 
     test:assertEquals(serial, "2097012467");
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(signingAlgorithm, "SHA256withRSA");
+}
+
+@test:Config {}
+isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
+    PublicKey publicKey = check decodeEcPublicKeyFromCertFile(EC_CERT_PATH);
+    test:assertEquals(publicKey.algorithm, "EC");
+    Certificate certificate = <Certificate>publicKey.certificate;
+
+    string serial = (<int>certificate.serial).toString();
+    string issuer = <string>certificate.issuer;
+    string subject = <string>certificate.subject;
+    string signingAlgorithm = <string>certificate.signingAlgorithm;
+
+    test:assertEquals(serial, "813081972327485475");
+    test:assertEquals(issuer, "CN=sigstore-intermediate,O=sigstore.dev");
+    test:assertEquals(signingAlgorithm, "SHA384withECDSA");
 }
 
 @test:Config {}
