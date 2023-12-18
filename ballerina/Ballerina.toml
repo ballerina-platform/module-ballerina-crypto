@@ -16,7 +16,7 @@ graalvmCompatible = true
 groupId = "io.ballerina.stdlib"
 artifactId = "crypto-native"
 version = "2.6.1"
-path = "../native/build/libs/crypto-native-2.6.1-SNAPSHOT.jar"
+path = "../native/build/libs/crypto-native-2.6.1.jar"
 
 [[platform.java17.dependency]]
 groupId = "org.bouncycastle"
