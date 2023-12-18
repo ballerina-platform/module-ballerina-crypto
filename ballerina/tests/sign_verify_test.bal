@@ -245,6 +245,19 @@ isolated function testVerifySha384withEcdsa() returns Error? {
 }
 
 @test:Config {}
+isolated function testVerifySha256withEcdsa() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: EC_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeEcPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
+    PublicKey publicKey = check decodeEcPublicKeyFromTrustStore(keyStore, "ec-keypair");
+    byte[] sha256withEcdsaSignature = check signSha256withEcdsa(payload, privateKey);
+    test:assertTrue(check verifySha256withEcdsaSignature(payload, sha256withEcdsaSignature, publicKey));
+}
+
+@test:Config {}
 isolated function testDecodeRsaPrivateKeyError() returns Error? {
     KeyStore keyStore = {
         path: EC_KEYSTORE_PATH,

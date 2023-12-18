@@ -136,6 +136,26 @@ public isolated function signSha384withEcdsa(byte[] input, PrivateKey privateKey
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
+# Returns the SHA256withECDSA based signature value for the given data.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeEcPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signSha256withEcdsa(data, privateKey);
+# ```
+#
+# + input - The content to be signed
+# + privateKey - Private key used for signing
+# + return - The generated signature or else a `crypto:Error` if the private key is invalid
+public isolated function signSha256withEcdsa(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
+    name: "signSha256withEcdsa",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
 # Verifies the RSA-MD5 based signature.
 # ```ballerina
 # string input = "Hello Ballerina";
@@ -277,5 +297,29 @@ public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature,
 public isolated function verifySha384withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
     name: "verifySha384withEcdsaSignature",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
+# Verifies the SHA256withECDSA based signature.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeEcPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signSha256withEcdsa(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeEcPublicKeyFromTrustStore(keyStore, "keyAlias");
+# boolean validity = check crypto:verifySha256withEcdsaSignature(data, signature, publicKey);
+# ```
+#
+# + data - The content to be verified
+# + signature - Signature value
+# + publicKey - Public key used for verification
+# + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
+public isolated function verifySha256withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
+                                                  returns boolean|Error = @java:Method {
+    name: "verifySha256withEcdsaSignature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
