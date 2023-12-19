@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- [Introduce new APIs to sign and verify using SHA256withECDSA](https://github.com/ballerina-platform/ballerina-library/issues/5889)
+
+## [2.6.1] - 2023-12-12
+
+### Added
 - [Introduce new APIs to decode private and public keys from files](https://github.com/ballerina-platform/ballerina-library/issues/5871)
 
 ## [2.6.0] - 2023-12-08

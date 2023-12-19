@@ -65,6 +65,12 @@ public class Sign {
         return CryptoUtils.sign("SHA384withECDSA", key, input);
     }
 
+    public static Object signSha256withEcdsa(BArray inputValue, BMap<?, ?> privateKey) {
+        byte[] input = inputValue.getBytes();
+        PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
+        return CryptoUtils.sign("SHA256withECDSA", key, input);
+    }
+
     public static Object signRsaSha512(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
@@ -116,5 +122,12 @@ public class Sign {
         byte[] signature = signatureValue.getBytes();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         return CryptoUtils.verify("SHA384withECDSA", key, data, signature);
+    }
+
+    public static Object verifySha256withEcdsaSignature(BArray dataValue, BArray signatureValue, BMap<?, ?> publicKey) {
+        byte[] data = dataValue.getBytes();
+        byte[] signature = signatureValue.getBytes();
+        PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
+        return CryptoUtils.verify("SHA256withECDSA", key, data, signature);
     }
 }
