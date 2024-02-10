@@ -99,6 +99,9 @@ public class Constants {
     // RSA key algorithm
     public static final String RSA_ALGORITHM = "RSA";
 
+    // Dilithium3 signing algorithm
+    public static final String DILITHIUM3_ALGORITHM = "DILITHIUM3";
+
     // EC key algorithm
     public static final String EC_ALGORITHM = "EC";
 

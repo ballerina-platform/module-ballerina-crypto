@@ -90,6 +90,19 @@ public class Decode {
         return decodedPrivateKey;
     }
 
+    public static Object decodeDilithium3PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
+                                                        BString keyPassword) {
+
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildDilithium3PrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
     private static Object getPrivateKey(BMap<BString, BString> keyStoreRecord, BString keyAlias, BString keyPassword) {
         File keyStoreFile = new File(keyStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
@@ -134,8 +147,18 @@ public class Decode {
         return decodedPrivateKey;
     }
 
+    public static Object decodeDilithium3PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildDilithium3PrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
     private static Object getPrivateKey(BString keyFilePath, Object keyPassword) {
-        Security.addProvider(new BouncyCastleProvider());
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
@@ -198,6 +221,14 @@ public class Decode {
         return CryptoUtils.createError("Not a valid EC key");
     }
 
+    private static Object buildDilithium3PrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals(Constants.DILITHIUM3_ALGORITHM)) {
+            return getPrivateKeyRecord(privateKey);
+        } else {
+            return CryptoUtils.createError("Not a valid Dilithium3 key");
+        }
+    }
+
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
@@ -210,6 +241,18 @@ public class Decode {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
             return buildEcPublicKeyRecord(publicKey);
+        }
+        return certificate;
+    }
+
+    public static Object decodeDilithium3PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
+                                                                 BString keyAlias) {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        Object certificate = getPublicKey(trustStoreRecord, keyAlias);
+        if (certificate instanceof Certificate publicKey) {
+            return buildDilithium3PublicKeyRecord(publicKey);
         }
         return certificate;
     }
@@ -263,6 +306,22 @@ public class Decode {
         }
     }
 
+    public static Object decodeDilithium3PublicKeyFromCertFile(BString certFilePath) {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        File certFile = new File(certFilePath.getValue());
+        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
+            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
+            return buildDilithium3PublicKeyRecord(certificate);
+        } catch (FileNotFoundException e) {
+            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
+        } catch (CertificateException | IOException e) {
+            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
+        }
+    }
+
     private static Object buildRsaPublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();
@@ -279,6 +338,15 @@ public class Decode {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
         return CryptoUtils.createError("Not a valid EC public key");
+    }
+
+    private static Object buildDilithium3PublicKeyRecord(Certificate certificate) {
+        BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
+        PublicKey publicKey = certificate.getPublicKey();
+        if (publicKey.getAlgorithm().equals(Constants.DILITHIUM3_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
+        }
+        return CryptoUtils.createError("Not a valid Dilithium3 public key");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,

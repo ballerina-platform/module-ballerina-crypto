@@ -35,6 +35,12 @@ public class Sign {
 
     private Sign() {}
 
+    public static Object signDilithium3(BArray inputValue, BMap<?, ?> privateKey) {
+        byte[] input = inputValue.getBytes();
+        PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
+        return CryptoUtils.sign("Dilithium3", key, input);
+    }
+
     public static Object signRsaMd5(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
@@ -75,6 +81,14 @@ public class Sign {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA512withRSA", key, input);
+    }
+
+    public static Object verifyDilithium3Signature(BArray dataValue, BArray signatureValue,
+                                               BMap<?, ?> publicKey) {
+        byte[] data = dataValue.getBytes();
+        byte[] signature = signatureValue.getBytes();
+        PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
+        return CryptoUtils.verify("Dilithium3", key, data, signature);
     }
 
     public static Object verifyRsaMd5Signature(BArray dataValue, BArray signatureValue,
