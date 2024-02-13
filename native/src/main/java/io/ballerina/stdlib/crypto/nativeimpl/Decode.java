@@ -37,6 +37,7 @@ import org.bouncycastle.operator.InputDecryptorProvider;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.pkcs.jcajce.JcePKCSPBEInputDecryptorProviderBuilder;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -103,6 +104,18 @@ public class Decode {
         return decodedPrivateKey;
     }
 
+    public static Object decodeKyber768PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
+                                                                 BString keyPassword) {
+        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
+        Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildKyber768PrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
     private static Object getPrivateKey(BMap<BString, BString> keyStoreRecord, BString keyAlias, BString keyPassword) {
         File keyStoreFile = new File(keyStoreRecord.get(Constants.KEY_STORE_RECORD_PATH_FIELD).toString());
         try (FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
@@ -151,6 +164,14 @@ public class Decode {
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildDilithium3PrivateKeyRecord(privateKey);
+        }
+        return decodedPrivateKey;
+    }
+
+    public static Object decodeKyber768PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
+        if (decodedPrivateKey instanceof PrivateKey privateKey) {
+            return buildKyber768PrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
     }
@@ -229,6 +250,14 @@ public class Decode {
         }
     }
 
+    private static Object buildKyber768PrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals(Constants.KYBER768_ALGORITHM)) {
+            return getPrivateKeyRecord(privateKey);
+        } else {
+            return CryptoUtils.createError("Not a valid Kyber768 key");
+        }
+    }
+
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
@@ -253,6 +282,18 @@ public class Decode {
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
             return buildDilithium3PublicKeyRecord(publicKey);
+        }
+        return certificate;
+    }
+
+    public static Object decodeKyber768PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
+                                                                 BString keyAlias) {
+        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
+        Object certificate = getPublicKey(trustStoreRecord, keyAlias);
+        if (certificate instanceof Certificate publicKey) {
+            return buildKyber768PublicKeyRecord(publicKey);
         }
         return certificate;
     }
@@ -347,6 +388,15 @@ public class Decode {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
         return CryptoUtils.createError("Not a valid Dilithium3 public key");
+    }
+
+    private static Object buildKyber768PublicKeyRecord(Certificate certificate) {
+        BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
+        PublicKey publicKey = certificate.getPublicKey();
+        if (publicKey.getAlgorithm().equals(Constants.KYBER768_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
+        }
+        return CryptoUtils.createError("Not a valid Kyber768 public key");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,

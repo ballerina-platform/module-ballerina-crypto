@@ -102,6 +102,9 @@ public class Constants {
     // Dilithium3 signing algorithm
     public static final String DILITHIUM3_ALGORITHM = "DILITHIUM3";
 
+    // Kyber768 key encapsulation mechanism
+    public static final String KYBER768_ALGORITHM = "KYBER768";
+
     // EC key algorithm
     public static final String EC_ALGORITHM = "EC";
 
