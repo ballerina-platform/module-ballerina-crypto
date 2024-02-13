@@ -23,12 +23,16 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
+import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
+import org.bouncycastle.jcajce.spec.KEMExtractSpec;
+import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -39,6 +43,7 @@ import java.util.Arrays;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -157,6 +162,34 @@ public class CryptoUtils {
             return CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
+        }
+    }
+
+    public static Object generateEncapsulated(String algorithm, PublicKey publicKey, String provider) {
+        try {
+            KEMGenerateSpec kemGenerateSpec = new KEMGenerateSpec(publicKey, algorithm);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
+            keyGenerator.init(kemGenerateSpec);
+            return keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            throw CryptoUtils.createError("Error occurred while generating encapsulated key: " + e.getMessage());
+        } catch (NoSuchProviderException e) {
+            throw CryptoUtils.createError("Provider not found: " + provider);
+        }
+    }
+
+    public static Object extractSecret(byte[] encapsulation, String algorithm, PrivateKey privateKey, String provider) {
+        try {
+            KEMExtractSpec kemExtractSpec = new KEMExtractSpec(privateKey, encapsulation, algorithm);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
+            keyGenerator.init(kemExtractSpec);
+            SecretKeyWithEncapsulation secretKeyWithEncapsulation =
+                    (SecretKeyWithEncapsulation) keyGenerator.generateKey();
+            return ValueCreator.createArrayValue(secretKeyWithEncapsulation.getEncoded());
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            throw CryptoUtils.createError("Error occurred while extracting secret: " + e.getMessage());
+        } catch (NoSuchProviderException e) {
+            throw CryptoUtils.createError("Provider not found: " + e.getMessage());
         }
     }
 

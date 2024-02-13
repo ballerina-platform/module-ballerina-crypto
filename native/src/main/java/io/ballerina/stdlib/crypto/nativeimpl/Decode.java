@@ -363,6 +363,22 @@ public class Decode {
         }
     }
 
+    public static Object decodeKyber768PublicKeyFromCertFile(BString certFilePath) {
+        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
+        File certFile = new File(certFilePath.getValue());
+        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
+            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
+            return buildKyber768PublicKeyRecord(certificate);
+        } catch (FileNotFoundException e) {
+            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
+        } catch (CertificateException | IOException e) {
+            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
+        }
+    }
+
     private static Object buildRsaPublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();

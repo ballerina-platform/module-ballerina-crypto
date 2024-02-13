@@ -309,6 +309,18 @@ public isolated function decodeDilithium3PublicKeyFromCertFile(string certFile) 
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
+# Decodes the Kyber768 public key from the given public certificate file.
+# ```ballerina
+# string certFile = "/path/to/public.cert";
+# crypto:PublicKey publicKey = check crypto:decodeKyber768PublicKeyFromCertFile(certFile);
+# ```
+#
+# + certFile - Path to the certificate file
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeKyber768PublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
 # Builds the RSA public key from the given modulus and exponent parameters.
 # ```ballerina
 # string modulus = "luZFdW1ynitztkWLC6xKegbRWxky...";
