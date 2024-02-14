@@ -16,11 +16,17 @@
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# Represents the supported key algorithms.
-public type KeyAlgorithm RSA;
+# Represents the supported public key algorithms.
+public type KeyAlgorithm RSA|KYBER768|DILITHIUM3;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
+
+# The `Kyber768` algorithm.
+public const KYBER768 = "KYBER768";
+
+# The `Dilithium3` algorithm.
+public const DILITHIUM3 = "DILITHIUM3";
 
 # Represents the KeyStore-related configurations.
 #

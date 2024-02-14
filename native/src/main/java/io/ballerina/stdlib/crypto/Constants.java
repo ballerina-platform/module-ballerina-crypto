@@ -40,7 +40,7 @@ public class Constants {
     public static final String CERTIFICATE_RECORD = "Certificate";
 
     // Record used to reference to an encapsulated key.
-    public static final String ENCAPSULATED_KEY_RECORD = "EncapsulatedKey";
+    public static final String ENCAPSULATED_RESULT_RECORD = "EncapsulationResult";
 
     // Native data key for private key within the PrivateKey record.
     public static final String NATIVE_DATA_PRIVATE_KEY = "NATIVE_DATA_PRIVATE_KEY";
@@ -74,10 +74,10 @@ public class Constants {
     public static final String CERTIFICATE_RECORD_SIGNATURE_FIELD = "signature";
     public static final String CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD = "signingAlgorithm";
 
-    // Fields of `EncapsulatedKey` record.
-    public static final String ENCAPSULATED_KEY_RECORD_ALGORITHM_FIELD = "algorithm";
-    public static final String ENCAPSULATED_KEY_RECORD_ENCAPSULATED_SECRET_FIELD = "encapsulatedSecret";
-    public static final String ENCAPSULATED_KEY_RECORD_SECRET_FIELD = "secret";
+    // Fields of `EncapsulationResult` record.
+    public static final String ENCAPSULATED_RESULT_RECORD_ALGORITHM_FIELD = "algorithm";
+    public static final String ENCAPSULATED_RESULT_RECORD_ENCAPSULATED_FIELD = "encapsulatedSecret";
+    public static final String ENCAPSULATED_RESULT_RECORD_SECRET_FIELD = "sharedSecret";
 
     // Fields of `KeyStoreConfig` record.
     public static final BString KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD = StringUtils.fromString("keyStore");
