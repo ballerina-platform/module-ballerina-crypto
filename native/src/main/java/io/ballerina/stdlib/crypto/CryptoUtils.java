@@ -23,11 +23,14 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
+import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.SecretWithEncapsulation;
 import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.generators.HKDFBytesGenerator;
 import org.bouncycastle.crypto.generators.KDF2BytesGenerator;
 import org.bouncycastle.crypto.kems.RSAKEMExtractor;
 import org.bouncycastle.crypto.kems.RSAKEMGenerator;
+import org.bouncycastle.crypto.params.HKDFParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
@@ -173,6 +176,17 @@ public class CryptoUtils {
         } catch (NoSuchAlgorithmException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         }
+    }
+
+    public static Object hkdf(String digestAlgorithm, byte[] ikm, byte[] salt, byte[] info, int length) {
+        Digest hash = selectHash(digestAlgorithm);
+        byte[] okm = new byte[length];
+
+        HKDFParameters params = new HKDFParameters(ikm, salt, info);
+        HKDFBytesGenerator hkdf = new HKDFBytesGenerator(hash);
+        hkdf.init(params);
+        hkdf.generateBytes(okm, 0, length);
+        return ValueCreator.createArrayValue(okm);
     }
 
     public static Object generateEncapsulated(String algorithm, PublicKey publicKey, String provider) {
@@ -397,5 +411,14 @@ public class CryptoUtils {
                 throw CryptoUtils.createError("Unsupported padding: " + algorithmPadding);
         }
         return algorithmPadding;
+    }
+
+    private static Digest selectHash(String algorithm) {
+        switch (algorithm) {
+            case "SHA-256":
+                return new SHA256Digest();
+            default:
+                throw CryptoUtils.createError("Unsupported algorithm: " + algorithm);
+        }
     }
 }
