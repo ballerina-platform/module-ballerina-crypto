@@ -414,11 +414,9 @@ public class CryptoUtils {
     }
 
     private static Digest selectHash(String algorithm) {
-        switch (algorithm) {
-            case "SHA-256":
-                return new SHA256Digest();
-            default:
-                throw CryptoUtils.createError("Unsupported algorithm: " + algorithm);
+        if ("SHA-256".equals(algorithm)) {
+            return new SHA256Digest();
         }
+        throw CryptoUtils.createError("Unsupported algorithm: " + algorithm);
     }
 }

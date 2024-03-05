@@ -21,7 +21,7 @@ public type KemAlgorithm RSA|KYBER768|RSA_KYBER768;
 # The `RSA-Kyber768` KEM algorithm.
 public const RSA_KYBER768 = "RSA_KYBER768";
 
-# Represents the shared secret and its encapsulation used in Key Encapsulation Mechanism (KEM)
+# Represents the shared secret and its encapsulation used in Key Encapsulation Mechanism (KEM).
 #
 # + algorithm - KEM algorithm
 # + encapsulatedSecret - Encapsulated secret 

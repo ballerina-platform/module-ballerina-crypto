@@ -15,12 +15,12 @@
 // under the License.
 import ballerina/jballerina.java;
 
-# Returns HKDF (HMAC-based Key Derivation Function) using SHA-256 as the hash function
+# Returns HKDF (HMAC-based Key Derivation Function) using SHA-256 as the hash function.
 #
-# + input - The input key material to derive the key from.
-# + length - The length of the output keying material (OKM) in bytes.
-# + salt - Optional salt value, a non-secret random value.  
-# + info - Optional context and application-specific information.
+# + input - The input key material to derive the key from
+# + length - The length of the output keying material (OKM) in bytes
+# + salt - Optional salt value, a non-secret random value
+# + info - Optional context and application-specific information
 # + return - The derived keying material (OKM) of the specified length
 public isolated function hkdfSha256(byte[] input, int length, byte[] salt = [0], byte[] info = []) returns byte[]|Error = @java:Method {
     name: "hkdfSha256",

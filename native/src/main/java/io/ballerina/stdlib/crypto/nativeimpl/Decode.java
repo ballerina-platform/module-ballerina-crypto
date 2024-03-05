@@ -322,56 +322,36 @@ public class Decode {
     }
 
     public static Object decodeRsaPublicKeyFromCertFile(BString certFilePath) {
-        File certFile = new File(certFilePath.getValue());
-        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
-            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildRsaPublicKeyRecord(certificate);
-        } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
-        } catch (CertificateException | IOException e) {
-            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
-        }
+        X509Certificate certificate = (X509Certificate) getCertificateFromFile(certFilePath);
+        return buildRsaPublicKeyRecord(certificate);
     }
 
     public static Object decodeEcPublicKeyFromCertFile(BString certFilePath) {
-        File certFile = new File(certFilePath.getValue());
-        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
-            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildEcPublicKeyRecord(certificate);
-        } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
-        } catch (CertificateException | IOException e) {
-            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
-        }
+        X509Certificate certificate = (X509Certificate) getCertificateFromFile(certFilePath);
+        return buildEcPublicKeyRecord(certificate);
     }
 
     public static Object decodeDilithium3PublicKeyFromCertFile(BString certFilePath) {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
-        File certFile = new File(certFilePath.getValue());
-        try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
-            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildDilithium3PublicKeyRecord(certificate);
-        } catch (FileNotFoundException e) {
-            return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
-        } catch (CertificateException | IOException e) {
-            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
-        }
+        X509Certificate certificate = (X509Certificate) getCertificateFromFile(certFilePath);
+        return buildDilithium3PublicKeyRecord(certificate);
     }
 
     public static Object decodeKyber768PublicKeyFromCertFile(BString certFilePath) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
+        X509Certificate certificate = (X509Certificate) getCertificateFromFile(certFilePath);
+        return buildKyber768PublicKeyRecord(certificate);
+    }
+
+    private static Object getCertificateFromFile(BString certFilePath) {
         File certFile = new File(certFilePath.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
-            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildKyber768PublicKeyRecord(certificate);
+            return certificateFactory.generateCertificate(fileInputStream);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {
