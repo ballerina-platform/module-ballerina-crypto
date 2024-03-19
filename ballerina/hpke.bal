@@ -47,9 +47,9 @@ public type HybridEncryptionResult record {|
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
 public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|error {
-    EncapsulationResult hybridEncapsulatedKey = check encapsulateKyber768Kem(publicKey);
-    byte[] sharedSecret = check hkdfSha256(hybridEncapsulatedKey.sharedSecret, symmetricKeySize);
-    byte[] encapsulatedSecret = hybridEncapsulatedKey.encapsulatedSecret;
+    EncapsulationResult encapsulationResult = check encapsulateKyber768Kem(publicKey);
+    byte[] sharedSecret = check hkdfSha256(encapsulationResult.sharedSecret, symmetricKeySize);
+    byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
     return {
         algorithm: KYBER768,
@@ -107,9 +107,9 @@ public isolated function decryptKyber768Hpke(byte[] input, byte[] encapsulatedKe
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
 public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey kyberPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|error {
-    EncapsulationResult hybridEncapsulatedKey = check encapsulateRsaKyber768Kem(rsaPublicKey, kyberPublicKey);
-    byte[] sharedSecret = check hkdfSha256(hybridEncapsulatedKey.sharedSecret, symmetricKeySize);
-    byte[] encapsulatedSecret = hybridEncapsulatedKey.encapsulatedSecret;
+    EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKyber768Kem(rsaPublicKey, kyberPublicKey);
+    byte[] sharedSecret = check hkdfSha256(hybridEncapsulationResult.sharedSecret, symmetricKeySize);
+    byte[] encapsulatedSecret = hybridEncapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
     return {
         algorithm: RSA_KYBER768,
