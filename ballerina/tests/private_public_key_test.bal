@@ -163,8 +163,34 @@ isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
+isolated function testParseMlDsa65PrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
+    test:assertEquals(result.algorithm, "DILITHIUM3");
+}
+
+@test:Config {}
+isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
+    PrivateKey|Error result = decodeMlDsa65PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid ML-DSA-65 key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
 isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
     PublicKey|Error result = decodeEcPublicKeyFromCertFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testParseErrorMlDsa65PublicKeyFromKeyFile() returns Error? {
+    PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(PRIVATE_KEY_PATH);
     if result is Error {
         test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
     } else {
@@ -276,6 +302,23 @@ isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(serial, "813081972327485475");
     test:assertEquals(issuer, "CN=sigstore-intermediate,O=sigstore.dev");
     test:assertEquals(signingAlgorithm, "SHA384withECDSA");
+}
+
+@test:Config {}
+isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
+    PublicKey publicKey = check decodeMlDsa65PublicKeyFromCertFile(MLDSA_CERT_PATH);
+    test:assertEquals(publicKey.algorithm, "DILITHIUM3");
+    Certificate certificate = <Certificate>publicKey.certificate;
+
+    string serial = (<int>certificate.serial).toString();
+    string issuer = <string>certificate.issuer;
+    string subject = <string>certificate.subject;
+    string signingAlgorithm = <string>certificate.signingAlgorithm;
+
+    test:assertEquals(serial, "1023822328749742100");
+    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
+    test:assertEquals(signingAlgorithm, "DILITHIUM3");
 }
 
 @test:Config {}
