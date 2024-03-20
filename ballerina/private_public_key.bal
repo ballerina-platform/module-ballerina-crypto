@@ -13,20 +13,15 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# Represents the supported public key algorithms.
-public type KeyAlgorithm RSA|KYBER768|DILITHIUM3;
+# Represents the supported key algorithms.
+public type KeyAlgorithm RSA;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
-
-# The `Kyber768` algorithm.
-public const KYBER768 = "KYBER768";
-
-# The `Dilithium3` algorithm.
-public const DILITHIUM3 = "DILITHIUM3";
 
 # Represents the KeyStore-related configurations.
 #

@@ -14,19 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the supported HPKE algorithms.
-public type HpkeAlgorithm KYBER768|RSA_KYBER768;
-
 # Represent the supported symmetric key sizes for AES algorithm.
 public type AesKeySize 16|24|32;
 
 # Represents the encapsulated secret and the ciphertext used in Hybrid Public Key Encryption (HPKE).
 #
-# + algorithm - The hybrid public key encryption algorithm used
 # + encapsulatedSecret - The encapsulated secret
 # + cipherText - The encrypted data
 public type HybridEncryptionResult record {|
-    HpkeAlgorithm algorithm;
     byte[] encapsulatedSecret;
     byte[] cipherText;
 |};
@@ -46,13 +41,12 @@ public type HybridEncryptionResult record {|
 # + publicKey - Public key used for encryption
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
-public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|error {
+public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
     EncapsulationResult encapsulationResult = check encapsulateKyber768Kem(publicKey);
     byte[] sharedSecret = check hkdfSha256(encapsulationResult.sharedSecret, symmetricKeySize);
     byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
     return {
-        algorithm: KYBER768,
         encapsulatedSecret: encapsulatedSecret,
         cipherText: ciphertext
     };
@@ -78,12 +72,11 @@ public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, 
 # + privateKey - The Kyber private key used for decryption
 # + length - The length of the output (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, int length = 32) returns byte[]|error {
+public isolated function decryptKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, int length = 32) returns byte[]|Error {
     byte[] key = check decapsulateKyber768Kem(encapsulatedKey, privateKey);
     key = check hkdfSha256(key, length);
     return check decryptAesEcb(input, key);
 }
-
 
 # Returns the RsaKyber768-HPKE-encrypted value for the given data.
 # ```ballerina
@@ -106,13 +99,12 @@ public isolated function decryptKyber768Hpke(byte[] input, byte[] encapsulatedKe
 # + kyberPublicKey - The Kyber public key used for encryption
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
-public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey kyberPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|error {
+public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey kyberPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
     EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKyber768Kem(rsaPublicKey, kyberPublicKey);
     byte[] sharedSecret = check hkdfSha256(hybridEncapsulationResult.sharedSecret, symmetricKeySize);
     byte[] encapsulatedSecret = hybridEncapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
     return {
-        algorithm: RSA_KYBER768,
         encapsulatedSecret: encapsulatedSecret,
         cipherText: ciphertext
     };
@@ -145,7 +137,7 @@ public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPubli
 # + kyberPrivateKey - The Kyber private key used for decryption
 # + length - The length of the output (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptRsaKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey kyberPrivateKey, int length = 32) returns byte[]|error {
+public isolated function decryptRsaKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey kyberPrivateKey, int length = 32) returns byte[]|Error {
     byte[] key = check decapsulateRsaKyber768Kem(encapsulatedKey, rsaPrivateKey, kyberPrivateKey);
     key = check hkdfSha256(key, length);
     return check decryptAesEcb(input, key);

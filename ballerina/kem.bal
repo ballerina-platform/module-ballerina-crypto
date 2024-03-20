@@ -13,11 +13,14 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 import ballerina/jballerina.java;
 
 # Represents the supported KEM algorithms.
 public type KemAlgorithm RSA|KYBER768|RSA_KYBER768;
 
+# The `Kyber768` KEM algorithm.
+public const KYBER768 = "KYBER768";
 # The `RSA-Kyber768` KEM algorithm.
 public const RSA_KYBER768 = "RSA_KYBER768";
 
