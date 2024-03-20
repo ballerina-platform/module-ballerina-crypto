@@ -91,7 +91,7 @@ public class Decode {
         return decodedPrivateKey;
     }
 
-    public static Object decodeDilithium3PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
+    public static Object decodeMlDsa65PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                         BString keyPassword) {
 
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
@@ -99,7 +99,7 @@ public class Decode {
         }
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
-            return buildDilithium3PrivateKeyRecord(privateKey);
+            return buildMlDsa65PrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
     }
@@ -160,10 +160,10 @@ public class Decode {
         return decodedPrivateKey;
     }
 
-    public static Object decodeDilithium3PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+    public static Object decodeMlDsa65PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
-            return buildDilithium3PrivateKeyRecord(privateKey);
+            return buildMlDsa65PrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
     }
@@ -242,11 +242,11 @@ public class Decode {
         return CryptoUtils.createError("Not a valid EC key");
     }
 
-    private static Object buildDilithium3PrivateKeyRecord(PrivateKey privateKey) {
-        if (privateKey.getAlgorithm().equals(Constants.DILITHIUM3_ALGORITHM)) {
+    private static Object buildMlDsa65PrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
-            return CryptoUtils.createError("Not a valid Dilithium3 key");
+            return CryptoUtils.createError("Not a valid MlDsa65 key");
         }
     }
 
@@ -274,14 +274,14 @@ public class Decode {
         return certificate;
     }
 
-    public static Object decodeDilithium3PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
+    public static Object decodeMlDsa65PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
                                                                  BString keyAlias) {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
-            return buildDilithium3PublicKeyRecord(publicKey);
+            return buildMlDsa65PublicKeyRecord(publicKey);
         }
         return certificate;
     }
@@ -347,7 +347,7 @@ public class Decode {
         }
     }
 
-    public static Object decodeDilithium3PublicKeyFromCertFile(BString certFilePath) {
+    public static Object decodeMlDsa65PublicKeyFromCertFile(BString certFilePath) {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -355,7 +355,7 @@ public class Decode {
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildDilithium3PublicKeyRecord(certificate);
+            return buildMlDsa65PublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {
@@ -397,13 +397,13 @@ public class Decode {
         return CryptoUtils.createError("Not a valid EC public key");
     }
 
-    private static Object buildDilithium3PublicKeyRecord(Certificate certificate) {
+    private static Object buildMlDsa65PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();
-        if (publicKey.getAlgorithm().equals(Constants.DILITHIUM3_ALGORITHM)) {
+        if (publicKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid Dilithium3 public key");
+        return CryptoUtils.createError("Not a valid MlDsa65 public key");
     }
 
     private static Object buildKyber768PublicKeyRecord(Certificate certificate) {

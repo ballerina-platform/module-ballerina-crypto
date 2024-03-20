@@ -107,8 +107,8 @@ public class Constants {
     // RSA key algorithm
     public static final String RSA_ALGORITHM = "RSA";
 
-    // Dilithium3 signing algorithm
-    public static final String DILITHIUM3_ALGORITHM = "DILITHIUM3";
+    // ML-DSA-65 signing algorithm
+    public static final String MLDSA65_ALGORITHM = "DILITHIUM3";
 
     // Kyber768 key encapsulation mechanism
     public static final String KYBER768_ALGORITHM = "KYBER768";
