@@ -104,14 +104,14 @@ public class Decode {
         return decodedPrivateKey;
     }
 
-    public static Object decodeKyber768PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
+    public static Object decodeMlKem768PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                                  BString keyPassword) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
-            return buildKyber768PrivateKeyRecord(privateKey);
+            return buildMlKem768PrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
     }
@@ -168,10 +168,10 @@ public class Decode {
         return decodedPrivateKey;
     }
 
-    public static Object decodeKyber768PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
+    public static Object decodeMlKem768PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
-            return buildKyber768PrivateKeyRecord(privateKey);
+            return buildMlKem768PrivateKeyRecord(privateKey);
         }
         return decodedPrivateKey;
     }
@@ -246,15 +246,15 @@ public class Decode {
         if (privateKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
-            return CryptoUtils.createError("Not a valid MlDsa65 key");
+            return CryptoUtils.createError("Not a valid ML-DSA-65 key");
         }
     }
 
-    private static Object buildKyber768PrivateKeyRecord(PrivateKey privateKey) {
-        if (privateKey.getAlgorithm().equals(Constants.KYBER768_ALGORITHM)) {
+    private static Object buildMlKem768PrivateKeyRecord(PrivateKey privateKey) {
+        if (privateKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
-            return CryptoUtils.createError("Not a valid Kyber768 key");
+            return CryptoUtils.createError("Not a valid ML-KEM-768 key");
         }
     }
 
@@ -286,14 +286,14 @@ public class Decode {
         return certificate;
     }
 
-    public static Object decodeKyber768PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
+    public static Object decodeMlKem768PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
                                                                  BString keyAlias) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
-            return buildKyber768PublicKeyRecord(publicKey);
+            return buildMlKem768PublicKeyRecord(publicKey);
         }
         return certificate;
     }
@@ -363,7 +363,7 @@ public class Decode {
         }
     }
 
-    public static Object decodeKyber768PublicKeyFromCertFile(BString certFilePath) {
+    public static Object decodeMlKem768PublicKeyFromCertFile(BString certFilePath) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
@@ -371,7 +371,7 @@ public class Decode {
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
             X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
-            return buildKyber768PublicKeyRecord(certificate);
+            return buildMlKem768PublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
         } catch (CertificateException | IOException e) {
@@ -403,16 +403,16 @@ public class Decode {
         if (publicKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid MlDsa65 public key");
+        return CryptoUtils.createError("Not a valid ML-DSA-65 public key");
     }
 
-    private static Object buildKyber768PublicKeyRecord(Certificate certificate) {
+    private static Object buildMlKem768PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();
-        if (publicKey.getAlgorithm().equals(Constants.KYBER768_ALGORITHM)) {
+        if (publicKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
-        return CryptoUtils.createError("Not a valid Kyber768 public key");
+        return CryptoUtils.createError("Not a valid ML-KEM-768 public key");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,

@@ -26,7 +26,7 @@ public type HybridEncryptionResult record {|
     byte[] cipherText;
 |};
 
-# Returns the Kyber768-HPKE-encrypted value for the given data.
+# Returns the ML-KEM-768-HPKE-encrypted value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -34,15 +34,15 @@ public type HybridEncryptionResult record {|
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PublicKey publicKey = check crypto:decodeKyber768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptKyber768Hpke(data, publicKey);
+# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptMlKem768Hpke(data, publicKey);
 # ```
 # + input - The content to be encrypted
 # + publicKey - Public key used for encryption
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
-public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
-    EncapsulationResult encapsulationResult = check encapsulateKyber768Kem(publicKey);
+public isolated function encryptMlKem768Hpke(byte[] input, PublicKey publicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
+    EncapsulationResult encapsulationResult = check encapsulateMlKem768(publicKey);
     byte[] sharedSecret = check hkdfSha256(encapsulationResult.sharedSecret, symmetricKeySize);
     byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
@@ -52,7 +52,7 @@ public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, 
     };
 }
 
-# Returns the Kyber768-HPKE-decrypted value for the given Kyber768-encrypted data.
+# Returns the ML-KEM-768-HPKE-decrypted value for the given encrypted data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -60,47 +60,47 @@ public isolated function encryptKyber768Hpke(byte[] input, PublicKey publicKey, 
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PublicKey publicKey = check crypto:decodeKyber768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptKyber768Hpke(data, publicKey);
+# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptMlKem768Hpke(data, publicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
-# crypto:PrivateKey privateKey = check crypto:decodeKyber768PrivateKeyFromKeyStore(keyStore, "keyAlias");
-# byte[] decryptedData = check crypto:decryptKyber768Hpke(cipherText, encapsulatedKey, privateKey);
+# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias");
+# byte[] decryptedData = check crypto:decryptMlKem768Hpke(cipherText, encapsulatedKey, privateKey);
 # ```
 # + input - The content to be decrypted
 # + encapsulatedKey - The encapsulated secret
-# + privateKey - The Kyber private key used for decryption
+# + privateKey - The MlKem private key used for decryption
 # + length - The length of the output (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, int length = 32) returns byte[]|Error {
-    byte[] key = check decapsulateKyber768Kem(encapsulatedKey, privateKey);
+public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, int length = 32) returns byte[]|Error {
+    byte[] key = check decapsulateMlKem768(encapsulatedKey, privateKey);
     key = check hkdfSha256(key, length);
     return check decryptAesEcb(input, key);
 }
 
-# Returns the RsaKyber768-HPKE-encrypted value for the given data.
+# Returns the RSA-ML-KEM-768-HPKE-encrypted value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
-# crypto:KeyStore kyberKeyStore = {
-#     path: "/path/to/kyber/keyStore.p12",
+# crypto:KeyStore mlkemKeyStore = {
+#     path: "/path/to/mlkem/keyStore.p12",
 #     password: "keyStorePassword"
 # };
 # crypto:KeyStore rsaKeyStore = {
 #     path: "/path/to/rsa/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PublicKey kyberPublicKey = check crypto:decodeKyber768PublicKeyFromTrustStore(kyberKeyStore, "keyAlias");
+# crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKyber768Hpke(data, rsaPublicKey, kyberPublicKey);
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # ```
 # + input - The content to be encrypted
 # + rsaPublicKey - The RSA public key used for encryption
-# + kyberPublicKey - The Kyber public key used for encryption
+# + mlkemPublicKey - The MlKem public key used for encryption
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
-public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey kyberPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
-    EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKyber768Kem(rsaPublicKey, kyberPublicKey);
+public isolated function encryptRsaMlKem768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey mlkemPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
+    EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKemMlKem768(rsaPublicKey, mlkemPublicKey);
     byte[] sharedSecret = check hkdfSha256(hybridEncapsulationResult.sharedSecret, symmetricKeySize);
     byte[] encapsulatedSecret = hybridEncapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
@@ -110,35 +110,35 @@ public isolated function encryptRsaKyber768Hpke(byte[] input, PublicKey rsaPubli
     };
 }
 
-# Returns the RsaKyber768-HPKE-decrypted value for the given RSAKyber768-encrypted data.
+# Returns the RSA-ML-KEM-768-HPKE-decrypted value for the given encrypted data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
-# crypto:KeyStore kyberKeyStore = {
-#     path: "/path/to/kyber/keyStore.p12",
+# crypto:KeyStore mlkemKeyStore = {
+#     path: "/path/to/mlkem/keyStore.p12",
 #     password: "keyStorePassword"
 # };
 # crypto:KeyStore rsaKeyStore = {
 #     path: "/path/to/rsa/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PublicKey kyberPublicKey = check crypto:decodeKyber768PublicKeyFromTrustStore(kyberKeyStore, "keyAlias");
+# crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKyber768Hpke(data, rsaPublicKey, kyberPublicKey);
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
-# crypto:PrivateKey kyberPrivateKey = check crypto:decodeKyber768PrivateKeyFromKeyStore(kyberKeyStore, "keyAlias");
+# crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias");
 # crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias");
-# byte[] decryptedData = check crypto:decryptRsaKyber768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, kyberPrivateKey);
+# byte[] decryptedData = check crypto:decryptRsaMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
 # ```
 # + input - The content to be decrypted
 # + encapsulatedKey - The encapsulated secret
 # + rsaPrivateKey - The RSA private key used for decryption
-# + kyberPrivateKey - The Kyber private key used for decryption
+# + mlkemPrivateKey - The MlKem private key used for decryption
 # + length - The length of the output (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptRsaKyber768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey kyberPrivateKey, int length = 32) returns byte[]|Error {
-    byte[] key = check decapsulateRsaKyber768Kem(encapsulatedKey, rsaPrivateKey, kyberPrivateKey);
+public isolated function decryptRsaMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey mlkemPrivateKey, int length = 32) returns byte[]|Error {
+    byte[] key = check decapsulateRsaKemMlKem768(encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
     key = check hkdfSha256(key, length);
     return check decryptAesEcb(input, key);
 }

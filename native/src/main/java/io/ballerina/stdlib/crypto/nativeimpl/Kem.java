@@ -36,15 +36,15 @@ public class Kem {
     private Kem() {
     }
 
-    public static Object encapsulateKyber768Kem(BMap<?, ?> publicKey) {
+    public static Object encapsulateMlKem768(BMap<?, ?> publicKey) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
-        Object encapsulate = CryptoUtils.generateEncapsulated(Constants.KYBER768_ALGORITHM, key,
+        Object encapsulate = CryptoUtils.generateEncapsulated(Constants.MLKEM768_ALGORITHM, key,
                 BouncyCastlePQCProvider.PROVIDER_NAME);
         if (encapsulate instanceof SecretKeyWithEncapsulation secretKeyWithEncapsulation) {
-            return buildKyber768EncapsulationRecord(secretKeyWithEncapsulation);
+            return getEncapsulationResultRecord(secretKeyWithEncapsulation);
         }
         return encapsulate;
     }
@@ -58,19 +58,9 @@ public class Kem {
         return encapsulate;
     }
 
-    private static Object buildKyber768EncapsulationRecord(SecretKeyWithEncapsulation secretKeyWithEncapsulation) {
-        if (secretKeyWithEncapsulation.getAlgorithm().equals(Constants.KYBER768_ALGORITHM)) {
-            return getEncapsulationResultRecord(secretKeyWithEncapsulation);
-        } else {
-            return CryptoUtils.createError("Not a valid Kyber768 encapsulation");
-        }
-    }
-
     private static Object getEncapsulationResultRecord(SecretKeyWithEncapsulation secretKeyWithEncapsulation) {
         BMap<BString, Object> encapsulationResultRecord = ValueCreator.
                 createRecordValue(ModuleUtils.getModule(), Constants.ENCAPSULATED_RESULT_RECORD);
-        encapsulationResultRecord.put(StringUtils.fromString(Constants.ENCAPSULATED_RESULT_RECORD_ALGORITHM_FIELD),
-                StringUtils.fromString(secretKeyWithEncapsulation.getAlgorithm()));
         encapsulationResultRecord.put(StringUtils.fromString(Constants.ENCAPSULATED_RESULT_RECORD_SECRET_FIELD),
                 ValueCreator.createArrayValue(secretKeyWithEncapsulation.getEncoded()));
         encapsulationResultRecord.put(StringUtils.fromString(Constants.ENCAPSULATED_RESULT_RECORD_ENCAPSULATED_FIELD),
@@ -78,13 +68,13 @@ public class Kem {
         return encapsulationResultRecord;
     }
 
-    public static Object decapsulateKyber768Kem(BArray inputValue, BMap<?, ?> privateKey) {
+    public static Object decapsulateMlKem768(BArray inputValue, BMap<?, ?> privateKey) {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
-        return CryptoUtils.extractSecret(input, Constants.KYBER768_ALGORITHM, key,
+        return CryptoUtils.extractSecret(input, Constants.MLKEM768_ALGORITHM, key,
                 BouncyCastlePQCProvider.PROVIDER_NAME);
     }
 
