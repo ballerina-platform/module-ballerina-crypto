@@ -27,6 +27,26 @@ isolated function testParseEncryptedPrivateKeyFromP12() returns Error? {
 }
 
 @test:Config {}
+isolated function testParseEncryptedMlKem768PrivateKeyFromP12() returns Error? {
+    KeyStore keyStore = {
+        path: MLKEM_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyStore(keyStore, "mlkem-keypair", "ballerina");
+    test:assertEquals(result.algorithm, "KYBER768");
+}
+
+@test:Config {}
+isolated function testParseEncryptedMlDsa65PrivateKeyFromP12() returns Error? {
+    KeyStore keyStore = {
+        path: MLDSA_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
+    test:assertEquals(result.algorithm, "DILITHIUM3");
+}
+
+@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
         path: INVALID_KEYSTORE_PATH,
@@ -163,7 +183,7 @@ isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseMlDsa65PrivateKeyFromKeyFile() returns Error? {
+isolated function testParseEncryptedMlDsa65PrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
     test:assertEquals(result.algorithm, "DILITHIUM3");
 }
@@ -173,6 +193,22 @@ isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
     PrivateKey|Error result = decodeMlDsa65PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
     if result is Error {
         test:assertEquals(result.message(), "Not a valid ML-DSA-65 key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testParseMlKem768PrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH);
+    test:assertEquals(result.algorithm, "KYBER768");
+}
+
+@test:Config {}
+isolated function testParseErrorMlKem768PrivateKeyFromKeyFile() returns Error? {
+    PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Unable to do private key operations: unable to convert key pair: no such algorithm: RSA for provider BCPQC");
     } else {
         test:assertFail("Expected error not found");
     }
@@ -319,6 +355,23 @@ isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(signingAlgorithm, "DILITHIUM3");
+}
+
+@test:Config {}
+isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
+    PublicKey publicKey = check decodeMlKem768PublicKeyFromCertFile(MLKEM_CERT_PATH);
+    test:assertEquals(publicKey.algorithm, "KYBER768");
+    Certificate certificate = <Certificate>publicKey.certificate;
+
+    string serial = (<int>certificate.serial).toString();
+    string issuer = <string>certificate.issuer;
+    string subject = <string>certificate.subject;
+    string signingAlgorithm = <string>certificate.signingAlgorithm;
+
+    test:assertEquals(serial, "749281432");
+    test:assertEquals(issuer, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
+    test:assertEquals(subject, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
+    test:assertEquals(signingAlgorithm, "SHA256withRSA");
 }
 
 @test:Config {}

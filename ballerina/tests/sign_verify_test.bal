@@ -264,7 +264,7 @@ isolated function testSignRsaSha512WithInvalidKey() {
 @test:Config {}
 isolated function testSignMlDsa65WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm:"DILITHIUM3"};
     byte[]|Error result = signMlDsa65(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));

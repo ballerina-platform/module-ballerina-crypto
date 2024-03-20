@@ -17,6 +17,7 @@
 const string KEYSTORE_PATH = "tests/resources/keyStore.p12";
 const string EC_KEYSTORE_PATH = "tests/resources/ec-keystore.pkcs12";
 const string MLDSA_KEYSTORE_PATH = "tests/resources/mldsa-keystore.pkcs12";
+const string MLKEM_KEYSTORE_PATH = "tests/resources/mlkem-keystore.pkcs12";
 const string ENCRYPTED_KEY_PAIR_PATH = "tests/resources/encryptedKeyPair.pem";
 const string KEY_PAIR_PATH = "tests/resources/keyPair.pem";
 const string ENCRYPTED_PRIVATE_KEY_PATH = "tests/resources/encryptedPrivate.key";
@@ -26,6 +27,8 @@ const string EC_CERT_PATH = "tests/resources/ec-cert.crt";
 const string EC_PRIVATE_KEY_PATH = "tests/resources/ec-key.pem";
 const string MLDSA_CERT_PATH = "tests/resources/mldsa-cert.crt";
 const string MLDSA_PRIVATE_KEY_PATH = "tests/resources/mldsa-key.pem";
+const string MLKEM_CERT_PATH = "tests/resources/mlkem-cert.crt";
+const string MLKEM_PRIVATE_KEY_PATH = "tests/resources/mlkem-key.pem";
 
 const string INVALID_KEYSTORE_PATH = "tests/resources/cert/keyStore.p12.invalid";
 const string INVALID_PRIVATE_KEY_PATH = "tests/resources/cert/private.key.invalid";

@@ -17,11 +17,17 @@
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# Represents the supported key algorithms.
-public type KeyAlgorithm RSA;
+# Represents the supported public key algorithms.
+public type KeyAlgorithm RSA|MLKEM768|MLDSA65;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
+
+# The `ML-KEM-768` algorithm.
+public const MLKEM768 = "KYBER768";
+
+# The `ML-DSA-65` algorithm.
+public const MLDSA65 = "DILITHIUM3";
 
 # Represents the KeyStore-related configurations.
 #
