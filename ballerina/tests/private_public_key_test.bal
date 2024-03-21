@@ -208,7 +208,7 @@ isolated function testParseMlKem768PrivateKeyFromKeyFile() returns Error? {
 isolated function testParseErrorMlKem768PrivateKeyFromKeyFile() returns Error? {
     PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
     if result is Error {
-        test:assertEquals(result.message(), "Unable to do private key operations: unable to convert key pair: no such algorithm: RSA for provider BCPQC");
+        test:assertEquals(result.message(), "Not a valid ML-KEM-768 key");
     } else {
         test:assertFail("Expected error not found");
     }
@@ -227,6 +227,16 @@ isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
 @test:Config {}
 isolated function testParseErrorMlDsa65PublicKeyFromKeyFile() returns Error? {
     PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(PRIVATE_KEY_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testParseErrorMlKem768PublicKeyFromKeyFile() returns Error? {
+    PublicKey|Error result = decodeMlKem768PublicKeyFromCertFile(PRIVATE_KEY_PATH);
     if result is Error {
         test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
     } else {
@@ -377,6 +387,26 @@ isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
 @test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
     PublicKey|Error result = decodeRsaPublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
+    if result is Error {
+        test:assertTrue(result.message().includes("Certificate file not found at:"));
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testReadMlDsaPublicKeyFromInvalidCertFile() {
+    PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
+    if result is Error {
+        test:assertTrue(result.message().includes("Certificate file not found at:"));
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testReadMlKemPublicKeyFromInvalidCertFile() {
+    PublicKey|Error result = decodeMlKem768PublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
     if result is Error {
         test:assertTrue(result.message().includes("Certificate file not found at:"));
     } else {

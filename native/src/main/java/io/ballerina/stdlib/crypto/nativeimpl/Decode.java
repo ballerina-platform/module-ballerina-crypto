@@ -221,6 +221,9 @@ public class Decode {
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
+            if (!BouncyCastleProvider.PROVIDER_NAME.equalsIgnoreCase(provider)) {
+                return getPrivateKey(keyFilePath, keyPassword, BouncyCastleProvider.PROVIDER_NAME);
+            }
             return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
         }
     }

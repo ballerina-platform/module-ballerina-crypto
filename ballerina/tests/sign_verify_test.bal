@@ -460,3 +460,17 @@ isolated function testDecodeMlDsa65PublicKeyError() returns Error? {
         test:assertFail("Expected error not found");
     }
 }
+
+@test:Config {}
+isolated function testDecodeMlKem768PublicKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PublicKey|Error publicKey = decodeMlKem768PublicKeyFromTrustStore(keyStore, "ballerina");
+    if publicKey is Error {
+        test:assertEquals(publicKey.message(), "Not a valid ML-KEM-768 public key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
