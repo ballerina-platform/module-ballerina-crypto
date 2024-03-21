@@ -83,6 +83,4 @@ public class Kem {
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.extractRsaSecret(input, key);
     }
-
-
 }

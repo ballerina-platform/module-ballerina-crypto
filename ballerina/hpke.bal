@@ -102,10 +102,9 @@ public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKe
 public isolated function encryptRsaMlKem768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey mlkemPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
     EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKemMlKem768(rsaPublicKey, mlkemPublicKey);
     byte[] sharedSecret = check hkdfSha256(hybridEncapsulationResult.sharedSecret, symmetricKeySize);
-    byte[] encapsulatedSecret = hybridEncapsulationResult.encapsulatedSecret;
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
     return {
-        encapsulatedSecret: encapsulatedSecret,
+        encapsulatedSecret: hybridEncapsulationResult.encapsulatedSecret,
         cipherText: ciphertext
     };
 }

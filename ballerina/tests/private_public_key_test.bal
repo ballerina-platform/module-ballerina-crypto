@@ -356,12 +356,12 @@ isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(publicKey.algorithm, "DILITHIUM3");
     Certificate certificate = <Certificate>publicKey.certificate;
 
-    string serial = (<int>certificate.serial).toString();
-    string issuer = <string>certificate.issuer;
-    string subject = <string>certificate.subject;
-    string signingAlgorithm = <string>certificate.signingAlgorithm;
+    int serial = certificate.serial;
+    string issuer = certificate.issuer;
+    string subject = certificate.subject;
+    string signingAlgorithm = certificate.signingAlgorithm;
 
-    test:assertEquals(serial, "1023822328749742100");
+    test:assertEquals(serial, 1023822328749742100);
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(signingAlgorithm, "DILITHIUM3");
@@ -373,12 +373,12 @@ isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(publicKey.algorithm, "KYBER768");
     Certificate certificate = <Certificate>publicKey.certificate;
 
-    string serial = (<int>certificate.serial).toString();
-    string issuer = <string>certificate.issuer;
-    string subject = <string>certificate.subject;
-    string signingAlgorithm = <string>certificate.signingAlgorithm;
+    int serial = certificate.serial;
+    string issuer = certificate.issuer;
+    string subject = certificate.subject;
+    string signingAlgorithm = certificate.signingAlgorithm;
 
-    test:assertEquals(serial, "749281432");
+    test:assertEquals(serial, 749281432);
     test:assertEquals(issuer, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
     test:assertEquals(subject, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
     test:assertEquals(signingAlgorithm, "SHA256withRSA");

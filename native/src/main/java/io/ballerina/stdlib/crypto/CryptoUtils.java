@@ -206,7 +206,7 @@ public class CryptoUtils {
         RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
         RSAKEMGenerator keyGenerator = new RSAKEMGenerator(
                 32, new KDF2BytesGenerator(new SHA256Digest()), new SecureRandom());
-        RSAKeyParameters rsaKeyParams   = new RSAKeyParameters(
+        RSAKeyParameters rsaKeyParams = new RSAKeyParameters(
                 false, rsaPublicKey.getModulus(), rsaPublicKey.getPublicExponent());
         SecretWithEncapsulation secretWithEncapsulation = keyGenerator.generateEncapsulated(rsaKeyParams);
         SecretKey secretKey = new SecretKeySpec(secretWithEncapsulation.getSecret(), Constants.RSA_ALGORITHM);
@@ -230,7 +230,7 @@ public class CryptoUtils {
 
     public static Object extractRsaSecret(byte[] encapsulation, PrivateKey privateKey) {
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
-        RSAKeyParameters rsaKeyParameters   = new RSAKeyParameters(
+        RSAKeyParameters rsaKeyParameters = new RSAKeyParameters(
                 true, rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());
         RSAKEMExtractor keyExtractor = new RSAKEMExtractor(
                 rsaKeyParameters, 32, new KDF2BytesGenerator(new SHA256Digest()));
