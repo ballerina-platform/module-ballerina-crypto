@@ -16,6 +16,10 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.Dilithium$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.EC$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
@@ -24,11 +28,19 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.EXTERNAL$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.EdEC$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.ElGamal$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.Falcon$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
@@ -44,11 +56,47 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.LMS$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.NTRU$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.RSA$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.SPHINCSPlus$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.asymmetric.X509$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi$ECDSA",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$MD5",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$SHA1",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$SHA256",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$SHA384",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$SHA512",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
@@ -61,6 +109,10 @@
   },
   {
     "name":"org.bouncycastle.jcajce.provider.digest.Blake2s$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.digest.Blake3$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
@@ -164,6 +216,10 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.symmetric.AES$ECB",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.symmetric.AES$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
@@ -197,6 +253,14 @@
   },
   {
     "name":"org.bouncycastle.jcajce.provider.symmetric.DES$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.symmetric.DESede$CBC",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.symmetric.DESede$ECB",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
@@ -248,11 +312,19 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name":"org.bouncycastle.jcajce.provider.symmetric.OpenSSLPBKDF$PBKDF",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"org.bouncycastle.jcajce.provider.symmetric.PBEPBKDF1$Mappings",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
     "name":"org.bouncycastle.jcajce.provider.symmetric.PBEPBKDF2$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.jcajce.provider.symmetric.PBEPBKDF2$PBKDF2withUTF8",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
@@ -349,6 +421,86 @@
   },
   {
     "name":"org.bouncycastle.jcajce.provider.symmetric.Zuc$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.BIKE$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.CMCE$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Dilithium$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Falcon$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Frodo$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.HQC$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Kyber$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.LMS$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.NH$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.NTRU$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.NTRUPrime$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Picnic$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.Rainbow$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.SABER$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.SPHINCS$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.SPHINCSPlus$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.XMSS$Mappings",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.dilithium.DilithiumKeyFactorySpi$Base3",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.dilithium.SignatureSpi$Base3",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"org.bouncycastle.pqc.jcajce.provider.kyber.KyberKeyFactorySpi$Kyber768",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   }
 ]
