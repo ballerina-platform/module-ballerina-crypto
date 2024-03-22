@@ -172,7 +172,7 @@ public class Decode {
         if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastlePQCProvider());
         }
-        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword, BouncyCastlePQCProvider.PROVIDER_NAME);
+        Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlKem768PrivateKeyRecord(privateKey);
         }
@@ -183,14 +183,10 @@ public class Decode {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
-        return getPrivateKey(keyFilePath, keyPassword, BouncyCastleProvider.PROVIDER_NAME);
-    }
-
-    private static Object getPrivateKey(BString keyFilePath, Object keyPassword, String provider) {
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
-            JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(provider);
+            JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
             PrivateKeyInfo privateKeyInfo;
             if (obj instanceof PEMEncryptedKeyPair) {
                 if (keyPassword == null) {
@@ -221,9 +217,6 @@ public class Decode {
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
-            if (!BouncyCastleProvider.PROVIDER_NAME.equalsIgnoreCase(provider)) {
-                return getPrivateKey(keyFilePath, keyPassword, BouncyCastleProvider.PROVIDER_NAME);
-            }
             return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
         }
     }

@@ -420,6 +420,20 @@ isolated function testDecodeMlDsa65PrivateKeyError() returns Error? {
 }
 
 @test:Config {}
+isolated function testDecodeMlKem768PrivateKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey|Error privateKey = decodeMlKem768PrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    if privateKey is Error {
+        test:assertEquals(privateKey.message(), "Not a valid ML-KEM-768 key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
 isolated function testDecodeEcPublicKeyError() returns Error? {
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
