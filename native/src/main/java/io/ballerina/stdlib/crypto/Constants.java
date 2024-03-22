@@ -75,7 +75,6 @@ public class Constants {
     public static final String CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD = "signingAlgorithm";
 
     // Fields of `EncapsulationResult` record.
-    public static final String ENCAPSULATED_RESULT_RECORD_ALGORITHM_FIELD = "algorithm";
     public static final String ENCAPSULATED_RESULT_RECORD_ENCAPSULATED_FIELD = "encapsulatedSecret";
     public static final String ENCAPSULATED_RESULT_RECORD_SECRET_FIELD = "sharedSecret";
 

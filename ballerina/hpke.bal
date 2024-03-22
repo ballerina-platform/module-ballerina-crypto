@@ -70,11 +70,11 @@ public isolated function encryptMlKem768Hpke(byte[] input, PublicKey publicKey, 
 # + input - The content to be decrypted
 # + encapsulatedKey - The encapsulated secret
 # + privateKey - The MlKem private key used for decryption
-# + length - The length of the output (in bytes)
+# + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, int length = 32) returns byte[]|Error {
+public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey privateKey, AesKeySize symmetricKeySize = 32) returns byte[]|Error {
     byte[] key = check decapsulateMlKem768(encapsulatedKey, privateKey);
-    key = check hkdfSha256(key, length);
+    key = check hkdfSha256(key, symmetricKeySize);
     return check decryptAesEcb(input, key);
 }
 
@@ -92,14 +92,14 @@ public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKe
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # ```
 # + input - The content to be encrypted
 # + rsaPublicKey - The RSA public key used for encryption
 # + mlkemPublicKey - The MlKem public key used for encryption
 # + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Encrypted data or else a `crypto:Error` if an error occurs
-public isolated function encryptRsaMlKem768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey mlkemPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
+public isolated function encryptRsaKemMlKem768Hpke(byte[] input, PublicKey rsaPublicKey, PublicKey mlkemPublicKey, AesKeySize symmetricKeySize = 32) returns HybridEncryptionResult|Error {
     EncapsulationResult hybridEncapsulationResult = check encapsulateRsaKemMlKem768(rsaPublicKey, mlkemPublicKey);
     byte[] sharedSecret = check hkdfSha256(hybridEncapsulationResult.sharedSecret, symmetricKeySize);
     byte[] ciphertext = check encryptAesEcb(input, sharedSecret);
@@ -123,21 +123,21 @@ public isolated function encryptRsaMlKem768Hpke(byte[] input, PublicKey rsaPubli
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
 # crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias");
 # crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias");
-# byte[] decryptedData = check crypto:decryptRsaMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
+# byte[] decryptedData = check crypto:decryptRsaKemMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
 # ```
 # + input - The content to be decrypted
 # + encapsulatedKey - The encapsulated secret
 # + rsaPrivateKey - The RSA private key used for decryption
 # + mlkemPrivateKey - The MlKem private key used for decryption
-# + length - The length of the output (in bytes)
+# + symmetricKeySize - The length of the symmetric key (in bytes)
 # + return - Decrypted data or else a `crypto:Error` if error occurs
-public isolated function decryptRsaMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey mlkemPrivateKey, int length = 32) returns byte[]|Error {
+public isolated function decryptRsaKemMlKem768Hpke(byte[] input, byte[] encapsulatedKey, PrivateKey rsaPrivateKey, PrivateKey mlkemPrivateKey, AesKeySize symmetricKeySize = 32) returns byte[]|Error {
     byte[] key = check decapsulateRsaKemMlKem768(encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
-    key = check hkdfSha256(key, length);
+    key = check hkdfSha256(key, symmetricKeySize);
     return check decryptAesEcb(input, key);
 }
