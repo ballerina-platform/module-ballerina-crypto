@@ -199,8 +199,8 @@ isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseMlKem768PrivateKeyFromKeyFile() returns Error? {
-    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH);
+isolated function testParseEncryptedMlKem768PrivateKeyFromKeyFile() returns Error? {
+    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH, "ballerina");
     test:assertEquals(result.algorithm, "KYBER768");
 }
 
