@@ -23,7 +23,7 @@ import ballerina/jballerina.java;
 # + salt - Optional salt value, a non-secret random value
 # + info - Optional context and application-specific information
 # + return - The derived keying material (OKM) of the specified length
-public isolated function hkdfSha256(byte[] input, int length, byte[] salt = [0], byte[] info = []) returns byte[]|Error = @java:Method {
+public isolated function hkdfSha256(byte[] input, int length, byte[] salt = [], byte[] info = []) returns byte[]|Error = @java:Method {
     name: "hkdfSha256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Kdf"
 } external;

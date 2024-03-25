@@ -31,7 +31,7 @@ public type EncapsulationResult record {|
 #     path: "/path/to/keyStore.p12",
 #     password: "keyStorePassword"
 # };
-# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias", "keyStorePassword");
+# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateMlKem768(publicKey);
 # ```
 # + publicKey - Public key
@@ -105,8 +105,8 @@ public isolated function encapsulateRsaKemMlKem768(PublicKey rsaPublicKey, Publi
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateRsaKemMlKem768(rsaPublicKey, mlkemPublicKey);
 # byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
-# crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias");
-# crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias");
+# crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias", "keyStorePassword");
+# crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateRsaKemMlKem768(encapsulatedSecret, rsaPrivateKey, mlkemPrivateKey);
 # ```
 # + encapsulatedSecret - Encapsulated secret

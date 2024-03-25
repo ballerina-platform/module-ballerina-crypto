@@ -196,13 +196,17 @@ public class CryptoUtils {
             keyGenerator.init(kemGenerateSpec);
             return keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-            throw CryptoUtils.createError("Error occurred while generating encapsulated key: " + e.getMessage());
+            return CryptoUtils.createError("Error occurred while generating encapsulated key: " + e.getMessage());
         } catch (NoSuchProviderException e) {
             throw CryptoUtils.createError("Provider not found: " + provider);
         }
     }
 
     public static Object generateRsaEncapsulated(PublicKey publicKey) {
+        if (!(publicKey instanceof RSAPublicKey)) {
+            return CryptoUtils.createError("Error occurred while generating encapsulated key: valid RSA " + 
+                                                "public key expected");
+        }
         RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
         RSAKEMGenerator keyGenerator = new RSAKEMGenerator(
                 32, new KDF2BytesGenerator(new SHA256Digest()), new SecureRandom());
@@ -222,13 +226,17 @@ public class CryptoUtils {
                     (SecretKeyWithEncapsulation) keyGenerator.generateKey();
             return ValueCreator.createArrayValue(secretKeyWithEncapsulation.getEncoded());
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-            throw CryptoUtils.createError("Error occurred while extracting secret: " + e.getMessage());
+            return CryptoUtils.createError("Error occurred while extracting secret: " + e.getMessage());
         } catch (NoSuchProviderException e) {
             throw CryptoUtils.createError("Provider not found: " + e.getMessage());
         }
     }
 
     public static Object extractRsaSecret(byte[] encapsulation, PrivateKey privateKey) {
+        if (!(privateKey instanceof RSAPrivateKey)) {
+            return CryptoUtils.createError("Error occurred while extracting secret: valid RSA private" + 
+                                                "key expected");
+        }
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
         RSAKeyParameters rsaKeyParameters = new RSAKeyParameters(
                 true, rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());
