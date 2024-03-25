@@ -45,11 +45,11 @@ isolated function testEncryptAndDecryptRsaMlKem768Hpke() returns Error? {
     };
     PublicKey mlKemPublicKey = check decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "mlkem-keypair");
     PublicKey rsaPublicKey = check decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "ballerina");
-    HybridEncryptionResult hybridEncryptionResult = check encryptRsaMlKem768Hpke(message, rsaPublicKey, mlKemPublicKey);
+    HybridEncryptionResult hybridEncryptionResult = check encryptRsaKemMlKem768Hpke(message, rsaPublicKey, mlKemPublicKey);
 
     PrivateKey mlKemPrivateKey = check decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "mlkem-keypair", "ballerina");
     PrivateKey rsaPrivateKey = check decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "ballerina", "ballerina");
-    byte[] decryptedMessage = check decryptRsaMlKem768Hpke(hybridEncryptionResult.cipherText, hybridEncryptionResult.encapsulatedSecret, 
+    byte[] decryptedMessage = check decryptRsaKemMlKem768Hpke(hybridEncryptionResult.cipherText, hybridEncryptionResult.encapsulatedSecret, 
                                                             rsaPrivateKey, mlKemPrivateKey);
 
     test:assertEquals(decryptedMessage, message);
