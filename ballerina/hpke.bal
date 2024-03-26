@@ -26,7 +26,7 @@ public type HybridEncryptionResult record {|
     byte[] cipherText;
 |};
 
-# Returns the ML-KEM-768-HPKE-encrypted value for the given data.
+# Returns the ML-KEM-768-AES-hybrid-encrypted value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -35,7 +35,7 @@ public type HybridEncryptionResult record {|
 #     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptMlKem768Hpke(data, publicKey);
+# crypto:HybridEncryptionResult encryptionResult = crypto:encryptMlKem768Hpke(data, publicKey);
 # ```
 # + input - The content to be encrypted
 # + publicKey - Public key used for encryption
@@ -52,7 +52,7 @@ public isolated function encryptMlKem768Hpke(byte[] input, PublicKey publicKey, 
     };
 }
 
-# Returns the ML-KEM-768-HPKE-decrypted value for the given encrypted data.
+# Returns the ML-KEM-768-AES-hybrid-encrypted value for the given encrypted data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -61,7 +61,7 @@ public isolated function encryptMlKem768Hpke(byte[] input, PublicKey publicKey, 
 #     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptMlKem768Hpke(data, publicKey);
+# crypto:HybridEncryptionResult encryptionResult = crypto:encryptMlKem768Hpke(data, publicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
 # crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias");
@@ -78,7 +78,7 @@ public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKe
     return check decryptAesEcb(input, key);
 }
 
-# Returns the RSA-ML-KEM-768-HPKE-encrypted value for the given data.
+# Returns the RSA-KEM-ML-KEM-768-AES-hybrid-encrypted value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -92,7 +92,7 @@ public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKe
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult = crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # ```
 # + input - The content to be encrypted
 # + rsaPublicKey - The RSA public key used for encryption
@@ -109,7 +109,7 @@ public isolated function encryptRsaKemMlKem768Hpke(byte[] input, PublicKey rsaPu
     };
 }
 
-# Returns the RSA-ML-KEM-768-HPKE-decrypted value for the given encrypted data.
+# Returns the RSA-KEM-ML-KEM-768-AES-hybrid-encrypted value for the given encrypted data.
 # ```ballerina
 # string input = "Hello Ballerina";
 # byte[] data = input.toBytes();
@@ -123,7 +123,7 @@ public isolated function encryptRsaKemMlKem768Hpke(byte[] input, PublicKey rsaPu
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult =  crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult = crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
 # crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias");

@@ -17,7 +17,11 @@
 import ballerina/jballerina.java;
 
 # Returns HKDF (HMAC-based Key Derivation Function) using SHA-256 as the hash function.
-#
+# ```ballerina
+# string secret = "some-secret";
+# byte[] key = secret.toBytes();
+# byte[] hash = crypto:hkdfSha256(key, 32);
+# ```
 # + input - The input key material to derive the key from
 # + length - The length of the output keying material (OKM) in bytes
 # + salt - Optional salt value, a non-secret random value
