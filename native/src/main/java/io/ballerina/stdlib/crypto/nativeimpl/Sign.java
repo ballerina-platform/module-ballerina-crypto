@@ -35,6 +35,12 @@ public class Sign {
 
     private Sign() {}
 
+    public static Object signMlDsa65(BArray inputValue, BMap<?, ?> privateKey) {
+        byte[] input = inputValue.getBytes();
+        PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
+        return CryptoUtils.sign(Constants.MLDSA65_ALGORITHM, key, input);
+    }
+
     public static Object signRsaMd5(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
@@ -75,6 +81,14 @@ public class Sign {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.sign("SHA512withRSA", key, input);
+    }
+
+    public static Object verifyMlDsa65Signature(BArray dataValue, BArray signatureValue,
+                                               BMap<?, ?> publicKey) {
+        byte[] data = dataValue.getBytes();
+        byte[] signature = signatureValue.getBytes();
+        PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
+        return CryptoUtils.verify(Constants.MLDSA65_ALGORITHM, key, data, signature);
     }
 
     public static Object verifyRsaMd5Signature(BArray dataValue, BArray signatureValue,

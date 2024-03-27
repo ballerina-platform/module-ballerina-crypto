@@ -36,6 +36,26 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
+# Returns the MlDsa65 based signature value for the given data.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signMlDsa65(data, privateKey);
+# ```
+#
+# + input - The content to be signed
+# + privateKey - Private key used for signing
+# + return - The generated signature or else a `crypto:Error` if the private key is invalid
+public isolated function signMlDsa65(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
+    name: "signMlDsa65",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
 # Returns the RSA-SHA1 based signature value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
@@ -177,6 +197,30 @@ public isolated function signSha256withEcdsa(byte[] input, PrivateKey privateKey
 public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                returns boolean|Error = @java:Method {
     name: "verifyRsaMd5Signature",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
+# Verifies the MlDsa65 based signature.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signMlDsa65(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromTrustStore(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyMlDsa65Signature(data, signature, publicKey);
+# ```
+#
+# + data - The content to be verified
+# + signature - Signature value
+# + publicKey - Public key used for verification
+# + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
+public isolated function verifyMlDsa65Signature(byte[] data, byte[] signature, PublicKey publicKey)
+                                               returns boolean|Error = @java:Method {
+    name: "verifyMlDsa65Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 

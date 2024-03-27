@@ -107,6 +107,101 @@ isolated function testSignRsaSha512() returns Error? {
 }
 
 @test:Config {}
+isolated function testSignMlDsa65() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: MLDSA_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
+    string expectedMlDsa65Signature = "6ed60e3deb502db7c8e6631b68fcebd60ecdd7505ba504bb23bfa88f70721f762f82683263c5b651" +
+        "2c1832961e90f03430a5d2ba1afc872842f81b7c843b50b52f624b93c3ff7d3e2c0178c6f8c13de5" +
+        "54f905e993fbe11f42437251b7eaaf376273b1ef019943127dc9c2fe241f3f2bfff34848f3bd65e4" +
+        "deefb7ececba6d0b89dc8b8bfdd2636dbfb042fe3c7ebddabd6ae14655febec302606562ca666687" +
+        "a3095cd56cf30dced6e28b83d17b0f9a68b4fae502a686c5577719668db4f36c8117b503bf99d1ad" +
+        "aa875916c7cc409f4aefc5955f7635e894434ca0b61e4e1729c17528029267be67e49bb8084097ec" +
+        "631a0cd8507b3cd2e233e07f52f226d611c554093d99b8d50020c04d21e0a4e08980a798c411ad88" +
+        "6916bf26416b72c0931b0d555185c11a0997c82ebbdddea31316cb696a388282dbb447e09b8319fe" +
+        "f37946e80094c8da1e121e66441077c02ecab250f8e7d4e1d916b8e97ec025cffa7f4cb9773de9df" +
+        "b2373b6ea6d99f7bfc6327164ccc16219a0ce180a84619eaa1dec2474bc5b25111b9761869ef987a" +
+        "93b7ad955bd67ced1ba9514168b5888a1776c968cc17a98afa96d08f1f88e0b82f7bde901ded8e8d" +
+        "c73b518330ce88f3ff2de98d2b4bd9c2542e2612eaf72cce8be231364d8a8c846627d5ef75f74e34" +
+        "fedad64d03e77e5ba2ae348d9253dcb3a4e71655d59243564f25c0ee3c724cd3c213f668db9733a7" +
+        "c11863255e00d64ce3ae057a4d7875bb4c795205405b09957a2f12be5003745123bf563dc289ecbe" +
+        "369a214a4ccbd418167e5beffa053a050132165aaeaa99263ca56e9dc1d870eb7fa6b317d85ef3e6" +
+        "a2361ba1b640c1a68b6a40f23861b4575fe39758c5789fb3f62dc15855410dce1295624f5e5377c7" +
+        "69c6a9c20096e48ea4cfa334c98bb009318749a66e52176474d21b6b278058ec18aa96df17c9e355" +
+        "af39980f655eb33ed21d4657f3b9b0563a605d7975dcd866a61421e03ad83977f87ce7f29dac4e5b" +
+        "e94794d5a1a14a6f3dbcbda32332bb6dc85ab2280c27eaebbc483fd4b0c1276600e9d41548069096" +
+        "d91c55a04282d435b0f17f7506551b5a15d0e87cd3b0e098c78692c798a6102367b4f7efb352d317" +
+        "e770b5ddbcb85c27fbc1a27fe7de3ecb4ab3e377103500ac2c17b9b74e68b1de73676b0f495909c0" +
+        "08c9eb303ff882b348ca767f88274d192a324a5a500abe57b0c8093867b197947bc2ec319becae84" +
+        "669edf908aa848c57181946107e8dc01babb1626d59967d280da7045cd9a6c1cd87991852fc9d664" +
+        "03b216b616732ff11735969a1ec22af8f5c449d93ffdd2b3db11fbd02b82f993adab371da735eef0" +
+        "d0ae62b2359e71a709222cbb07b08f9a27e71d80fba23fc2b6d96888e6aabac3907259474213b8ea" +
+        "3384be2c461498ad7df615263c23c34c01e1c13fcf5345c384017f528374a7665842dc185b9f4261" +
+        "0947b468b085823ce21da781b931230910af6874857079aa85cb7f92002eef13bc4c76d9212c30b2" +
+        "e40df4f717a3cb9ca83538103ef3cf130378f040deab07b87e3ce145af7be1a8becf9cdae13951f1" +
+        "3aecf76fedba0f29b5f0dd04654a1cae30bafb647b9f5fa41a23abe5efc46419c2960013592c23bc" +
+        "d6be12acfc6dca8a1bf86fe488f8dea4f075744aa6b412c843f94f033dfd2f4db70dbd8356164e6b" +
+        "2e8a1e115e57294702cbbd0f8a6f4cb9d89e7bac6fc66343a9288dfabc51c1c360e85b25ac2cdd05" +
+        "8e88f6ce483e0e7ad7afe360af2c98939fdc520b699735925b3d0e92bdf2662d4b61284af8ea2e92" +
+        "c2a37f8f943b5542cf95a2dd82cd569c5976dd97a758f894b56d85f068392ecee1bfa62599d5384f" +
+        "a251e45a7184adef28d2e1db43b21436bc034c1eec619a9e97b0c8ca5225dae09c13357a31f034a6" +
+        "49961306aca53b9d77fdbef0cff122b5063a1ee63300123d6673544ebb6d23371eb276524eebf317" +
+        "51e865084cff38a005a597fb60814f00e668f6cc6d339ecbea7198aeee2b8a4e27c281c174eb3d23" +
+        "4f0fdfbb96a2135544db2f8a43d4ff4ec25b859f3a68bf5b4fa8cab825c6e50f27844be7a00e7d77" +
+        "43bfb92af909f6a067ad5576602c4de4a4b2a6115c9d965f63b5327a9cb4a53a46de8308f22377d6" +
+        "9f1102746928aa521ed575b57539841e85eb225af0e6c3451d421311b3e6628ae3aca182fe605ec3" +
+        "09bc32ca7143cb905907310587271aaacd7ba41645b633ce3a98ed49890396d50b66ab0e8ba8e6c7" +
+        "6936033b36d85f072b311823d79217979167a35818b505355760fb88d113c2c9df56766dc9d9ffb8" +
+        "d49c0ecafaa4f32a26390f38123c50122398cb99cf174e3df1146c2f5fd09061a53f891bfe73f0a7" +
+        "fae2ba551f848e8ab64671ba2aab3ea91b93fa59d8790c8d3e92f917e9409a0d29c54b8741fc0e56" +
+        "f652a3e486380fa534d5e76eed3afbf297868204d981ec92fbd77bb4809ddbe532a435f0a7be4564" +
+        "cadb9c3058103c348e86d37a2f84e4211b5ddda45c11ad016db8f4b2b1e2809f57eae638c20229e3" +
+        "7f69f40c797a7b41b6fbc36ba58f03d6b0ef8eadd75c40180ef45c9a53f59c88f1691f2b87fddaca" +
+        "30c3f5b1072462de6685f382fec416de7a671d4cb70ab804c703227e67d52ed5602012a1135ce795" +
+        "b91311d8bb55feb56dd54aff790374f21e33fa5647a6928da012bfe6cf9982ccc334ada987f52fe1" +
+        "18a5b06c22d1438b47fbed55716f256729ad8cb4c54e570702e119b681cacf57d77627c0526c2f8d" +
+        "0e5cb34066f2a554e28b1b3d830099dcfab22890419e772339d58e2921c72b99a1c69b479acd7314" +
+        "0994f00180731a33fa572539c05a27b8019d1bee1933487905fb0341150c237c8d75a132c3b10d2a" +
+        "5f5d532d7ef2673a8153eb1fe169c36b58c9fd74086c6e4a595e26f875370dbe0da4714813d81c02" +
+        "baab7b6b42b8516ae0d741038dea4ba756ecf7a6ab62d13c72fdf36b9f76f24735f46b6ad341878f" +
+        "be3dcfa7e6499ed3b2e17cbd8fa14befa79f65891ee05de8637e12bef43b5c73f1859c81c01a9f4c" +
+        "f6b55d9b916999a8f0a272e11b3da31fe191c15457e2c6ca49d3ad506f10f77eeee2c3c743dc7625" +
+        "358ad07384c117f0a80667388fc820e0b0d93511aec327fee7f1ee28982b2b51f20a1311d67c99df" +
+        "dbcc46b033c55aa0779a426e684586320bb09bafcabc0da039094f10a42ce253133fd6cb782c5413" +
+        "d3c19d30512cb168fc28872938cec287eb14aedf57d428d901d98f4ef6db81db0071ef665b83058e" +
+        "d4c0c46c37c98fbf2342f41da93cecc22fbf06666d16fa309d5370b99617956fdc5e8e32c61bef7b" +
+        "7c636cc884e66cc907981b85a699761b9add402d52fa314bb9157e7e07186d37c5402af4a170ea79" +
+        "3d38c391329189fa40bc726fe0c8a9a1361d0160d1455e00982de6c55d4b7c95b5b4100a5252950e" +
+        "994e6a5db5520520a66e1fe8dc977d720e545685c244caf722679c0f2e60087bf1d3df17d74ed821" +
+        "4b3f824cc0a4947ff97415c24b29d1d935140cfc7e983745460448bbed263050bc6e09209f6187db" +
+        "24858ba8d1a7330b4249cfa9ba649449de7e270fafbd4426d5bf9ffacb22e4df153fa98dda7ed6b0" +
+        "b059e7074c0678f66cdd254c1733cd3c786d3fab48914ad3003dfe1b6d4c96b313c167297cf86c57" +
+        "20488ba941ce023d0a8449dbe89cd5e9caf7ecb62de2870809892e1d0478e6cc3ecb268e48b7c387" +
+        "c843ac7dafd7c301375c45cc2f9a765b2951bcaa66fc9b430cbf2e8f1c297a0c3aea35e6c2827d3f" +
+        "cc1d1d4f486135a4f5a221baed3387598dd61e10e924803e7ab7d8da52f891e848fc28487f41490f" +
+        "0a49c9acae56e925dc7abd3fbdbb91401c25d28b0de96b5fa32637204dedda34f89e88e3d135a8d5" +
+        "bee03427b5166d5554693615ed9a1f3a3f42c98416bbd3cb21827cbe7bad4c6e59cc6b234126a0de" +
+        "f837881d0860759357f07090d6a0db594e5bfba2f728f797831392974faaa6133a25e59b2e243f21" +
+        "0633877459f735aae577f88dcafb16467597e435a1c511034f7d53a2bd05da5701155d10dc0f8d8c" +
+        "a021b4e0c26415f15cfc1ba8ab4914c6145a96bbe33438e59af012fd6697fc90ec9fad3b3344f612" +
+        "d57d8c34536510b78a4af5ed0b375816d6f3ac1890dd4076ce71dfe48310e641bec96f114443aeef" +
+        "0f0d258b16a3d381a0809f3de016db9fbb8c3a8151fcc93cab9827778b70d7d471709583d4e9fbe2" +
+        "6f5aefb76c87948843377fe35b75b0d0fd19a3e78de3809fe3e6de8feaa5bc54f81f0ae1ccccf44f" +
+        "b2479a7475dd91a5953924bda9b968ced3666c63a1b109dcf20a88a308400ef0ec7d32e7b4a0d7e0" +
+        "31cd49cc6790a8e0ed7d885646da0bb8d6b5357c1a921b29c2b1a58491a6acec29f2b492863b2a1b" +
+        "c34eb8d64b6d5b6c53efe5c28ce7b027694909dada39acadc752cbe8d2ef0d7583165cc71d1db0d9" +
+        "f24d67eddf13bf6194ac6f8f1f17a78dddee49bc028d5479ba6a8e22b036f2243a407417111e3c6f" +
+        "ac7a8dd51548689bf38b043b637dc4476d9a1056ba5caa3dada8a4b400c2082bf4eb05cd49f174fd" +
+        "29225955aee685aa5a646f8ff0f9617db7c7d7325778d3ea21325b65cbeaf9146d88c5f1758295a9" +
+        "0000000000000000000000000000000000000000000000060b10171c20";
+    byte[] mlDsa65Signature = check signMlDsa65(payload, privateKey);
+    test:assertEquals(mlDsa65Signature.toBase16(), expectedMlDsa65Signature);
+}
+
+@test:Config {}
 isolated function testSignRsaMd5WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
@@ -159,6 +254,18 @@ isolated function testSignRsaSha512WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm:"RSA"};
     byte[]|Error result = signRsaSha512(payload, privateKey);
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testSignMlDsa65WithInvalidKey() {
+    byte[] payload = "Ballerina test".toBytes();
+    PrivateKey privateKey = {algorithm: "DILITHIUM3"};
+    byte[]|Error result = signMlDsa65(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
@@ -258,6 +365,19 @@ isolated function testVerifySha256withEcdsa() returns Error? {
 }
 
 @test:Config {}
+isolated function testVerifyMlDsa65() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: MLDSA_KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
+    PublicKey publicKey = check decodeMlDsa65PublicKeyFromTrustStore(keyStore, "mldsa-keypair");
+    byte[] mlDsa65Signature = check signMlDsa65(payload, privateKey);
+    test:assertTrue(check verifyMlDsa65Signature(payload, mlDsa65Signature, publicKey));
+}
+
+@test:Config {}
 isolated function testDecodeRsaPrivateKeyError() returns Error? {
     KeyStore keyStore = {
         path: EC_KEYSTORE_PATH,
@@ -286,6 +406,34 @@ isolated function testDecodeEcPrivateKeyError() returns Error? {
 }
 
 @test:Config {}
+isolated function testDecodeMlDsa65PrivateKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey|Error privateKey = decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    if privateKey is Error {
+        test:assertEquals(privateKey.message(), "Not a valid ML-DSA-65 key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeMlKem768PrivateKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey|Error privateKey = decodeMlKem768PrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    if privateKey is Error {
+        test:assertEquals(privateKey.message(), "Not a valid ML-KEM-768 key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
 isolated function testDecodeEcPublicKeyError() returns Error? {
     KeyStore keyStore = {
         path: KEYSTORE_PATH,
@@ -308,6 +456,34 @@ isolated function testDecodeRsaPublicKeyError() returns Error? {
     PublicKey|Error publicKey = decodeRsaPublicKeyFromTrustStore(keyStore, "ec-keypair");
     if publicKey is Error {
         test:assertEquals(publicKey.message(), "Not a valid RSA public key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeMlDsa65PublicKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PublicKey|Error publicKey = decodeMlDsa65PublicKeyFromTrustStore(keyStore, "ballerina");
+    if publicKey is Error {
+        test:assertEquals(publicKey.message(), "Not a valid ML-DSA-65 public key");
+    } else {
+        test:assertFail("Expected error not found");
+    }
+}
+
+@test:Config {}
+isolated function testDecodeMlKem768PublicKeyError() returns Error? {
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PublicKey|Error publicKey = decodeMlKem768PublicKeyFromTrustStore(keyStore, "ballerina");
+    if publicKey is Error {
+        test:assertEquals(publicKey.message(), "Not a valid ML-KEM-768 public key");
     } else {
         test:assertFail("Expected error not found");
     }
