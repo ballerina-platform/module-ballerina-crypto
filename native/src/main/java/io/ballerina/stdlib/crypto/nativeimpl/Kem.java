@@ -29,7 +29,6 @@ import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 
 public class Kem {
 
@@ -37,9 +36,7 @@ public class Kem {
     }
 
     public static Object encapsulateMlKem768(BMap<?, ?> publicKey) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         Object encapsulate = CryptoUtils.generateEncapsulated(Constants.MLKEM768_ALGORITHM, key,
                 BouncyCastlePQCProvider.PROVIDER_NAME);
@@ -69,9 +66,7 @@ public class Kem {
     }
 
     public static Object decapsulateMlKem768(BArray inputValue, BMap<?, ?> privateKey) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.extractSecret(input, Constants.MLKEM768_ALGORITHM, key,

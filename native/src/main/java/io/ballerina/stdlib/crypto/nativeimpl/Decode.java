@@ -37,7 +37,6 @@ import org.bouncycastle.operator.InputDecryptorProvider;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.pkcs.jcajce.JcePKCSPBEInputDecryptorProviderBuilder;
-import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,7 +51,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -94,9 +92,7 @@ public class Decode {
     public static Object decodeMlDsa65PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                         BString keyPassword) {
 
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+        CryptoUtils.addBCProvider();
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlDsa65PrivateKeyRecord(privateKey);
@@ -106,9 +102,7 @@ public class Decode {
 
     public static Object decodeMlKem768PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                                  BString keyPassword) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlKem768PrivateKeyRecord(privateKey);
@@ -169,9 +163,7 @@ public class Decode {
     }
 
     public static Object decodeMlKem768PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlKem768PrivateKeyRecord(privateKey);
@@ -180,9 +172,7 @@ public class Decode {
     }
 
     private static Object getPrivateKey(BString keyFilePath, Object keyPassword) {
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+        CryptoUtils.addBCProvider();
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
@@ -279,9 +269,7 @@ public class Decode {
 
     public static Object decodeMlDsa65PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
                                                                  BString keyAlias) {
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+        CryptoUtils.addBCProvider();
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
             return buildMlDsa65PublicKeyRecord(publicKey);
@@ -291,9 +279,7 @@ public class Decode {
 
     public static Object decodeMlKem768PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
                                                                  BString keyAlias) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
             return buildMlKem768PublicKeyRecord(publicKey);
@@ -351,9 +337,7 @@ public class Decode {
     }
 
     public static Object decodeMlDsa65PublicKeyFromCertFile(BString certFilePath) {
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+        CryptoUtils.addBCProvider();
         File certFile = new File(certFilePath.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
@@ -367,9 +351,7 @@ public class Decode {
     }
 
     public static Object decodeMlKem768PublicKeyFromCertFile(BString certFilePath) {
-        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastlePQCProvider());
-        }
+        CryptoUtils.addBCPQCProvider();
         File certFile = new File(certFilePath.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);

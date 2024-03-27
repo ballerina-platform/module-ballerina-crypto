@@ -36,6 +36,8 @@ import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
 import org.bouncycastle.jcajce.spec.KEMExtractSpec;
 import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -46,6 +48,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.interfaces.RSAPrivateKey;
@@ -329,6 +332,24 @@ public class CryptoUtils {
         } catch (BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException |
                 InvalidKeyException | BError e) {
             return CryptoUtils.createError("Error occurred while AES encrypt/decrypt: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Add Bouncy Castle Post Quantum Cryptography provider to the security providers list.
+     */
+    public static void addBCPQCProvider() {
+        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
+    }
+
+    /**
+     * Add Bouncy Castle provider to the security providers list.
+     */
+    public static void addBCProvider() {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
         }
     }
 
