@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - [Introduce new APIs to support ML-DSA (Dilithium) and ML-KEM (Kyber) post-quantum crypto algorithms](https://github.com/ballerina-platform/ballerina-library/issues/6201)
 
-### [2.6.2] - 2024-03-25
+## [2.6.2] - 2023-12-19
 
 ### Added
 - [Introduce new APIs to sign and verify using SHA256withECDSA](https://github.com/ballerina-platform/ballerina-library/issues/5889)
