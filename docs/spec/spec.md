@@ -945,7 +945,7 @@ byte[] sharedSecret = check crypto:decapsulateRsaKemMlKem768(encapsulatedSecret,
 
 ## 9. [Hybrid Public Key Encryption (HPKE)](#9-hybrid-public-key-encryption-hpke)
 
-The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supportspost-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
+The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supports post-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
 
 ### 9.1. [Encrypt](#91-encrypt)
     
