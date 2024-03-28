@@ -34,5 +34,5 @@ The `crypto` module supports Key Exchange Mechanisms (KEM). It includes RSA-KEM 
 
 ### Hybrid Public Key Encryption (HPKE)
 
-The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supportspost-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
+The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supports post-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
 
