@@ -39,6 +39,9 @@ public class Constants {
     // Record used to reference to a public key certificate.
     public static final String CERTIFICATE_RECORD = "Certificate";
 
+    // Record used to reference to an encapsulated key.
+    public static final String ENCAPSULATED_RESULT_RECORD = "EncapsulationResult";
+
     // Native data key for private key within the PrivateKey record.
     public static final String NATIVE_DATA_PRIVATE_KEY = "NATIVE_DATA_PRIVATE_KEY";
 
@@ -71,6 +74,10 @@ public class Constants {
     public static final String CERTIFICATE_RECORD_SIGNATURE_FIELD = "signature";
     public static final String CERTIFICATE_RECORD_SIGNATURE_ALG_FIELD = "signingAlgorithm";
 
+    // Fields of `EncapsulationResult` record.
+    public static final String ENCAPSULATED_RESULT_RECORD_ENCAPSULATED_FIELD = "encapsulatedSecret";
+    public static final String ENCAPSULATED_RESULT_RECORD_SECRET_FIELD = "sharedSecret";
+
     // Fields of `KeyStoreConfig` record.
     public static final BString KEY_STORE_CONFIG_RECORD_KEY_STORE_FIELD = StringUtils.fromString("keyStore");
     public static final BString KEY_STORE_CONFIG_RECORD_KEY_ALIAS_FIELD = StringUtils.fromString("keyAlias");
@@ -98,6 +105,12 @@ public class Constants {
 
     // RSA key algorithm
     public static final String RSA_ALGORITHM = "RSA";
+
+    // ML-DSA-65 signing algorithm
+    public static final String MLDSA65_ALGORITHM = "DILITHIUM3";
+
+    // ML-KEM-768 key encapsulation mechanism
+    public static final String MLKEM768_ALGORITHM = "KYBER768";
 
     // EC key algorithm
     public static final String EC_ALGORITHM = "EC";

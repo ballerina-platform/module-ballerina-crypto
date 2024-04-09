@@ -17,11 +17,17 @@
 import ballerina/jballerina.java;
 import ballerina/time;
 
-# Represents the supported key algorithms.
-public type KeyAlgorithm RSA;
+# Represents the supported public key algorithms.
+public type KeyAlgorithm RSA|MLKEM768|MLDSA65;
 
 # The `RSA` algorithm.
 public const RSA = "RSA";
+
+# The `ML-KEM-768` algorithm.
+public const MLKEM768 = "KYBER768";
+
+# The `ML-DSA-65` algorithm.
+public const MLDSA65 = "DILITHIUM3";
 
 # Represents the KeyStore-related configurations.
 #
@@ -114,6 +120,42 @@ public isolated function decodeEcPrivateKeyFromKeyStore(KeyStore keyStore, strin
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
+# Decodes the ML-DSA-65 (Dilithium3) private key from the given PKCS#12 archive file.
+# ```ballerina
+# crypto:KeyStore keyStore = {
+#    path: "/path/to/keyStore.p12",
+#   password
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# ```
+#
+# + keyStore - KeyStore configurations
+# + keyAlias - Key alias
+# + keyPassword - Key password
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeMlDsa65PrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
+                                                        returns PrivateKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-KEM-768 (Kyber768) private key from the given PKCS#12 archive file.
+# ```ballerina
+# crypto:KeyStore keyStore = {
+#    path: "/path/to/keyStore.p12",
+#   password
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# ```
+#
+# + keyStore - KeyStore configurations
+# + keyAlias - Key alias
+# + keyPassword - Key password
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeMlKem768PrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
+                                                        returns PrivateKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
 # Decodes the RSA private key from the given private key and private key password.
 # ```ballerina
 # string keyFile = "/path/to/private.key";
@@ -138,6 +180,34 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
 # + keyPassword - Password of the key file if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeEcPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
+                                                        returns PrivateKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-DSA-65 (Dilithium3) private key from the given private key and private key password.
+# ```ballerina
+# string keyFile = "/path/to/private.key";
+# crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyFile(keyFile, "keyPassword");
+# ```
+#
+# + keyFile - Path to the key file
+# + keyPassword - Password of the key file if it is encrypted
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeMlDsa65PrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
+                                                        returns PrivateKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-KEM-768 (Kyber768) private key from the given private key and private key password.
+# ```ballerina
+# string keyFile = "/path/to/private.key";
+# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyFile(keyFile, "keyPassword");
+# ```
+#
+# + keyFile - Path to the key file
+# + keyPassword - Password of the key file if it is encrypted
+# + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
+public isolated function decodeMlKem768PrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
@@ -176,6 +246,40 @@ public isolated function decodeEcPublicKeyFromTrustStore(TrustStore trustStore, 
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 
+# Decodes the ML-DSA-65 (Dilithium3) public key from the given PKCS#12 archive file.
+# ```ballerina
+# crypto:TrustStore trustStore = {
+#    path: "/path/tp/truststore.p12",
+#    password: "truststorePassword"
+# };
+# crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromTrustStore(trustStore, "keyAlias");
+# ```
+#
+# + trustStore - TrustStore configurations
+# + keyAlias - Key alias
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeMlDsa65PublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
+                                                        returns PublicKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-KEM-768 (Kyber768) public key from the given PKCS#12 archive file.
+# ```ballerina
+# crypto:TrustStore trustStore = {
+#    path: "/path/tp/truststore.p12",
+#    password: "truststorePassword"
+# };
+# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(trustStore, "keyAlias");
+# ```
+#
+# + trustStore - TrustStore configurations
+# + keyAlias - Key alias
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeMlKem768PublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
+                                                        returns PublicKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
 # Decodes the RSA public key from the given public certificate file.
 # ```ballerina
 # string certFile = "/path/to/public.cert";
@@ -197,6 +301,30 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
 # + certFile - Path to the certificate file
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeEcPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-DSA-65 (Dilithium3) public key from the given public certificate file.
+# ```ballerina
+# string certFile = "/path/to/public.cert";
+# crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromCertFile(certFile);
+# ```
+#
+# + certFile - Path to the certificate file
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeMlDsa65PublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
+} external;
+
+# Decodes the ML-KEM-768 (Kyber768) public key from the given public certificate file.
+# ```ballerina
+# string certFile = "/path/to/public.cert";
+# crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromCertFile(certFile);
+# ```
+#
+# + certFile - Path to the certificate file
+# + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
+public isolated function decodeMlKem768PublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
 } external;
 

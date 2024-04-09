@@ -23,22 +23,43 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
+import org.bouncycastle.crypto.Digest;
+import org.bouncycastle.crypto.SecretWithEncapsulation;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.generators.HKDFBytesGenerator;
+import org.bouncycastle.crypto.generators.KDF2BytesGenerator;
+import org.bouncycastle.crypto.kems.RSAKEMExtractor;
+import org.bouncycastle.crypto.kems.RSAKEMGenerator;
+import org.bouncycastle.crypto.params.HKDFParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.params.RSAKeyParameters;
+import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
+import org.bouncycastle.jcajce.spec.KEMExtractSpec;
+import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -160,6 +181,74 @@ public class CryptoUtils {
         }
     }
 
+    public static Object hkdf(String digestAlgorithm, byte[] ikm, byte[] salt, byte[] info, int length) {
+        Digest hash = selectHash(digestAlgorithm);
+        byte[] okm = new byte[length];
+
+        HKDFParameters params = new HKDFParameters(ikm, salt, info);
+        HKDFBytesGenerator hkdf = new HKDFBytesGenerator(hash);
+        hkdf.init(params);
+        hkdf.generateBytes(okm, 0, length);
+        return ValueCreator.createArrayValue(okm);
+    }
+
+    public static Object generateEncapsulated(String algorithm, PublicKey publicKey, String provider) {
+        try {
+            KEMGenerateSpec kemGenerateSpec = new KEMGenerateSpec(publicKey, algorithm);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
+            keyGenerator.init(kemGenerateSpec);
+            return keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            return CryptoUtils.createError("Error occurred while generating encapsulated key: " + e.getMessage());
+        } catch (NoSuchProviderException e) {
+            throw CryptoUtils.createError("Provider not found: " + provider);
+        }
+    }
+
+    public static Object generateRsaEncapsulated(PublicKey publicKey) {
+        if (!(publicKey instanceof RSAPublicKey)) {
+            return CryptoUtils.createError("Error occurred while generating encapsulated key: valid RSA " + 
+                                                "public key expected");
+        }
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+        RSAKEMGenerator keyGenerator = new RSAKEMGenerator(
+                32, new KDF2BytesGenerator(new SHA256Digest()), new SecureRandom());
+        RSAKeyParameters rsaKeyParams = new RSAKeyParameters(
+                false, rsaPublicKey.getModulus(), rsaPublicKey.getPublicExponent());
+        SecretWithEncapsulation secretWithEncapsulation = keyGenerator.generateEncapsulated(rsaKeyParams);
+        SecretKey secretKey = new SecretKeySpec(secretWithEncapsulation.getSecret(), Constants.RSA_ALGORITHM);
+        return new SecretKeyWithEncapsulation(secretKey, secretWithEncapsulation.getEncapsulation());
+    }
+
+    public static Object extractSecret(byte[] encapsulation, String algorithm, PrivateKey privateKey, String provider) {
+        try {
+            KEMExtractSpec kemExtractSpec = new KEMExtractSpec(privateKey, encapsulation, algorithm);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
+            keyGenerator.init(kemExtractSpec);
+            SecretKeyWithEncapsulation secretKeyWithEncapsulation =
+                    (SecretKeyWithEncapsulation) keyGenerator.generateKey();
+            return ValueCreator.createArrayValue(secretKeyWithEncapsulation.getEncoded());
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
+            return CryptoUtils.createError("Error occurred while extracting secret: " + e.getMessage());
+        } catch (NoSuchProviderException e) {
+            throw CryptoUtils.createError("Provider not found: " + e.getMessage());
+        }
+    }
+
+    public static Object extractRsaSecret(byte[] encapsulation, PrivateKey privateKey) {
+        if (!(privateKey instanceof RSAPrivateKey)) {
+            return CryptoUtils.createError("Error occurred while extracting secret: valid RSA private" + 
+                                                "key expected");
+        }
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
+        RSAKeyParameters rsaKeyParameters = new RSAKeyParameters(
+                true, rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());
+        RSAKEMExtractor keyExtractor = new RSAKEMExtractor(
+                rsaKeyParameters, 32, new KDF2BytesGenerator(new SHA256Digest()));
+        KeyParameter keyParameter = new KeyParameter(keyExtractor.extractSecret(encapsulation));
+        return ValueCreator.createArrayValue(keyParameter.getKey());
+    }
+
     /**
      * Create crypto error.
      *
@@ -243,6 +332,24 @@ public class CryptoUtils {
         } catch (BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException |
                 InvalidKeyException | BError e) {
             return CryptoUtils.createError("Error occurred while AES encrypt/decrypt: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Add Bouncy Castle Post Quantum Cryptography provider to the security providers list.
+     */
+    public static void addBCPQCProvider() {
+        if (Security.getProvider(BouncyCastlePQCProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
+    }
+
+    /**
+     * Add Bouncy Castle provider to the security providers list.
+     */
+    public static void addBCProvider() {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
         }
     }
 
@@ -333,5 +440,12 @@ public class CryptoUtils {
                 throw CryptoUtils.createError("Unsupported padding: " + algorithmPadding);
         }
         return algorithmPadding;
+    }
+
+    private static Digest selectHash(String algorithm) {
+        if ("SHA-256".equals(algorithm)) {
+            return new SHA256Digest();
+        }
+        throw CryptoUtils.createError("Unsupported algorithm: " + algorithm);
     }
 }
