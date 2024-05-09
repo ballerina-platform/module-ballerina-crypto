@@ -18,11 +18,21 @@
 
 package io.ballerina.stdlib.crypto.nativeimpl;
 
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
+import io.ballerina.runtime.api.values.BValue;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.PgpEncryptionGenerator;
+import org.bouncycastle.bcpg.CompressionAlgorithmTags;
+import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
+import org.bouncycastle.openpgp.PGPException;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -33,6 +43,11 @@ import java.security.PublicKey;
  * @since 0.990.4
  */
 public class Encrypt {
+
+    public static final String COMPRESSION_ALGORITHM = "compressionAlgorithm";
+    public static final String SYMMETRIC_KEY_ALGORITHM = "symmetricKeyAlgorithm";
+    public static final String ARMOR = "armor";
+    public static final String WITH_INTEGRITY_CHECK = "withIntegrityCheck";
 
     private Encrypt() {}
 
@@ -79,5 +94,24 @@ public class Encrypt {
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.ENCRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
+    }
+
+    public static Object encryptPgp(BArray inputValue, BArray keyValue, BMap options) {
+        byte[] input = inputValue.getBytes();
+        byte[] key = keyValue.getBytes();
+        InputStream keyStream = new ByteArrayInputStream(key);
+
+        PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
+                Integer.parseInt(options.get(StringUtils.fromString(COMPRESSION_ALGORITHM)).toString()),
+                Integer.parseInt(options.get(StringUtils.fromString(SYMMETRIC_KEY_ALGORITHM)).toString()),
+                Boolean.parseBoolean(options.get(StringUtils.fromString(ARMOR)).toString()),
+                Boolean.parseBoolean(options.get(StringUtils.fromString(WITH_INTEGRITY_CHECK)).toString())
+        );
+
+        try {
+            return pgpEncryptionGenerator.encrypt(input, keyStream);
+        } catch (PGPException | IOException e) {
+            return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
+        }
     }
 }

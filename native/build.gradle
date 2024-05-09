@@ -32,6 +32,7 @@ dependencies {
     implementation group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: "${bouncycastleVersion}"
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: "${bouncycastleVersion}"
     implementation group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncycastleVersion}"
+    implementation group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncycastleVersion}"
     compileOnly group: 'org.graalvm.nativeimage', name: 'svm', version: "${nativeImageVersion}"
 }
 

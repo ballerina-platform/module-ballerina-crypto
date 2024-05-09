@@ -76,6 +76,9 @@ dependencies {
     externalJars(group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncycastleVersion}") {
         transitive = false
     }
+    externalJars(group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncycastleVersion}") {
+        transitive = false
+    }
 }
 
 task updateTomlFiles {

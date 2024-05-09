@@ -22,7 +22,12 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
+import io.ballerina.stdlib.crypto.PgpDecryptionGenerator;
+import org.bouncycastle.openpgp.PGPException;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -73,5 +78,22 @@ public class Decrypt {
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
+    }
+
+    public static Object decryptPgp(BArray inputValue, BArray keyValue, BArray passphrase) {
+        byte[] input = inputValue.getBytes();
+        byte[] key = keyValue.getBytes();
+        byte[] passphraseInBytes = passphrase.getBytes();
+        InputStream keyStream = new ByteArrayInputStream(key);
+
+        try {
+            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(
+                    keyStream,
+                    passphraseInBytes
+            );
+            return pgpDecryptionGenerator.decrypt(input);
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+        }
     }
 }

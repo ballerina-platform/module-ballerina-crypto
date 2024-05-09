@@ -22,6 +22,7 @@ module io.ballerina.stdlib.crypto {
     requires org.bouncycastle.pkix;
     requires org.graalvm.sdk;
     requires org.graalvm.nativeimage.builder;
+    requires org.bouncycastle.pg;
     exports io.ballerina.stdlib.crypto.nativeimpl;
     exports io.ballerina.stdlib.crypto.svm;
 }
