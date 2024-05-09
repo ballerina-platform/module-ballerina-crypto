@@ -118,17 +118,17 @@ public class PgpEncryptionGenerator {
     static void copyAsLiteralData(OutputStream outputStream, InputStream in, long length)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
-        OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
-                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[PgpEncryptionGenerator.BUFFER_SIZE]);
         byte[] buff = new byte[PgpEncryptionGenerator.BUFFER_SIZE];
-        try (in) {
+        try (OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
+                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[PgpEncryptionGenerator.BUFFER_SIZE]);
+             InputStream inputStream = in) {
+
             int len;
             long totalBytesWritten = 0L;
-            while (totalBytesWritten <= length && (len = in.read(buff)) > 0) {
+            while (totalBytesWritten <= length && (len = inputStream.read(buff)) > 0) {
                 pOut.write(buff, 0, len);
                 totalBytesWritten += len;
             }
-            pOut.close();
         } finally {
             Arrays.fill(buff, (byte) 0);
         }
