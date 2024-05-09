@@ -21,13 +21,9 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.values.BValue;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpEncryptionGenerator;
-import org.bouncycastle.bcpg.CompressionAlgorithmTags;
-import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.openpgp.PGPException;
 
 import java.io.ByteArrayInputStream;
@@ -96,10 +92,10 @@ public class Encrypt {
                 input, null, -1);
     }
 
-    public static Object encryptPgp(BArray inputValue, BArray keyValue, BMap options) {
-        byte[] input = inputValue.getBytes();
-        byte[] key = keyValue.getBytes();
-        InputStream keyStream = new ByteArrayInputStream(key);
+    public static Object encryptPgp(BArray plainTextValue, BArray publicKeyValue, BMap options) {
+        byte[] plainText = plainTextValue.getBytes();
+        byte[] publicKey = publicKeyValue.getBytes();
+        InputStream publicKeyStream = new ByteArrayInputStream(publicKey);
 
         PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
                 Integer.parseInt(options.get(StringUtils.fromString(COMPRESSION_ALGORITHM)).toString()),
@@ -109,7 +105,7 @@ public class Encrypt {
         );
 
         try {
-            return pgpEncryptionGenerator.encrypt(input, keyStream);
+            return pgpEncryptionGenerator.encrypt(plainText, publicKeyStream);
         } catch (PGPException | IOException e) {
             return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
         }

@@ -80,18 +80,18 @@ public class Decrypt {
                 input, null, -1);
     }
 
-    public static Object decryptPgp(BArray inputValue, BArray keyValue, BArray passphrase) {
-        byte[] input = inputValue.getBytes();
-        byte[] key = keyValue.getBytes();
+    public static Object decryptPgp(BArray cipherTextValue, BArray privateKeyValue, BArray passphrase) {
+        byte[] cipherText = cipherTextValue.getBytes();
+        byte[] privateKey = privateKeyValue.getBytes();
         byte[] passphraseInBytes = passphrase.getBytes();
-        InputStream keyStream = new ByteArrayInputStream(key);
+        InputStream keyStream = new ByteArrayInputStream(privateKey);
 
         try {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(
                     keyStream,
                     passphraseInBytes
             );
-            return pgpDecryptionGenerator.decrypt(input);
+            return pgpDecryptionGenerator.decrypt(cipherText);
         } catch (IOException | PGPException e) {
             return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
         }
