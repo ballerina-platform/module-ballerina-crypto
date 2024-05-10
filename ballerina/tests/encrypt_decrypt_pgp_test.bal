@@ -15,26 +15,48 @@
 // under the License.
 
 import ballerina/test;
-import ballerina/io;
 
 @test:Config {}
 isolated function testEncryptAndDecryptWithPgp() returns error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
-    byte[] passphrase = check io:fileReadBytes(PGP_PRIVATE_KEY_PASSPHRASE_PATH);
-    byte[] publicKey = check io:fileReadBytes(PGP_PUBLIC_KEY_PATH);
-    byte[] privateKey = check io:fileReadBytes(PGP_PRIVATE_KEY_PATH);
-    byte[] cipherText = check encryptPgp(message, publicKey);
-    byte[] plainText = check decryptPgp(cipherText, privateKey, passphrase);
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH);
+    byte[] plainText = check decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
     test:assertEquals(plainText.toBase16(), message.toBase16());
 }
 
 @test:Config {}
 isolated function testEncryptAndDecryptWithPgpWithOptions() returns error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
-    byte[] passphrase = check io:fileReadBytes(PGP_PRIVATE_KEY_PASSPHRASE_PATH);
-    byte[] publicKey = check io:fileReadBytes(PGP_PUBLIC_KEY_PATH);
-    byte[] privateKey = check io:fileReadBytes(PGP_PRIVATE_KEY_PATH);
-    byte[] cipherText = check encryptPgp(message, publicKey, symmetricKeyAlgorithm = AES_128, armor = false);
-    byte[] plainText = check decryptPgp(cipherText, privateKey, passphrase);
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
+    byte[] plainText = check decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
     test:assertEquals(plainText.toBase16(), message.toBase16());
+}
+
+@test:Config {}
+isolated function testNegativeEncryptAndDecryptWithPgpInvalidPrivateKey() returns error? {
+    byte[] message = "Ballerina crypto test           ".toBytes();
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH);
+    byte[]|Error plainText = decryptPgp(cipherText, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
+    if plainText is Error {
+        test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
+    } else {
+        test:assertTrue(false, "Should return a crypto Error");
+    }
+}
+
+@test:Config {}
+isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() returns error? {
+    byte[] message = "Ballerina crypto test           ".toBytes();
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH);
+    byte[]|Error plainText = decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
+    if plainText is Error {
+        test:assertEquals(plainText.message(),
+        "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+    } else {
+        test:assertTrue(false, "Should return a crypto Error");
+    }
 }

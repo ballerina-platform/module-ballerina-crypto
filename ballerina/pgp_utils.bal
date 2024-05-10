@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the PGP encryption options
+# Represents the PGP encryption options.
 # 
 # + compressionAlgorithm - Specifies the compression algorithm used for PGP encryption
 # + symmetricKeyAlgorithm - Specifies the symmetric key algorithm used for encryption
@@ -27,7 +27,7 @@ public type PgpEncryptionOptions record {|
     boolean withIntegrityCheck = true;
 |};
 
-# Represents the compressions algorithms available in PGP
+# Represents the compression algorithms available in PGP.
 # 
 # + UNCOMPRESSED - No compression
 # + ZIP - Uses (RFC 1951) compression
@@ -40,7 +40,7 @@ public enum CompressionAlgorithmTags {
     BZIP2= "3"
 }
 
-# Represent the symmetric key algorithms available in PGP
+# Represent the symmetric key algorithms available in PGP.
 # 
 # + NULL - No encryption
 # + IDEA - IDEA symmetric key algorithm

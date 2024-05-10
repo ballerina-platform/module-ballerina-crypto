@@ -46,7 +46,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * Provides functionality for PGP decryption operations.
+ *
+ * @since 2.7.0
+ */
 public class PgpDecryptionGenerator {
 
     static {
@@ -58,19 +64,27 @@ public class PgpDecryptionGenerator {
     private final char[] passCode;
     private final PGPSecretKeyRingCollection pgpSecretKeyRingCollection;
 
+    // The constructor of the PGP decryption generator.
     public PgpDecryptionGenerator(InputStream privateKeyIn, byte[] passCode) throws IOException, PGPException {
         this.passCode = new String(passCode, StandardCharsets.UTF_8).toCharArray();
         this.pgpSecretKeyRingCollection = new PGPSecretKeyRingCollection(PGPUtil.getDecoderStream(privateKeyIn)
                 , new JcaKeyFingerprintCalculator());
     }
 
-    private PGPPrivateKey findSecretKey(long keyID) throws PGPException {
-        PGPSecretKey pgpSecretKey = pgpSecretKeyRingCollection.getSecretKey(keyID);
-        return pgpSecretKey == null ? null : pgpSecretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder()
-                .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(passCode));
+    private Optional<PGPPrivateKey> findSecretKey(long keyID) throws PGPException {
+        Optional<PGPSecretKey> pgpSecretKey = Optional.ofNullable(pgpSecretKeyRingCollection.getSecretKey(keyID));
+        if (pgpSecretKey.isPresent()) {
+            PGPPrivateKey privateKey = pgpSecretKey.get().extractPrivateKey(
+                    new JcePBESecretKeyDecryptorBuilder()
+                            .setProvider(BouncyCastleProvider.PROVIDER_NAME)
+                            .build(passCode));
+            return Optional.of(privateKey);
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public void decryptStream(InputStream encryptedIn, OutputStream clearOut)
+    private void decryptStream(InputStream encryptedIn, OutputStream clearOut)
             throws PGPException, IOException {
         // Remove armour and return the underlying binary encrypted stream
         encryptedIn = PGPUtil.getDecoderStream(encryptedIn);
@@ -81,11 +95,11 @@ public class PgpDecryptionGenerator {
         PGPEncryptedDataList pgpEncryptedDataList = (obj instanceof PGPEncryptedDataList)
                 ? (PGPEncryptedDataList) obj : (PGPEncryptedDataList) pgpObjectFactory.nextObject();
 
-        PGPPrivateKey pgpPrivateKey = null;
+        Optional<PGPPrivateKey> pgpPrivateKey = Optional.empty();
         PGPPublicKeyEncryptedData publicKeyEncryptedData = null;
 
         Iterator<PGPEncryptedData> encryptedDataItr = pgpEncryptedDataList.getEncryptedDataObjects();
-        while (pgpPrivateKey == null && encryptedDataItr.hasNext()) {
+        while (pgpPrivateKey.isEmpty() && encryptedDataItr.hasNext()) {
             publicKeyEncryptedData = (PGPPublicKeyEncryptedData) encryptedDataItr.next();
             pgpPrivateKey = findSecretKey(publicKeyEncryptedData.getKeyID());
         }
@@ -94,52 +108,57 @@ public class PgpDecryptionGenerator {
             throw new PGPException("Could not generate PGPPublicKeyEncryptedData object");
         }
 
-        if (pgpPrivateKey == null) {
+        if (pgpPrivateKey.isEmpty()) {
             throw new PGPException("Could Not Extract private key");
         }
         decrypt(clearOut, pgpPrivateKey, publicKeyEncryptedData);
     }
 
+    // Decrypts the given byte array of encrypted data using PGP decryption.
     public Object decrypt(byte[] encryptedBytes) throws PGPException, IOException {
-        ByteArrayInputStream encryptedIn = new ByteArrayInputStream(encryptedBytes);
-        ByteArrayOutputStream clearOut = new ByteArrayOutputStream();
-        decryptStream(encryptedIn, clearOut);
-        return ValueCreator.createArrayValue(clearOut.toByteArray());
+        try (ByteArrayInputStream encryptedIn = new ByteArrayInputStream(encryptedBytes);
+             ByteArrayOutputStream clearOut = new ByteArrayOutputStream()) {
+            decryptStream(encryptedIn, clearOut);
+            return ValueCreator.createArrayValue(clearOut.toByteArray());
+        }
     }
 
-    static void decrypt(OutputStream clearOut, PGPPrivateKey pgpPrivateKey,
+    private static void decrypt(OutputStream clearOut, Optional<PGPPrivateKey> pgpPrivateKey,
                         PGPPublicKeyEncryptedData publicKeyEncryptedData) throws IOException, PGPException {
-        PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
-                .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
-        InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory);
+        if (pgpPrivateKey.isPresent()) {
+            PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
+                    .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey.get());
+            try (InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory)) {
 
-        JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
-        PGPCompressedData pgpCompressedData = (PGPCompressedData) decCompObjFac.nextObject();
+                JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
+                PGPCompressedData pgpCompressedData = (PGPCompressedData) decCompObjFac.nextObject();
 
-        InputStream compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
-        JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
+                try (InputStream compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream())) {
+                    JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
 
-        Object message = pgpCompObjFac.nextObject();
+                    Object message = pgpCompObjFac.nextObject();
 
-        if (message instanceof PGPLiteralData pgpLiteralData) {
-            InputStream decDataStream = pgpLiteralData.getInputStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = decDataStream.read(buffer)) != -1) {
-                clearOut.write(buffer, 0, bytesRead);
+                    if (message instanceof PGPLiteralData pgpLiteralData) {
+                        try (InputStream decDataStream = pgpLiteralData.getInputStream()) {
+                            byte[] buffer = new byte[1024];
+                            int bytesRead;
+                            while ((bytesRead = decDataStream.read(buffer)) != -1) {
+                                clearOut.write(buffer, 0, bytesRead);
+                            }
+                        }
+                    } else if (message instanceof PGPOnePassSignatureList) {
+                        throw new PGPException("Encrypted message contains a signed message not literal data");
+                    } else {
+                        throw new PGPException("Unknown message type encountered during decryption");
+                    }
+                }
             }
-            clearOut.close();
-        } else if (message instanceof PGPOnePassSignatureList) {
-            throw new PGPException("Encrypted message contains a signed message not literal data");
-        } else {
-            throw new PGPException("Message is not a simple encrypted file - Type Unknown");
-        }
-        // Perform the integrity check
-        if (publicKeyEncryptedData.isIntegrityProtected()) {
-            if (!publicKeyEncryptedData.verify()) {
-                throw new PGPException("Message failed integrity check");
+            // Perform the integrity check
+            if (publicKeyEncryptedData.isIntegrityProtected()) {
+                if (!publicKeyEncryptedData.verify()) {
+                    throw new PGPException("Message failed integrity check");
+                }
             }
         }
     }
-
 }

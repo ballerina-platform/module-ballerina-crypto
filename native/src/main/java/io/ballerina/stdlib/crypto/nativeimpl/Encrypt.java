@@ -21,6 +21,7 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpEncryptionGenerator;
@@ -29,6 +30,8 @@ import org.bouncycastle.openpgp.PGPException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -40,10 +43,10 @@ import java.security.PublicKey;
  */
 public class Encrypt {
 
-    public static final String COMPRESSION_ALGORITHM = "compressionAlgorithm";
-    public static final String SYMMETRIC_KEY_ALGORITHM = "symmetricKeyAlgorithm";
-    public static final String ARMOR = "armor";
-    public static final String WITH_INTEGRITY_CHECK = "withIntegrityCheck";
+    private static final BString COMPRESSION_ALGORITHM = StringUtils.fromString("compressionAlgorithm");
+    private static final BString SYMMETRIC_KEY_ALGORITHM = StringUtils.fromString("symmetricKeyAlgorithm");
+    private static final BString ARMOR = StringUtils.fromString("armor");
+    private static final BString WITH_INTEGRITY_CHECK = StringUtils.fromString("withIntegrityCheck");
 
     private Encrypt() {}
 
@@ -92,21 +95,24 @@ public class Encrypt {
                 input, null, -1);
     }
 
-    public static Object encryptPgp(BArray plainTextValue, BArray publicKeyValue, BMap options) {
+    public static Object encryptPgp(BArray plainTextValue, BString publicKeyPath, BMap options) {
         byte[] plainText = plainTextValue.getBytes();
-        byte[] publicKey = publicKeyValue.getBytes();
-        InputStream publicKeyStream = new ByteArrayInputStream(publicKey);
-
-        PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
-                Integer.parseInt(options.get(StringUtils.fromString(COMPRESSION_ALGORITHM)).toString()),
-                Integer.parseInt(options.get(StringUtils.fromString(SYMMETRIC_KEY_ALGORITHM)).toString()),
-                Boolean.parseBoolean(options.get(StringUtils.fromString(ARMOR)).toString()),
-                Boolean.parseBoolean(options.get(StringUtils.fromString(WITH_INTEGRITY_CHECK)).toString())
-        );
-
+        byte[] publicKey;
         try {
+            publicKey = Files.readAllBytes(Path.of(publicKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+        }
+
+        try (InputStream publicKeyStream = new ByteArrayInputStream(publicKey)) {
+            PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
+                    Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
+                    Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
+                    Boolean.parseBoolean(options.get(ARMOR).toString()),
+                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
+            );
             return pgpEncryptionGenerator.encrypt(plainText, publicKeyStream);
-        } catch (PGPException | IOException e) {
+        } catch (IOException | PGPException e) {
             return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
         }
     }

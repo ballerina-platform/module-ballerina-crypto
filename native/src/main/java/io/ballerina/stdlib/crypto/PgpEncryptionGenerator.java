@@ -48,6 +48,11 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Provides functionality for PGP encryption operations.
+ *
+ * @since 2.7.0
+ */
 public class PgpEncryptionGenerator {
 
     static {
@@ -62,6 +67,7 @@ public class PgpEncryptionGenerator {
     private final boolean withIntegrityCheck;
     private static final int BUFFER_SIZE = 8192;
 
+    // The constructor of the PGP encryption generator.
     public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
                              boolean withIntegrityCheck) {
         this.compressionAlgorithm = compressionAlgorithm;
@@ -70,7 +76,7 @@ public class PgpEncryptionGenerator {
         this.withIntegrityCheck = withIntegrityCheck;
     }
 
-    public void encryptStream(OutputStream encryptOut, InputStream clearIn, long length, InputStream publicKeyIn)
+    private void encryptStream(OutputStream encryptOut, InputStream clearIn, long length, InputStream publicKeyIn)
             throws IOException, PGPException {
         PGPCompressedDataGenerator compressedDataGenerator =
                 new PGPCompressedDataGenerator(compressionAlgorithm);
@@ -87,27 +93,30 @@ public class PgpEncryptionGenerator {
         if (armor) {
             encryptOut = new ArmoredOutputStream(encryptOut);
         }
-        OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE]);
-        copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn, length);
-        compressedDataGenerator.close();
-        cipherOutStream.close();
+
+        try (OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE])) {
+            copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn, length);
+            compressedDataGenerator.close();
+        }
         encryptOut.close();
     }
 
+    // Encrypts the given byte array of plain text data using PGP encryption.
     public Object encrypt(byte[] clearData, InputStream publicKeyIn) throws PGPException, IOException {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(clearData);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        encryptStream(outputStream, inputStream, clearData.length, publicKeyIn);
-        return ValueCreator.createArrayValue(outputStream.toByteArray());
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(clearData);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            encryptStream(outputStream, inputStream, clearData.length, publicKeyIn);
+            return ValueCreator.createArrayValue(outputStream.toByteArray());
+        }
     }
 
-    static PGPPublicKey getPublicKey(InputStream keyInputStream) throws IOException, PGPException {
+    private static PGPPublicKey getPublicKey(InputStream keyInputStream) throws IOException, PGPException {
         PGPPublicKeyRingCollection pgpPublicKeyRings = new PGPPublicKeyRingCollection(
                 PGPUtil.getDecoderStream(keyInputStream), new JcaKeyFingerprintCalculator());
         Iterator<PGPPublicKeyRing> keyRingIterator = pgpPublicKeyRings.getKeyRings();
         while (keyRingIterator.hasNext()) {
             PGPPublicKeyRing pgpPublicKeyRing = keyRingIterator.next();
-            Optional<PGPPublicKey> pgpPublicKey = extractPGPKeyFromRing(pgpPublicKeyRing);
+            Optional<PGPPublicKey> pgpPublicKey = extractPgpKeyFromRing(pgpPublicKeyRing);
             if (pgpPublicKey.isPresent()) {
                 return pgpPublicKey.get();
             }
@@ -115,7 +124,7 @@ public class PgpEncryptionGenerator {
         throw new PGPException("Invalid public key");
     }
 
-    static void copyAsLiteralData(OutputStream outputStream, InputStream in, long length)
+    private static void copyAsLiteralData(OutputStream outputStream, InputStream in, long length)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
         byte[] buff = new byte[PgpEncryptionGenerator.BUFFER_SIZE];
@@ -134,7 +143,7 @@ public class PgpEncryptionGenerator {
         }
     }
 
-    private static Optional<PGPPublicKey> extractPGPKeyFromRing(PGPPublicKeyRing pgpPublicKeyRing) {
+    private static Optional<PGPPublicKey> extractPgpKeyFromRing(PGPPublicKeyRing pgpPublicKeyRing) {
         for (PGPPublicKey publicKey : pgpPublicKeyRing) {
             if (publicKey.isEncryptionKey()) {
                 return Optional.of(publicKey);

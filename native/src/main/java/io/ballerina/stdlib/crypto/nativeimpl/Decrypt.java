@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpDecryptionGenerator;
@@ -28,6 +29,8 @@ import org.bouncycastle.openpgp.PGPException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -80,17 +83,18 @@ public class Decrypt {
                 input, null, -1);
     }
 
-    public static Object decryptPgp(BArray cipherTextValue, BArray privateKeyValue, BArray passphrase) {
+    public static Object decryptPgp(BArray cipherTextValue, BString privateKeyPath, BArray passphrase) {
         byte[] cipherText = cipherTextValue.getBytes();
-        byte[] privateKey = privateKeyValue.getBytes();
         byte[] passphraseInBytes = passphrase.getBytes();
-        InputStream keyStream = new ByteArrayInputStream(privateKey);
-
+        byte[] privateKey;
         try {
-            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(
-                    keyStream,
-                    passphraseInBytes
-            );
+            privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+        }
+
+        try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
+            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             return pgpDecryptionGenerator.decrypt(cipherText);
         } catch (IOException | PGPException e) {
             return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
