@@ -254,7 +254,7 @@ public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # + publicKeyPath - Path to the public key
 # + options - PGP encryption options
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *PgpEncryptionOptions options)
+public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Options options)
                                        returns byte[]|Error = @java:Method {
     name: "encryptPgp",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"

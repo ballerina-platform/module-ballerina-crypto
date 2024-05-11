@@ -20,7 +20,7 @@
 # + symmetricKeyAlgorithm - Specifies the symmetric key algorithm used for encryption
 # + armor - Indicates whether ASCII armor is enabled for the encrypted output
 # + withIntegrityCheck - Indicates whether integrity check is included in the encryption
-public type PgpEncryptionOptions record {|
+public type Options record {|
     CompressionAlgorithmTags compressionAlgorithm = ZIP;
     SymmetricKeyAlgorithmTags symmetricKeyAlgorithm = AES_256;
     boolean armor = true;
