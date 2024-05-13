@@ -243,3 +243,38 @@ public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
     name: "decryptAesGcm",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
+
+# Returns the PGP-encrypted value for the given data.
+# ```ballerina
+# byte[] message = "Hello Ballerina!".toBytes();
+# byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
+# ```
+#
+# + plainText - The content to be encrypted
+# + publicKeyPath - Path to the public key
+# + options - PGP encryption options
+# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Options options)
+                                       returns byte[]|Error = @java:Method {
+    name: "encryptPgp",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
+} external;
+
+# Returns the PGP-decrypted value of the given PGP-encrypted data.
+# ```ballerina
+# byte[] message = "Hello Ballerina!".toBytes();
+# byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
+# 
+# byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
+# byte[] decryptedMessage = check crypto:decryptPgp(cipherText, "private_key.asc", passphrase);
+# ```
+#
+# + cipherText - The encrypted content to be decrypted
+# + privateKeyPath - Path to the private key
+# + passphrase - passphrase of the private key
+# + return - Decrypted data or else a `crypto:Error` if the key or passphrase is invalid
+public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, byte[] passphrase)
+                                       returns byte[]|Error = @java:Method {
+    name: "decryptPgp",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
+} external;

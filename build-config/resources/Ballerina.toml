@@ -35,3 +35,9 @@ groupId = "org.bouncycastle"
 artifactId = "bcutil-jdk18on"
 version = "@bouncycastle.version@"
 path = "./lib/bcutil-jdk18on-@bouncycastle.version@.jar"
+
+[[platform.java17.dependency]]
+groupId = "org.bouncycastle"
+artifactId = "bcpg-jdk18on"
+version = "@bouncycastle.version@"
+path = "./lib/bcpg-jdk18on-@bouncycastle.version@.jar"

@@ -33,3 +33,8 @@ const string MLKEM_PRIVATE_KEY_PATH = "tests/resources/mlkem-key.pem";
 const string INVALID_KEYSTORE_PATH = "tests/resources/cert/keyStore.p12.invalid";
 const string INVALID_PRIVATE_KEY_PATH = "tests/resources/cert/private.key.invalid";
 const string INVALID_PUBLIC_CERT_PATH = "tests/resources/cert/public.crt.invalid";
+
+const string PGP_PUBLIC_KEY_PATH = "tests/resources/public_key.asc";
+const string PGP_PRIVATE_KEY_PATH = "tests/resources/private_key.asc";
+const string PGP_INVALID_PRIVATE_KEY_PATH = "tests/resources/invalid_private_key.asc";
+const string PGP_PRIVATE_KEY_PASSPHRASE_PATH = "tests/resources/pgp_private_key_passphrase.txt";
