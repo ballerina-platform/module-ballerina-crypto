@@ -43,7 +43,7 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPrivateKey() return
     if plainText is Error {
         test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
     } else {
-        test:assertTrue(false, "Should return a crypto Error");
+        test:assertFail("Should return a crypto Error");
     }
 }
 
@@ -57,6 +57,6 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() return
         test:assertEquals(plainText.message(),
         "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
     } else {
-        test:assertTrue(false, "Should return a crypto Error");
+        test:assertFail("Should return a crypto Error");
     }
 }
