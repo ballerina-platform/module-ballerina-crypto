@@ -51,7 +51,7 @@ public isolated function encapsulateMlKem768(PublicKey publicKey)
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateMlKem768(publicKey);
 # byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
-# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateMlKem768(encapsulatedSecret, privateKey);
 # ```
 # + encapsulatedSecret - Encapsulated secret
@@ -148,7 +148,7 @@ public isolated function encapsulateRsaKem(PublicKey publicKey)
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateRsaKem(publicKey);
 # byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
-# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateRsaKem(encapsulatedSecret, privateKey);
 # ```
 # + encapsulatedSecret - Encapsulated secret

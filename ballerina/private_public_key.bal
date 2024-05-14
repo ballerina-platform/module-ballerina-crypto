@@ -124,7 +124,7 @@ public isolated function decodeEcPrivateKeyFromKeyStore(KeyStore keyStore, strin
 # ```ballerina
 # crypto:KeyStore keyStore = {
 #    path: "/path/to/keyStore.p12",
-#   password
+#    password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
@@ -142,7 +142,7 @@ public isolated function decodeMlDsa65PrivateKeyFromKeyStore(KeyStore keyStore, 
 # ```ballerina
 # crypto:KeyStore keyStore = {
 #    path: "/path/to/keyStore.p12",
-#   password
+#    password: "keyStorePassword"
 # };
 # crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
