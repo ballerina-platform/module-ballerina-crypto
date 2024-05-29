@@ -1,6 +1,6 @@
 # Proposal: Introduce support to retrieve `crypto:PrivateKey` and `crypto:PublicKey` by directly using the content
 
-_Authers_: @ayeshLK  
+_Authors_: @ayeshLK  
 _Reviewers_: @shafreenAnfar @bhashinee @NipunaRanasinghe  
 _Created_: 2024/05/29  
 _Updated_: 2022/05/29  
