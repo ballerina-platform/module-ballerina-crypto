@@ -156,12 +156,12 @@ public class Decode {
              InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream,
                      StandardCharsets.UTF_8);
              PEMParser pemParser = new PEMParser(inputStreamReader)) {
-            Object obj = pemParser.readObject();
-            Object decodedPrivateKey = getPrivateKeyInfo(keyPassword, obj);
+            Object pemObject = pemParser.readObject();
+            Object decodedPrivateKey = getPrivateKeyInfo(keyPassword, pemObject);
             if (decodedPrivateKey instanceof PrivateKey privateKey) {
                 return buildRsPrivateKeyRecord(privateKey);
             }
-            return decodedPrivateKey;
+            return CryptoUtils.createError("Not a valid RSA private key");
         } catch (IOException | PKCSException e) {
             return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
         }
@@ -205,30 +205,30 @@ public class Decode {
         }
     }
 
-    private static Object getPrivateKeyInfo(Object keyPassword, Object obj) throws IOException, PKCSException {
+    private static Object getPrivateKeyInfo(Object keyPassword, Object keyContent) throws IOException, PKCSException {
         PrivateKeyInfo privateKeyInfo;
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-        if (obj instanceof PEMEncryptedKeyPair) {
+        if (keyContent instanceof PEMEncryptedKeyPair keyPair) {
             if (keyPassword == null) {
                 return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
             }
             char[] pwd = ((BString) keyPassword).getValue().toCharArray();
             PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
                     .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
-            PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
+            PEMKeyPair pemKeyPair = keyPair.decryptKeyPair(decryptorProvider);
             privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
-        } else if (obj instanceof PKCS8EncryptedPrivateKeyInfo) {
+        } else if (keyContent instanceof PKCS8EncryptedPrivateKeyInfo pkcs8EncryptedPrivateKeyInfo) {
             if (keyPassword == null) {
                 return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
             }
             char[] pwd = ((BString) keyPassword).getValue().toCharArray();
             InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
                     .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
-            privateKeyInfo = ((PKCS8EncryptedPrivateKeyInfo) obj).decryptPrivateKeyInfo(decryptorProvider);
-        } else if (obj instanceof PEMKeyPair) {
-            privateKeyInfo = ((PEMKeyPair) obj).getPrivateKeyInfo();
-        } else if (obj instanceof PrivateKeyInfo) {
-            privateKeyInfo = (PrivateKeyInfo) obj;
+            privateKeyInfo = pkcs8EncryptedPrivateKeyInfo.decryptPrivateKeyInfo(decryptorProvider);
+        } else if (keyContent instanceof PEMKeyPair pemKeyPair) {
+            privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
+        } else if (keyContent instanceof PrivateKeyInfo keyInfo) {
+            privateKeyInfo = keyInfo;
         } else {
             return CryptoUtils.createError("Failed to parse private key information from the given input");
         }
