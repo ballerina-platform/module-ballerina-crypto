@@ -205,8 +205,7 @@ public class Decode {
         }
     }
 
-    private static Object getPrivateKeyInfo(Object keyPassword, Object obj) throws
-            IOException, PKCSException {
+    private static Object getPrivateKeyInfo(Object keyPassword, Object obj) throws IOException, PKCSException {
         PrivateKeyInfo privateKeyInfo;
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
         if (obj instanceof PEMEncryptedKeyPair) {
