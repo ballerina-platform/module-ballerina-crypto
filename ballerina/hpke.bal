@@ -35,7 +35,7 @@ public type HybridEncryptionResult record {|
 #     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult = crypto:encryptMlKem768Hpke(data, publicKey);
+# crypto:HybridEncryptionResult encryptionResult = check crypto:encryptMlKem768Hpke(data, publicKey);
 # ```
 # + input - The content to be encrypted
 # + publicKey - Public key used for encryption
@@ -61,10 +61,10 @@ public isolated function encryptMlKem768Hpke(byte[] input, PublicKey publicKey, 
 #     password: "keyStorePassword"
 # };
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult = crypto:encryptMlKem768Hpke(data, publicKey);
+# crypto:HybridEncryptionResult encryptionResult = check crypto:encryptMlKem768Hpke(data, publicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
-# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias");
+# crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 # byte[] decryptedData = check crypto:decryptMlKem768Hpke(cipherText, encapsulatedKey, privateKey);
 # ```
 # + input - The content to be decrypted
@@ -92,7 +92,7 @@ public isolated function decryptMlKem768Hpke(byte[] input, byte[] encapsulatedKe
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult = crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult = check crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # ```
 # + input - The content to be encrypted
 # + rsaPublicKey - The RSA public key used for encryption
@@ -123,11 +123,11 @@ public isolated function encryptRsaKemMlKem768Hpke(byte[] input, PublicKey rsaPu
 # };
 # crypto:PublicKey mlkemPublicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(mlkemKeyStore, "keyAlias");
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
-# crypto:HybridEncryptionResult encryptionResult = crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
+# crypto:HybridEncryptionResult encryptionResult = check crypto:encryptRsaKemMlKem768Hpke(data, rsaPublicKey, mlkemPublicKey);
 # byte[] cipherText = encryptionResult.cipherText;
 # byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
-# crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias");
-# crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias");
+# crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias", "keyStorePassword");
+# crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias", "keyStorePassword");
 # byte[] decryptedData = check crypto:decryptRsaKemMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
 # ```
 # + input - The content to be decrypted
