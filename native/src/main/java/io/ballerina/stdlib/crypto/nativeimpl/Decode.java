@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
@@ -38,11 +39,14 @@ import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.pkcs.jcajce.JcePKCSPBEInputDecryptorProviderBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
@@ -146,6 +150,23 @@ public class Decode {
         return decodedPrivateKey;
     }
 
+    public static Object decodeRsaPrivateKeyFromContent(BArray content, Object keyPassword) {
+        CryptoUtils.addBCProvider();
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content.getBytes());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream,
+                     StandardCharsets.UTF_8);
+             PEMParser pemParser = new PEMParser(inputStreamReader)) {
+            Object pemObject = pemParser.readObject();
+            Object decodedPrivateKey = getPrivateKeyInfo(keyPassword, pemObject);
+            if (decodedPrivateKey instanceof PrivateKey privateKey) {
+                return buildRsPrivateKeyRecord(privateKey);
+            }
+            return CryptoUtils.createError("Not a valid RSA private key");
+        } catch (IOException | PKCSException e) {
+            return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
+        }
+    }
+
     public static Object decodeEcPrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
@@ -176,39 +197,42 @@ public class Decode {
         File privateKeyFile = new File(keyFilePath.getValue());
         try (PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile, StandardCharsets.UTF_8))) {
             Object obj = pemParser.readObject();
-            JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-            PrivateKeyInfo privateKeyInfo;
-            if (obj instanceof PEMEncryptedKeyPair) {
-                if (keyPassword == null) {
-                    return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
-                }
-                char[] pwd = ((BString) keyPassword).getValue().toCharArray();
-                PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
-                PEMKeyPair pemKeyPair = ((PEMEncryptedKeyPair) obj).decryptKeyPair(decryptorProvider);
-                privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
-            } else if (obj instanceof PKCS8EncryptedPrivateKeyInfo) {
-                if (keyPassword == null) {
-                    return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
-                }
-                char[] pwd = ((BString) keyPassword).getValue().toCharArray();
-                InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
-                privateKeyInfo = ((PKCS8EncryptedPrivateKeyInfo) obj).decryptPrivateKeyInfo(decryptorProvider);
-            } else if (obj instanceof PEMKeyPair) {
-                privateKeyInfo = ((PEMKeyPair) obj).getPrivateKeyInfo();
-            } else if (obj instanceof PrivateKeyInfo) {
-                privateKeyInfo = (PrivateKeyInfo) obj;
-            } else {
-                return CryptoUtils.createError("Failed to parse private key information from: " +
-                        keyFilePath.getValue());
-            }
-            return converter.getPrivateKey(privateKeyInfo);
+            return getPrivateKeyInfo(keyPassword, obj);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Key file not found at: " + privateKeyFile.getAbsoluteFile());
         } catch (PKCSException | IOException e) {
             return CryptoUtils.createError("Unable to do private key operations: " + e.getMessage());
         }
+    }
+
+    private static Object getPrivateKeyInfo(Object keyPassword, Object keyContent) throws IOException, PKCSException {
+        PrivateKeyInfo privateKeyInfo;
+        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+        if (keyContent instanceof PEMEncryptedKeyPair keyPair) {
+            if (keyPassword == null) {
+                return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
+            }
+            char[] pwd = ((BString) keyPassword).getValue().toCharArray();
+            PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+                    .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+            PEMKeyPair pemKeyPair = keyPair.decryptKeyPair(decryptorProvider);
+            privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
+        } else if (keyContent instanceof PKCS8EncryptedPrivateKeyInfo pkcs8EncryptedPrivateKeyInfo) {
+            if (keyPassword == null) {
+                return CryptoUtils.createError("Failed to read the encrypted private key without a password.");
+            }
+            char[] pwd = ((BString) keyPassword).getValue().toCharArray();
+            InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
+                    .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+            privateKeyInfo = pkcs8EncryptedPrivateKeyInfo.decryptPrivateKeyInfo(decryptorProvider);
+        } else if (keyContent instanceof PEMKeyPair pemKeyPair) {
+            privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
+        } else if (keyContent instanceof PrivateKeyInfo keyInfo) {
+            privateKeyInfo = keyInfo;
+        } else {
+            return CryptoUtils.createError("Failed to parse private key information from the given input");
+        }
+        return converter.getPrivateKey(privateKeyInfo);
     }
 
     private static Object buildRsPrivateKeyRecord(PrivateKey privateKey) {
@@ -318,6 +342,16 @@ public class Decode {
             return buildRsaPublicKeyRecord(certificate);
         } catch (FileNotFoundException e) {
             return CryptoUtils.createError("Certificate file not found at: " + certFile.getAbsolutePath());
+        } catch (CertificateException | IOException e) {
+            return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
+        }
+    }
+
+    public static Object decodeRsaPublicKeyFromContent(BArray content) {
+        try (InputStream inputStream = new ByteArrayInputStream(content.getBytes())) {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);
+            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inputStream);
+            return buildRsaPublicKeyRecord(certificate);
         } catch (CertificateException | IOException e) {
             return CryptoUtils.createError("Unable to do public key operations: " + e.getMessage());
         }

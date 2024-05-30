@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- [Implement the support for reading private/public keys from the content](https://github.com/ballerina-platform/ballerina-library/issues/6513)
+
+## [2.7.1] - 2024-05-14
+
+### Added
 - [Introduce new APIs to support ML-DSA (Dilithium) and ML-KEM (Kyber) post-quantum crypto algorithms](https://github.com/ballerina-platform/ballerina-library/issues/6201)
 
 ## [2.6.2] - 2023-12-19
