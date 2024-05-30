@@ -1,7 +1,7 @@
 # Proposal: Introduce support to retrieve `crypto:PrivateKey` and `crypto:PublicKey` by directly using the content
 
 _Authors_: @ayeshLK  
-_Reviewers_: @shafreenAnfar @bhashinee @NipunaRanasinghe  
+_Reviewers_: @shafreenAnfar @daneshk @bhashinee @NipunaRanasinghe  
 _Created_: 2024/05/29  
 _Updated_: 2022/05/29  
 _Issue_: [#6517](https://github.com/ballerina-platform/ballerina-standard-library/issues/6517)  
