@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 
 @test:Config {}
@@ -55,8 +56,63 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() return
     byte[]|Error plainText = decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
     if plainText is Error {
         test:assertEquals(plainText.message(),
-        "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
     } else {
         test:assertFail("Should return a crypto Error");
     }
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testEncryptAndDecryptFileWithPgp() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    check encryptPgpAsFile(SAMPLE_TEXT, PGP_PUBLIC_KEY_PATH, TARGET_ENCRYPTION_OUTPUT);
+    check decryptPgpAsFile(TARGET_ENCRYPTION_OUTPUT, PGP_PRIVATE_KEY_PATH, passphrase, TARGET_DECRYPTION_OUTPUT);
+    test:assertTrue(check isSameFileContent(SAMPLE_TEXT, TARGET_DECRYPTION_OUTPUT));
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testEncryptAndDecryptFileWithPgpWithOptions() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    check encryptPgpAsFile(SAMPLE_TEXT, PGP_PUBLIC_KEY_PATH, TARGET_ENCRYPTION_OUTPUT, symmetricKeyAlgorithm = AES_128, armor = false);
+    check decryptPgpAsFile(TARGET_ENCRYPTION_OUTPUT, PGP_PRIVATE_KEY_PATH, passphrase, TARGET_DECRYPTION_OUTPUT);
+    test:assertTrue(check isSameFileContent(SAMPLE_TEXT, TARGET_DECRYPTION_OUTPUT));
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPrivateKey() returns error? {
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    check encryptPgpAsFile(SAMPLE_TEXT, PGP_PUBLIC_KEY_PATH, TARGET_ENCRYPTION_OUTPUT);
+    error? err = decryptPgpAsFile(TARGET_ENCRYPTION_OUTPUT, PGP_INVALID_PRIVATE_KEY_PATH, passphrase, TARGET_DECRYPTION_OUTPUT);
+    if err is Error {
+        test:assertEquals(err.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
+    } else {
+        test:assertFail("Should return a crypto Error");
+    }
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPassphrase() returns error? {
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    check encryptPgpAsFile(SAMPLE_TEXT, PGP_PUBLIC_KEY_PATH, TARGET_ENCRYPTION_OUTPUT);
+    error? err = decryptPgpAsFile(TARGET_ENCRYPTION_OUTPUT, PGP_PRIVATE_KEY_PATH, passphrase, TARGET_DECRYPTION_OUTPUT);
+    if err is Error {
+        test:assertEquals(err.message(),
+                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+    } else {
+        test:assertFail("Should return a crypto Error");
+    }
+}
+
+isolated function isSameFileContent(string inputFilePath, string outputFilePath) returns boolean|error {
+    byte[] input = check io:fileReadBytes(inputFilePath);
+    byte[] output = check io:fileReadBytes(outputFilePath);
+    return input.toBase64() == output.toBase64();
 }

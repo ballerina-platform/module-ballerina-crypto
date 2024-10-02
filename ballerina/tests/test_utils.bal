@@ -38,3 +38,7 @@ const string PGP_PUBLIC_KEY_PATH = "tests/resources/public_key.asc";
 const string PGP_PRIVATE_KEY_PATH = "tests/resources/private_key.asc";
 const string PGP_INVALID_PRIVATE_KEY_PATH = "tests/resources/invalid_private_key.asc";
 const string PGP_PRIVATE_KEY_PASSPHRASE_PATH = "tests/resources/pgp_private_key_passphrase.txt";
+
+const string SAMPLE_TEXT = "tests/resources/sample.txt";
+const string TARGET_ENCRYPTION_OUTPUT = "target/encrypted_output.txt";
+const string TARGET_DECRYPTION_OUTPUT = "target/decrypted_output.txt";

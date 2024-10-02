@@ -276,6 +276,7 @@ public isolated function encryptPgpAsFile(string inputFilePath, string publicKey
 } external;
 
 # Returns the PGP-decrypted value of the given PGP-encrypted data.
+# If the output file already exists, it will be overwritten.
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
@@ -295,6 +296,7 @@ public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, by
 } external;
 
 # Writes the PGP-decrypted value of the given data to a file specified by the output file path.
+# If the output file already exists, it will be overwritten.
 # ```ballerina
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # check crypto:decryptPgpAsFile("input.txt", "private_key.asc", passphrase, "output.txt");
