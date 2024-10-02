@@ -112,7 +112,8 @@ public class Decrypt {
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey);
-            InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))) {
+             InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))
+        ) {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
             return null;

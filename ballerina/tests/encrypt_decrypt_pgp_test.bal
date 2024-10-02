@@ -114,5 +114,5 @@ isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPassphrase() re
 isolated function isSameFileContent(string inputFilePath, string outputFilePath) returns boolean|error {
     byte[] input = check io:fileReadBytes(inputFilePath);
     byte[] output = check io:fileReadBytes(outputFilePath);
-    return input.toBase64() == output.toBase64();
+    return input == output;
 }

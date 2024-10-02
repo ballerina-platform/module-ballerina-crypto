@@ -260,7 +260,8 @@ public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Opt
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
-# Writes the PGP-encrypted value of the given data to a file specified by the output file path.
+# Writes the PGP-encrypted value of the content given in the input file to a file specified by the output file path.
+# If the output file already exists, it will be overwritten.
 # ```ballerina
 # check crypto:encryptPgpAsFile("input.txt", "public_key.asc", "output.txt");
 # ```
@@ -276,7 +277,6 @@ public isolated function encryptPgpAsFile(string inputFilePath, string publicKey
 } external;
 
 # Returns the PGP-decrypted value of the given PGP-encrypted data.
-# If the output file already exists, it will be overwritten.
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
@@ -295,7 +295,7 @@ public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, by
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 
-# Writes the PGP-decrypted value of the given data to a file specified by the output file path.
+# Writes the PGP-decrypted value of the content given in the input file to a file specified by the output file path.
 # If the output file already exists, it will be overwritten.
 # ```ballerina
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
