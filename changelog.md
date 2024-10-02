@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+
+- [Introduce new APIs to support PGP encryption and decryption with files](https://github.com/ballerina-platform/ballerina-library/issues/7064)
+
+## [2.7.2] - 2024-05-30
+
+### Added
 - [Implement the support for reading private/public keys from the content](https://github.com/ballerina-platform/ballerina-library/issues/6513)
 
 ## [2.7.1] - 2024-05-14
