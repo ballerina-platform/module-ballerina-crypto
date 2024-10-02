@@ -90,7 +90,7 @@ public class Decrypt {
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
@@ -108,11 +108,11 @@ public class Decrypt {
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey);
-             InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))) {
+            InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))) {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
             return null;
