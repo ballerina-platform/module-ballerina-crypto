@@ -42,7 +42,7 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPrivateKey() return
     byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH);
     byte[]|Error plainText = decryptPgp(cipherText, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
     if plainText is Error {
-        test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
+        test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could not Extract private key");
     } else {
         test:assertFail("Should return a crypto Error");
     }
@@ -90,7 +90,7 @@ isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPrivateKey() re
     check encryptPgpAsFile(SAMPLE_TEXT, PGP_PUBLIC_KEY_PATH, TARGET_ENCRYPTION_OUTPUT);
     error? err = decryptPgpAsFile(TARGET_ENCRYPTION_OUTPUT, PGP_INVALID_PRIVATE_KEY_PATH, passphrase, TARGET_DECRYPTION_OUTPUT);
     if err is Error {
-        test:assertEquals(err.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
+        test:assertEquals(err.message(), "Error occurred while PGP decrypt: Could not Extract private key");
     } else {
         test:assertFail("Should return a crypto Error");
     }

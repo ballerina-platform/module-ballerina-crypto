@@ -111,7 +111,7 @@ public class PgpDecryptionGenerator {
         }
 
         if (pgpPrivateKey.isEmpty()) {
-            throw new PGPException("Could Not Extract private key");
+            throw new PGPException("Could not Extract private key");
         }
         decrypt(clearOut, pgpPrivateKey, publicKeyEncryptedData);
     }
