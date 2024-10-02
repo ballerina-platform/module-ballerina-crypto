@@ -100,4 +100,24 @@ public class Decrypt {
             return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
         }
     }
+
+    public static Object decryptPgpAsFile(BString inputFilePath, BString privateKeyPath, BArray passphrase,
+                                          BString outputFilePath) {
+        byte[] passphraseInBytes = passphrase.getBytes();
+        byte[] privateKey;
+        try {
+            privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+        }
+
+        try (InputStream keyStream = new ByteArrayInputStream(privateKey);
+             InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))) {
+            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
+            pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
+            return null;
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+        }
+    }
 }

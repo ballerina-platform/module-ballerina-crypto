@@ -38,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.time.LocalDateTime;
@@ -76,7 +78,7 @@ public class PgpEncryptionGenerator {
         this.withIntegrityCheck = withIntegrityCheck;
     }
 
-    private void encryptStream(OutputStream encryptOut, InputStream clearIn, long length, InputStream publicKeyIn)
+    private void encryptStream(OutputStream encryptOut, InputStream clearIn, InputStream publicKeyIn)
             throws IOException, PGPException {
         PGPCompressedDataGenerator compressedDataGenerator =
                 new PGPCompressedDataGenerator(compressionAlgorithm);
@@ -95,7 +97,7 @@ public class PgpEncryptionGenerator {
         }
 
         try (OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE])) {
-            copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn, length);
+            copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn);
             compressedDataGenerator.close();
         }
         encryptOut.close();
@@ -105,8 +107,15 @@ public class PgpEncryptionGenerator {
     public Object encrypt(byte[] clearData, InputStream publicKeyIn) throws PGPException, IOException {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(clearData);
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            encryptStream(outputStream, inputStream, clearData.length, publicKeyIn);
+            encryptStream(outputStream, inputStream, publicKeyIn);
             return ValueCreator.createArrayValue(outputStream.toByteArray());
+        }
+    }
+
+    public void encrypt(InputStream inputStream, InputStream publicKeyIn, String outputPath)
+            throws PGPException, IOException {
+        try (OutputStream outputStream = Files.newOutputStream(Path.of(outputPath))) {
+            encryptStream(outputStream, inputStream, publicKeyIn);
         }
     }
 
@@ -124,7 +133,7 @@ public class PgpEncryptionGenerator {
         throw new PGPException("Invalid public key");
     }
 
-    private static void copyAsLiteralData(OutputStream outputStream, InputStream in, long length)
+    private static void copyAsLiteralData(OutputStream outputStream, InputStream in)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
         byte[] buff = new byte[PgpEncryptionGenerator.BUFFER_SIZE];
@@ -133,10 +142,8 @@ public class PgpEncryptionGenerator {
              InputStream inputStream = in) {
 
             int len;
-            long totalBytesWritten = 0L;
-            while (totalBytesWritten <= length && (len = inputStream.read(buff)) > 0) {
+            while ((len = inputStream.read(buff)) > 0) {
                 pOut.write(buff, 0, len);
-                totalBytesWritten += len;
             }
         } finally {
             Arrays.fill(buff, (byte) 0);

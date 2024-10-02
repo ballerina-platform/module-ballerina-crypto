@@ -116,4 +116,29 @@ public class Encrypt {
             return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
         }
     }
+
+    public static Object encryptPgpAsFile(BString inputFilePath, BString publicKeyPath, BString outputFilePath,
+                                          BMap options) {
+        byte[] publicKey;
+        try {
+            publicKey = Files.readAllBytes(Path.of(publicKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+        }
+
+        try (InputStream publicKeyStream = new ByteArrayInputStream(publicKey);
+             InputStream inputStream = Files.newInputStream(Path.of(inputFilePath.toString()))
+        ) {
+            PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
+                    Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
+                    Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
+                    Boolean.parseBoolean(options.get(ARMOR).toString()),
+                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
+            );
+            pgpEncryptionGenerator.encrypt(inputStream, publicKeyStream, outputFilePath.getValue());
+            return null;
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
+        }
+    }
 }
