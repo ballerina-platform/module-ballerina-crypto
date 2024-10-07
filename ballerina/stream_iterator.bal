@@ -3,7 +3,7 @@ import ballerina/jballerina.java;
 class StreamIterator {
     boolean isClosed = false;
 
-    isolated function next() returns record {|byte[] value;|}|Error? {
+    public isolated function next() returns record {|byte[] value;|}|Error? {
         byte[]|Error? bytes = self.read();
         if bytes is byte[] {
             return {value: bytes};
@@ -12,7 +12,7 @@ class StreamIterator {
         }
     }
 
-    isolated function close() returns Error? {
+    public isolated function close() returns Error? {
         if !self.isClosed {
             var closeResult = self.closeStream();
             if closeResult is () {
