@@ -124,4 +124,8 @@ public class Constants {
     public static final String GCM = "GCM";
     public static final String AES = "AES";
     public static final String RSA = "RSA";
+
+    public static final String DECRYPTED_STREAM = "INPUT_STREAM";
+    public static final String COMPRESSED_PGP_STREAM = "COMPRESSED_PGP_STREAM";
+    public static final String COMPRESSED_STREAM = "COMPRESSED_STREAM";
 }

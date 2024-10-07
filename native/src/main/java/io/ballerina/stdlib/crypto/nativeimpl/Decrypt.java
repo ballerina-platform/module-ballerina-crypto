@@ -18,9 +18,17 @@
 
 package io.ballerina.stdlib.crypto.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
+import io.ballerina.runtime.api.PredefinedTypes;
+import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BStream;
 import io.ballerina.runtime.api.values.BString;
+import io.ballerina.stdlib.crypto.BallerinaInputStream;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpDecryptionGenerator;
@@ -117,6 +125,29 @@ public class Decrypt {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
             return null;
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+        }
+    }
+
+    public static Object decryptStreamPgp(Environment environment, BStream inputStream, BString privateKeyPath,
+                                          BArray passphrase) {
+        byte[] passphraseInBytes = passphrase.getBytes();
+        byte[] privateKey;
+        try {
+            privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
+        }
+
+        try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
+            InputStream cipherTextStream = new BallerinaInputStream(environment, inputStream);
+            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
+            BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "StreamIterator");
+            pgpDecryptionGenerator.decrypt(cipherTextStream, iteratorObj);
+            Type constrainedType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BYTE);
+            return ValueCreator.createStreamValue(TypeCreator.createStreamType(constrainedType),
+                    iteratorObj);
         } catch (IOException | PGPException e) {
             return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
         }

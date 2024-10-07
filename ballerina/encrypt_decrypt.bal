@@ -111,7 +111,7 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # + padding - The padding algorithm
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
-                                       returns byte[]|Error = @java:Method {
+                                        returns byte[]|Error = @java:Method {
     name: "encryptAesEcb",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -189,7 +189,7 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # + padding - The padding algorithm
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
-                                       returns byte[]|Error = @java:Method {
+                                        returns byte[]|Error = @java:Method {
     name: "decryptAesCbc",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
@@ -255,7 +255,7 @@ public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # + options - PGP encryption options
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Options options)
-                                       returns byte[]|Error = @java:Method {
+                                        returns byte[]|Error = @java:Method {
     name: "encryptPgp",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -280,7 +280,7 @@ public isolated function encryptPgpAsFile(string inputFilePath, string publicKey
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
-# 
+#
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # byte[] decryptedMessage = check crypto:decryptPgp(cipherText, "private_key.asc", passphrase);
 # ```
@@ -309,5 +309,21 @@ public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, by
 # + return - A `crypto:Error` will be returned if the process fails
 public isolated function decryptPgpAsFile(string inputFilePath, string privateKeyPath, byte[] passphrase,
         string outputFilePath) returns Error? = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
+} external;
+
+# Returns the PGP-decrypted stream of the content given in the input stream.
+# ```ballerina
+# byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
+# stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
+# stream<byte[], Error?>|Error decryptedStream = crypto:decryptStreamPgp(inputStream, "private_key.asc", passphrase);
+# ```
+#
+# + inputStream - The encrypted content as a stream
+# + privateKeyPath - Path to the private key
+# + passphrase - passphrase of the private key
+# + return - Decrypted stream or else a `crypto:Error` if the key or passphrase is invalid
+public isolated function decryptStreamPgp(stream<byte[], error?> inputStream, string privateKeyPath,
+        byte[] passphrase) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
