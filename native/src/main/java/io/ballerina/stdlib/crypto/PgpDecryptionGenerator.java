@@ -51,6 +51,7 @@ import java.util.Optional;
 
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.KEY_ENCRYPTED_DATA;
 import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 
 /**
@@ -102,8 +103,8 @@ public final class PgpDecryptionGenerator {
 
         Object obj = pgpObjectFactory.nextObject();
         // Verify the marker packet
-        PGPEncryptedDataList pgpEncryptedDataList = (obj instanceof PGPEncryptedDataList)
-                ? (PGPEncryptedDataList) obj : (PGPEncryptedDataList) pgpObjectFactory.nextObject();
+        PGPEncryptedDataList pgpEncryptedDataList = (obj instanceof PGPEncryptedDataList pgpEncryptedData)
+                ? pgpEncryptedData : (PGPEncryptedDataList) pgpObjectFactory.nextObject();
 
         Optional<PGPPrivateKey> pgpPrivateKey = Optional.empty();
         PGPPublicKeyEncryptedData publicKeyEncryptedData = null;
@@ -142,7 +143,7 @@ public final class PgpDecryptionGenerator {
     }
 
     private static void decrypt(OutputStream clearOut, PGPPrivateKey pgpPrivateKey,
-                        PGPPublicKeyEncryptedData publicKeyEncryptedData) throws IOException, PGPException {
+                                PGPPublicKeyEncryptedData publicKeyEncryptedData) throws IOException, PGPException {
         PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
                 .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
         try (InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory)) {
@@ -172,9 +173,8 @@ public final class PgpDecryptionGenerator {
         }
         // Perform the integrity check
         if (publicKeyEncryptedData.isIntegrityProtected() && !publicKeyEncryptedData.verify()) {
-                throw new PGPException("Message failed integrity check");
-            }
-
+            throw new PGPException("Message failed integrity check");
+        }
     }
 
     private static void decrypt(PGPPrivateKey pgpPrivateKey, PGPPublicKeyEncryptedData publicKeyEncryptedData,
@@ -191,11 +191,7 @@ public final class PgpDecryptionGenerator {
         Object message = pgpCompObjFac.nextObject();
 
         if (message instanceof PGPLiteralData pgpLiteralData) {
-            // Perform the integrity check
-            if (publicKeyEncryptedData.isIntegrityProtected() && !publicKeyEncryptedData.verify()) {
-                    throw new PGPException("Message failed integrity check");
-                }
-
+            iteratorObj.addNativeData(KEY_ENCRYPTED_DATA, publicKeyEncryptedData);
             iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
             iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedDataStream);
             iteratorObj.addNativeData(DATA_STREAM, decryptedCompressedIn);

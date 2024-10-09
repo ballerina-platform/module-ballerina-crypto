@@ -23,6 +23,8 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
+import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPPublicKeyEncryptedData;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -34,6 +36,7 @@ import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_GENERATOR;
 import static io.ballerina.stdlib.crypto.Constants.ENCRYPTED_OUTPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.END_OF_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.INPUT_STREAM_TO_ENCRYPT;
+import static io.ballerina.stdlib.crypto.Constants.KEY_ENCRYPTED_DATA;
 import static io.ballerina.stdlib.crypto.Constants.PIPED_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
@@ -55,6 +58,11 @@ public final class StreamUtils {
     public static final String ERROR_OCCURRED_WHILE_READING_THE_STREAM = "Error occurred while reading from the " +
             "stream: %s";
     public static final String NATIVE_DATA_NOT_AVAILABLE_ERROR = "%s is not available";
+    public static final String MESSAGE_FAILED_INTEGRITY_CHECK = "Message failed integrity check";
+    public static final String ERROR_OCCURRED_WHILE_VERIFYING_THE_INTEGRITY = "Error occurred while verifying the" +
+            " integrity: %s";
+    public static final String ERROR_OCCURRED_WHILE_READING_FROM_THE_STREAM = "Error occurred while reading from " +
+            "the stream: %s";
 
     private StreamUtils() {
     }
@@ -68,6 +76,8 @@ public final class StreamUtils {
             byte[] buffer = new byte[BUFFER_SIZE];
             int in = inputStream.read(buffer);
             if (in == -1) {
+                closeNativeStream(iterator, TARGET_STREAM);
+                performIntegrityCheck(iterator);
                 return null;
             }
             if (in < buffer.length) {
@@ -77,7 +87,23 @@ public final class StreamUtils {
             }
             return ValueCreator.createArrayValue(buffer);
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading from the stream: " + e.getMessage());
+            return CryptoUtils.createError(String.format(ERROR_OCCURRED_WHILE_READING_FROM_THE_STREAM,
+                    e.getMessage()));
+        }
+    }
+
+    private static void performIntegrityCheck(BObject iterator) throws IOException {
+        Object publicKeyEncryptedDataObj = iterator.getNativeData(KEY_ENCRYPTED_DATA);
+        if (Objects.isNull(publicKeyEncryptedDataObj) || !(publicKeyEncryptedDataObj instanceof
+                PGPPublicKeyEncryptedData publicKeyEncryptedData)) {
+            throw CryptoUtils.createError(STREAM_NOT_AVAILABLE);
+        }
+        try {
+            if (publicKeyEncryptedData.isIntegrityProtected() && !publicKeyEncryptedData.verify()) {
+                throw CryptoUtils.createError(MESSAGE_FAILED_INTEGRITY_CHECK);
+            }
+        } catch (PGPException e) {
+            throw CryptoUtils.createError(String.format(ERROR_OCCURRED_WHILE_VERIFYING_THE_INTEGRITY, e.getMessage()));
         }
     }
 
@@ -88,7 +114,7 @@ public final class StreamUtils {
             if (Boolean.FALSE.equals(nativeData.endOfStream())) {
                 writeToOutStream(iterator, nativeData.inputStream(), nativeData.outputStream());
             }
-            return readFromPipedStream(nativeData.pipedInStream());
+            return readFromPipedStream(iterator, nativeData.pipedInStream());
         } catch (IOException e) {
             return CryptoUtils.createError(String.format(ERROR_OCCURRED_WHILE_READING_THE_STREAM, e.getMessage()));
         } catch (BError e) {
@@ -123,10 +149,11 @@ public final class StreamUtils {
                               Boolean endOfStream) {
     }
 
-    private static BArray readFromPipedStream(InputStream pipedInStream) throws IOException {
+    private static BArray readFromPipedStream(BObject iterator, InputStream pipedInStream) throws IOException {
         byte[] pipelinedBuffer = new byte[BUFFER_SIZE];
         int pipelinedIn = pipedInStream.read(pipelinedBuffer);
         if (pipelinedIn == -1) {
+            closeNativeStream(iterator, PIPED_INPUT_STREAM);
             return null;
         }
         if (pipelinedIn < pipelinedBuffer.length) {
@@ -158,6 +185,7 @@ public final class StreamUtils {
 
     public static void closeEncryptedStream(BObject iterator) throws BError {
         closeNativeStream(iterator, TARGET_STREAM);
+        closeNativeStream(iterator, COMPRESSED_DATA_STREAM);
         closeDataGenerator(iterator);
         closeNativeStream(iterator, DATA_STREAM);
         closeNativeStream(iterator, ENCRYPTED_OUTPUT_STREAM);
@@ -168,6 +196,7 @@ public final class StreamUtils {
     public static void closeEncryptedSourceStreams(BObject iterator) throws BError {
         closeNativeStream(iterator, INPUT_STREAM_TO_ENCRYPT);
         closeNativeStream(iterator, TARGET_STREAM);
+        closeNativeStream(iterator, COMPRESSED_DATA_STREAM);
         closeDataGenerator(iterator);
         closeNativeStream(iterator, DATA_STREAM);
         closeNativeStream(iterator, ENCRYPTED_OUTPUT_STREAM);

@@ -50,6 +50,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_GENERATOR;
+import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.ENCRYPTED_OUTPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.PIPED_INPUT_STREAM;
@@ -77,7 +78,7 @@ public class PgpEncryptionGenerator {
 
     // The constructor of the PGP encryption generator.
     public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
-                             boolean withIntegrityCheck) {
+                                  boolean withIntegrityCheck) {
         this.compressionAlgorithm = compressionAlgorithm;
         this.symmetricKeyAlgorithm = symmetricKeyAlgorithm;
         this.armor = armor;
@@ -134,6 +135,7 @@ public class PgpEncryptionGenerator {
         OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE]);
         OutputStream compressedOutStream = compressedDataGenerator.open(cipherOutStream);
         iteratorObj.addNativeData(DATA_STREAM, cipherOutStream);
+        iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedOutStream);
         iteratorObj.addNativeData(COMPRESSED_DATA_GENERATOR, compressedDataGenerator);
         copyAsLiteralData(compressedOutStream, iteratorObj);
     }

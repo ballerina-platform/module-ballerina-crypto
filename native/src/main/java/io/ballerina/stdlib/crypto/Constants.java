@@ -134,4 +134,5 @@ public class Constants {
     public static final String PIPED_OUTPUT_STREAM = "PIPED_OUTPUT_STREAM";
     public static final String END_OF_INPUT_STREAM = "END_OF_INPUT_STREAM";
     public static final String COMPRESSED_DATA_GENERATOR = "COMPRESSED_DATA_GENERATOR";
+    public static final String KEY_ENCRYPTED_DATA = "KEY_ENCRYPTED_DATA";
 }
