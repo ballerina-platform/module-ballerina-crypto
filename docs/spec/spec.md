@@ -532,15 +532,12 @@ string publicKeyPath = "/path/to/publickey.asc";
 byte[] cipherText = check crypto:encryptPgp(data, publicKeyPath, armor = false);
 ```
 
-In addition to the above, the following API can be used to read a content from a file, encrypt it using the PGP public
-key and write the encrypted content to the file specified.
+In addition to the above, the following API can be used to read a content from a stream, encrypt it using the PGP public
+key and return an encrypted stream
 
 ```ballerina
-string inputFilePath = "/path/to/input.txt";
-string outputFilePath = "/path/to/output.txt";
-string publicKeyPath = "/path/to/publickey.asc";
-
-check crypto:encryptPgpAsFile(inputFilePath, publicKeyPath, outputFilePath);
+stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
+stream<byte[], Error?>|Error encryptedStream = crypto:encryptStreamPgp(inputStream, "public_key.asc");
 ```
 
 ### 5.2. [Decryption](#52-decryption)
@@ -630,16 +627,12 @@ byte[] cipherText = check crypto:encryptPgp(data, publicKeyPath);
 byte[] plainText = check crypto:decryptPgp(cipherText, privateKeyPath, passPhrase.toBytes());
 ```
 
-In addition to the above, the following API can be used to read an encrypted content from a file, decrypt it using the
-PGP private key and passphrase and write the decrypted content to the file specified.
+In addition to the above, the following API can be used to read an encrypted content from a stream, decrypt it using the
+PGP private key and passphrase and return a decrypted stream.
 
 ```ballerina
-string inputFilePath = "/path/to/input.txt";
-string outputFilePath = "/path/to/output.txt";
-string privateKeyPath = "/path/to/privatekey.asc";
-string passPhrase = "passphrase";
-
-check crypto:decryptPgpAsFile(inputFilePath, privateKeyPath, passPhrase.toBytes(), outputFilePath);
+stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
+stream<byte[], Error?>|Error decryptedStream = crypto:decryptStreamPgp(inputStream, "private_key.asc", passphrase);
 ```
 
 ## 6. [Sign and Verify](#6-sign-and-verify)
