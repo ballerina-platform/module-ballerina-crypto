@@ -58,7 +58,7 @@ import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
  *
  * @since 2.7.0
  */
-public class PgpDecryptionGenerator {
+public final class PgpDecryptionGenerator {
 
     static {
         if (Objects.isNull(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME))) {
