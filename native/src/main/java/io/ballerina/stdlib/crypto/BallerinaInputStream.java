@@ -18,7 +18,6 @@
 package io.ballerina.stdlib.crypto;
 
 import io.ballerina.runtime.api.Environment;
-import io.ballerina.runtime.api.async.Callback;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Represents a Ballerina stream as an {@link InputStream}.
@@ -77,47 +75,18 @@ public class BallerinaInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        Object result = callBallerinaFunction(BAL_STREAM_CLOSE, ERROR_OCCURRED_WHILE_CLOSING_THE_STREAM);
+        Object result = callBalStreamMethod(BAL_STREAM_CLOSE);
         if (result instanceof BError bError) {
             throw new IOException((bError).getMessage());
         }
     }
 
     public Object getNext() {
-        return callBallerinaFunction(BAL_STREAM_NEXT, ERROR_OCCURRED_WHILE_READING_THE_STREAM);
+        return callBalStreamMethod(BAL_STREAM_NEXT);
     }
 
-    private Object callBallerinaFunction(String functionName, String message) {
-        final Object[] nextResult = new Object[1];
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        Callback returnCallback = new StreamCallback(message, nextResult, countDownLatch);
-
-        environment.getRuntime().invokeMethodAsyncSequentially(ballerinaStream.getIteratorObj(), functionName, null,
-                null, returnCallback, null, null);
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException exception) {
-            Thread.currentThread().interrupt();
-            return CryptoUtils.createError(INTERRUPTED_ERROR_WHILE_READING_THE_STREAM);
-        }
-        return nextResult[0];
-    }
-
-    private record StreamCallback(String message, Object[] nextResult,
-                                  CountDownLatch countDownLatch) implements Callback {
-
-        @Override
-        public void notifySuccess(Object result) {
-            nextResult[0] = result;
-            countDownLatch.countDown();
-        }
-
-        @Override
-        public void notifyFailure(BError bError) {
-            BError error = CryptoUtils.createError(String.format(ERR_MSG_FORMAT, message, bError.getMessage()));
-            nextResult[0] = error;
-            countDownLatch.countDown();
-        }
+    private Object callBalStreamMethod(String functionName) {
+        return environment.getRuntime().call(ballerinaStream.getIteratorObj(), functionName);
     }
 
     @Override
