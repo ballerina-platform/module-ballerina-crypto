@@ -537,7 +537,7 @@ key and return an encrypted stream
 
 ```ballerina
 stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
-stream<byte[], Error?>|Error encryptedStream = crypto:encryptStreamPgp(inputStream, "public_key.asc");
+stream<byte[], io:Error?>|io:Error encryptedStream = crypto:encryptStreamPgp(inputStream, "public_key.asc");
 ```
 
 ### 5.2. [Decryption](#52-decryption)
@@ -632,7 +632,7 @@ PGP private key and passphrase and return a decrypted stream.
 
 ```ballerina
 stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
-stream<byte[], Error?>|Error decryptedStream = crypto:decryptStreamPgp(inputStream, "private_key.asc", passphrase);
+stream<byte[], io:Error?>|io:Error decryptedStream = crypto:decryptStreamPgp(inputStream, "private_key.asc", passphrase);
 ```
 
 ## 6. [Sign and Verify](#6-sign-and-verify)
