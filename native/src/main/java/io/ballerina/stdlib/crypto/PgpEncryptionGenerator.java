@@ -39,8 +39,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
@@ -114,10 +112,10 @@ public class PgpEncryptionGenerator {
 
     public void encryptStream(InputStream publicKeyIn, BObject iteratorObj)
             throws IOException, PGPException {
-        OutputStream encryptOut = new PipedOutputStream();
+        SequentialBufferedPipe pipe = new SequentialBufferedPipe();
+        OutputStream encryptOut = pipe.getOutputStream();
         iteratorObj.addNativeData(PIPED_OUTPUT_STREAM, encryptOut);
-        PipedInputStream pipedInputStream = new PipedInputStream((PipedOutputStream) encryptOut,
-                PgpEncryptionGenerator.BUFFER_SIZE);
+        InputStream pipedInputStream = pipe.getInputStream();
         iteratorObj.addNativeData(PIPED_INPUT_STREAM, pipedInputStream);
         PGPCompressedDataGenerator compressedDataGenerator = new PGPCompressedDataGenerator(compressionAlgorithm);
         PGPEncryptedDataGenerator pgpEncryptedDataGenerator = new PGPEncryptedDataGenerator(

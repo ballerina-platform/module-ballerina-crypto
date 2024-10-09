@@ -28,12 +28,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
 import java.util.Objects;
 
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_GENERATOR;
 import static io.ballerina.stdlib.crypto.Constants.ENCRYPTED_OUTPUT_STREAM;
-import static io.ballerina.stdlib.crypto.Constants.ENCRYPTION_STARTED;
+import static io.ballerina.stdlib.crypto.Constants.END_OF_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.INPUT_STREAM_TO_ENCRYPT;
 import static io.ballerina.stdlib.crypto.Constants.PIPED_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
@@ -86,16 +85,8 @@ public final class StreamUtils {
         NativeData nativeData = getNativeData(iterator);
 
         try {
-            if (Boolean.FALSE.equals(nativeData.encryptionStarted())) {
-                iterator.addNativeData(ENCRYPTION_STARTED, true);
-                Thread writer = new Thread(() -> {
-                    try {
-                        writeToOutStream(iterator, nativeData.inputStream(), nativeData.outputStream());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-                writer.start();
+            if (Boolean.FALSE.equals(nativeData.endOfStream())) {
+                writeToOutStream(iterator, nativeData.inputStream(), nativeData.outputStream());
             }
             return readFromPipedStream(nativeData.pipedInStream());
         } catch (IOException e) {
@@ -117,23 +108,22 @@ public final class StreamUtils {
         }
 
         Object pipelinedInputStream = iterator.getNativeData(PIPED_INPUT_STREAM);
-        if (Objects.isNull(pipelinedInputStream) ||
-                !(pipelinedInputStream instanceof PipedInputStream pipedInStream)) {
+        if (Objects.isNull(pipelinedInputStream) || !(pipelinedInputStream instanceof InputStream pipedInStream)) {
             throw CryptoUtils.createError(String.format(NATIVE_DATA_NOT_AVAILABLE_ERROR, PIPED_INPUT_STREAM));
         }
 
-        Object encryptionStartedObj = iterator.getNativeData(ENCRYPTION_STARTED);
-        if (Objects.isNull(encryptionStartedObj) || !(encryptionStartedObj instanceof Boolean encryptionStarted)) {
-            throw CryptoUtils.createError(String.format(NATIVE_DATA_NOT_AVAILABLE_ERROR, ENCRYPTION_STARTED));
+        Object endOfInputStream = iterator.getNativeData(END_OF_INPUT_STREAM);
+        if (Objects.isNull(endOfInputStream) || !(endOfInputStream instanceof Boolean endOfStream)) {
+            throw CryptoUtils.createError(String.format(NATIVE_DATA_NOT_AVAILABLE_ERROR, END_OF_INPUT_STREAM));
         }
-        return new NativeData(inputStream, outputStream, pipedInStream, encryptionStarted);
+        return new NativeData(inputStream, outputStream, pipedInStream, endOfStream);
     }
 
-    private record NativeData(InputStream inputStream, OutputStream outputStream, PipedInputStream pipedInStream,
-                              Boolean encryptionStarted) {
+    private record NativeData(InputStream inputStream, OutputStream outputStream, InputStream pipedInStream,
+                              Boolean endOfStream) {
     }
 
-    private static BArray readFromPipedStream(PipedInputStream pipedInStream) throws IOException {
+    private static BArray readFromPipedStream(InputStream pipedInStream) throws IOException {
         byte[] pipelinedBuffer = new byte[BUFFER_SIZE];
         int pipelinedIn = pipedInStream.read(pipelinedBuffer);
         if (pipelinedIn == -1) {
@@ -150,11 +140,14 @@ public final class StreamUtils {
     private static void writeToOutStream(BObject iterator, InputStream inputStream, OutputStream outputStream)
             throws IOException {
         byte[] inputBuffer = new byte[BUFFER_SIZE];
-        int len;
-        while ((len = inputStream.read(inputBuffer)) > 0) {
-            outputStream.write(inputBuffer, 0, len);
+        int result = inputStream.read(inputBuffer);
+        if (result == -1) {
+            iterator.addNativeData(END_OF_INPUT_STREAM, true);
+            closeEncryptedSourceStreams(iterator);
         }
-        closeEncryptedSourceStreams(iterator);
+        if (result > 0) {
+            outputStream.write(inputBuffer, 0, result);
+        }
     }
 
     public static void closeDecryptedStream(BObject iterator) throws BError {

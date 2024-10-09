@@ -132,6 +132,6 @@ public class Constants {
     public static final String INPUT_STREAM_TO_ENCRYPT = "INPUT_STREAM_TO_ENCRYPT";
     public static final String PIPED_INPUT_STREAM = "PIPED_INPUT_STREAM";
     public static final String PIPED_OUTPUT_STREAM = "PIPED_OUTPUT_STREAM";
-    public static final String ENCRYPTION_STARTED = "ENCRYPTION_STARTED";
+    public static final String END_OF_INPUT_STREAM = "END_OF_INPUT_STREAM";
     public static final String COMPRESSED_DATA_GENERATOR = "COMPRESSED_DATA_GENERATOR";
 }

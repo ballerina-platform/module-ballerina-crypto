@@ -44,7 +44,7 @@ import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import static io.ballerina.stdlib.crypto.Constants.ENCRYPTION_STARTED;
+import static io.ballerina.stdlib.crypto.Constants.END_OF_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.INPUT_STREAM_TO_ENCRYPT;
 
 /**
@@ -173,7 +173,7 @@ public class Encrypt {
                     Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
             );
             BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "EncryptedStreamIterator");
-            iteratorObj.addNativeData(ENCRYPTION_STARTED, false);
+            iteratorObj.addNativeData(END_OF_INPUT_STREAM, false);
             iteratorObj.addNativeData(INPUT_STREAM_TO_ENCRYPT, inputStream);
             pgpEncryptionGenerator.encryptStream(publicKeyStream, iteratorObj);
             Type constrainedType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BYTE);
