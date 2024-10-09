@@ -50,6 +50,10 @@ import java.security.PublicKey;
  */
 public class Decrypt {
 
+    public static final String ERROR_OCCURRED_WHILE_PGP_DECRYPT = "Error occurred while PGP decrypt: ";
+    public static final String ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY = "Error occurred while reading private key: ";
+    public static final String UNINITIALIZED_PRIVATE_PUBLIC_KEY = "Uninitialized private/public key.";
+
     private Decrypt() {}
 
     public static Object decryptAesCbc(BArray inputValue, BArray keyValue, BArray ivValue, Object padding) {
@@ -85,7 +89,7 @@ public class Decrypt {
         } else if (keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY) != null) {
             key = (PublicKey) keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         } else {
-            return CryptoUtils.createError("Uninitialized private/public key.");
+            return CryptoUtils.createError(UNINITIALIZED_PRIVATE_PUBLIC_KEY);
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
@@ -98,14 +102,14 @@ public class Decrypt {
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             return pgpDecryptionGenerator.decrypt(cipherText);
         } catch (IOException | PGPException e) {
-            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
         }
     }
 
@@ -116,7 +120,7 @@ public class Decrypt {
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey);
@@ -126,30 +130,29 @@ public class Decrypt {
             pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
             return null;
         } catch (IOException | PGPException e) {
-            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
         }
     }
 
-    public static Object decryptStreamPgp(Environment environment, BStream inputStream, BString privateKeyPath,
+    public static Object decryptStreamPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
                                           BArray passphrase) {
         byte[] passphraseInBytes = passphrase.getBytes();
         byte[] privateKey;
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading private key: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
-            InputStream cipherTextStream = new BallerinaInputStream(environment, inputStream);
+            InputStream cipherTextStream = new BallerinaInputStream(environment, inputBalStream);
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
-            BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "StreamIterator");
-            pgpDecryptionGenerator.decrypt(cipherTextStream, iteratorObj);
+            BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "DecryptedStreamIterator");
+            pgpDecryptionGenerator.decryptStream(cipherTextStream, iteratorObj);
             Type constrainedType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BYTE);
-            return ValueCreator.createStreamValue(TypeCreator.createStreamType(constrainedType),
-                    iteratorObj);
+            return ValueCreator.createStreamValue(TypeCreator.createStreamType(constrainedType), iteratorObj);
         } catch (IOException | PGPException e) {
-            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
         }
     }
 }

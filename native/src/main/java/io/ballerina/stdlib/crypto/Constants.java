@@ -125,7 +125,13 @@ public class Constants {
     public static final String AES = "AES";
     public static final String RSA = "RSA";
 
-    public static final String DECRYPTED_STREAM = "INPUT_STREAM";
-    public static final String COMPRESSED_PGP_STREAM = "COMPRESSED_PGP_STREAM";
-    public static final String COMPRESSED_STREAM = "COMPRESSED_STREAM";
+    public static final String COMPRESSED_DATA_STREAM = "COMPRESSED_DATA_STREAM";
+    public static final String DATA_STREAM = "DATA_STREAM";
+    public static final String TARGET_STREAM = "TARGET_STREAM";
+    public static final String ENCRYPTED_OUTPUT_STREAM = "ENCRYPTED_OUTPUT_STREAM";
+    public static final String INPUT_STREAM_TO_ENCRYPT = "INPUT_STREAM_TO_ENCRYPT";
+    public static final String PIPED_INPUT_STREAM = "PIPED_INPUT_STREAM";
+    public static final String PIPED_OUTPUT_STREAM = "PIPED_OUTPUT_STREAM";
+    public static final String ENCRYPTION_STARTED = "ENCRYPTION_STARTED";
+    public static final String COMPRESSED_DATA_GENERATOR = "COMPRESSED_DATA_GENERATOR";
 }

@@ -51,9 +51,9 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_PGP_STREAM;
-import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_STREAM;
-import static io.ballerina.stdlib.crypto.Constants.DECRYPTED_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 
 /**
  * Provides functionality for PGP decryption operations.
@@ -121,7 +121,7 @@ public class PgpDecryptionGenerator {
         decrypt(clearOut, pgpPrivateKey.get(), publicKeyEncryptedData);
     }
 
-    private void decryptStream(InputStream encryptedIn, BObject iteratorObj) throws PGPException, IOException {
+    public void decryptStream(InputStream encryptedIn, BObject iteratorObj) throws PGPException, IOException {
         // Remove armour and return the underlying binary encrypted stream
         encryptedIn = PGPUtil.getDecoderStream(encryptedIn);
         JcaPGPObjectFactory pgpObjectFactory = new JcaPGPObjectFactory(encryptedIn);
@@ -157,10 +157,6 @@ public class PgpDecryptionGenerator {
             decryptStream(encryptedIn, clearOut);
             return ValueCreator.createArrayValue(clearOut.toByteArray());
         }
-    }
-
-    public void decrypt(InputStream encryptedIn, BObject iteratorObj) throws PGPException, IOException {
-        decryptStream(encryptedIn, iteratorObj);
     }
 
     public void decrypt(InputStream encryptedIn, String outputPath) throws PGPException, IOException {
@@ -226,9 +222,9 @@ public class PgpDecryptionGenerator {
                     throw new PGPException("Message failed integrity check");
                 }
             }
-            iteratorObj.addNativeData(DECRYPTED_STREAM, pgpLiteralData.getDataStream());
-            iteratorObj.addNativeData(COMPRESSED_PGP_STREAM, compressedDataStream);
-            iteratorObj.addNativeData(COMPRESSED_STREAM, decryptedCompressedIn);
+            iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
+            iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedDataStream);
+            iteratorObj.addNativeData(DATA_STREAM, decryptedCompressedIn);
         } else if (message instanceof PGPOnePassSignatureList) {
             throw new PGPException("Encrypted message contains a signed message not literal data");
         } else {

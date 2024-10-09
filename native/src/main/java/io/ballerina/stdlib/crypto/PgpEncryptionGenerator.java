@@ -18,6 +18,7 @@
 package io.ballerina.stdlib.crypto;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.values.BObject;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
@@ -38,6 +39,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
@@ -49,6 +52,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+
+import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_GENERATOR;
+import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.ENCRYPTED_OUTPUT_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.PIPED_INPUT_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.PIPED_OUTPUT_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 
 /**
  * Provides functionality for PGP encryption operations.
@@ -67,7 +77,7 @@ public class PgpEncryptionGenerator {
     private final int symmetricKeyAlgorithm;
     private final boolean armor;
     private final boolean withIntegrityCheck;
-    private static final int BUFFER_SIZE = 8192;
+    public static final int BUFFER_SIZE = 8192;
 
     // The constructor of the PGP encryption generator.
     public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
@@ -80,8 +90,7 @@ public class PgpEncryptionGenerator {
 
     private void encryptStream(OutputStream encryptOut, InputStream clearIn, InputStream publicKeyIn)
             throws IOException, PGPException {
-        PGPCompressedDataGenerator compressedDataGenerator =
-                new PGPCompressedDataGenerator(compressionAlgorithm);
+        PGPCompressedDataGenerator compressedDataGenerator = new PGPCompressedDataGenerator(compressionAlgorithm);
         PGPEncryptedDataGenerator pgpEncryptedDataGenerator = new PGPEncryptedDataGenerator(
                 // Configure the encrypted data generator
                 new JcePGPDataEncryptorBuilder(symmetricKeyAlgorithm)
@@ -101,6 +110,36 @@ public class PgpEncryptionGenerator {
             compressedDataGenerator.close();
         }
         encryptOut.close();
+    }
+
+    public void encryptStream(InputStream publicKeyIn, BObject iteratorObj)
+            throws IOException, PGPException {
+        OutputStream encryptOut = new PipedOutputStream();
+        iteratorObj.addNativeData(PIPED_OUTPUT_STREAM, encryptOut);
+        PipedInputStream pipedInputStream = new PipedInputStream((PipedOutputStream) encryptOut,
+                PgpEncryptionGenerator.BUFFER_SIZE);
+        iteratorObj.addNativeData(PIPED_INPUT_STREAM, pipedInputStream);
+        PGPCompressedDataGenerator compressedDataGenerator = new PGPCompressedDataGenerator(compressionAlgorithm);
+        PGPEncryptedDataGenerator pgpEncryptedDataGenerator = new PGPEncryptedDataGenerator(
+                // Configure the encrypted data generator
+                new JcePGPDataEncryptorBuilder(symmetricKeyAlgorithm)
+                        .setWithIntegrityPacket(withIntegrityCheck)
+                        .setSecureRandom(new SecureRandom())
+                        .setProvider(BouncyCastleProvider.PROVIDER_NAME)
+        );
+        // Add public key
+        pgpEncryptedDataGenerator.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(
+                getPublicKey(publicKeyIn)));
+        if (armor) {
+            encryptOut = new ArmoredOutputStream(encryptOut);
+        }
+
+        iteratorObj.addNativeData(ENCRYPTED_OUTPUT_STREAM, encryptOut);
+        OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE]);
+        OutputStream compressedOutStream = compressedDataGenerator.open(cipherOutStream);
+        iteratorObj.addNativeData(DATA_STREAM, cipherOutStream);
+        iteratorObj.addNativeData(COMPRESSED_DATA_GENERATOR, compressedDataGenerator);
+        copyAsLiteralData(compressedOutStream, iteratorObj);
     }
 
     // Encrypts the given byte array of plain text data using PGP encryption.
@@ -136,9 +175,9 @@ public class PgpEncryptionGenerator {
     private static void copyAsLiteralData(OutputStream outputStream, InputStream in)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
-        byte[] buff = new byte[PgpEncryptionGenerator.BUFFER_SIZE];
+        byte[] buff = new byte[BUFFER_SIZE];
         try (OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
-                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[PgpEncryptionGenerator.BUFFER_SIZE]);
+                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[BUFFER_SIZE]);
              InputStream inputStream = in) {
 
             int len;
@@ -148,6 +187,14 @@ public class PgpEncryptionGenerator {
         } finally {
             Arrays.fill(buff, (byte) 0);
         }
+    }
+
+    private static void copyAsLiteralData(OutputStream outputStream, BObject iteratorObj)
+            throws IOException {
+        PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
+        OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
+                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[BUFFER_SIZE]);
+        iteratorObj.addNativeData(TARGET_STREAM, pOut);
     }
 
     private static Optional<PGPPublicKey> extractPgpKeyFromRing(PGPPublicKeyRing pgpPublicKeyRing) {

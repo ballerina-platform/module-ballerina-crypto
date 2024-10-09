@@ -276,6 +276,20 @@ public isolated function encryptPgpAsFile(string inputFilePath, string publicKey
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
+# Returns the PGP-encrypted stream of the content given in the input stream.
+# ```ballerina
+# stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
+# stream<byte[], Error?>|Error encryptedStream = crypto:encryptStreamPgp(inputStream, "public_key.asc");
+# ```
+#
+# + inputStream - The content to be encrypted as a stream
+# + privateKeyPath - Path to the private key
+# + return - Encrypted stream or else a `crypto:Error` if the key is invalid
+public isolated function encryptStreamPgp(stream<byte[], error?> inputStream, string publicKeyPath,
+        *Options options) returns stream<byte[], Error?>|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
+} external;
+
 # Returns the PGP-decrypted value of the given PGP-encrypted data.
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();

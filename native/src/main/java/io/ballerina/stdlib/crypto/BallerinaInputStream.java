@@ -37,9 +37,23 @@ import java.util.concurrent.CountDownLatch;
  * @since 2.8.0
  */
 public class BallerinaInputStream extends InputStream {
+    public static final String BAL_STREAM_CLOSE = "close";
+    public static final String STREAM_VALUE = "value";
+    public static final String BAL_STREAM_NEXT = "next";
+
+    public static final String ERROR_OCCURRED_WHILE_CLOSING_THE_STREAM = "Error occurred while closing the stream";
+    public static final String ERROR_OCCURRED_WHILE_READING_THE_STREAM = "Error occurred while reading the next " +
+            "element from the stream";
+    public static final String INTERRUPTED_ERROR_WHILE_READING_THE_STREAM = ERROR_OCCURRED_WHILE_READING_THE_STREAM +
+            ": interrupted exception";
+    public static final String ERR_MSG_FORMAT = "%s: %s";
+    public static final String UNEXPECTED_TYPE_ERROR = ERROR_OCCURRED_WHILE_READING_THE_STREAM +
+            ": unexpected value type";
+
     private final Environment environment;
     private final BStream ballerinaStream;
     private ByteBuffer buffer = null;
+    private boolean endOfStream = false;
 
     public BallerinaInputStream(Environment environment, BStream ballerinaStream) {
         this.ballerinaStream = ballerinaStream;
@@ -48,40 +62,29 @@ public class BallerinaInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
+        if (endOfStream) {
+            return -1;
+        }
         if (Objects.isNull(buffer) || !buffer.hasRemaining()) {
-            Object nextElement = getNext();
-            if (nextElement instanceof BError) {
-                throw new IOException(((BError) nextElement).getMessage());
-            }
-            if (Objects.isNull(nextElement)) {
+            boolean result = pollNext();
+            if (!result) {
+                endOfStream = true;
                 return -1;
-            }
-            if (nextElement instanceof BMap nextValue) {
-                Object nextBytes = nextValue.get(StringUtils.fromString("value"));
-                if (nextBytes instanceof BArray) {
-                    buffer = ByteBuffer.wrap(((BArray) nextBytes).getBytes());
-                } else {
-                    throw new IOException("Error occurred while reading the next element from the stream: " +
-                            "unexpected value type");
-                }
-            } else {
-                throw new IOException("Error occurred while reading the next element from the stream: " +
-                        "unexpected value type");
             }
         }
         return buffer.get() & 0xFF;
     }
 
     @Override
-    public void close() {
-        Object result = callBallerinaFunction("close", "Error occurred while closing the stream");
-        if (result instanceof BError) {
-            throw new RuntimeException(((BError) result).getMessage());
+    public void close() throws IOException {
+        Object result = callBallerinaFunction(BAL_STREAM_CLOSE, ERROR_OCCURRED_WHILE_CLOSING_THE_STREAM);
+        if (result instanceof BError bError) {
+            throw new IOException((bError).getMessage());
         }
     }
 
     public Object getNext() {
-        return callBallerinaFunction("next", "Error occurred while reading the next element from the stream");
+        return callBallerinaFunction(BAL_STREAM_NEXT, ERROR_OCCURRED_WHILE_READING_THE_STREAM);
     }
 
     private Object callBallerinaFunction(String functionName, String message) {
@@ -94,8 +97,8 @@ public class BallerinaInputStream extends InputStream {
         try {
             countDownLatch.await();
         } catch (InterruptedException exception) {
-            return CryptoUtils.createError("Error occurred while reading the next element from the stream: " +
-                    "interrupted exception");
+            Thread.currentThread().interrupt();
+            return CryptoUtils.createError(INTERRUPTED_ERROR_WHILE_READING_THE_STREAM);
         }
         return nextResult[0];
     }
@@ -111,10 +114,49 @@ public class BallerinaInputStream extends InputStream {
 
         @Override
         public void notifyFailure(BError bError) {
-            BError error = CryptoUtils.createError(String.format("%s: %s", message, bError.getMessage()));
+            BError error = CryptoUtils.createError(String.format(ERR_MSG_FORMAT, message, bError.getMessage()));
             nextResult[0] = error;
             countDownLatch.countDown();
         }
+    }
+
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        if (endOfStream) {
+            return -1;
+        }
+        if (Objects.isNull(buffer) || !buffer.hasRemaining()) {
+            boolean result = pollNext();
+            if (!result) {
+                endOfStream = true;
+                return -1;
+            }
+        }
+        int remaining = buffer.remaining();
+        int readLength = Math.min(remaining, len);
+        buffer.get(b, off, readLength);
+        return readLength;
+    }
+
+    private boolean pollNext() throws IOException {
+        Object nextElement = getNext();
+        if (nextElement instanceof BError bError) {
+            throw new IllegalStateException((bError).getMessage());
+        }
+        if (Objects.isNull(nextElement)) {
+            return false;
+        }
+        if (nextElement instanceof BMap nextValue) {
+            Object nextBytes = nextValue.get(StringUtils.fromString(STREAM_VALUE));
+            if (nextBytes instanceof BArray nextBytesArray) {
+                buffer = ByteBuffer.wrap((nextBytesArray).getBytes());
+            } else {
+                throw new IOException(UNEXPECTED_TYPE_ERROR);
+            }
+        } else {
+            throw new IOException(UNEXPECTED_TYPE_ERROR);
+        }
+        return true;
     }
 }
 
