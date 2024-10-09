@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- [Introduce new APIs to support PGP encryption and decryption with files](https://github.com/ballerina-platform/ballerina-library/issues/7064)
+- [Introduce new APIs to support PGP encryption and decryption with streams](https://github.com/ballerina-platform/ballerina-library/issues/7064)
 
 ## [2.7.2] - 2024-05-30
 
