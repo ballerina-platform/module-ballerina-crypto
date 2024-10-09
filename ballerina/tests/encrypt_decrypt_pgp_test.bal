@@ -65,7 +65,7 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() return
 @test:Config {
     serialExecution: true
 }
-isolated function testEncryptAndDecryptFileWithPgp() returns error? {
+isolated function testEncryptAndDecryptStreamWithPgp() returns error? {
     byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
     stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
     stream<byte[], error?> encryptedStream = check encryptStreamPgp(inputStream, PGP_PUBLIC_KEY_PATH);
@@ -83,7 +83,7 @@ isolated function testEncryptAndDecryptFileWithPgp() returns error? {
 @test:Config {
     serialExecution: true
 }
-isolated function testEncryptAndDecryptFileWithPgpWithOptions() returns error? {
+isolated function testEncryptAndDecryptStreamWithPgpWithOptions() returns error? {
     byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
     stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
     stream<byte[], error?> encryptedStream = check encryptStreamPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
@@ -101,11 +101,11 @@ isolated function testEncryptAndDecryptFileWithPgpWithOptions() returns error? {
 @test:Config {
     serialExecution: true
 }
-isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPrivateKey() returns error? {
+isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPrivateKey() returns error? {
     byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
     stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
     stream<byte[], error?> encryptedStream = check encryptStreamPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
-    stream<byte[], error?>|Error result = check decryptStreamPgp(encryptedStream, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
+    stream<byte[], error?>|Error result = decryptStreamPgp(encryptedStream, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
     if result is Error {
         check encryptedStream.close();
         check inputStream.close();
@@ -121,11 +121,11 @@ isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPrivateKey() re
 @test:Config {
     serialExecution: true
 }
-isolated function testNegativeEncryptAndDecryptFileWithPgpInvalidPassphrase() returns error? {
+isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPassphrase() returns error? {
     byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
     stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
     stream<byte[], error?> encryptedStream = check encryptStreamPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
-    stream<byte[], error?>|Error result = check decryptStreamPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+    stream<byte[], error?>|Error result = decryptStreamPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
     if result is Error {
         check encryptedStream.close();
         check inputStream.close();
