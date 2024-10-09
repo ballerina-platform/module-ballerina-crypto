@@ -260,22 +260,6 @@ public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Opt
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
-# Writes the PGP-encrypted value of the content given in the input file to a file specified by the output file path.
-# If the output file already exists, it will be overwritten.
-# ```ballerina
-# check crypto:encryptPgpAsFile("input.txt", "public_key.asc", "output.txt");
-# ```
-#
-# + inputFilePath - Path to the input file
-# + publicKeyPath - Path to the public key
-# + outputFilePath - Path to the output file
-# + options - PGP encryption options
-# + return - A `crypto:Error` will be returned if the process fails
-public isolated function encryptPgpAsFile(string inputFilePath, string publicKeyPath, string outputFilePath,
-        *Options options) returns Error? = @java:Method {
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
-} external;
-
 # Returns the PGP-encrypted stream of the content given in the input stream.
 # ```ballerina
 # stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
@@ -306,23 +290,6 @@ public isolated function encryptStreamPgp(stream<byte[], error?> inputStream, st
 public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, byte[] passphrase)
                                        returns byte[]|Error = @java:Method {
     name: "decryptPgp",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
-} external;
-
-# Writes the PGP-decrypted value of the content given in the input file to a file specified by the output file path.
-# If the output file already exists, it will be overwritten.
-# ```ballerina
-# byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
-# check crypto:decryptPgpAsFile("input.txt", "private_key.asc", passphrase, "output.txt");
-# ```
-#
-# + inputFilePath - Path to the input file
-# + privateKeyPath - Path to the private key
-# + passphrase - passphrase of the private key
-# + outputFilePath - Path to the output file
-# + return - A `crypto:Error` will be returned if the process fails
-public isolated function decryptPgpAsFile(string inputFilePath, string privateKeyPath, byte[] passphrase,
-        string outputFilePath) returns Error? = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 

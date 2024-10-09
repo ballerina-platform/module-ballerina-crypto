@@ -44,8 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.Security;
 import java.util.Iterator;
 import java.util.Objects;
@@ -156,12 +154,6 @@ public class PgpDecryptionGenerator {
              ByteArrayOutputStream clearOut = new ByteArrayOutputStream()) {
             decryptStream(encryptedIn, clearOut);
             return ValueCreator.createArrayValue(clearOut.toByteArray());
-        }
-    }
-
-    public void decrypt(InputStream encryptedIn, String outputPath) throws PGPException, IOException {
-        try (OutputStream outputStream = Files.newOutputStream(Path.of(outputPath))) {
-            decryptStream(encryptedIn, outputStream);
         }
     }
 

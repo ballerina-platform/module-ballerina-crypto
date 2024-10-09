@@ -113,27 +113,6 @@ public class Decrypt {
         }
     }
 
-    public static Object decryptPgpAsFile(BString inputFilePath, BString privateKeyPath, BArray passphrase,
-                                          BString outputFilePath) {
-        byte[] passphraseInBytes = passphrase.getBytes();
-        byte[] privateKey;
-        try {
-            privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
-        } catch (IOException e) {
-            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
-        }
-
-        try (InputStream keyStream = new ByteArrayInputStream(privateKey);
-             InputStream cipherTextStream = Files.newInputStream(Path.of(inputFilePath.toString()))
-        ) {
-            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
-            pgpDecryptionGenerator.decrypt(cipherTextStream, outputFilePath.getValue());
-            return null;
-        } catch (IOException | PGPException e) {
-            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
-        }
-    }
-
     public static Object decryptStreamPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
                                           BArray passphrase) {
         byte[] passphraseInBytes = passphrase.getBytes();

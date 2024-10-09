@@ -130,31 +130,6 @@ public class Encrypt {
         }
     }
 
-    public static Object encryptPgpAsFile(BString inputFilePath, BString publicKeyPath, BString outputFilePath,
-                                          BMap options) {
-        byte[] publicKey;
-        try {
-            publicKey = Files.readAllBytes(Path.of(publicKeyPath.toString()));
-        } catch (IOException e) {
-            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PUBLIC_KEY + e.getMessage());
-        }
-
-        try (InputStream publicKeyStream = new ByteArrayInputStream(publicKey);
-             InputStream inputStream = Files.newInputStream(Path.of(inputFilePath.toString()))
-        ) {
-            PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
-                    Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
-                    Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
-                    Boolean.parseBoolean(options.get(ARMOR).toString()),
-                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
-            );
-            pgpEncryptionGenerator.encrypt(inputStream, publicKeyStream, outputFilePath.getValue());
-            return null;
-        } catch (IOException | PGPException e) {
-            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_ENCRYPT + e.getMessage());
-        }
-    }
-
     public static Object encryptStreamPgp(Environment environment, BStream inputBalStream, BString publicKeyPath,
                                           BMap options) {
         byte[] publicKey;

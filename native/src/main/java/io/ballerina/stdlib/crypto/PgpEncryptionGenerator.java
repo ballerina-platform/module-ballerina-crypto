@@ -39,8 +39,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.time.LocalDateTime;
@@ -146,13 +144,6 @@ public class PgpEncryptionGenerator {
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             encryptStream(outputStream, inputStream, publicKeyIn);
             return ValueCreator.createArrayValue(outputStream.toByteArray());
-        }
-    }
-
-    public void encrypt(InputStream inputStream, InputStream publicKeyIn, String outputPath)
-            throws PGPException, IOException {
-        try (OutputStream outputStream = Files.newOutputStream(Path.of(outputPath))) {
-            encryptStream(outputStream, inputStream, publicKeyIn);
         }
     }
 
