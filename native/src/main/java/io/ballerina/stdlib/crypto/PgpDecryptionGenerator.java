@@ -91,6 +91,11 @@ public final class PgpDecryptionGenerator {
 
     private void decryptStream(InputStream encryptedIn, OutputStream clearOut)
             throws PGPException, IOException {
+        KeyEncryptedResult keyEncryptedResult = getKeyEncryptedResult(encryptedIn);
+        decrypt(clearOut, keyEncryptedResult.pgpPrivateKey(), keyEncryptedResult.publicKeyEncryptedData());
+    }
+
+    private KeyEncryptedResult getKeyEncryptedResult(InputStream encryptedIn) throws IOException, PGPException {
         // Remove armour and return the underlying binary encrypted stream
         encryptedIn = PGPUtil.getDecoderStream(encryptedIn);
         JcaPGPObjectFactory pgpObjectFactory = new JcaPGPObjectFactory(encryptedIn);
@@ -116,36 +121,15 @@ public final class PgpDecryptionGenerator {
         if (pgpPrivateKey.isEmpty()) {
             throw new PGPException("Could not Extract private key");
         }
-        decrypt(clearOut, pgpPrivateKey.get(), publicKeyEncryptedData);
+        return new KeyEncryptedResult(pgpPrivateKey.get(), publicKeyEncryptedData);
+    }
+
+    private record KeyEncryptedResult(PGPPrivateKey pgpPrivateKey, PGPPublicKeyEncryptedData publicKeyEncryptedData) {
     }
 
     public void decryptStream(InputStream encryptedIn, BObject iteratorObj) throws PGPException, IOException {
-        // Remove armour and return the underlying binary encrypted stream
-        encryptedIn = PGPUtil.getDecoderStream(encryptedIn);
-        JcaPGPObjectFactory pgpObjectFactory = new JcaPGPObjectFactory(encryptedIn);
-
-        Object obj = pgpObjectFactory.nextObject();
-        // Verify the marker packet
-        PGPEncryptedDataList pgpEncryptedDataList = (obj instanceof PGPEncryptedDataList)
-                ? (PGPEncryptedDataList) obj : (PGPEncryptedDataList) pgpObjectFactory.nextObject();
-
-        Optional<PGPPrivateKey> pgpPrivateKey = Optional.empty();
-        PGPPublicKeyEncryptedData publicKeyEncryptedData = null;
-
-        Iterator<PGPEncryptedData> encryptedDataItr = pgpEncryptedDataList.getEncryptedDataObjects();
-        while (pgpPrivateKey.isEmpty() && encryptedDataItr.hasNext()) {
-            publicKeyEncryptedData = (PGPPublicKeyEncryptedData) encryptedDataItr.next();
-            pgpPrivateKey = findSecretKey(publicKeyEncryptedData.getKeyID());
-        }
-
-        if (Objects.isNull(publicKeyEncryptedData)) {
-            throw new PGPException("Could not generate PGPPublicKeyEncryptedData object");
-        }
-
-        if (pgpPrivateKey.isEmpty()) {
-            throw new PGPException("Could not Extract private key");
-        }
-        decrypt(pgpPrivateKey.get(), publicKeyEncryptedData, iteratorObj);
+        KeyEncryptedResult keyEncryptedResult = getKeyEncryptedResult(encryptedIn);
+        decrypt(keyEncryptedResult.pgpPrivateKey, keyEncryptedResult.publicKeyEncryptedData, iteratorObj);
     }
 
     // Decrypts the given byte array of encrypted data using PGP decryption.
@@ -187,11 +171,10 @@ public final class PgpDecryptionGenerator {
             }
         }
         // Perform the integrity check
-        if (publicKeyEncryptedData.isIntegrityProtected()) {
-            if (!publicKeyEncryptedData.verify()) {
+        if (publicKeyEncryptedData.isIntegrityProtected() && !publicKeyEncryptedData.verify()) {
                 throw new PGPException("Message failed integrity check");
             }
-        }
+
     }
 
     private static void decrypt(PGPPrivateKey pgpPrivateKey, PGPPublicKeyEncryptedData publicKeyEncryptedData,
@@ -209,11 +192,10 @@ public final class PgpDecryptionGenerator {
 
         if (message instanceof PGPLiteralData pgpLiteralData) {
             // Perform the integrity check
-            if (publicKeyEncryptedData.isIntegrityProtected()) {
-                if (!publicKeyEncryptedData.verify()) {
+            if (publicKeyEncryptedData.isIntegrityProtected() && !publicKeyEncryptedData.verify()) {
                     throw new PGPException("Message failed integrity check");
                 }
-            }
+
             iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
             iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedDataStream);
             iteratorObj.addNativeData(DATA_STREAM, decryptedCompressedIn);
