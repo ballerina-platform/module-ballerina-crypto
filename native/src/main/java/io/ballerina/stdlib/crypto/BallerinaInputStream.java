@@ -39,12 +39,8 @@ public class BallerinaInputStream extends InputStream {
     public static final String STREAM_VALUE = "value";
     public static final String BAL_STREAM_NEXT = "next";
 
-    public static final String ERROR_OCCURRED_WHILE_CLOSING_THE_STREAM = "Error occurred while closing the stream";
     public static final String ERROR_OCCURRED_WHILE_READING_THE_STREAM = "Error occurred while reading the next " +
             "element from the stream";
-    public static final String INTERRUPTED_ERROR_WHILE_READING_THE_STREAM = ERROR_OCCURRED_WHILE_READING_THE_STREAM +
-            ": interrupted exception";
-    public static final String ERR_MSG_FORMAT = "%s: %s";
     public static final String UNEXPECTED_TYPE_ERROR = ERROR_OCCURRED_WHILE_READING_THE_STREAM +
             ": unexpected value type";
 
