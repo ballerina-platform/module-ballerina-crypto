@@ -16,5 +16,8 @@
   ~ under the License.
   -->
 <FindBugsFilter>
-
+    <Match>
+        <Class name="io.ballerina.stdlib.crypto.BallerinaInputStream" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
 </FindBugsFilter>

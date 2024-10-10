@@ -176,7 +176,7 @@ public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? 
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromContent(keyFileContent, "keyPassword");
 # ```
 #
-# + keyFile - Private key content as a byte array
+# + content - Private key content as a byte array
 # + keyPassword - Password of the private key if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeRsaPrivateKeyFromContent(byte[] content, string? keyPassword = ()) returns PrivateKey|Error = @java:Method {
@@ -311,7 +311,7 @@ public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromContent(certContent);
 # ```
 #
-# + certFile - The certificate content as a byte array
+# + content - The certificate content as a byte array
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromContent(byte[] content) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
