@@ -251,11 +251,11 @@ public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # ```
 #
 # + plainText - The content to be encrypted
-# + publicKeyPath - Path to the public key
+# + publicKey - Path to the public key
 # + options - PGP encryption options
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
-public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Options options)
-                                        returns byte[]|Error = @java:Method {
+public isolated function encryptPgp(byte[] plainText, string publicKey, *Options options)
+                                       returns byte[]|Error = @java:Method {
     name: "encryptPgp",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -267,9 +267,9 @@ public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Opt
 # ```
 #
 # + inputStream - The content to be encrypted as a stream
-# + privateKeyPath - Path to the private key
+# + privateKey - Path to the private key
 # + return - Encrypted stream or else a `crypto:Error` if the key is invalid
-public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKeyPath,
+public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKey,
         *Options options) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -284,10 +284,10 @@ public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, 
 # ```
 #
 # + cipherText - The encrypted content to be decrypted
-# + privateKey -
+# + privateKey - Path to the private key
 # + passphrase - passphrase of the private key
 # + return - Decrypted data or else a `crypto:Error` if the key or passphrase is invalid
-public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, byte[] passphrase)
+public isolated function decryptPgp(byte[] cipherText, string privateKey, byte[] passphrase)
                                        returns byte[]|Error = @java:Method {
     name: "decryptPgp",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
@@ -301,10 +301,10 @@ public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, by
 # ```
 #
 # + inputStream - The encrypted content as a stream
-# + privateKeyPath - Path to the private key
+# + privateKey - Path to the private key
 # + passphrase - passphrase of the private key
 # + return - Decrypted stream or else a `crypto:Error` if the key or passphrase is invalid
-public isolated function decryptStreamFromPgp(stream<byte[], error?> inputStream, string privateKeyPath,
+public isolated function decryptStreamFromPgp(stream<byte[], error?> inputStream, string privateKey,
         byte[] passphrase) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
