@@ -130,7 +130,7 @@ public class Encrypt {
         }
     }
 
-    public static Object encryptStreamPgp(Environment environment, BStream inputBalStream, BString publicKeyPath,
+    public static Object encryptStreamAsPgp(Environment environment, BStream inputBalStream, BString publicKeyPath,
                                           BMap options) {
         byte[] publicKey;
         try {

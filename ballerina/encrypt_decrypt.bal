@@ -263,13 +263,13 @@ public isolated function encryptPgp(byte[] plainText, string publicKeyPath, *Opt
 # Returns the PGP-encrypted stream of the content given in the input stream.
 # ```ballerina
 # stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
-# stream<byte[], Error?>|Error encryptedStream = crypto:encryptStreamPgp(inputStream, "public_key.asc");
+# stream<byte[], crypto:Error?>|crypto:Error encryptedStream = crypto:encryptStreamAsPgp(inputStream, "public_key.asc");
 # ```
 #
 # + inputStream - The content to be encrypted as a stream
 # + privateKeyPath - Path to the private key
 # + return - Encrypted stream or else a `crypto:Error` if the key is invalid
-public isolated function encryptStreamPgp(stream<byte[], error?> inputStream, string publicKeyPath,
+public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKeyPath,
         *Options options) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -284,7 +284,7 @@ public isolated function encryptStreamPgp(stream<byte[], error?> inputStream, st
 # ```
 #
 # + cipherText - The encrypted content to be decrypted
-# + privateKeyPath - Path to the private key
+# + privateKey -
 # + passphrase - passphrase of the private key
 # + return - Decrypted data or else a `crypto:Error` if the key or passphrase is invalid
 public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, byte[] passphrase)
@@ -297,14 +297,14 @@ public isolated function decryptPgp(byte[] cipherText, string privateKeyPath, by
 # ```ballerina
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
-# stream<byte[], Error?>|Error decryptedStream = crypto:decryptStreamPgp(inputStream, "private_key.asc", passphrase);
+# stream<byte[], crypto:Error?>|crypto:Error decryptedStream = crypto:decryptStreamFromPgp(inputStream, "private_key.asc", passphrase);
 # ```
 #
 # + inputStream - The encrypted content as a stream
 # + privateKeyPath - Path to the private key
 # + passphrase - passphrase of the private key
 # + return - Decrypted stream or else a `crypto:Error` if the key or passphrase is invalid
-public isolated function decryptStreamPgp(stream<byte[], error?> inputStream, string privateKeyPath,
+public isolated function decryptStreamFromPgp(stream<byte[], error?> inputStream, string privateKeyPath,
         byte[] passphrase) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;

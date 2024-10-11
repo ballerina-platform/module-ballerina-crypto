@@ -113,7 +113,7 @@ public class Decrypt {
         }
     }
 
-    public static Object decryptStreamPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
+    public static Object decryptStreamFromPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
                                           BArray passphrase) {
         byte[] passphraseInBytes = passphrase.getBytes();
         byte[] privateKey;
