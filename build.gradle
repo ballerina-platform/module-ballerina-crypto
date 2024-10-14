@@ -26,6 +26,7 @@ ext.puppycrawlCheckstyleVersion = project.puppycrawlCheckstyleVersion
 ext.bouncycastleVersion = project.bouncycastleVersion
 ext.ballerinaLangVersion = project.ballerinaLangVersion
 ext.stdlibTimeVersion = project.stdlibTimeVersion
+ext.stdlibIoVersion = project.stdlibIoVersion
 
 allprojects {
     group = project.group
@@ -68,6 +69,7 @@ subprojects {
     dependencies {
         /* Standard libraries */
         ballerinaStdLibs "io.ballerina.stdlib:time-ballerina:${stdlibTimeVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:io-ballerina:${stdlibIoVersion}"
     }
 }
 

@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 
 @test:Config {}
@@ -41,7 +42,7 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPrivateKey() return
     byte[] cipherText = check encryptPgp(message, PGP_PUBLIC_KEY_PATH);
     byte[]|Error plainText = decryptPgp(cipherText, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
     if plainText is Error {
-        test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could Not Extract private key");
+        test:assertEquals(plainText.message(), "Error occurred while PGP decrypt: Could not Extract private key");
     } else {
         test:assertFail("Should return a crypto Error");
     }
@@ -55,8 +56,85 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() return
     byte[]|Error plainText = decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
     if plainText is Error {
         test:assertEquals(plainText.message(),
-        "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
     } else {
+        test:assertFail("Should return a crypto Error");
+    }
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testEncryptAndDecryptStreamWithPgp() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
+    stream<byte[], error?> encryptedStream = check encryptStreamAsPgp(inputStream, PGP_PUBLIC_KEY_PATH);
+    stream<byte[], error?> decryptedStream = check decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+
+    byte[] expected = check io:fileReadBytes(SAMPLE_TEXT);
+    byte[] actual = [];
+    check from byte[] bytes in decryptedStream
+        do {
+            actual.push(...bytes);
+        };
+    test:assertEquals(actual, expected);
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testEncryptAndDecryptStreamWithPgpWithOptions() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
+    stream<byte[], error?> encryptedStream = check encryptStreamAsPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
+    stream<byte[], error?> decryptedStream = check decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+
+    byte[] expected = check io:fileReadBytes(SAMPLE_TEXT);
+    byte[] actual = [];
+    check from byte[] bytes in decryptedStream
+        do {
+            actual.push(...bytes);
+        };
+    test:assertEquals(actual, expected);
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPrivateKey() returns error? {
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
+    stream<byte[], error?> encryptedStream = check encryptStreamAsPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
+    stream<byte[], error?>|Error result = decryptStreamFromPgp(encryptedStream, PGP_INVALID_PRIVATE_KEY_PATH, passphrase);
+    if result is Error {
+        check encryptedStream.close();
+        check inputStream.close();
+        test:assertEquals(result.message(), "Error occurred while PGP decrypt: Could not Extract private key");
+    } else {
+        check encryptedStream.close();
+        check inputStream.close();
+        check result.close();
+        test:assertFail("Should return a crypto Error");
+    }
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPassphrase() returns error? {
+    byte[] passphrase = "p7S5@T2MRFD9TQb".toBytes();
+    stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream(SAMPLE_TEXT);
+    stream<byte[], error?> encryptedStream = check encryptStreamAsPgp(inputStream, PGP_PUBLIC_KEY_PATH, symmetricKeyAlgorithm = AES_128, armor = false);
+    stream<byte[], error?>|Error result = decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+    if result is Error {
+        check encryptedStream.close();
+        check inputStream.close();
+        test:assertEquals(result.message(),
+                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+    } else {
+        check encryptedStream.close();
+        check inputStream.close();
+        check result.close();
         test:assertFail("Should return a crypto Error");
     }
 }
