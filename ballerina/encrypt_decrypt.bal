@@ -268,6 +268,7 @@ public isolated function encryptPgp(byte[] plainText, string publicKey, *Options
 #
 # + inputStream - The content to be encrypted as a stream
 # + publicKey - Path to the public key
+# + options - PGP encryption options
 # + return - Encrypted stream or else a `crypto:Error` if the key is invalid
 public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKey,
         *Options options) returns stream<byte[], Error?>|Error = @java:Method {
