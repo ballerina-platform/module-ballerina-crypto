@@ -82,7 +82,7 @@ public class BallerinaInputStream extends InputStream {
     }
 
     private Object callBalStreamMethod(String functionName) {
-        return environment.getRuntime().call(ballerinaStream.getIteratorObj(), functionName);
+        return environment.getRuntime().callMethod(ballerinaStream.getIteratorObj(), functionName, null);
     }
 
     @Override
