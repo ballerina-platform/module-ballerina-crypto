@@ -111,7 +111,7 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # + padding - The padding algorithm
 # + return - Encrypted data or else a `crypto:Error` if the key is invalid
 public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
-                                        returns byte[]|Error = @java:Method {
+                                       returns byte[]|Error = @java:Method {
     name: "encryptAesEcb",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
@@ -189,7 +189,7 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # + padding - The padding algorithm
 # + return - Decrypted data or else a `crypto:Error` if the key is invalid
 public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
-                                        returns byte[]|Error = @java:Method {
+                                       returns byte[]|Error = @java:Method {
     name: "decryptAesCbc",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
@@ -279,7 +279,7 @@ public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, 
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
-#
+# 
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # byte[] decryptedMessage = check crypto:decryptPgp(cipherText, "private_key.asc", passphrase);
 # ```
