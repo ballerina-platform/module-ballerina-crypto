@@ -18,9 +18,17 @@
 
 package io.ballerina.stdlib.crypto.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
+import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.types.PredefinedTypes;
+import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BStream;
 import io.ballerina.runtime.api.values.BString;
+import io.ballerina.stdlib.crypto.BallerinaInputStream;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpDecryptionGenerator;
@@ -41,6 +49,10 @@ import java.security.PublicKey;
  * @since 0.990.4
  */
 public class Decrypt {
+
+    public static final String ERROR_OCCURRED_WHILE_PGP_DECRYPT = "Error occurred while PGP decrypt: ";
+    public static final String ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY = "Error occurred while reading private key: ";
+    public static final String UNINITIALIZED_PRIVATE_PUBLIC_KEY = "Uninitialized private/public key.";
 
     private Decrypt() {}
 
@@ -77,7 +89,7 @@ public class Decrypt {
         } else if (keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY) != null) {
             key = (PublicKey) keyMap.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         } else {
-            return CryptoUtils.createError("Uninitialized private/public key.");
+            return CryptoUtils.createError(UNINITIALIZED_PRIVATE_PUBLIC_KEY);
         }
         return CryptoUtils.rsaEncryptDecrypt(CryptoUtils.CipherMode.DECRYPT, Constants.ECB, padding.toString(), key,
                 input, null, -1);
@@ -90,14 +102,36 @@ public class Decrypt {
         try {
             privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
 
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             return pgpDecryptionGenerator.decrypt(cipherText);
         } catch (IOException | PGPException e) {
-            return CryptoUtils.createError("Error occurred while PGP decrypt: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
+        }
+    }
+
+    public static Object decryptStreamFromPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
+                                          BArray passphrase) {
+        byte[] passphraseInBytes = passphrase.getBytes();
+        byte[] privateKey;
+        try {
+            privateKey = Files.readAllBytes(Path.of(privateKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
+        }
+
+        try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
+            InputStream cipherTextStream = new BallerinaInputStream(environment, inputBalStream);
+            PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
+            BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "DecryptedStreamIterator");
+            pgpDecryptionGenerator.decryptStream(cipherTextStream, iteratorObj);
+            Type constrainedType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BYTE);
+            return ValueCreator.createStreamValue(TypeCreator.createStreamType(constrainedType), iteratorObj);
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_DECRYPT + e.getMessage());
         }
     }
 }

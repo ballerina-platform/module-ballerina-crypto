@@ -5,13 +5,14 @@
 
 [ballerina]
 dependencies-toml-version = "2"
-distribution-version = "2201.9.0"
+distribution-version = "2201.11.0-20241117-133400-a3054b77"
 
 [[package]]
 org = "ballerina"
 name = "crypto"
-version = "2.7.3"
+version = "2.8.0"
 dependencies = [
+	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.array"},
 	{org = "ballerina", name = "test"},
@@ -19,6 +20,19 @@ dependencies = [
 ]
 modules = [
 	{org = "ballerina", packageName = "crypto", moduleName = "crypto"}
+]
+
+[[package]]
+org = "ballerina"
+name = "io"
+version = "1.6.2"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "lang.value"}
+]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
 ]
 
 [[package]]
@@ -69,6 +83,15 @@ scope = "testOnly"
 
 [[package]]
 org = "ballerina"
+name = "lang.value"
+version = "0.0.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"}
+]
+
+[[package]]
+org = "ballerina"
 name = "test"
 version = "0.0.0"
 scope = "testOnly"
@@ -84,7 +107,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "time"
-version = "2.4.0"
+version = "2.6.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]

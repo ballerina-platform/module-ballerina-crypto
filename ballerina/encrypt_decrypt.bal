@@ -260,6 +260,21 @@ public isolated function encryptPgp(byte[] plainText, string publicKey, *Options
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
+# Returns the PGP-encrypted stream of the content given in the input stream.
+# ```ballerina
+# stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("input.txt");
+# stream<byte[], crypto:Error?>|crypto:Error encryptedStream = crypto:encryptStreamAsPgp(inputStream, "public_key.asc");
+# ```
+#
+# + inputStream - The content to be encrypted as a stream
+# + publicKey - Path to the public key
+# + options - PGP encryption options
+# + return - Encrypted stream or else a `crypto:Error` if the key is invalid
+public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKey,
+        *Options options) returns stream<byte[], Error?>|Error = @java:Method {
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
+} external;
+
 # Returns the PGP-decrypted value of the given PGP-encrypted data.
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
@@ -276,5 +291,21 @@ public isolated function encryptPgp(byte[] plainText, string publicKey, *Options
 public isolated function decryptPgp(byte[] cipherText, string privateKey, byte[] passphrase)
                                        returns byte[]|Error = @java:Method {
     name: "decryptPgp",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
+} external;
+
+# Returns the PGP-decrypted stream of the content given in the input stream.
+# ```ballerina
+# byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
+# stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
+# stream<byte[], crypto:Error?>|crypto:Error decryptedStream = crypto:decryptStreamFromPgp(inputStream, "private_key.asc", passphrase);
+# ```
+#
+# + inputStream - The encrypted content as a stream
+# + privateKey - Path to the private key
+# + passphrase - passphrase of the private key
+# + return - Decrypted stream or else a `crypto:Error` if the key or passphrase is invalid
+public isolated function decryptStreamFromPgp(stream<byte[], error?> inputStream, string privateKey,
+        byte[] passphrase) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;

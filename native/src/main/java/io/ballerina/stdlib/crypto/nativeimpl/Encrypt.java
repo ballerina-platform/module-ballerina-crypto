@@ -18,10 +18,18 @@
 
 package io.ballerina.stdlib.crypto.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
+import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.types.PredefinedTypes;
+import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BStream;
 import io.ballerina.runtime.api.values.BString;
+import io.ballerina.stdlib.crypto.BallerinaInputStream;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PgpEncryptionGenerator;
@@ -36,6 +44,9 @@ import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import static io.ballerina.stdlib.crypto.Constants.END_OF_INPUT_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.INPUT_STREAM_TO_ENCRYPT;
+
 /**
  * Extern functions ballerina encrypt algorithms.
  *
@@ -47,6 +58,8 @@ public class Encrypt {
     private static final BString SYMMETRIC_KEY_ALGORITHM = StringUtils.fromString("symmetricKeyAlgorithm");
     private static final BString ARMOR = StringUtils.fromString("armor");
     private static final BString WITH_INTEGRITY_CHECK = StringUtils.fromString("withIntegrityCheck");
+    public static final String ERROR_OCCURRED_WHILE_READING_PUBLIC_KEY = "Error occurred while reading public key: ";
+    public static final String ERROR_OCCURRED_WHILE_PGP_ENCRYPT = "Error occurred while PGP encrypt: ";
 
     private Encrypt() {}
 
@@ -101,7 +114,7 @@ public class Encrypt {
         try {
             publicKey = Files.readAllBytes(Path.of(publicKeyPath.toString()));
         } catch (IOException e) {
-            return CryptoUtils.createError("Error occurred while reading public key: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PUBLIC_KEY + e.getMessage());
         }
 
         try (InputStream publicKeyStream = new ByteArrayInputStream(publicKey)) {
@@ -113,7 +126,35 @@ public class Encrypt {
             );
             return pgpEncryptionGenerator.encrypt(plainText, publicKeyStream);
         } catch (IOException | PGPException e) {
-            return CryptoUtils.createError("Error occurred while PGP encrypt: " + e.getMessage());
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_ENCRYPT + e.getMessage());
+        }
+    }
+
+    public static Object encryptStreamAsPgp(Environment environment, BStream inputBalStream, BString publicKeyPath,
+                                          BMap options) {
+        byte[] publicKey;
+        try {
+            publicKey = Files.readAllBytes(Path.of(publicKeyPath.toString()));
+        } catch (IOException e) {
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PUBLIC_KEY + e.getMessage());
+        }
+
+        try (InputStream publicKeyStream = new ByteArrayInputStream(publicKey)) {
+            InputStream inputStream = new BallerinaInputStream(environment, inputBalStream);
+            PgpEncryptionGenerator pgpEncryptionGenerator = new PgpEncryptionGenerator(
+                    Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
+                    Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
+                    Boolean.parseBoolean(options.get(ARMOR).toString()),
+                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
+            );
+            BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "EncryptedStreamIterator");
+            iteratorObj.addNativeData(END_OF_INPUT_STREAM, false);
+            iteratorObj.addNativeData(INPUT_STREAM_TO_ENCRYPT, inputStream);
+            pgpEncryptionGenerator.encryptStream(publicKeyStream, iteratorObj);
+            Type constrainedType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BYTE);
+            return ValueCreator.createStreamValue(TypeCreator.createStreamType(constrainedType), iteratorObj);
+        } catch (IOException | PGPException e) {
+            return CryptoUtils.createError(ERROR_OCCURRED_WHILE_PGP_ENCRYPT + e.getMessage());
         }
     }
 }
