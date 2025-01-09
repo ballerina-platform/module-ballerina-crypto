@@ -64,21 +64,21 @@ isolated function testHashPasswordArgon2ComplexPasswords() {
 @test:Config {}
 isolated function testHashPasswordArgon2InvalidParams() {
     string password = "Ballerina@123";
-    int[][] invalidParams = [
-        [0, 65536, 4], // Invalid iterations
-        [3, 1024, 4], // Too little memory
-        [3, 65536, 0], // Invalid parallelism
-        [-1, 65536, 4], // Negative iterations
-        [3, -1024, 4], // Negative memory
-        [3, 65536, -2] // Negative parallelism
+    record {|int[] params; string expectedError;|}[] testCases = [
+        {params: [0, 65536, 4], expectedError: "Iterations must be positive"},
+        {params: [3, 1024, 4], expectedError: "Memory must be at least 8192 KB (8MB)"},
+        {params: [3, 65536, 0], expectedError: "Parallelism must be positive"},
+        {params: [-1, 65536, 4], expectedError: "Iterations must be positive"},
+        {params: [3, -1024, 4], expectedError: "Memory must be at least 8192 KB (8MB)"},
+        {params: [3, 65536, -2], expectedError: "Parallelism must be positive"}
     ];
 
-    foreach int[] params in invalidParams {
+    foreach var {params, expectedError} in testCases {
         string|Error hash = hashPasswordArgon2(password, params[0], params[1], params[2]);
         if hash is Error {
-            test:assertTrue(hash.message().startsWith("Error occurred while hashing password"));
+            test:assertEquals(hash.message(), expectedError);
         } else {
-            test:assertFail(string `Should fail with invalid parameters: ${params.toString()} but it succeeded: ${hash}`);
+            test:assertFail(string `Should fail with invalid parameters: ${params.toString()}`);
         }
     }
 }

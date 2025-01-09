@@ -39,6 +39,17 @@ public class PasswordArgon2 {
      */
     public static Object hashPasswordArgon2(BString password, long iterations, long memory, long parallelism) {
         try {
+            // Validate parameters 
+            if (iterations <= 0) {
+                return CryptoUtils.createError("Iterations must be positive");
+            }
+            if (memory < 8192) { // 8MB minimum 
+                return CryptoUtils.createError("Memory must be at least 8192 KB (8MB)");
+            }
+            if (parallelism <= 0) {
+                return CryptoUtils.createError("Parallelism must be positive");
+            }
+
             byte[] salt = new byte[SALT_LENGTH];
             SECURE_RANDOM.nextBytes(salt);
 
