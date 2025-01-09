@@ -1,3 +1,4 @@
+import ballerina/io;
 import ballerina/test;
 
 @test:Config {}
@@ -5,6 +6,7 @@ isolated function testHashPasswordDefaultWorkFactor() {
     string password = "Ballerina@123";
     string|Error hash = hashPassword(password);
     if hash is string {
+        io:println(hash);
         test:assertTrue(hash.startsWith("$2a$12$"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -17,6 +19,7 @@ isolated function testHashPasswordCustomWorkFactor() {
     string password = "Ballerina@123";
     string|Error hash = hashPassword(password, 10);
     if hash is string {
+        io:println(hash);
         test:assertTrue(hash.startsWith("$2a$10$"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -43,6 +46,7 @@ isolated function testHashPasswordComplexPasswords() {
     foreach string password in passwords {
         string|Error hash = hashPassword(password);
         if hash is string {
+            io:println(hash);
             test:assertTrue(hash.startsWith("$2a$12$"));
             test:assertTrue(hash.length() > 50);
 
