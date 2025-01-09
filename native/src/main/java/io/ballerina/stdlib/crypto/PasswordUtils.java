@@ -4,6 +4,7 @@ import org.bouncycastle.util.encoders.Base64;
 
 import java.security.SecureRandom;
 
+
 public class PasswordUtils {
     public static final int MIN_WORK_FACTOR = 4;
     public static final int MAX_WORK_FACTOR = 31;
@@ -33,7 +34,8 @@ public class PasswordUtils {
         return String.format("$2a$%02d$%s", workFactor, saltAndHashBase64);
     }
 
-    public static String formatArgon2Hash(long memory, long iterations, long parallelism, String saltBase64, String hashBase64) {
+    public static String formatArgon2Hash(long memory, long iterations, long parallelism, 
+    String saltBase64, String hashBase64) {
         return String.format("$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
             memory, iterations, parallelism, saltBase64, hashBase64);
     }
