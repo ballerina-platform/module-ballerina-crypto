@@ -39,7 +39,7 @@ public class PasswordArgon2 {
      */
     public static Object hashPasswordArgon2(BString password, long iterations, long memory, long parallelism) {
         try {
-            // Validate parameters 
+            // Validate parameters
             if (iterations <= 0) {
                 return CryptoUtils.createError("Iterations must be positive");
             }
