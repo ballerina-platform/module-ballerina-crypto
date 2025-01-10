@@ -1,4 +1,3 @@
-import ballerina/io;
 import ballerina/test;
 
 @test:Config {}
@@ -6,7 +5,6 @@ isolated function testHashPasswordDefaultWorkFactor() {
     string password = "Ballerina@123";
     string|Error hash = hashPassword(password);
     if hash is string {
-        io:println(hash);
         test:assertTrue(hash.startsWith("$2a$12$"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -19,7 +17,6 @@ isolated function testHashPasswordCustomWorkFactor() {
     string password = "Ballerina@123";
     string|Error hash = hashPassword(password, 10);
     if hash is string {
-        io:println(hash);
         test:assertTrue(hash.startsWith("$2a$10$"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -46,7 +43,6 @@ isolated function testHashPasswordComplexPasswords() {
     foreach string password in passwords {
         string|Error hash = hashPassword(password);
         if hash is string {
-            io:println(hash);
             test:assertTrue(hash.startsWith("$2a$12$"));
             test:assertTrue(hash.length() > 50);
 
@@ -190,6 +186,13 @@ isolated function testGenerateSaltInvalidWorkFactor() {
     }
 }
 
+// Note: The below test case verifies that hashing the same password multiple times 
+// produces different results due to the use of random salts. However, there is 
+// an extremely rare chance of this test failing if the random salts generated 
+// happen to match. The probability of such a collision is approximately 1 in 2^128 
+// (based on the randomness of a 128-bit salt).
+// 
+// In practice, this is highly unlikely and should not occur under normal circumstances.
 @test:Config {}
 isolated function testPasswordHashUniqueness() {
     string[] passwords = [

@@ -1,4 +1,3 @@
-import ballerina/io;
 import ballerina/test;
 
 @test:Config {}
@@ -6,7 +5,6 @@ isolated function testHashPasswordArgon2Default() {
     string password = "Ballerina@123";
     string|Error hash = hashPasswordArgon2(password);
     if hash is string {
-        io:println(hash);
         test:assertTrue(hash.startsWith("$argon2id$v=19$"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -19,7 +17,6 @@ isolated function testHashPasswordArgon2Custom() {
     string password = "Ballerina@123";
     string|Error hash = hashPasswordArgon2(password, 4, 131072, 8);
     if hash is string {
-        io:println(hash);
         test:assertTrue(hash.includes("m=131072,t=4,p=8"));
         test:assertTrue(hash.length() > 50);
     } else {
@@ -46,7 +43,6 @@ isolated function testHashPasswordArgon2ComplexPasswords() {
     foreach string password in passwords {
         string|Error hash = hashPasswordArgon2(password);
         if hash is string {
-            io:println(hash);
             test:assertTrue(hash.startsWith("$argon2id$v=19$"));
 
             boolean|Error result = verifyPasswordArgon2(password, hash);
@@ -186,6 +182,13 @@ isolated function testGenerateSaltArgon2Custom() {
     }
 }
 
+// Note: The below test case verifies that hashing the same password multiple times 
+// produces different results due to the use of random salts. However, there is 
+// an extremely rare chance of this test failing if the random salts generated 
+// happen to match. The probability of such a collision is approximately 1 in 2^128 
+// (based on the randomness of a 128-bit salt).
+// 
+// In practice, this is highly unlikely and should not occur under normal circumstances.
 @test:Config {}
 isolated function testArgon2PasswordHashUniqueness() {
     string[] passwords = [
