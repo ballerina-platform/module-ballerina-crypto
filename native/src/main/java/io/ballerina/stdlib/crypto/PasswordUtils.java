@@ -47,6 +47,26 @@ public class PasswordUtils {
     public static final int SALT_LENGTH = 16;
 
     /**
+     * Default number of iterations for Argon2.
+     */
+    public static final int DEFAULT_ITERATIONS = 3;
+       
+    /**
+     * Default memory usage in KB (64MB) for Argon2.
+     */
+    public static final int DEFAULT_MEMORY = 65536;
+    
+    /**
+     * Default number of parallel threads for Argon2.
+     */
+    public static final int DEFAULT_PARALLELISM = 4;
+    
+    /**
+     * Length of the generated hash in bytes for Argon2.
+     */
+    public static final int HASH_LENGTH = 32;
+    
+    /**
      * Secure random number generator for salt generation.
      */
     public static final SecureRandom SECURE_RANDOM = new SecureRandom();

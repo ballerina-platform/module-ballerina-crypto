@@ -34,26 +34,9 @@ import java.nio.charset.StandardCharsets;
  * @since ...
  */
 public class PasswordArgon2 {
-    /**
-     * Default number of iterations for Argon2.
-     */
-    private static final int DEFAULT_ITERATIONS = 3;
-    
-    /**
-     * Default memory usage in KB (64MB).
-     */
-    private static final int DEFAULT_MEMORY = 65536;
-    
-    /**
-     * Default number of parallel threads.
-     */
-    private static final int DEFAULT_PARALLELISM = 4;
-    
-    /**
-     * Length of the generated hash in bytes.
-     */
-    private static final int HASH_LENGTH = 32;
-    
+
+    private PasswordArgon2() {}
+
     /**
      * Hash a password using Argon2 with default parameters.
      *
@@ -61,7 +44,8 @@ public class PasswordArgon2 {
      * @return hashed password string or error
      */
     public static Object hashPasswordArgon2(BString password) {
-        return hashPasswordArgon2(password, DEFAULT_ITERATIONS, DEFAULT_MEMORY, DEFAULT_PARALLELISM);
+        return hashPasswordArgon2(password, PasswordUtils.DEFAULT_ITERATIONS, PasswordUtils.DEFAULT_MEMORY, 
+        PasswordUtils.DEFAULT_PARALLELISM);
     }
 
     /**
@@ -94,7 +78,7 @@ public class PasswordArgon2 {
                 .withParallelism((int) parallelism)
                 .build();
 
-            byte[] hash = new byte[HASH_LENGTH];
+            byte[] hash = new byte[PasswordUtils.HASH_LENGTH];
             Argon2BytesGenerator generator = new Argon2BytesGenerator();
             generator.init(params);
             generator.generateBytes(password.getValue().getBytes(StandardCharsets.UTF_8), hash);
@@ -144,7 +128,7 @@ public class PasswordArgon2 {
                 .withParallelism(parallelism)
                 .build();
 
-            byte[] newHash = new byte[HASH_LENGTH];
+            byte[] newHash = new byte[PasswordUtils.HASH_LENGTH];
             Argon2BytesGenerator generator = new Argon2BytesGenerator();
             generator.init(parameters);
             generator.generateBytes(password.getValue().getBytes(StandardCharsets.UTF_8), newHash);
@@ -161,7 +145,8 @@ public class PasswordArgon2 {
      * @return formatted salt string or error
      */
     public static Object generateSaltArgon2() {
-        return generateSaltArgon2(DEFAULT_ITERATIONS, DEFAULT_MEMORY, DEFAULT_PARALLELISM);
+        return generateSaltArgon2(PasswordUtils.DEFAULT_ITERATIONS, PasswordUtils.DEFAULT_MEMORY, 
+        PasswordUtils.DEFAULT_PARALLELISM);
     }
 
     /**
