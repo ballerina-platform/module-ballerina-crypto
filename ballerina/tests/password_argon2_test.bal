@@ -185,3 +185,42 @@ isolated function testGenerateSaltArgon2Custom() {
         }
     }
 }
+
+@test:Config {}
+isolated function testArgon2PasswordHashUniqueness() {
+    string[] passwords = [
+        "Ballerina@123",
+        "Complex!Pass#2024",
+        "Test123!@#",
+        "❤️SecurePass789",
+        "LongPassword123!@#$"
+    ];
+
+    foreach string password in passwords {
+        // Generate three hashes for the same password
+        string|Error hash1 = hashPasswordArgon2(password);
+        string|Error hash2 = hashPasswordArgon2(password);
+        string|Error hash3 = hashPasswordArgon2(password);
+
+        if (hash1 is string && hash2 is string && hash3 is string) {
+            // Verify all hashes are different
+            test:assertNotEquals(hash1, hash2, "Hashes should be unique for: " + password);
+            test:assertNotEquals(hash2, hash3, "Hashes should be unique for: " + password);
+            test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + password);
+
+            // Verify all hashes are valid for the password
+            boolean|Error verify1 = verifyPasswordArgon2(password, hash1);
+            boolean|Error verify2 = verifyPasswordArgon2(password, hash2);
+            boolean|Error verify3 = verifyPasswordArgon2(password, hash3);
+
+            if (verify1 is boolean && verify2 is boolean && verify3 is boolean) {
+                test:assertTrue(verify1 && verify2 && verify3,
+                        "All hashes should verify successfully for: " + password);
+            } else {
+                test:assertFail("Verification failed for: " + password);
+            }
+        } else {
+            test:assertFail("Hash generation failed for: " + password);
+        }
+    }
+}
