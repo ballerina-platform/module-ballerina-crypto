@@ -64,4 +64,8 @@ public class Hash {
         return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-512", inputValue.getBytes(), saltValue));
     }
 
+    public static BArray hashKeccak256(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash("Keccak-256", inputValue.getBytes(), saltValue));
+    }
+
 }
