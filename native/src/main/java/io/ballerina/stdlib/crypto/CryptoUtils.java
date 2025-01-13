@@ -39,6 +39,9 @@ import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
+import org.bouncycastle.jcajce.provider.digest.Keccak; // import lib
+
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -124,7 +127,14 @@ public class CryptoUtils {
      */
     public static byte[] hash(String algorithm, byte[] input, Object salt) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            MessageDigest messageDigest;
+
+            if ("Keccak-256".equalsIgnoreCase(algorithm)) {
+                messageDigest = new Keccak.Digest256();
+            } else {
+                messageDigest = MessageDigest.getInstance(algorithm);
+            }
+
             if (salt != null) {
                 messageDigest.update(((BArray) salt).getBytes());
             }
