@@ -34,6 +34,7 @@ import org.bouncycastle.crypto.params.HKDFParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
+import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.spec.KEMExtractSpec;
 import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -124,7 +125,14 @@ public class CryptoUtils {
      */
     public static byte[] hash(String algorithm, byte[] input, Object salt) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            MessageDigest messageDigest;
+
+            if ("Keccak-256".equalsIgnoreCase(algorithm)) {
+                messageDigest = new Keccak.Digest256();
+            } else {
+                messageDigest = MessageDigest.getInstance(algorithm);
+            }
+
             if (salt != null) {
                 messageDigest.update(((BArray) salt).getBytes());
             }
