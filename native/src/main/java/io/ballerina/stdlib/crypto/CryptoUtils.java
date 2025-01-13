@@ -34,13 +34,11 @@ import org.bouncycastle.crypto.params.HKDFParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
+import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.spec.KEMExtractSpec;
 import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
-
-import org.bouncycastle.jcajce.provider.digest.Keccak; // import lib
-
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
