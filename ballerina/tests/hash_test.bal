@@ -102,3 +102,11 @@ isolated function testHashSha512WithSalt() {
         "5E78702995D181042420860B111781AFEE88ACD455CAA0367271C78DAE0F69DA").toLowerAscii();
     test:assertEquals(hashSha512(input, salt).toBase16(), expectedSha512Hash);
 }
+
+@test:Config {}
+isolated function testHashKeccak256() {
+    byte[] input = "Ballerina test".toBytes();
+    string expectedKeccak256Hash =
+        "73b6cc25ab0656625ee654a6cdc8f1d1803a6330fba4f4bf5bd6b9018f7d3131".toLowerAscii();
+    test:assertEquals(hashKeccak256(input).toBase16(), expectedKeccak256Hash);
+}
