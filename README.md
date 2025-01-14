@@ -14,7 +14,7 @@ The Ballerina `crypto` library facilitates APIs to do operations like hashing, H
 
 ### Hashes
 
-The `crypto` library supports generating hashes with 5 different hash algorithms MD5, SHA1, SHA256, SHA384, and SHA512. Also, it supports generating the CRC32B checksum.
+The `crypto` library supports generating hashes with 6 different hash algorithms MD5, SHA1, SHA256, SHA384, SHA512, and Keccak256. Also, it supports generating the CRC32B checksum.
 
 ### HMAC
 
