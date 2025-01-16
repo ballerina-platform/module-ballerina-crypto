@@ -47,7 +47,10 @@ public class Password {
             Object validationError = PasswordUtils.validateWorkFactor(workFactor);
             if (validationError != null) {
                 return validationError;
-            }
+            } 
+            if (password.getValue().length() == 0) {
+                return CryptoUtils.createError("Password cannot be empty");
+            } 
 
             byte[] salt = PasswordUtils.generateRandomSalt();
             byte[] passwordBytes = password.getValue().getBytes(StandardCharsets.UTF_8);

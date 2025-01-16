@@ -67,7 +67,10 @@ public class PasswordArgon2 {
             }
             if (parallelism <= 0) {
                 return CryptoUtils.createError("Parallelism must be positive");
-            }
+            } 
+            if (password.getValue().length() == 0) {
+                return CryptoUtils.createError("Password cannot be empty");
+            } 
 
             byte[] salt = PasswordUtils.generateRandomSalt();
 
@@ -135,7 +138,7 @@ public class PasswordArgon2 {
 
             return PasswordUtils.constantTimeArrayEquals(newHash, originalHash);
         } catch (Exception e) {
-            return CryptoUtils.createError("Error occurred while verifying Argon2 password: " + e.getMessage());
+            return CryptoUtils.createError("Error occurred while verifying password: " + e.getMessage());
         }
     }
 

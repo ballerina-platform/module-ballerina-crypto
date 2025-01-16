@@ -17,31 +17,23 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testHashPasswordDefaultWorkFactor() {
+isolated function testHashPasswordDefaultWorkFactor() returns error? {
     string password = "Ballerina@123";
-    string|Error hash = hashBcrypt(password);
-    if hash is string {
-        test:assertTrue(hash.startsWith("$2a$12$"));
-        test:assertTrue(hash.length() > 50);
-    } else {
-        test:assertFail("Password hashing failed");
-    }
+    string hash = check hashBcrypt(password);
+    test:assertTrue(hash.startsWith("$2a$12$"));
+    test:assertTrue(hash.length() > 50);
 }
 
 @test:Config {}
-isolated function testHashPasswordCustomWorkFactor() {
+isolated function testHashPasswordCustomWorkFactor() returns error? {
     string password = "Ballerina@123";
-    string|Error hash = hashBcrypt(password, 10);
-    if hash is string {
-        test:assertTrue(hash.startsWith("$2a$10$"));
-        test:assertTrue(hash.length() > 50);
-    } else {
-        test:assertFail("Password hashing failed");
-    }
+    string hash = check hashBcrypt(password, 10);
+    test:assertTrue(hash.startsWith("$2a$10$"));
+    test:assertTrue(hash.length() > 50);
 }
 
 @test:Config {}
-isolated function testHashPasswordComplexPasswords() {
+isolated function testHashPasswordComplexPasswords() returns error? {
     string[] passwords = [
         "Short1!", // Short password
         "ThisIsAVeryLongPasswordWith123!@#", // Long password
@@ -57,21 +49,12 @@ isolated function testHashPasswordComplexPasswords() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashBcrypt(password);
-        if hash is string {
-            test:assertTrue(hash.startsWith("$2a$12$"));
-            test:assertTrue(hash.length() > 50);
+        string hash = check hashBcrypt(password);
+        test:assertTrue(hash.startsWith("$2a$12$"));
+        test:assertTrue(hash.length() > 50);
 
-            // Verify the password immediately
-            boolean|Error result = verifyBcrypt(password, hash);
-            if result is boolean {
-                test:assertTrue(result, "Password verification failed for: " + password);
-            } else {
-                test:assertFail("Verification error for password: " + password);
-            }
-        } else {
-            test:assertFail("Hashing failed for password: " + password);
-        }
+        boolean result = check verifyBcrypt(password, hash);
+        test:assertTrue(result, "Password verification failed for: " + password);
     }
 }
 
@@ -82,16 +65,15 @@ isolated function testHashPasswordInvalidWorkFactor() {
 
     foreach int factor in invalidFactors {
         string|Error hash = hashBcrypt(password, factor);
-        if hash is Error {
-            test:assertEquals(hash.message(), "Work factor must be between 4 and 31");
-        } else {
+        if hash !is Error {
             test:assertFail(string `Should fail with invalid work factor: ${factor}`);
         }
+        test:assertEquals(hash.message(), "Work factor must be between 4 and 31");
     }
 }
 
 @test:Config {}
-isolated function testVerifyPasswordSuccess() {
+isolated function testVerifyPasswordSuccess() returns error? {
     string[] passwords = [
         "Ballerina@123",
         "AnotherPass@456",
@@ -101,22 +83,14 @@ isolated function testVerifyPasswordSuccess() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashBcrypt(password);
-        if hash is string {
-            boolean|Error result = verifyBcrypt(password, hash);
-            if result is boolean {
-                test:assertTrue(result, "Password verification failed for: " + password);
-            } else {
-                test:assertFail("Password verification error for: " + password);
-            }
-        } else {
-            test:assertFail("Password hashing failed for: " + password);
-        }
+        string hash = check hashBcrypt(password);
+        boolean result = check verifyBcrypt(password, hash);
+        test:assertTrue(result, "Password verification failed for: " + password);
     }
 }
 
 @test:Config {}
-isolated function testVerifyPasswordFailure() {
+isolated function testVerifyPasswordFailure() returns error? {
     string password = "Ballerina@123";
     string[] wrongPasswords = [
         "ballerina@123", // Different case
@@ -128,18 +102,10 @@ isolated function testVerifyPasswordFailure() {
         "" // Empty string
     ];
 
-    string|Error hash = hashBcrypt(password);
-    if hash is string {
-        foreach string wrongPassword in wrongPasswords {
-            boolean|Error result = verifyBcrypt(wrongPassword, hash);
-            if result is boolean {
-                test:assertFalse(result, "Should fail for wrong password: " + wrongPassword);
-            } else {
-                test:assertFail("Verification error for wrong password: " + wrongPassword);
-            }
-        }
-    } else {
-        test:assertFail("Password hashing failed");
+    string hash = check hashBcrypt(password);
+    foreach string wrongPassword in wrongPasswords {
+        boolean result = check verifyBcrypt(wrongPassword, hash);
+        test:assertFalse(result, "Should fail for wrong password: " + wrongPassword);
     }
 }
 
@@ -154,23 +120,15 @@ isolated function testVerifyPasswordInvalidHashFormat() {
 
     foreach string invalidHash in invalidHashes {
         boolean|Error result = verifyBcrypt(password, invalidHash);
-        if result is Error {
-            test:assertEquals(result.message(), "Invalid hash format");
-        } else {
+        if result !is Error {
             test:assertFail("Should fail with invalid hash: " + invalidHash);
         }
+        test:assertEquals(result.message(), "Invalid hash format");
     }
 }
 
-// Note: The below test case verifies that hashing the same password multiple times 
-// produces different results due to the use of random salts. However, there is 
-// an extremely rare chance of this test failing if the random salts generated 
-// happen to match. The probability of such a collision is approximately 1 in 2^128 
-// (based on the randomness of a 128-bit salt).
-// 
-// In practice, this is highly unlikely and should not occur under normal circumstances.
 @test:Config {}
-isolated function testPasswordHashUniqueness() {
+isolated function testPasswordHashUniqueness() returns error? {
     string[] passwords = [
         "Ballerina@123",
         "Complex!Pass#2024",
@@ -180,30 +138,29 @@ isolated function testPasswordHashUniqueness() {
     ];
 
     foreach string password in passwords {
-        // Generate three hashes for the same password
-        string|Error hash1 = hashBcrypt(password);
-        string|Error hash2 = hashBcrypt(password);
-        string|Error hash3 = hashBcrypt(password);
+        string hash1 = check hashBcrypt(password);
+        string hash2 = check hashBcrypt(password);
+        string hash3 = check hashBcrypt(password);
 
-        if hash1 is string && hash2 is string && hash3 is string {
-            // Verify all hashes are different
-            test:assertNotEquals(hash1, hash2, "Hashes should be unique for: " + password);
-            test:assertNotEquals(hash2, hash3, "Hashes should be unique for: " + password);
-            test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + password);
+        test:assertNotEquals(hash1, hash2, "Hashes should be unique for: " + password);
+        test:assertNotEquals(hash2, hash3, "Hashes should be unique for: " + password);
+        test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + password);
 
-            // Verify all hashes are valid for the password
-            boolean|Error verify1 = verifyBcrypt(password, hash1);
-            boolean|Error verify2 = verifyBcrypt(password, hash2);
-            boolean|Error verify3 = verifyBcrypt(password, hash3);
+        boolean verify1 = check verifyBcrypt(password, hash1);
+        boolean verify2 = check verifyBcrypt(password, hash2);
+        boolean verify3 = check verifyBcrypt(password, hash3);
 
-            if verify1 is boolean && verify2 is boolean && verify3 is boolean {
-                test:assertTrue(verify1 && verify2 && verify3,
-                        "All hashes should verify successfully for: " + password);
-            } else {
-                test:assertFail("Verification failed for: " + password);
-            }
-        } else {
-            test:assertFail("Hash generation failed for: " + password);
-        }
+        test:assertTrue(verify1 && verify2 && verify3,
+                "All hashes should verify successfully for: " + password);
     }
+}
+
+@test:Config {}
+isolated function testEmptyPasswordError() returns error? {
+    string password = "";
+    string|Error hash = hashBcrypt(password);
+    if hash !is Error {
+        test:assertFail("Should fail with empty password");
+    }
+    test:assertEquals(hash.message(), "Password cannot be empty");
 }
