@@ -1114,26 +1114,63 @@ crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(r
 byte[] decryptedData = check crypto:decryptRsaKemMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
 ```
 
-## 10. [Password hashing](#10-password-hashing)
+## 10. Password Hashing(#10-password-hashing)
 
-The `crypto` module supports password hashing using BCrypt and Argon2id algorithms. BCrypt is an adaptive hashing function based on the Blowfish cipher, while Argon2id is a memory-hard function that provides resistance against GPU cracking attacks.
+The `crypto` module provides password hashing using BCrypt and Argon2id algorithms for secure password storage.
 
-### 10.1 [BCrypt](#101-bcrypt)
+### 10.1 BCrypt(#101-bcrypt)
 
-This API can be used to hash passwords using BCrypt algorithm.
+Implements the BCrypt password hashing algorithm based on the Blowfish cipher.
 
 ```ballerina
-string password = "your-password";
-string hashedPassword = check crypto:hashBcrypt(password);
-boolean isValid = check crypto:verifyBcrypt(password, hashedPassword);
+public isolated function hashBcrypt(string password, int workFactor = 12) returns string|Error
 ```
 
-### 10.2 [Argon2](#102-argon2)
-
-This API can be used to hash passwords using Argon2id algorithm.
+Parameters:
+- `password`: The plain text password to hash
+- `workFactor`: Computational complexity factor (4-31, default: 12)
 
 ```ballerina
+public isolated function verifyBcrypt(string password, string hashedPassword) returns boolean|Error
+```
+
+Example:
+```ballerina
 string password = "your-password";
-string hashedPassword = check crypto:hashArgon2(password);
-boolean isValid = check crypto:verifyArgon2(password, hashedPassword);
+// Hash with default work factor (12)
+string hashedPassword1 = check crypto:hashBcrypt(password);
+// Hash with custom work factor
+string hashedPassword2 = check crypto:hashBcrypt(password, 14);
+boolean isValid = check crypto:verifyBcrypt(password, hashedPassword1);
+```
+
+### 10.2 Argon2(#102-argon2)
+
+Implements the Argon2id variant of the Argon2 password hashing algorithm, optimized for both high memory usage and GPU resistance.
+
+```ballerina
+public isolated function hashArgon2(string password, int iterations = 3, 
+    int memory = 65536, int parallelism = 4) returns string|Error
+```
+
+Parameters:
+- `password`: The plain text password to hash
+- `iterations`: Number of iterations (default: 3)
+- `memory`: Memory usage in KB (minimum: 8192, default: 65536)
+- `parallelism`: Degree of parallelism (default: 4)
+
+Output hash length is fixed at 256 bits for optimal security and performance.
+
+```ballerina
+public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error
+```
+
+Example:
+```ballerina
+string password = "your-password";
+// Hash with default parameters
+string hashedPassword1 = check crypto:hashArgon2(password);
+// Hash with custom parameters
+string hashedPassword2 = check crypto:hashArgon2(password, 4, 131072, 8);
+boolean isValid = check crypto:verifyArgon2(password, hashedPassword1);
 ```
