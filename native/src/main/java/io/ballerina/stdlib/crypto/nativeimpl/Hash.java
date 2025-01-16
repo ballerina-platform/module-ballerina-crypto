@@ -45,26 +45,26 @@ public class Hash {
     }
 
     public static BArray hashMd5(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("MD5", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.MD5.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha1(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-1", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.SHA1.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha256(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-256", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.SHA256.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha384(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-384", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.SHA384.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha512(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-512", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.SHA512.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashKeccak256(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("Keccak-256", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(HashAlgorithm.KECCAK256.getAlgorithmName(), inputValue.getBytes(), saltValue));
     }
 }
