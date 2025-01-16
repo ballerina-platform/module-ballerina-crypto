@@ -127,7 +127,7 @@ public class CryptoUtils {
         try {
             MessageDigest messageDigest;
 
-            if ("Keccak-256".equalsIgnoreCase(algorithm)) {
+            if (Constants.KECCAK256.equals(algorithm)) {
                 messageDigest = new Keccak.Digest256();
             } else {
                 messageDigest = MessageDigest.getInstance(algorithm);
