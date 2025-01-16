@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {}
 isolated function testHashPasswordArgon2Default() {
     string password = "Ballerina@123";
-    string|Error hash = hashPasswordArgon2(password);
+    string|Error hash = hashArgon2(password);
     if hash is string {
         test:assertTrue(hash.startsWith("$argon2id$v=19$"));
         test:assertTrue(hash.length() > 50);
@@ -31,7 +31,7 @@ isolated function testHashPasswordArgon2Default() {
 @test:Config {}
 isolated function testHashPasswordArgon2Custom() {
     string password = "Ballerina@123";
-    string|Error hash = hashPasswordArgon2(password, 4, 131072, 8);
+    string|Error hash = hashArgon2(password, 4, 131072, 8);
     if hash is string {
         test:assertTrue(hash.includes("m=131072,t=4,p=8"));
         test:assertTrue(hash.length() > 50);
@@ -57,11 +57,11 @@ isolated function testHashPasswordArgon2ComplexPasswords() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashPasswordArgon2(password);
+        string|Error hash = hashArgon2(password);
         if hash is string {
             test:assertTrue(hash.startsWith("$argon2id$v=19$"));
 
-            boolean|Error result = verifyPasswordArgon2(password, hash);
+            boolean|Error result = verifyArgon2(password, hash);
             if result is boolean {
                 test:assertTrue(result, "Password verification failed for: " + password);
             } else {
@@ -86,7 +86,7 @@ isolated function testHashPasswordArgon2InvalidParams() {
     ];
 
     foreach var {params, expectedError} in testCases {
-        string|Error hash = hashPasswordArgon2(password, params[0], params[1], params[2]);
+        string|Error hash = hashArgon2(password, params[0], params[1], params[2]);
         if hash is Error {
             test:assertEquals(hash.message(), expectedError);
         } else {
@@ -106,9 +106,9 @@ isolated function testVerifyPasswordArgon2Success() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashPasswordArgon2(password);
+        string|Error hash = hashArgon2(password);
         if hash is string {
-            boolean|Error result = verifyPasswordArgon2(password, hash);
+            boolean|Error result = verifyArgon2(password, hash);
             if result is boolean {
                 test:assertTrue(result, "Password verification failed for: " + password);
             } else {
@@ -133,10 +133,10 @@ isolated function testVerifyPasswordArgon2Failure() {
         ""
     ];
 
-    string|Error hash = hashPasswordArgon2(password);
+    string|Error hash = hashArgon2(password);
     if hash is string {
         foreach string wrongPassword in wrongPasswords {
-            boolean|Error result = verifyPasswordArgon2(wrongPassword, hash);
+            boolean|Error result = verifyArgon2(wrongPassword, hash);
             if result is boolean {
                 test:assertFalse(result, "Should fail for wrong password: " + wrongPassword);
             } else {
@@ -159,7 +159,7 @@ isolated function testVerifyPasswordArgon2InvalidHashFormat() {
     ];
 
     foreach string invalidHash in invalidHashes {
-        boolean|Error result = verifyPasswordArgon2(password, invalidHash);
+        boolean|Error result = verifyArgon2(password, invalidHash);
         if result is Error {
             test:assertTrue(result.message().startsWith("Invalid Argon2 hash format"));
         } else {
@@ -187,9 +187,9 @@ isolated function testArgon2PasswordHashUniqueness() {
 
     foreach string password in passwords {
         // Generate three hashes for the same password
-        string|Error hash1 = hashPasswordArgon2(password);
-        string|Error hash2 = hashPasswordArgon2(password);
-        string|Error hash3 = hashPasswordArgon2(password);
+        string|Error hash1 = hashArgon2(password);
+        string|Error hash2 = hashArgon2(password);
+        string|Error hash3 = hashArgon2(password);
 
         if (hash1 is string && hash2 is string && hash3 is string) {
             // Verify all hashes are different
@@ -198,9 +198,9 @@ isolated function testArgon2PasswordHashUniqueness() {
             test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + password);
 
             // Verify all hashes are valid for the password
-            boolean|Error verify1 = verifyPasswordArgon2(password, hash1);
-            boolean|Error verify2 = verifyPasswordArgon2(password, hash2);
-            boolean|Error verify3 = verifyPasswordArgon2(password, hash3);
+            boolean|Error verify1 = verifyArgon2(password, hash1);
+            boolean|Error verify2 = verifyArgon2(password, hash2);
+            boolean|Error verify3 = verifyArgon2(password, hash3);
 
             if (verify1 is boolean && verify2 is boolean && verify3 is boolean) {
                 test:assertTrue(verify1 && verify2 && verify3,

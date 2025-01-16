@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {}
 isolated function testHashPasswordDefaultWorkFactor() {
     string password = "Ballerina@123";
-    string|Error hash = hashPassword(password);
+    string|Error hash = hashBcrypt(password);
     if hash is string {
         test:assertTrue(hash.startsWith("$2a$12$"));
         test:assertTrue(hash.length() > 50);
@@ -31,7 +31,7 @@ isolated function testHashPasswordDefaultWorkFactor() {
 @test:Config {}
 isolated function testHashPasswordCustomWorkFactor() {
     string password = "Ballerina@123";
-    string|Error hash = hashPassword(password, 10);
+    string|Error hash = hashBcrypt(password, 10);
     if hash is string {
         test:assertTrue(hash.startsWith("$2a$10$"));
         test:assertTrue(hash.length() > 50);
@@ -57,13 +57,13 @@ isolated function testHashPasswordComplexPasswords() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashPassword(password);
+        string|Error hash = hashBcrypt(password);
         if hash is string {
             test:assertTrue(hash.startsWith("$2a$12$"));
             test:assertTrue(hash.length() > 50);
 
             // Verify the password immediately
-            boolean|Error result = verifyPassword(password, hash);
+            boolean|Error result = verifyBcrypt(password, hash);
             if result is boolean {
                 test:assertTrue(result, "Password verification failed for: " + password);
             } else {
@@ -81,7 +81,7 @@ isolated function testHashPasswordInvalidWorkFactor() {
     int[] invalidFactors = [2, 3, 32, 0, -1];
 
     foreach int factor in invalidFactors {
-        string|Error hash = hashPassword(password, factor);
+        string|Error hash = hashBcrypt(password, factor);
         if hash is Error {
             test:assertEquals(hash.message(), "Work factor must be between 4 and 31");
         } else {
@@ -101,9 +101,9 @@ isolated function testVerifyPasswordSuccess() {
     ];
 
     foreach string password in passwords {
-        string|Error hash = hashPassword(password);
+        string|Error hash = hashBcrypt(password);
         if hash is string {
-            boolean|Error result = verifyPassword(password, hash);
+            boolean|Error result = verifyBcrypt(password, hash);
             if result is boolean {
                 test:assertTrue(result, "Password verification failed for: " + password);
             } else {
@@ -128,10 +128,10 @@ isolated function testVerifyPasswordFailure() {
         "" // Empty string
     ];
 
-    string|Error hash = hashPassword(password);
+    string|Error hash = hashBcrypt(password);
     if hash is string {
         foreach string wrongPassword in wrongPasswords {
-            boolean|Error result = verifyPassword(wrongPassword, hash);
+            boolean|Error result = verifyBcrypt(wrongPassword, hash);
             if result is boolean {
                 test:assertFalse(result, "Should fail for wrong password: " + wrongPassword);
             } else {
@@ -153,7 +153,7 @@ isolated function testVerifyPasswordInvalidHashFormat() {
     ];
 
     foreach string invalidHash in invalidHashes {
-        boolean|Error result = verifyPassword(password, invalidHash);
+        boolean|Error result = verifyBcrypt(password, invalidHash);
         if result is Error {
             test:assertEquals(result.message(), "Invalid hash format");
         } else {
@@ -181,9 +181,9 @@ isolated function testPasswordHashUniqueness() {
 
     foreach string password in passwords {
         // Generate three hashes for the same password
-        string|Error hash1 = hashPassword(password);
-        string|Error hash2 = hashPassword(password);
-        string|Error hash3 = hashPassword(password);
+        string|Error hash1 = hashBcrypt(password);
+        string|Error hash2 = hashBcrypt(password);
+        string|Error hash3 = hashBcrypt(password);
 
         if hash1 is string && hash2 is string && hash3 is string {
             // Verify all hashes are different
@@ -192,9 +192,9 @@ isolated function testPasswordHashUniqueness() {
             test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + password);
 
             // Verify all hashes are valid for the password
-            boolean|Error verify1 = verifyPassword(password, hash1);
-            boolean|Error verify2 = verifyPassword(password, hash2);
-            boolean|Error verify3 = verifyPassword(password, hash3);
+            boolean|Error verify1 = verifyBcrypt(password, hash1);
+            boolean|Error verify2 = verifyBcrypt(password, hash2);
+            boolean|Error verify3 = verifyBcrypt(password, hash3);
 
             if verify1 is boolean && verify2 is boolean && verify3 is boolean {
                 test:assertTrue(verify1 && verify2 && verify3,
