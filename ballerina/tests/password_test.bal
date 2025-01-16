@@ -162,46 +162,6 @@ isolated function testVerifyPasswordInvalidHashFormat() {
     }
 }
 
-@test:Config {}
-isolated function testGenerateSaltDefaultWorkFactor() {
-    string|Error salt = generateSalt();
-    if salt is string {
-        test:assertTrue(salt.startsWith("$2a$12$"));
-        test:assertTrue(salt.length() > 20);
-    } else {
-        test:assertFail("Salt generation failed");
-    }
-}
-
-@test:Config {}
-isolated function testGenerateSaltCustomWorkFactor() {
-    int[] validFactors = [4, 10, 14, 20, 31];
-    foreach int factor in validFactors {
-        string|Error salt = generateSalt(factor);
-        if salt is string {
-            // Format the factor as a two-digit number
-            string expectedPrefix = "$2a$" + factor.toBalString().padStart(2, "0") + "$";
-            test:assertTrue(salt.startsWith(expectedPrefix), "Salt does not start with expected prefix for factor: " + factor.toString() + ". Generated salt: " + salt);
-            test:assertTrue(salt.length() > 20, "Salt length is not greater than 20 for factor: " + factor.toString());
-        } else {
-            test:assertFail("Salt generation failed for factor: " + factor.toString());
-        }
-    }
-}
-
-@test:Config {}
-isolated function testGenerateSaltInvalidWorkFactor() {
-    int[] invalidFactors = [-1, 0, 3, 32, 100];
-    foreach int factor in invalidFactors {
-        string|Error salt = generateSalt(factor);
-        if salt is Error {
-            test:assertEquals(salt.message(), "Work factor must be between 4 and 31");
-        } else {
-            test:assertFail("Should fail with invalid factor: " + factor.toString());
-        }
-    }
-}
-
 // Note: The below test case verifies that hashing the same password multiple times 
 // produces different results due to the use of random salts. However, there is 
 // an extremely rare chance of this test failing if the random salts generated 

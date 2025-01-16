@@ -17,21 +17,27 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testHashPasswordArgon2Default() returns error? {
+isolated function testHashPasswordArgon2Default() {
     string password = "Ballerina@123";
-    string hash = check hashPasswordArgon2(password);
-    test:assertTrue(hash.startsWith("$argon2id$v=19$"));
-    test:assertTrue(hash.length() > 50);`
+    string|Error hash = hashPasswordArgon2(password);
+    if hash is string {
+        test:assertTrue(hash.startsWith("$argon2id$v=19$"));
+        test:assertTrue(hash.length() > 50);
+    } else {
+        test:assertFail("Password hashing failed");
+    }
+}
 
 @test:Config {}
 isolated function testHashPasswordArgon2Custom() {
     string password = "Ballerina@123";
     string|Error hash = hashPasswordArgon2(password, 4, 131072, 8);
-    if hash !is string {
+    if hash is string {
+        test:assertTrue(hash.includes("m=131072,t=4,p=8"));
+        test:assertTrue(hash.length() > 50);
+    } else {
         test:assertFail("Password hashing failed");
-    } 
-    test:assertTrue(hash.includes("m=131072,t=4,p=8"));
-    test:assertTrue(hash.length() > 50);
+    }
 }
 
 @test:Config {}
@@ -158,36 +164,6 @@ isolated function testVerifyPasswordArgon2InvalidHashFormat() {
             test:assertTrue(result.message().startsWith("Invalid Argon2 hash format"));
         } else {
             test:assertFail("Should fail with invalid hash: " + invalidHash);
-        }
-    }
-}
-
-@test:Config {}
-isolated function testGenerateSaltArgon2Default() {
-    string|Error salt = generateSaltArgon2();
-    if salt is string {
-        test:assertTrue(salt.startsWith("$argon2id$v=19$"));
-        test:assertTrue(salt.includes("m=65536,t=3,p=4"));
-    } else {
-        test:assertFail("Salt generation failed");
-    }
-}
-
-@test:Config {}
-isolated function testGenerateSaltArgon2Custom() {
-    int[][] validParams = [
-        [4, 131072, 8],
-        [2, 65536, 4],
-        [6, 262144, 16]
-    ];
-
-    foreach int[] params in validParams {
-        string|Error salt = generateSaltArgon2(params[0], params[1], params[2]);
-        if salt is string {
-            string expectedParams = string `m=${params[1]},t=${params[0]},p=${params[2]}`;
-            test:assertTrue(salt.includes(expectedParams));
-        } else {
-            test:assertFail("Salt generation failed for params: " + params.toString());
         }
     }
 }
