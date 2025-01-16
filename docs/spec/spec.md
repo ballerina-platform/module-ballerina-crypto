@@ -1114,11 +1114,11 @@ crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(r
 byte[] decryptedData = check crypto:decryptRsaKemMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
 ```
 
-## 10. Password Hashing(#10-password-hashing)
+## 10. [Password Hashing](#10-password-hashing)
 
 The `crypto` module provides password hashing using BCrypt and Argon2id algorithms for secure password storage.
 
-### 10.1 BCrypt(#101-bcrypt)
+### 10.1 [BCrypt](#101-bcrypt)
 
 Implements the BCrypt password hashing algorithm based on the Blowfish cipher.
 
@@ -1144,7 +1144,7 @@ string hashedPassword2 = check crypto:hashBcrypt(password, 14);
 boolean isValid = check crypto:verifyBcrypt(password, hashedPassword1);
 ```
 
-### 10.2 Argon2(#102-argon2)
+### 10.2 [Argon2](#102-argon2)
 
 Implements the Argon2id variant of the Argon2 password hashing algorithm, optimized for both high memory usage and GPU resistance.
 
