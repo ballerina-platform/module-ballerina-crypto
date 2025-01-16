@@ -67,5 +67,4 @@ public class Hash {
     public static BArray hashKeccak256(BArray inputValue, Object saltValue) {
         return ValueCreator.createArrayValue(CryptoUtils.hash("Keccak-256", inputValue.getBytes(), saltValue));
     }
-
 }
