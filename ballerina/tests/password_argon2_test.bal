@@ -127,10 +127,9 @@ isolated function testVerifyPasswordArgon2InvalidHashFormat() {
 
     foreach string invalidHash in invalidHashes {
         boolean|Error result = verifyArgon2(password, invalidHash);
-        if result !is Error {
-            test:assertFail("Should fail with invalid hash: " + invalidHash);
-        }
-        test:assertTrue(result.message().startsWith("Invalid Argon2 hash format"));
+        test:assertTrue(result is Error, string `Should fail with invalid hash: ${invalidHash}`);
+        Error err = check result.ensureType();
+        test:assertTrue(err.message().startsWith("Invalid Argon2 hash format"));
     }
 }
 
