@@ -17,27 +17,21 @@
 import ballerina/test;
 
 @test:Config {}
-isolated function testHashPasswordArgon2Default() {
+isolated function testHashPasswordArgon2Default() returns error? {
     string password = "Ballerina@123";
-    string|Error hash = hashPasswordArgon2(password);
-    if hash is string {
-        test:assertTrue(hash.startsWith("$argon2id$v=19$"));
-        test:assertTrue(hash.length() > 50);
-    } else {
-        test:assertFail("Password hashing failed");
-    }
-}
+    string hash = check hashPasswordArgon2(password);
+    test:assertTrue(hash.startsWith("$argon2id$v=19$"));
+    test:assertTrue(hash.length() > 50);`
 
 @test:Config {}
 isolated function testHashPasswordArgon2Custom() {
     string password = "Ballerina@123";
     string|Error hash = hashPasswordArgon2(password, 4, 131072, 8);
-    if hash is string {
-        test:assertTrue(hash.includes("m=131072,t=4,p=8"));
-        test:assertTrue(hash.length() > 50);
-    } else {
+    if hash !is string {
         test:assertFail("Password hashing failed");
-    }
+    } 
+    test:assertTrue(hash.includes("m=131072,t=4,p=8"));
+    test:assertTrue(hash.length() > 50);
 }
 
 @test:Config {}
