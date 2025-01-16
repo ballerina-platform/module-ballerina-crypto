@@ -101,6 +101,9 @@ The conforming implementation of the specification is released and included in t
     * 9.2 [Decrypt](#92-decrypt)
        * 9.2.1 [ML-KEM-768-HPKE](#921-ml-kem-768-hpke)
        * 9.2.2 [RSA-KEM-ML-KEM-768-HPKE](#922-rsa-kem-ml-kem-768-hpke)
+10. [Password hashing](#10-password-hashing)
+    * 10.1 [BCrypt](#101-bcrypt)
+    * 10.2 [Argon2](#102-argon2)
 
        
 ## 1. [Overview](#1-overview)
@@ -1109,4 +1112,28 @@ byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
 crypto:PrivateKey mlkemPrivateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(mlkemKeyStore, "keyAlias", "keyStorePassword");
 crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias", "keyStorePassword");
 byte[] decryptedData = check crypto:decryptRsaKemMlKem768Hpke(cipherText, encapsulatedKey, rsaPrivateKey, mlkemPrivateKey);
+```
+
+## 10. [Password hashing](#10-password-hashing)
+
+The `crypto` module supports password hashing using BCrypt and Argon2id algorithms. BCrypt is an adaptive hashing function based on the Blowfish cipher, while Argon2id is a memory-hard function that provides resistance against GPU cracking attacks.
+
+### 10.1 [BCrypt](#101-bcrypt)
+
+This API can be used to hash passwords using BCrypt algorithm.
+
+```ballerina
+string password = "your-password";
+string hashedPassword = check crypto:hashBcrypt(password);
+boolean isValid = check crypto:verifyBcrypt(password, hashedPassword);
+```
+
+### 10.2 [Argon2](#102-argon2)
+
+This API can be used to hash passwords using Argon2id algorithm.
+
+```ballerina
+string password = "your-password";
+string hashedPassword = check crypto:hashArgon2(password);
+boolean isValid = check crypto:verifyArgon2(password, hashedPassword);
 ```
