@@ -135,4 +135,12 @@ public class Constants {
     public static final String END_OF_INPUT_STREAM = "END_OF_INPUT_STREAM";
     public static final String COMPRESSED_DATA_GENERATOR = "COMPRESSED_DATA_GENERATOR";
     public static final String KEY_ENCRYPTED_DATA = "KEY_ENCRYPTED_DATA";
+
+    // Hashing Algorithms
+    public static final String MD5 = "MD5";
+    public static final String SHA1 = "SHA-1";
+    public static final String SHA256 = "SHA-256";
+    public static final String SHA384 = "SHA-384";
+    public static final String SHA512 = "SHA-512";
+    public static final String KECCAK256 = "Keccak-256";
 }
