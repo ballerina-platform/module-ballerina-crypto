@@ -1171,6 +1171,6 @@ string password = "your-password";
 // Hash with default parameters
 string hashedPassword1 = check crypto:hashArgon2(password);
 // Hash with custom parameters
-string hashedPassword2 = check crypto:hashArgon2(password, 4, 131072, 8);
+string hashedPassword2 = check crypto:hashArgon2(password, iterations = 4, memory = 131072, parallelism = 8);
 boolean isValid = check crypto:verifyArgon2(password, hashedPassword1);
 ```

@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- [Introduce new APIs to support password hashing and verification](https://github.com/ballerina-platform/ballerina-library/issues/2744)
+- [Introduce new APIs to support Bcrypt and Argon2 hashing and verification](https://github.com/ballerina-platform/ballerina-library/issues/2744)
 
 ### Added
 
