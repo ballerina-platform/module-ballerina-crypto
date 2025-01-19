@@ -23,8 +23,6 @@ import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PasswordUtils;
 import org.bouncycastle.crypto.generators.BCrypt;
 
-import java.nio.charset.StandardCharsets;
-
 /**
  * Native implementation of BCrypt password hashing functions.
  * Provides methods for hashing passwords, verifying hashes, and generating salts using the BCrypt algorithm.
@@ -53,7 +51,7 @@ public class Password {
             } 
 
             byte[] salt = PasswordUtils.generateRandomSalt();
-            byte[] passwordBytes = password.getValue().getBytes(StandardCharsets.UTF_8);
+            byte[] passwordBytes = BCrypt.passwordToByteArray(password.getValue().toCharArray());
             byte[] hash = BCrypt.generate(passwordBytes, salt, (int) workFactor);
             
             return StringUtils.fromString(
@@ -95,7 +93,7 @@ public class Password {
             byte[] salt = new byte[PasswordUtils.SALT_LENGTH];
             System.arraycopy(saltAndHash, 0, salt, 0, PasswordUtils.SALT_LENGTH);
 
-            byte[] passwordBytes = password.getValue().getBytes(StandardCharsets.UTF_8);
+            byte[] passwordBytes = BCrypt.passwordToByteArray(password.getValue().toCharArray());
             byte[] newHash = BCrypt.generate(passwordBytes, salt, workFactor);
 
             byte[] originalHash = new byte[saltAndHash.length - PasswordUtils.SALT_LENGTH];

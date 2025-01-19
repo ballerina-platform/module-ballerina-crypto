@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.security.SecureRandom;
+import java.util.Locale;
 
 /**
  * Utility functions relevant to password hashing and validation operations.
@@ -108,7 +109,7 @@ public class PasswordUtils {
      */
     public static String formatBCryptHash(long workFactor, byte[] saltAndHash) {
         String saltAndHashBase64 = Base64.toBase64String(saltAndHash);
-        return String.format("$2a$%02d$%s", workFactor, saltAndHashBase64);
+        return String.format(Locale.ROOT, "$2a$%02d$%s", workFactor, saltAndHashBase64);
     }
 
     /**
@@ -123,7 +124,7 @@ public class PasswordUtils {
      */
     public static String formatArgon2Hash(long memory, long iterations, long parallelism, 
             String saltBase64, String hashBase64) {
-        return String.format("$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
+        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
                 memory, iterations, parallelism, saltBase64, hashBase64);
     }
 
@@ -137,7 +138,7 @@ public class PasswordUtils {
      * @return formatted Argon2 salt string
      */
     public static String formatArgon2Salt(long memory, long iterations, long parallelism, String saltBase64) {
-        return String.format("$argon2id$v=19$m=%d,t=%d,p=%d$%s",
+        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s",
                 memory, iterations, parallelism, saltBase64);
     }
 
