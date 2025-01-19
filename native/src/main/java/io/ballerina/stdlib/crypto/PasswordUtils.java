@@ -19,6 +19,7 @@ package io.ballerina.stdlib.crypto;
 
 import org.bouncycastle.util.encoders.Base64;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Locale;
 
@@ -164,13 +165,6 @@ public class PasswordUtils {
      * @return true if arrays are equal, false otherwise
      */
     public static boolean constantTimeArrayEquals(byte[] a, byte[] b) {
-        if (a.length != b.length) {
-            return false;
-        }
-        int result = 0;
-        for (int i = 0; i < a.length; i++) {
-            result |= a[i] ^ b[i];
-        }
-        return result == 0;
+        return MessageDigest.isEqual(a, b);
     }
 }
