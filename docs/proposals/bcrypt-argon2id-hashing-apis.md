@@ -4,7 +4,7 @@ _Authors_: @randilt
 _Reviewers_: @daneshk
 _Created_: 2025/01/20
 _Updated_: 2025/01/20  
-_Issue_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744)
+_Issues_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744), [#2441](https://github.com/ballerina-platform/ballerina-library/issues/2441)
 
 ## Summary
 
@@ -21,7 +21,7 @@ Currently, the Ballerina crypto module lacks built-in support for secure passwor
 Password hashing is a critical security requirement for any application that handles user authentication. While the crypto module provides various cryptographic operations, it currently lacks dedicated password hashing functionality. BCrypt and Argon2id were chosen because:
 
 1. [BCrypt](https://en.wikipedia.org/wiki/Bcrypt) is a well-established algorithm with a proven track record, adaptive work factor, and built-in salt generation
-2. Argon2id is the winner of the [Password Hashing Competition](https://www.password-hashing.net/), providing strong defense against both GPU-based and side-channel attacks through configurable memory, parallelism, and iteration parameters
+2. [Argon2id](https://en.wikipedia.org/wiki/Argon2) is the winner of the [Password Hashing Competition](https://www.password-hashing.net/), providing strong defense against both GPU-based and side-channel attacks through configurable memory, parallelism, and iteration parameters
 
 ## Description
 
@@ -61,28 +61,3 @@ A corresponding verification API:
 ```ballerina
 public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error;
 ```
-
-### Proposed Future Additions
-
-These additions will be proposed and implemented in separate iterations to maintain modularity and allow proper review and testing of each feature.
-
-#### Salt Management
-
-- Add support for custom salt generation with configurable length
-- Extend hashing APIs to accept custom salts
-- Expose utility functions used for salt generation in native implementation to Ballerina side.
-
-#### Additional Algorithms
-
-- Expand Argon2 family support:
-  - Argon2i for side-channel attack resistance
-  - Argon2d for maximum GPU cracking resistance
-- Add support for other popular password hashing algorithms:
-  - PBKDF2 with configurable hash functions
-  - scrypt with configurable parameters
-  - yescrypt
-
-#### API Enhancements
-
-- Add functions to upgrade hashes when security parameters need adjustment
-- Add support for pepper in password hashing
