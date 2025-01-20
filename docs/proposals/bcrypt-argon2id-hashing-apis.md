@@ -64,7 +64,7 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 
 ### Proposed Future Additions
 
-The following features are planned for future iterations:
+These additions will be proposed and implemented in separate iterations to maintain modularity and allow proper review and testing of each feature.
 
 #### Salt Management
 - Add support for custom salt generation with configurable length
@@ -83,5 +83,3 @@ The following features are planned for future iterations:
 #### API Enhancements
 - Add functions to upgrade hashes when security parameters need adjustment
 - Add support for pepper in password hashing
-
-These additions will be proposed and implemented in separate iterations to maintain modularity and allow proper review and testing of each feature.
