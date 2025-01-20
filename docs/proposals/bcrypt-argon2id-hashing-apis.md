@@ -1,10 +1,10 @@
 # Proposal: Introduce Password Hashing Support to Ballerina Crypto Module
 
-*Authors*: @randilt
-*Reviewers*: 
-*Created*: 2024/01/20
-*Updated*: 2024/01/20
-*Issue*: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744)
+_Authors_: @randilt
+_Reviewers_:
+_Created_: 2024/01/20
+_Updated_: 2024/01/20
+_Issue_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744)
 
 ## Summary
 
@@ -62,18 +62,26 @@ A corresponding verification API:
 public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error;
 ```
 
-### Default Parameters
+### Proposed Future Additions
 
-- BCrypt:
-  - work factor = 12 (2^12 iterations)
-- Argon2id:
-  - iterations = 3 (time cost)
-  - memory = 65536 KB (64MB)
-  - parallelism = 4 threads
+The following features are planned for future iterations:
 
-### Implementation Details
+#### Salt Management
+- Add support for custom salt generation with configurable length
+- Extend hashing APIs to accept custom salts
+- Expose utility functions used for salt generation in native implementation to Ballerina side.
 
-- Both algorithms will automatically generate and handle cryptographic salts
-- The hashed outputs will be returned in their respective standard formats:
-  - BCrypt: `$2a$12$LQV3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewYpwBAM7RHF.H9m`
-  - Argon2id: `$argon2id$v=19$m=65536,t=3,p=4$[salt]$[hash]`
+#### Additional Algorithms
+- Expand Argon2 family support:
+  - Argon2i for side-channel attack resistance
+  - Argon2d for maximum GPU cracking resistance
+- Add support for other popular password hashing algorithms:
+  - PBKDF2 with configurable hash functions
+  - scrypt with configurable parameters
+  - yescrypt
+
+#### API Enhancements
+- Add functions to upgrade hashes when security parameters need adjustment
+- Add support for pepper in password hashing
+
+These additions will be proposed and implemented in separate iterations to maintain modularity and allow proper review and testing of each feature.
