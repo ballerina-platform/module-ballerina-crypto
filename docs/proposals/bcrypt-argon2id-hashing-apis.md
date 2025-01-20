@@ -1,9 +1,13 @@
 # Proposal: Introduce Password Hashing Support to Ballerina Crypto Module
 
 _Authors_: @randilt
+
 _Reviewers_: @daneshk
+
 _Created_: 2025/01/20
-_Updated_: 2025/01/20  
+
+_Updated_: 2025/01/20
+
 _Issues_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744), [#2441](https://github.com/ballerina-platform/ballerina-library/issues/2441)
 
 ## Summary
