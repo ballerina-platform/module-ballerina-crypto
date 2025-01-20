@@ -1,10 +1,10 @@
 # Proposal: Introduce Password Hashing Support to Ballerina Crypto Module
 
 _Authors_: @randilt
-_Reviewers_: ...
-_Created_: 2024/01/20 
-_Updated_: 2024/01/20  
-_Issue_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744)  
+_Reviewers_: @daneshk
+_Created_: 2025/01/20
+_Updated_: 2025/01/20  
+_Issue_: [#2744](https://github.com/ballerina-platform/ballerina-library/issues/2744)
 
 ## Summary
 
@@ -67,11 +67,13 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 These additions will be proposed and implemented in separate iterations to maintain modularity and allow proper review and testing of each feature.
 
 #### Salt Management
+
 - Add support for custom salt generation with configurable length
 - Extend hashing APIs to accept custom salts
 - Expose utility functions used for salt generation in native implementation to Ballerina side.
 
 #### Additional Algorithms
+
 - Expand Argon2 family support:
   - Argon2i for side-channel attack resistance
   - Argon2d for maximum GPU cracking resistance
@@ -81,5 +83,6 @@ These additions will be proposed and implemented in separate iterations to maint
   - yescrypt
 
 #### API Enhancements
+
 - Add functions to upgrade hashes when security parameters need adjustment
 - Add support for pepper in password hashing
