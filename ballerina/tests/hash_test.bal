@@ -134,6 +134,15 @@ isolated function testHashSha512WithSalt() {
     test:assertEquals(hashSha512(input, salt).toBase16(), expectedSha512Hash);
 }
 
+
+@test:Config {}
+isolated function testHashKeccak256() {
+    byte[] input = "Ballerina test".toBytes();
+    string expectedKeccak256Hash =
+        "73b6cc25ab0656625ee654a6cdc8f1d1803a6330fba4f4bf5bd6b9018f7d3131";
+    test:assertEquals(hashKeccak256(input).toBase16(), expectedKeccak256Hash);
+}
+
 // tests for Argon2
 @test:Config {}
 isolated function testHashPasswordArgon2Default() returns error? {

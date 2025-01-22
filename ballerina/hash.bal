@@ -105,6 +105,21 @@ public isolated function crc32b(byte[] input) returns string = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
+# Returns the Keccak-256 hash of the given data.
+# ```ballerina
+# string dataString = "Hello Ballerina";
+# byte[] data = dataString.toBytes();
+# byte[] hash = crypto:hashKeccak256(data);
+# ```
+#
+# + input - Value to be hashed
+# + salt - Salt to be added
+# + return - Hashed output
+public isolated function hashKeccak256(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
+    name: "hashKeccak256",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
+} external;
+
 # Returns a BCrypt hash of the given password with optional work factor.
 # ```ballerina
 # string password = "mySecurePassword123";
@@ -164,4 +179,3 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
     name: "verifyPasswordArgon2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.PasswordArgon2"
 } external;
-

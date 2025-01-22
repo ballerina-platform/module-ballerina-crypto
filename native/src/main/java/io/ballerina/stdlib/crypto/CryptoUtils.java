@@ -124,7 +124,9 @@ public class CryptoUtils {
      */
     public static byte[] hash(String algorithm, byte[] input, Object salt) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            CryptoUtils.addBCProvider();  
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm); 
+
             if (salt != null) {
                 messageDigest.update(((BArray) salt).getBytes());
             }

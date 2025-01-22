@@ -22,6 +22,7 @@ import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BString;
+import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 
 import java.util.zip.CRC32;
@@ -45,23 +46,26 @@ public class Hash {
     }
 
     public static BArray hashMd5(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("MD5", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.MD5, inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha1(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-1", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.SHA1, inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha256(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-256", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.SHA256, inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha384(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-384", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.SHA384, inputValue.getBytes(), saltValue));
     }
 
     public static BArray hashSha512(BArray inputValue, Object saltValue) {
-        return ValueCreator.createArrayValue(CryptoUtils.hash("SHA-512", inputValue.getBytes(), saltValue));
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.SHA512, inputValue.getBytes(), saltValue));
     }
 
+    public static BArray hashKeccak256(BArray inputValue, Object saltValue) {
+        return ValueCreator.createArrayValue(CryptoUtils.hash(Constants.KECCAK256, inputValue.getBytes(), saltValue));
+    }
 }
