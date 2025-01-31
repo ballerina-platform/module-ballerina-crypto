@@ -16,17 +16,11 @@
  */
 
 plugins {
-    id "com.github.spotbugs" version "${githubSpotbugsVersion}"
-    id "com.github.johnrengelman.shadow" version "${githubShadowVersion}"
-    id "de.undercouch.download" version "${undercouchDownloadVersion}"
-    id "net.researchgate.release" version "${researchgateReleaseVersion}"
+    id "com.github.spotbugs"
+    id "com.github.johnrengelman.shadow"
+    id "de.undercouch.download"
+    id "net.researchgate.release"
 }
-
-ext.puppycrawlCheckstyleVersion = project.puppycrawlCheckstyleVersion
-ext.bouncycastleVersion = project.bouncycastleVersion
-ext.ballerinaLangVersion = project.ballerinaLangVersion
-ext.stdlibTimeVersion = project.stdlibTimeVersion
-ext.stdlibIoVersion = project.stdlibIoVersion
 
 allprojects {
     group = project.group
@@ -65,8 +59,14 @@ subprojects {
 
     configurations {
         ballerinaStdLibs
+        jbalTools
     }
     dependencies {
+        /* JBallerina Tools */
+        jbalTools ("org.ballerinalang:jballerina-tools:${ballerinaLangVersion}") {
+            transitive = false
+        }
+
         /* Standard libraries */
         ballerinaStdLibs "io.ballerina.stdlib:time-ballerina:${stdlibTimeVersion}"
         ballerinaStdLibs "io.ballerina.stdlib:io-ballerina:${stdlibIoVersion}"
