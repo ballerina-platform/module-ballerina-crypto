@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 
 
-## [Unreleased]
+## [2.8.0] - 2025-02-11
 
 ### Added
 - [Introduce new APIs to support PGP encryption and decryption with streams](https://github.com/ballerina-platform/ballerina-library/issues/7064)
