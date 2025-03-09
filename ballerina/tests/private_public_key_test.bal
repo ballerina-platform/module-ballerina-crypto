@@ -33,7 +33,7 @@ isolated function testParseEncryptedMlKem768PrivateKeyFromP12() returns Error? {
         password: "ballerina"
     };
     PrivateKey result = check decodeMlKem768PrivateKeyFromKeyStore(keyStore, "mlkem-keypair", "ballerina");
-    test:assertEquals(result.algorithm, "KYBER768");
+    test:assertEquals(result.algorithm, "ML-KEM-768");
 }
 
 @test:Config {}
@@ -43,7 +43,7 @@ isolated function testParseEncryptedMlDsa65PrivateKeyFromP12() returns Error? {
         password: "ballerina"
     };
     PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
-    test:assertEquals(result.algorithm, "DILITHIUM3");
+    test:assertEquals(result.algorithm, "ML-DSA-65");
 }
 
 @test:Config {}
@@ -248,7 +248,7 @@ isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
 @test:Config {}
 isolated function testParseEncryptedMlDsa65PrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
-    test:assertEquals(result.algorithm, "DILITHIUM3");
+    test:assertEquals(result.algorithm, "ML-DSA-65");
 }
 
 @test:Config {}
@@ -264,7 +264,7 @@ isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
 @test:Config {}
 isolated function testParseEncryptedMlKem768PrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH, "ballerina");
-    test:assertEquals(result.algorithm, "KYBER768");
+    test:assertEquals(result.algorithm, "ML-KEM-768");
 }
 
 @test:Config {}
@@ -501,7 +501,7 @@ isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
 @test:Config {}
 isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeMlDsa65PublicKeyFromCertFile(MLDSA_CERT_PATH);
-    test:assertEquals(publicKey.algorithm, "DILITHIUM3");
+    test:assertEquals(publicKey.algorithm, "ML-DSA-65");
     Certificate certificate = <Certificate>publicKey.certificate;
 
     int serial = certificate.serial;
@@ -509,16 +509,16 @@ isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     string subject = certificate.subject;
     string signingAlgorithm = certificate.signingAlgorithm;
 
-    test:assertEquals(serial, 1023822328749742100);
+    test:assertEquals(serial, 4818446483955774646);
     test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
     test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
-    test:assertEquals(signingAlgorithm, "DILITHIUM3");
+    test:assertEquals(signingAlgorithm, "ML-DSA-65");
 }
 
 @test:Config {}
 isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeMlKem768PublicKeyFromCertFile(MLKEM_CERT_PATH);
-    test:assertEquals(publicKey.algorithm, "KYBER768");
+    test:assertEquals(publicKey.algorithm, "ML-KEM-768");
     Certificate certificate = <Certificate>publicKey.certificate;
 
     int serial = certificate.serial;
@@ -526,7 +526,7 @@ isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
     string subject = certificate.subject;
     string signingAlgorithm = certificate.signingAlgorithm;
 
-    test:assertEquals(serial, 749281432);
+    test:assertEquals(serial, 787519857);
     test:assertEquals(issuer, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
     test:assertEquals(subject, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
     test:assertEquals(signingAlgorithm, "SHA256withRSA");
