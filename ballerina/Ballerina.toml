@@ -21,23 +21,23 @@ path = "../native/build/libs/crypto-native-2.9.0-SNAPSHOT.jar"
 [[platform.java21.dependency]]
 groupId = "org.bouncycastle"
 artifactId = "bcpkix-jdk18on"
-version = "1.80"
-path = "./lib/bcpkix-jdk18on-1.80.jar"
+version = "1.78"
+path = "./lib/bcpkix-jdk18on-1.78.jar"
 
 [[platform.java21.dependency]]
 groupId = "org.bouncycastle"
 artifactId = "bcprov-jdk18on"
-version = "1.80"
-path = "./lib/bcprov-jdk18on-1.80.jar"
+version = "1.78"
+path = "./lib/bcprov-jdk18on-1.78.jar"
 
 [[platform.java21.dependency]]
 groupId = "org.bouncycastle"
 artifactId = "bcutil-jdk18on"
-version = "1.80"
-path = "./lib/bcutil-jdk18on-1.80.jar"
+version = "1.78"
+path = "./lib/bcutil-jdk18on-1.78.jar"
 
 [[platform.java21.dependency]]
 groupId = "org.bouncycastle"
 artifactId = "bcpg-jdk18on"
-version = "1.80"
-path = "./lib/bcpg-jdk18on-1.80.jar"
+version = "1.78"
+path = "./lib/bcpg-jdk18on-1.78.jar"

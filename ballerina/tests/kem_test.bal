@@ -40,7 +40,7 @@ isolated function testEncapsulateMlKem768WithInvalidPublicKey() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "ballerina");
     EncapsulationResult|Error encapsulationResult = encapsulateMlKem768(publicKey);
     if encapsulationResult is Error {
-        test:assertEquals(encapsulationResult.message(), "Error occurred while generating encapsulated key: key generator locked to ML-KEM-768");
+        test:assertEquals(encapsulationResult.message(), "Error occurred while generating encapsulated key: key generator locked to KYBER768");
     } else {
         test:assertFail("Expected error not found.");
     }
@@ -63,7 +63,7 @@ isolated function testDecapsulateMlKem768WithInvalidPrivateKey() returns Error? 
     byte[]|Error sharedSecret = decapsulateMlKem768(encapsulationResult.encapsulatedSecret, privateKey);
     
     if sharedSecret is Error {
-        test:assertEquals(sharedSecret.message(), "Error occurred while extracting secret: key generator locked to ML-KEM-768");
+        test:assertEquals(sharedSecret.message(), "Error occurred while extracting secret: key generator locked to KYBER768");
     } else {
         test:assertFail("Expected error not found.");
     }
