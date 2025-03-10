@@ -106,7 +106,7 @@ public class Decode {
 
     public static Object decodeMlKem768PrivateKeyFromKeyStore(BMap<BString, BString> keyStoreRecord, BString keyAlias,
                                                                  BString keyPassword) {
-        CryptoUtils.addBCProvider();
+        CryptoUtils.addBCPQCProvider();
         Object decodedPrivateKey = getPrivateKey(keyStoreRecord, keyAlias, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlKem768PrivateKeyRecord(privateKey);
@@ -184,7 +184,7 @@ public class Decode {
     }
 
     public static Object decodeMlKem768PrivateKeyFromKeyFile(BString keyFilePath, Object keyPassword) {
-        CryptoUtils.addBCProvider();
+        CryptoUtils.addBCPQCProvider();
         Object decodedPrivateKey = getPrivateKey(keyFilePath, keyPassword);
         if (decodedPrivateKey instanceof PrivateKey privateKey) {
             return buildMlKem768PrivateKeyRecord(privateKey);
@@ -303,7 +303,7 @@ public class Decode {
 
     public static Object decodeMlKem768PublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord,
                                                                  BString keyAlias) {
-        CryptoUtils.addBCProvider();
+        CryptoUtils.addBCPQCProvider();
         Object certificate = getPublicKey(trustStoreRecord, keyAlias);
         if (certificate instanceof Certificate publicKey) {
             return buildMlKem768PublicKeyRecord(publicKey);
@@ -385,7 +385,7 @@ public class Decode {
     }
 
     public static Object decodeMlKem768PublicKeyFromCertFile(BString certFilePath) {
-        CryptoUtils.addBCProvider();
+        CryptoUtils.addBCPQCProvider();
         File certFile = new File(certFilePath.getValue());
         try (FileInputStream fileInputStream = new FileInputStream(certFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance(Constants.CERTIFICATE_TYPE_X509);

@@ -107,10 +107,10 @@ public class Constants {
     public static final String RSA_ALGORITHM = "RSA";
 
     // ML-DSA-65 signing algorithm
-    public static final String MLDSA65_ALGORITHM = "ML-DSA-65";
+    public static final String MLDSA65_ALGORITHM = "DILITHIUM3";
 
     // ML-KEM-768 key encapsulation mechanism
-    public static final String MLKEM768_ALGORITHM = "ML-KEM-768";
+    public static final String MLKEM768_ALGORITHM = "KYBER768";
 
     // EC key algorithm
     public static final String EC_ALGORITHM = "EC";
