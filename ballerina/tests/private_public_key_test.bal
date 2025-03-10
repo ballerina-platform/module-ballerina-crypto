@@ -261,14 +261,6 @@ isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
     }
 }
 
-// Removing the following test until a proper PKCS8 key is available
-
-// @test:Config {}
-// isolated function testParseEncryptedMlKem768PrivateKeyFromKeyFile() returns Error? {
-//     PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH, "ballerina");
-//     test:assertEquals(result.algorithm, "ML-KEM-768");
-// }
-
 @test:Config {}
 isolated function testParseErrorMlKem768PrivateKeyFromKeyFile() returns Error? {
     PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
