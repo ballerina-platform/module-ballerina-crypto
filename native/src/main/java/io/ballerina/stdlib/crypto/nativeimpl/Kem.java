@@ -25,7 +25,7 @@ import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
-import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -36,10 +36,10 @@ public class Kem {
     }
 
     public static Object encapsulateMlKem768(BMap<?, ?> publicKey) {
-        CryptoUtils.addBCPQCProvider();
+        CryptoUtils.addBCProvider();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         Object encapsulate = CryptoUtils.generateEncapsulated(Constants.MLKEM768_ALGORITHM, key,
-                BouncyCastlePQCProvider.PROVIDER_NAME);
+                BouncyCastleProvider.PROVIDER_NAME);
         if (encapsulate instanceof SecretKeyWithEncapsulation secretKeyWithEncapsulation) {
             return getEncapsulationResultRecord(secretKeyWithEncapsulation);
         }
@@ -66,11 +66,11 @@ public class Kem {
     }
 
     public static Object decapsulateMlKem768(BArray inputValue, BMap<?, ?> privateKey) {
-        CryptoUtils.addBCPQCProvider();
+        CryptoUtils.addBCProvider();
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
         return CryptoUtils.extractSecret(input, Constants.MLKEM768_ALGORITHM, key,
-                BouncyCastlePQCProvider.PROVIDER_NAME);
+                BouncyCastleProvider.PROVIDER_NAME);
     }
 
     public static Object decapsulateRsaKem(BArray inputValue, BMap<?, ?> privateKey) {
