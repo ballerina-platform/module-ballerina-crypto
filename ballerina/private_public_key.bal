@@ -24,10 +24,10 @@ public type KeyAlgorithm RSA|MLKEM768|MLDSA65;
 public const RSA = "RSA";
 
 # The `ML-KEM-768` algorithm.
-public const MLKEM768 = "KYBER768";
+public const MLKEM768 = "ML-KEM-768";
 
 # The `ML-DSA-65` algorithm.
-public const MLDSA65 = "DILITHIUM3";
+public const MLDSA65 = "ML-DSA-65";
 
 # Represents the KeyStore-related configurations.
 #
