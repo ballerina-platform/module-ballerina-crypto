@@ -69,6 +69,31 @@ public class PasswordUtils {
     public static final int HASH_LENGTH = 32;
     
     /**
+     * Default number of iterations for PBKDF2.
+     */
+    public static final int DEFAULT_PBKDF2_ITERATIONS = 210000;
+    
+    /**
+     * Minimum number of iterations for PBKDF2.
+     */
+    public static final int MIN_PBKDF2_ITERATIONS = 10000;
+    
+    /**
+     * Length of the generated hash in bytes for PBKDF2.
+     */
+    public static final int PBKDF2_HASH_LENGTH = 32;
+    
+    /**
+     * Default HMAC algorithm for PBKDF2.
+     */
+    public static final String DEFAULT_PBKDF2_ALGORITHM = "SHA256";
+    
+    /**
+     * Supported HMAC algorithms for PBKDF2.
+     */
+    public static final String[] SUPPORTED_PBKDF2_ALGORITHMS = {"SHA1", "SHA256", "SHA512"}; 
+    
+    /**
      * Secure random number generator for salt generation.
      */
     public static final SecureRandom SECURE_RANDOM = new SecureRandom();
@@ -88,6 +113,39 @@ public class PasswordUtils {
             );
         }
         return null;
+    }
+    
+    /**
+     * Validate if the provided PBKDF2 iterations is within acceptable bounds.
+     *
+     * @param iterations the iterations count to validate
+     * @return null if valid, error if invalid
+     */
+    public static Object validatePBKDF2Iterations(long iterations) {
+        if (iterations < MIN_PBKDF2_ITERATIONS) {
+            return CryptoUtils.createError(
+                String.format("Iterations must be at least %d", MIN_PBKDF2_ITERATIONS)
+            );
+        }
+        return null;
+    }
+    
+    /**
+     * Validate if the provided PBKDF2 algorithm is supported.
+     *
+     * @param algorithm the HMAC algorithm to validate
+     * @return null if valid, error if invalid
+     */
+    public static Object validatePBKDF2Algorithm(String algorithm) {
+        for (String supportedAlg : SUPPORTED_PBKDF2_ALGORITHMS) {
+            if (supportedAlg.equalsIgnoreCase(algorithm)) {
+                return null;
+            }
+        }
+        return CryptoUtils.createError(
+            String.format("Unsupported algorithm. Must be one of: %s", 
+                String.join(", ", SUPPORTED_PBKDF2_ALGORITHMS))
+        );
     }
 
     /**
@@ -141,6 +199,34 @@ public class PasswordUtils {
     public static String formatArgon2Salt(long memory, long iterations, long parallelism, String saltBase64) {
         return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s",
                 memory, iterations, parallelism, saltBase64);
+    }
+    
+    /**
+     * Format a PBKDF2 hash string according to the standard format.
+     *
+     * @param algorithm the HMAC algorithm used
+     * @param iterations iteration count
+     * @param saltBase64 Base64 encoded salt
+     * @param hashBase64 Base64 encoded hash
+     * @return formatted PBKDF2 hash string
+     */
+    public static String formatPBKDF2Hash(String algorithm, long iterations, 
+            String saltBase64, String hashBase64) {
+        return String.format(Locale.ROOT, "$pbkdf2-%s$i=%d$%s$%s",
+                algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64, hashBase64);
+    }
+    
+    /**
+     * Format a PBKDF2 salt string according to the standard format.
+     *
+     * @param algorithm the HMAC algorithm used
+     * @param iterations iteration count
+     * @param saltBase64 Base64 encoded salt
+     * @return formatted PBKDF2 salt string
+     */
+    public static String formatPBKDF2Salt(String algorithm, long iterations, String saltBase64) {
+        return String.format(Locale.ROOT, "$pbkdf2-%s$i=%d$%s",
+                algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64);
     }
 
     /**
