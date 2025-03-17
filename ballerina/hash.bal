@@ -162,7 +162,7 @@ public isolated function verifyBcrypt(string password, string hashedPassword) re
 # + return - Argon2id hashed password string or Error if hashing fails
 public isolated function hashArgon2(string password, int iterations = 3, int memory = 65536, int parallelism = 4) returns string|Error = @java:Method {
     name: "hashPasswordArgon2",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.PasswordArgon2"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
 
 # Verifies if a password matches an Argon2id hashed password.
@@ -177,5 +177,5 @@ public isolated function hashArgon2(string password, int iterations = 3, int mem
 # + return - Boolean indicating if password matches or Error if verification fails
 public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error = @java:Method {
     name: "verifyPasswordArgon2",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.PasswordArgon2"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
