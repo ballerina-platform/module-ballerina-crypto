@@ -179,3 +179,46 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
     name: "verifyPasswordArgon2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
+
+# Returns a PBKDF2 hash of the given password with optional parameters.
+# ```ballerina
+# string password = "mySecurePassword123";
+# string|crypto:Error hash = crypto:hashPbkdf2(password);
+# ```
+#
+# + password - Password string to be hashed
+# + iterations - Optional number of iterations. Default is 10000
+# + algorithm - Optional HMAC algorithm (SHA1, SHA256, SHA512). Default is SHA256
+# + return - PBKDF2 hashed password string or Error if hashing fails
+public isolated function hashPbkdf2(string password, int iterations = 10000, string algorithm = "SHA256") returns string|Error = @java:Method {
+    name: "hashPasswordPBKDF2",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
+} external;
+
+# Verifies if a password matches a PBKDF2 hashed password.
+# ```ballerina
+# string password = "mySecurePassword123";
+# string hashedPassword = "$pbkdf2-sha256$i=10000$salt$hash";
+# boolean|crypto:Error matches = crypto:verifyPbkdf2(password, hashedPassword);
+# ```
+#
+# + password - Password string to verify
+# + hashedPassword - PBKDF2 hashed password to verify against
+# + return - Boolean indicating if password matches or Error if verification fails
+public isolated function verifyPbkdf2(string password, string hashedPassword) returns boolean|Error = @java:Method {
+    name: "verifyPasswordPBKDF2",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
+} external;
+
+# Generates a salt string for PBKDF2 with optional parameters.
+# ```ballerina
+# string|crypto:Error salt = crypto:generateSaltPbkdf2();
+# ```
+#
+# + iterations - Optional number of iterations. Default is 10000
+# + algorithm - Optional HMAC algorithm (SHA1, SHA256, SHA512). Default is SHA256
+# + return - Formatted salt string or Error if generation fails
+public isolated function generateSaltPbkdf2(int iterations = 10000, string algorithm = "SHA256") returns string|Error = @java:Method {
+    name: "generateSaltPBKDF2",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
+} external;

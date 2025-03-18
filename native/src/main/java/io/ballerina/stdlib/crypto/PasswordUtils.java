@@ -91,7 +91,7 @@ public class PasswordUtils {
     /**
      * Supported HMAC algorithms for PBKDF2.
      */
-    public static final String[] SUPPORTED_PBKDF2_ALGORITHMS = {"SHA1", "SHA256", "SHA512"}; 
+    static final String[] SUPPORTED_PBKDF2_ALGORITHMS = {"SHA1", "SHA256", "SHA512"}; 
     
     /**
      * Secure random number generator for salt generation.

@@ -27,11 +27,19 @@ import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 /**
  * Native implementation of password hashing functions.
  * Provides methods for hashing passwords, verifying hashes, and generating salts using
- * the BCrypt and Argon2id algorithms.
+ * the BCrypt, Argon2id, and PBKDF2 algorithms.
  */
 public class Password {
     
@@ -278,5 +286,181 @@ public class Password {
         } catch (Exception e) {
             return CryptoUtils.createError("Error occurred while generating Argon2 salt: " + e.getMessage());
         }
+    }
+
+    // PBKDF2 methods
+    
+    /**
+     * Hash a password using PBKDF2 with default parameters.
+     *
+     * @param password the password to hash
+     * @return hashed password string or error
+     */
+    public static Object hashPasswordPBKDF2(BString password) {
+        return hashPasswordPBKDF2(password, PasswordUtils.DEFAULT_PBKDF2_ITERATIONS, 
+                                  StringUtils.fromString(PasswordUtils.DEFAULT_PBKDF2_ALGORITHM));
+    }
+    
+    /**
+     * Hash a password using PBKDF2 with custom parameters.
+     *
+     * @param password the password to hash
+     * @param iterations number of iterations
+     * @param algorithm HMAC algorithm to use (SHA1, SHA256, SHA512)
+     * @return hashed password string or error
+     */
+    public static Object hashPasswordPBKDF2(BString password, long iterations, BString algorithm) {
+        try {
+            String alg = algorithm.getValue();
+            
+            Object validationError = PasswordUtils.validatePBKDF2Iterations(iterations);
+            if (validationError != null) {
+                return validationError;
+            }
+            
+            validationError = PasswordUtils.validatePBKDF2Algorithm(alg);
+            if (validationError != null) {
+                return validationError;
+            }
+            
+            if (password.getValue().length() == 0) {
+                return CryptoUtils.createError("Password cannot be empty");
+            }
+            
+            byte[] salt = PasswordUtils.generateRandomSalt();
+            
+            byte[] hash = generatePBKDF2Hash(password.getValue(), salt, (int) iterations, alg);
+            
+            String saltBase64 = Base64.toBase64String(salt);
+            String hashBase64 = Base64.toBase64String(hash);
+            
+            String result = PasswordUtils.formatPBKDF2Hash(alg, iterations, saltBase64, hashBase64);
+            
+            return StringUtils.fromString(result);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            return CryptoUtils.createError("Error occurred while hashing password with PBKDF2: " + e.getMessage());
+        } catch (RuntimeException e) {
+            return CryptoUtils.createError("Unexpected error: " + e.getMessage());
+        } catch (Exception e) {
+            return CryptoUtils.createError("Error occurred while hashing password with PBKDF2: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Verify a password against a PBKDF2 hash.
+     *
+     * @param password the password to verify
+     * @param hashedPassword the hashed password to verify against
+     * @return true if password matches, false if not, or error if verification fails
+     */
+    public static Object verifyPasswordPBKDF2(BString password, BString hashedPassword) {
+        try {
+            String hash = hashedPassword.getValue();
+            Pattern pattern = Pattern.compile("\\$pbkdf2-(\\w+)\\$i=(\\d+)\\$(\\w+)\\$(\\w+)");
+            Matcher matcher = pattern.matcher(hash);
+            
+            if (!matcher.matches()) {
+                return CryptoUtils.createError("Invalid PBKDF2 hash format");
+            }
+            
+            String algorithm = matcher.group(1).toUpperCase(Locale.ROOT);
+            int iterations = Integer.parseInt(matcher.group(2));
+            byte[] salt = Base64.decode(matcher.group(3));
+            byte[] originalHash = Base64.decode(matcher.group(4));
+            
+            byte[] newHash = generatePBKDF2Hash(password.getValue(), salt, iterations, algorithm);
+            
+            return PasswordUtils.constantTimeArrayEquals(newHash, originalHash);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            return CryptoUtils.createError("Error occurred while verifying password: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return CryptoUtils.createError("Invalid hash format: " + e.getMessage());
+        } catch (RuntimeException e) {
+            return CryptoUtils.createError("Unexpected error: " + e.getMessage());
+        } catch (Exception e) {
+            return CryptoUtils.createError("Error occurred while verifying password: " + e.getMessage());
+        } 
+    }
+    
+    /**
+     * Generate a salt string for PBKDF2 with default parameters.
+     *
+     * @return formatted salt string or error
+     */
+    public static Object generateSaltPBKDF2() {
+        return generateSaltPBKDF2(PasswordUtils.DEFAULT_PBKDF2_ITERATIONS, 
+                                 StringUtils.fromString(PasswordUtils.DEFAULT_PBKDF2_ALGORITHM));
+    }
+    
+    /**
+     * Generate a salt string for PBKDF2 with custom parameters.
+     *
+     * @param iterations number of iterations
+     * @param algorithm HMAC algorithm to use (SHA1, SHA256, SHA512)
+     * @return formatted salt string or error
+     */
+    public static Object generateSaltPBKDF2(long iterations, BString algorithm) {
+        try {
+            String alg = algorithm.getValue();
+            
+            Object validationError = PasswordUtils.validatePBKDF2Iterations(iterations);
+            if (validationError != null) {
+                return validationError;
+            }
+            
+            validationError = PasswordUtils.validatePBKDF2Algorithm(alg);
+            if (validationError != null) {
+                return validationError;
+            }
+            
+            byte[] salt = PasswordUtils.generateRandomSalt();
+            String saltBase64 = Base64.toBase64String(salt);
+            
+            String result = PasswordUtils.formatPBKDF2Salt(alg, iterations, saltBase64);
+            
+            return StringUtils.fromString(result);
+        } catch (Exception e) {
+            return CryptoUtils.createError("Error occurred while generating PBKDF2 salt: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Generate PBKDF2 hash using the given parameters.
+     *
+     * @param password password to hash
+     * @param salt salt to use
+     * @param iterations number of iterations
+     * @param algorithm HMAC algorithm to use (SHA1, SHA256, SHA512)
+     * @return hash byte array
+     * @throws NoSuchAlgorithmException if algorithm is not available
+     * @throws InvalidKeySpecException if key specification is invalid
+     */
+    private static byte[] generatePBKDF2Hash(String password, byte[] salt, int iterations, String algorithm)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        
+        String hmacAlgorithm = algorithm.toUpperCase(Locale.ROOT);
+        String pbkdf2Algorithm;
+        int keyLength;
+        
+        switch (hmacAlgorithm) {
+            case "SHA1":
+                pbkdf2Algorithm = "PBKDF2WithHmacSHA1";
+                keyLength = 20; // SHA-1 produces 160-bit (20-byte) hash
+                break;
+            case "SHA256":
+                pbkdf2Algorithm = "PBKDF2WithHmacSHA256";
+                keyLength = 32; // SHA-256 produces 256-bit (32-byte) hash
+                break;
+            case "SHA512":
+                pbkdf2Algorithm = "PBKDF2WithHmacSHA512";
+                keyLength = 64; // SHA-512 produces 512-bit (64-byte) hash
+                break;
+            default:
+                throw new NoSuchAlgorithmException("Unsupported algorithm: " + algorithm);
+        }
+        
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keyLength * 8);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance(pbkdf2Algorithm);
+        return factory.generateSecret(spec).getEncoded();
     }
 }

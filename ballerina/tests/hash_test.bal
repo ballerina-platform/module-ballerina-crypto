@@ -336,6 +336,121 @@ isolated function testEmptyPasswordError(string algorithm) returns error? {
     test:assertEquals(hash.message(), "Password cannot be empty");
 }
 
+// tests for PBKDF2
+@test:Config {}
+isolated function testHashPasswordPbkdf2Default() returns error? {
+    string password = "Ballerina@123";
+    string hash = check hashPbkdf2(password);
+    test:assertTrue(hash.startsWith("$pbkdf2-sha256$i=10000$"));
+    test:assertTrue(hash.length() > 50);
+}
+
+@test:Config {}
+isolated function testHashPasswordPbkdf2Custom() returns error? {
+    string password = "Ballerina@123";
+    string hash = check hashPbkdf2(password, 15000, "SHA512");
+    test:assertTrue(hash.includes("$pbkdf2-sha512$i=15000$"));
+    test:assertTrue(hash.length() > 50);
+}
+
+@test:Config {
+    dataProvider: complexPasswordsDataProvider
+}
+isolated function testHashPasswordPbkdf2ComplexPasswords(ComplexPassword data) returns error? {
+    string hash = check hashPbkdf2(data.password);
+    test:assertTrue(hash.startsWith("$pbkdf2-sha256$i=10000$"));
+    boolean result = check verifyPbkdf2(data.password, hash);
+    test:assertTrue(result, "Password verification failed for: " + data.password);
+}
+
+@test:Config {
+    dataProvider: invalidPbkdf2ParamsDataProvider
+}
+isolated function testHashPasswordPbkdf2InvalidParams(InvalidPbkdf2Params data) {
+    string password = "Ballerina@123";
+    string|Error hash = hashPbkdf2(password, data.iterations, data.algorithm);
+    if hash !is Error {
+        test:assertFail(string `Should fail with invalid parameters: iterations=${data.iterations}, algorithm=${data.algorithm}`);
+    }
+    test:assertEquals(hash.message(), data.expectedError);
+}
+
+@test:Config {
+    dataProvider: validPasswordsDataProvider
+}
+isolated function testVerifyPasswordPbkdf2Success(ValidPassword data) returns error? {
+    string hash = check hashPbkdf2(data.password);
+    boolean result = check verifyPbkdf2(data.password, hash);
+    test:assertTrue(result, "Password verification failed for: " + data.password);
+}
+
+@test:Config {
+    dataProvider: wrongPasswordsDataProvider
+}
+isolated function testVerifyPasswordPbkdf2Failure(PasswordPair data) returns error? {
+    string hash = check hashPbkdf2(data.correctPassword);
+    boolean result = check verifyPbkdf2(data.wrongPassword, hash);
+    test:assertFalse(result, "Should fail for wrong password: " + data.wrongPassword);
+}
+
+@test:Config {
+    dataProvider: invalidPbkdf2HashesDataProvider
+}
+isolated function testVerifyPasswordPbkdf2InvalidHashFormat(InvalidHash data) {
+    string password = "Ballerina@123";
+    boolean|Error result = verifyPbkdf2(password, data.hash);
+    if result !is Error {
+        test:assertFail("Should fail with invalid hash: " + data.hash);
+    }
+    test:assertTrue(result.message().startsWith(data.expectedError));
+}
+
+@test:Config {
+    dataProvider: uniquenessPasswordsDataProvider
+}
+isolated function testPbkdf2PasswordHashUniqueness(ValidPassword data) returns error? {
+    string hash1 = check hashPbkdf2(data.password);
+    string hash2 = check hashPbkdf2(data.password);
+    string hash3 = check hashPbkdf2(data.password);
+
+    test:assertNotEquals(hash1, hash2, "Hashes should be unique for: " + data.password);
+    test:assertNotEquals(hash2, hash3, "Hashes should be unique for: " + data.password);
+    test:assertNotEquals(hash1, hash3, "Hashes should be unique for: " + data.password);
+
+    boolean verify1 = check verifyPbkdf2(data.password, hash1);
+    boolean verify2 = check verifyPbkdf2(data.password, hash2);
+    boolean verify3 = check verifyPbkdf2(data.password, hash3);
+
+    test:assertTrue(verify1 && verify2 && verify3,
+            "All hashes should verify successfully for: " + data.password);
+}
+
+@test:Config {
+    dataProvider: pbkdf2AlgorithmsDataProvider
+}
+isolated function testPbkdf2DifferentAlgorithms(string algorithm) returns error? {
+    string password = "Ballerina@123";
+    string hash = check hashPbkdf2(password, 10000, algorithm);
+    
+    test:assertTrue(hash.startsWith("$pbkdf2-" + algorithm.toLowerAscii() + "$"), 
+            "Hash should start with correct algorithm identifier");
+    
+    boolean result = check verifyPbkdf2(password, hash);
+    test:assertTrue(result, "Password verification failed for algorithm: " + algorithm);
+}
+
+@test:Config {}
+isolated function testPbkdf2GenerateSaltDefault() returns error? {
+    string salt = check generateSaltPbkdf2();
+    test:assertTrue(salt.startsWith("$pbkdf2-sha256$i=10000$"));
+}
+
+@test:Config {}
+isolated function testPbkdf2GenerateSaltCustom() returns error? {
+    string salt = check generateSaltPbkdf2(12000, "SHA512");
+    test:assertTrue(salt.startsWith("$pbkdf2-sha512$i=12000$"));
+}
+
 // data Providers for password tests
 isolated function complexPasswordsDataProvider() returns ComplexPassword[][] {
     return [
@@ -429,3 +544,38 @@ isolated function hashingAlgorithmsDataProvider() returns string[][] {
         ["bcrypt"]
     ];
 }
+
+// Additional data providers for PBKDF2 tests
+isolated function invalidPbkdf2ParamsDataProvider() returns InvalidPbkdf2Params[][] {
+    return [
+        [{iterations: 0, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}],
+        [{iterations: 500, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}],
+        [{iterations: 10000, algorithm: "MD5", expectedError: "Unsupported algorithm: MD5. Must be one of: SHA1, SHA256, SHA512"}],
+        [{iterations: 10000, algorithm: "invalid-alg", expectedError: "Unsupported algorithm: invalid-alg. Must be one of: SHA1, SHA256, SHA512"}],
+        [{iterations: -100, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}]
+    ];
+}
+
+isolated function invalidPbkdf2HashesDataProvider() returns InvalidHash[][] {
+    return [
+        [{hash: "invalid_hash_format", expectedError: "Invalid PBKDF2 hash format"}],
+        [{hash: "$pbkdf2-sha256$invalid", expectedError: "Invalid PBKDF2 hash format"}],
+        [{hash: "$pbkdf2$i=10000$salt$hash", expectedError: "Invalid PBKDF2 hash format"}],
+        [{hash: "$pbkdf2-md5$i=10000$salt$hash", expectedError: "Invalid PBKDF2 hash format"}]
+    ];
+}
+
+isolated function pbkdf2AlgorithmsDataProvider() returns string[][] {
+    return [
+        ["SHA1"],
+        ["SHA256"],
+        ["SHA512"]
+    ];
+}
+
+// Record for invalid PBKDF2 parameters
+type InvalidPbkdf2Params record {|
+    int iterations;
+    string algorithm;
+    string expectedError;
+|};
