@@ -444,18 +444,6 @@ isolated function testPbkdf2DifferentAlgorithms(string algorithm) returns error?
     test:assertTrue(result, "Password verification failed for algorithm: " + algorithm);
 }
 
-@test:Config {}
-isolated function testPbkdf2GenerateSaltDefault() returns error? {
-    string salt = check generateSaltPbkdf2();
-    test:assertTrue(salt.startsWith("$pbkdf2-sha256$i=10000$"));
-}
-
-@test:Config {}
-isolated function testPbkdf2GenerateSaltCustom() returns error? {
-    string salt = check generateSaltPbkdf2(12000, "SHA512");
-    test:assertTrue(salt.startsWith("$pbkdf2-sha512$i=12000$"));
-}
-
 // data Providers for password tests
 isolated function complexPasswordsDataProvider() returns ComplexPassword[][] {
     return [

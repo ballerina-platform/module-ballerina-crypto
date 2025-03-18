@@ -209,16 +209,3 @@ public isolated function verifyPbkdf2(string password, string hashedPassword) re
     name: "verifyPasswordPBKDF2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
-
-# Generates a salt string for PBKDF2 with optional parameters.
-# ```ballerina
-# string|crypto:Error salt = crypto:generateSaltPbkdf2();
-# ```
-#
-# + iterations - Optional number of iterations. Default is 10000
-# + algorithm - Optional HMAC algorithm (SHA1, SHA256, SHA512). Default is SHA256
-# + return - Formatted salt string or Error if generation fails
-public isolated function generateSaltPbkdf2(int iterations = 10000, string algorithm = "SHA256") returns string|Error = @java:Method {
-    name: "generateSaltPBKDF2",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
-} external;
