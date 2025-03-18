@@ -1184,6 +1184,7 @@ string hashedPassword1 = check crypto:hashArgon2(password);
 // Hash with custom parameters
 string hashedPassword2 = check crypto:hashArgon2(password, iterations = 4, memory = 131072, parallelism = 8);
 boolean isValid = check crypto:verifyArgon2(password, hashedPassword1);
+```
 ### 10.3 [PBKDF2](#103-pbkdf2)
 
 Implements the PBKDF2 (Password-Based Key Derivation Function 2) algorithm for password hashing.
