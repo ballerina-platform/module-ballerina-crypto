@@ -71,7 +71,7 @@ public class PasswordUtils {
     /**
      * Default number of iterations for PBKDF2.
      */
-    public static final int DEFAULT_PBKDF2_ITERATIONS = 210000;
+    public static final int DEFAULT_PBKDF2_ITERATIONS = 10000;
     
     /**
      * Minimum number of iterations for PBKDF2.

@@ -46,6 +46,11 @@ type InvalidHash record {|
     string expectedError;
 |};
 
+type InvalidPbkdf2Params record {|
+    int iterations;
+    string algorithm;
+    string expectedError;
+|};
 
 @test:Config {}
 isolated function testHashCrc32() {
@@ -548,11 +553,11 @@ isolated function hashingAlgorithmsDataProvider() returns string[][] {
 // Additional data providers for PBKDF2 tests
 isolated function invalidPbkdf2ParamsDataProvider() returns InvalidPbkdf2Params[][] {
     return [
-        [{iterations: 0, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}],
-        [{iterations: 500, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}],
-        [{iterations: 10000, algorithm: "MD5", expectedError: "Unsupported algorithm: MD5. Must be one of: SHA1, SHA256, SHA512"}],
-        [{iterations: 10000, algorithm: "invalid-alg", expectedError: "Unsupported algorithm: invalid-alg. Must be one of: SHA1, SHA256, SHA512"}],
-        [{iterations: -100, algorithm: "SHA256", expectedError: "Iterations must be at least 1000"}]
+        [{iterations: 0, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}],
+        [{iterations: 500, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}],
+        [{iterations: 10000, algorithm: "MD5", expectedError: "Unsupported algorithm. Must be one of: SHA1, SHA256, SHA512"}],
+        [{iterations: 10000, algorithm: "invalid-alg", expectedError: "Unsupported algorithm. Must be one of: SHA1, SHA256, SHA512"}],
+        [{iterations: -100, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}]
     ];
 }
 
@@ -561,7 +566,7 @@ isolated function invalidPbkdf2HashesDataProvider() returns InvalidHash[][] {
         [{hash: "invalid_hash_format", expectedError: "Invalid PBKDF2 hash format"}],
         [{hash: "$pbkdf2-sha256$invalid", expectedError: "Invalid PBKDF2 hash format"}],
         [{hash: "$pbkdf2$i=10000$salt$hash", expectedError: "Invalid PBKDF2 hash format"}],
-        [{hash: "$pbkdf2-md5$i=10000$salt$hash", expectedError: "Invalid PBKDF2 hash format"}]
+        [{hash: "$pbkdf2-md5$i=10000$salt$hash", expectedError: "Error occurred while verifying password: Unsupported algorithm: MD5"}]
     ];
 }
 
@@ -573,9 +578,3 @@ isolated function pbkdf2AlgorithmsDataProvider() returns string[][] {
     ];
 }
 
-// Record for invalid PBKDF2 parameters
-type InvalidPbkdf2Params record {|
-    int iterations;
-    string algorithm;
-    string expectedError;
-|};

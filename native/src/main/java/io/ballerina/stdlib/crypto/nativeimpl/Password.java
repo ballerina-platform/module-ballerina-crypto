@@ -356,7 +356,7 @@ public class Password {
     public static Object verifyPasswordPBKDF2(BString password, BString hashedPassword) {
         try {
             String hash = hashedPassword.getValue();
-            Pattern pattern = Pattern.compile("\\$pbkdf2-(\\w+)\\$i=(\\d+)\\$(\\w+)\\$(\\w+)");
+            Pattern pattern = Pattern.compile("\\$pbkdf2-(\\w+)\\$i=(\\d+)\\$([A-Za-z0-9+/=]+)\\$([A-Za-z0-9+/=]+)");
             Matcher matcher = pattern.matcher(hash);
             
             if (!matcher.matches()) {
