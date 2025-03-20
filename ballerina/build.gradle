@@ -54,27 +54,28 @@ configurations {
 }
 
 dependencies {
-    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpkix-fips', version: "${bouncyCastlePkixFipsVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bc-fips', version: "${bouncyCastleFipsVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncycastleVersion}") {
-        transitive = false
-    }
-    externalJars(group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpg-fips', version: "${bouncyCastlePgFipsVersion}") {
         transitive = false
     }
 }
 
 task updateTomlFiles {
     doLast {
-        def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
+        def stdlibDependentBouncyCastleFipsVersion = project.bouncyCastleFipsVersion
+        def stdlibDependentBouncyCastlePkixFipsVersion = project.bouncyCastlePkixFipsVersion
+        def stdlibDependentBouncyCastlePgFipsVersion = project.bouncyCastlePgFipsVersion
 
         def newBallerinaToml = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
-        newBallerinaToml = newBallerinaToml.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastlefips.version@", stdlibDependentBouncyCastleFipsVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastlepkixfips.version@", stdlibDependentBouncyCastlePkixFipsVersion)
+        newBallerinaToml = newBallerinaToml.replace("@bouncycastlepgfips.version@", stdlibDependentBouncyCastlePgFipsVersion)
         ballerinaTomlFile.text = newBallerinaToml
     }
 }

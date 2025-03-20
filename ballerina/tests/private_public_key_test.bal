@@ -233,7 +233,7 @@ isolated function testParsePrivateKeyFromKeyPairFile() returns Error? {
 @test:Config {}
 isolated function testParseEcPrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeEcPrivateKeyFromKeyFile(EC_PRIVATE_KEY_PATH);
-    test:assertEquals(result.algorithm, "ECDSA");
+    test:assertEquals(result.algorithm, "EC");
 }
 
 @test:Config {}

@@ -20,7 +20,7 @@ package io.ballerina.stdlib.crypto;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.values.BObject;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
 import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
 import org.bouncycastle.openpgp.PGPException;
@@ -65,8 +65,8 @@ import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 public class PgpEncryptionGenerator {
 
     static {
-        if (Objects.isNull(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME))) {
-            Security.addProvider(new BouncyCastleProvider());
+        if (Objects.isNull(Security.getProvider(BouncyCastleFipsProvider.PROVIDER_NAME))) {
+            Security.addProvider(new BouncyCastleFipsProvider());
         }
     }
 
@@ -93,7 +93,7 @@ public class PgpEncryptionGenerator {
                 new JcePGPDataEncryptorBuilder(symmetricKeyAlgorithm)
                         .setWithIntegrityPacket(withIntegrityCheck)
                         .setSecureRandom(new SecureRandom())
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME)
+                        .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
         );
         // Add public key
         pgpEncryptedDataGenerator.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(
@@ -122,7 +122,7 @@ public class PgpEncryptionGenerator {
                 new JcePGPDataEncryptorBuilder(symmetricKeyAlgorithm)
                         .setWithIntegrityPacket(withIntegrityCheck)
                         .setSecureRandom(new SecureRandom())
-                        .setProvider(BouncyCastleProvider.PROVIDER_NAME)
+                        .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
         );
         // Add public key
         pgpEncryptedDataGenerator.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(

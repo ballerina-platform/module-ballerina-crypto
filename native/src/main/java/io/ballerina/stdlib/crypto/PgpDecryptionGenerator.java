@@ -19,7 +19,7 @@ package io.ballerina.stdlib.crypto;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.values.BObject;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.openpgp.PGPCompressedData;
 import org.bouncycastle.openpgp.PGPEncryptedData;
 import org.bouncycastle.openpgp.PGPEncryptedDataList;
@@ -62,8 +62,8 @@ import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 public final class PgpDecryptionGenerator {
 
     static {
-        if (Objects.isNull(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME))) {
-            Security.addProvider(new BouncyCastleProvider());
+        if (Objects.isNull(Security.getProvider(BouncyCastleFipsProvider.PROVIDER_NAME))) {
+            Security.addProvider(new BouncyCastleFipsProvider());
         }
     }
 
@@ -82,7 +82,7 @@ public final class PgpDecryptionGenerator {
         if (pgpSecretKey.isPresent()) {
             PGPPrivateKey privateKey = pgpSecretKey.get().extractPrivateKey(
                     new JcePBESecretKeyDecryptorBuilder()
-                            .setProvider(BouncyCastleProvider.PROVIDER_NAME)
+                            .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
                             .build(passCode));
             return Optional.of(privateKey);
         } else {
@@ -145,7 +145,7 @@ public final class PgpDecryptionGenerator {
     private static void decrypt(OutputStream clearOut, PGPPrivateKey pgpPrivateKey,
                                 PGPPublicKeyEncryptedData publicKeyEncryptedData) throws IOException, PGPException {
         PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
-                .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
+                .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pgpPrivateKey);
         try (InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory)) {
 
             JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
@@ -180,7 +180,7 @@ public final class PgpDecryptionGenerator {
     private static void decrypt(PGPPrivateKey pgpPrivateKey, PGPPublicKeyEncryptedData publicKeyEncryptedData,
                                 BObject iteratorObj) throws IOException, PGPException {
         PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
-                .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
+                .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pgpPrivateKey);
         InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory);
         JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
         PGPCompressedData pgpCompressedData = (PGPCompressedData) decCompObjFac.nextObject();

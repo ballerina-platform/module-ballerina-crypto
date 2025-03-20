@@ -27,7 +27,7 @@ import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.time.util.TimeValueHandler;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -214,7 +214,7 @@ public class Decode {
             }
             char[] pwd = ((BString) keyPassword).getValue().toCharArray();
             PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
-                    .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+                    .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pwd);
             PEMKeyPair pemKeyPair = keyPair.decryptKeyPair(decryptorProvider);
             privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
         } else if (keyContent instanceof PKCS8EncryptedPrivateKeyInfo pkcs8EncryptedPrivateKeyInfo) {
@@ -223,7 +223,7 @@ public class Decode {
             }
             char[] pwd = ((BString) keyPassword).getValue().toCharArray();
             InputDecryptorProvider decryptorProvider = new JcePKCSPBEInputDecryptorProviderBuilder()
-                    .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pwd);
+                    .setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(pwd);
             privateKeyInfo = pkcs8EncryptedPrivateKeyInfo.decryptPrivateKeyInfo(decryptorProvider);
         } else if (keyContent instanceof PEMKeyPair pemKeyPair) {
             privateKeyInfo = pemKeyPair.getPrivateKeyInfo();
