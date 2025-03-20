@@ -30,25 +30,7 @@ The `crypto` library supports both symmetric key encryption/decryption and asymm
 
 ### Sign and verify
 
-The `crypto` library supports signing data using the RSA private key and verification of the signature using the RSA public key. This supports MD5, SHA1, SHA256, SHA384, and SHA512 digesting algorithms, and ML-DSA-65 post-quantum signature algorithm as well.
-
-### Key Derivation Function (KDF)
-
-The `crypto` module supports HMAC-based Key Derivation Function (HKDF). HKDF is a key derivation function that uses a Hash-based Message Authentication Code (HMAC) to derive keys.
-
-### Key Exchange Mechanism (KEM)
-
-The `crypto` module supports Key Exchange Mechanisms (KEM). It includes RSA-KEM and post-quantum ML-KEM-768 for both encapsulation and decapsulation.
-
-### Hybrid Public Key Encryption (HPKE)
-
-The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supports post-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
-
-## Issues and projects
-
-Issues and Projects tabs are disabled for this repository as this is part of the Ballerina Standard Library. To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Standard Library parent repository](https://github.com/ballerina-platform/ballerina-standard-library).
-
-This repository only contains the source code for the module.
+The `crypto` library supports signing data using the RSA private key and verification of the signature using the RSA public key. This supports MD5, SHA1, SHA256, SHA384, and SHA512 digesting algorithms as well.
 
 ## Build from the source
 

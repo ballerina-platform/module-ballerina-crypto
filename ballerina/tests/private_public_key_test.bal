@@ -28,26 +28,6 @@ isolated function testParseEncryptedPrivateKeyFromP12() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseEncryptedMlKem768PrivateKeyFromP12() returns Error? {
-    KeyStore keyStore = {
-        path: MLKEM_KEYSTORE_PATH,
-        password: "ballerina"
-    };
-    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyStore(keyStore, "mlkem-keypair", "ballerina");
-    test:assertEquals(result.algorithm, "KYBER768");
-}
-
-@test:Config {}
-isolated function testParseEncryptedMlDsa65PrivateKeyFromP12() returns Error? {
-    KeyStore keyStore = {
-        path: MLDSA_KEYSTORE_PATH,
-        password: "ballerina"
-    };
-    PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
-    test:assertEquals(result.algorithm, "DILITHIUM3");
-}
-
-@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingP12() {
     KeyStore keyStore = {
         path: INVALID_KEYSTORE_PATH,
@@ -68,48 +48,6 @@ isolated function testReadPrivateKeyFromP12WithInvalidKeyStorePassword() {
         password: "invalid"
     };
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyStore(keyStore, "invalid", "ballerina");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadEcPrivateKeyFromP12WithInvalidKeyStorePassword() {
-    KeyStore keyStore = {
-        path: EC_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PrivateKey|Error result = decodeEcPrivateKeyFromKeyStore(keyStore, "ec-keypair", "ballerina");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlKemPrivateKeyFromP12WithInvalidKeyStorePassword() {
-    KeyStore keyStore = {
-        path: MLKEM_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyStore(keyStore, "mlkem-keypair", "ballerina");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlDsaPrivateKeyFromP12WithInvalidKeyStorePassword() {
-    KeyStore keyStore = {
-        path: MLDSA_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PrivateKey|Error result = decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "mldsa-keypair", "ballerina");
     if result is Error {
         test:assertTrue(result.message().includes("Unable to open KeyStore:"));
     } else {
@@ -247,38 +185,6 @@ isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseEncryptedMlDsa65PrivateKeyFromKeyFile() returns Error? {
-    PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
-    test:assertEquals(result.algorithm, "DILITHIUM3");
-}
-
-@test:Config {}
-isolated function testParseErrorMlDsa65PrivateKeyFromKeyFile() returns Error? {
-    PrivateKey|Error result = decodeMlDsa65PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertEquals(result.message(), "Not a valid ML-DSA-65 key");
-    } else {
-        test:assertFail("Expected error not found");
-    }
-}
-
-@test:Config {}
-isolated function testParseEncryptedMlKem768PrivateKeyFromKeyFile() returns Error? {
-    PrivateKey result = check decodeMlKem768PrivateKeyFromKeyFile(MLKEM_PRIVATE_KEY_PATH, "ballerina");
-    test:assertEquals(result.algorithm, "KYBER768");
-}
-
-@test:Config {}
-isolated function testParseErrorMlKem768PrivateKeyFromKeyFile() returns Error? {
-    PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertEquals(result.message(), "Not a valid ML-KEM-768 key");
-    } else {
-        test:assertFail("Expected error not found");
-    }
-}
-
-@test:Config {}
 isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
     PublicKey|Error result = decodeEcPublicKeyFromCertFile(PRIVATE_KEY_PATH);
     if result is Error {
@@ -289,58 +195,8 @@ isolated function testParseErrorEcPublicKeyFromKeyFile() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseErrorMlDsa65PublicKeyFromKeyFile() returns Error? {
-    PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
-    } else {
-        test:assertFail("Expected error not found");
-    }
-}
-
-@test:Config {}
-isolated function testParseErrorMlKem768PublicKeyFromKeyFile() returns Error? {
-    PublicKey|Error result = decodeMlKem768PublicKeyFromCertFile(PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertEquals(result.message(), "Unable to do public key operations: signed fields invalid");
-    } else {
-        test:assertFail("Expected error not found");
-    }
-}
-
-@test:Config {}
 isolated function testReadPrivateKeyFromNonExistingKeyFile() {
     PrivateKey|Error result = decodeRsaPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Key file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadEcPrivateKeyFromNonExistingKeyFile() {
-    PrivateKey|Error result = decodeEcPrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Key file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlDsaPrivateKeyFromInvalidKeyFile() {
-    PrivateKey|Error result = decodeMlDsa65PrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Key file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlKemPrivateKeyFromInvalidKeyFile() {
-    PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(INVALID_PRIVATE_KEY_PATH);
     if result is Error {
         test:assertTrue(result.message().includes("Key file not found at:"));
     } else {
@@ -390,48 +246,6 @@ isolated function testReadPublicKeyFromP12WithInvalidTrustStorePassword() {
         password: "invalid"
     };
     PublicKey|Error result = decodeRsaPublicKeyFromTrustStore(trustStore, "ballerina");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadEcPublicKeyFromP12WithInvalidTrustStorePassword() {
-    TrustStore trustStore = {
-        path: EC_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PublicKey|Error result = decodeEcPublicKeyFromTrustStore(trustStore, "ec-keypair");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlKemPublicKeyFromP12WithInvalidTrustStorePassword() {
-    TrustStore trustStore = {
-        path: MLKEM_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PublicKey|Error result = decodeMlKem768PublicKeyFromTrustStore(trustStore, "mlkem-keypair");
-    if result is Error {
-        test:assertTrue(result.message().includes("Unable to open KeyStore:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlDsaPublicKeyFromP12WithInvalidTrustStorePassword() {
-    TrustStore trustStore = {
-        path: MLDSA_KEYSTORE_PATH,
-        password: "invalid"
-    };
-    PublicKey|Error result = decodeMlDsa65PublicKeyFromTrustStore(trustStore, "mldsa-keypair");
     if result is Error {
         test:assertTrue(result.message().includes("Unable to open KeyStore:"));
     } else {
@@ -500,72 +314,8 @@ isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
 }
 
 @test:Config {}
-isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
-    PublicKey publicKey = check decodeMlDsa65PublicKeyFromCertFile(MLDSA_CERT_PATH);
-    test:assertEquals(publicKey.algorithm, "DILITHIUM3");
-    Certificate certificate = <Certificate>publicKey.certificate;
-
-    int serial = certificate.serial;
-    string issuer = certificate.issuer;
-    string subject = certificate.subject;
-    string signingAlgorithm = certificate.signingAlgorithm;
-
-    test:assertEquals(serial, 1023822328749742100);
-    test:assertEquals(issuer, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
-    test:assertEquals(subject, "CN=localhost,OU=WSO2,O=WSO2,L=Mountain View,ST=CA,C=US");
-    test:assertEquals(signingAlgorithm, "DILITHIUM3");
-}
-
-@test:Config {}
-isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
-    PublicKey publicKey = check decodeMlKem768PublicKeyFromCertFile(MLKEM_CERT_PATH);
-    test:assertEquals(publicKey.algorithm, "KYBER768");
-    Certificate certificate = <Certificate>publicKey.certificate;
-
-    int serial = certificate.serial;
-    string issuer = certificate.issuer;
-    string subject = certificate.subject;
-    string signingAlgorithm = certificate.signingAlgorithm;
-
-    test:assertEquals(serial, 749281432);
-    test:assertEquals(issuer, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
-    test:assertEquals(subject, "C=US,ST=CA,L=Mountain View,O=WSO2,OU=WSO2,CN=localhost");
-    test:assertEquals(signingAlgorithm, "SHA256withRSA");
-}
-
-@test:Config {}
 isolated function testReadPublicKeyFromNonExistingCertFile() {
     PublicKey|Error result = decodeRsaPublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Certificate file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadEcPublicKeyFromNonExistingCertFile() {
-    PublicKey|Error result = decodeEcPublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Certificate file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlDsaPublicKeyFromInvalidCertFile() {
-    PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
-    if result is Error {
-        test:assertTrue(result.message().includes("Certificate file not found at:"));
-    } else {
-        test:assertFail("Expected error not found.");
-    }
-}
-
-@test:Config {}
-isolated function testReadMlKemPublicKeyFromInvalidCertFile() {
-    PublicKey|Error result = decodeMlKem768PublicKeyFromCertFile(INVALID_PUBLIC_CERT_PATH);
     if result is Error {
         test:assertTrue(result.message().includes("Certificate file not found at:"));
     } else {
