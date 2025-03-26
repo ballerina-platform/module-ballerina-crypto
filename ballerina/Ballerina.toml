@@ -1,13 +1,14 @@
 [package]
 org = "ballerina"
 name = "crypto"
-version = "2.9.0"
+version = "2.10.0"
 authors = ["Ballerina"]
 keywords = ["security", "hash", "hmac", "sign", "encrypt", "decrypt", "private key", "public key"]
 repository = "https://github.com/ballerina-platform/module-ballerina-crypto"
 icon = "icon.png"
 license = ["Apache-2.0"]
 distribution = "2201.12.0"
+include = ["/fips"]
 
 [platform.java21]
 graalvmCompatible = true
@@ -15,8 +16,8 @@ graalvmCompatible = true
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "crypto-native"
-version = "2.9.0"
-path = "../native/build/libs/crypto-native-2.9.0.jar"
+version = "2.10.0"
+path = "../native/build/libs/crypto-native-2.10.0-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "org.bouncycastle"
