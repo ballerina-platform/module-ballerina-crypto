@@ -21,7 +21,7 @@ plugins {
     id 'com.github.spotbugs'
 }
 
-description = 'Ballerina - Crypto Java Utils'
+description = 'Ballerina - Crypto Java Utils compliant with FIPS 140-2'
 
 dependencies {
     checkstyle project(':checkstyle')
@@ -29,10 +29,9 @@ dependencies {
 
     implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
     implementation group: 'io.ballerina.stdlib', name: 'time-native', version: "${stdlibTimeVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: "${bouncyCastleVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: "${bouncyCastleVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncyCastleVersion}"
-    implementation group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncyCastleVersion}"
+    implementation group: 'org.bouncycastle', name: 'bcpkix-fips', version: "${bouncyCastlePkixFipsVersion}"
+    implementation group: 'org.bouncycastle', name: 'bc-fips', version: "${bouncyCastleFipsVersion}"
+    implementation group: 'org.bouncycastle', name: 'bcpg-fips', version: "${bouncyCastlePgFipsVersion}"
     compileOnly group: 'org.graalvm.nativeimage', name: 'svm', version: "${substrateVmVersion}"
 }
 
@@ -70,7 +69,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId "crypto-native"
+            artifactId "crypto-fips-native"
             version = project.version
             artifact jar
         }

@@ -36,10 +36,12 @@ rootProject.name = 'crypto'
 
 include ':checkstyle'
 include ':crypto-native'
+include ':crypto-fips-native'
 include ':crypto-ballerina'
 
 project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
 project(':crypto-native').projectDir = file('native')
+project(':crypto-fips-native').projectDir = file('fips-native')
 project(':crypto-ballerina').projectDir = file('ballerina')
 
 gradleEnterprise {

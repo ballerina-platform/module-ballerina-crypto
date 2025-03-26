@@ -51,26 +51,36 @@ ballerina {
 
 configurations {
     externalJars
+    externalFipsJars
 }
 
 dependencies {
-    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: "${bouncyCastleVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: "${bouncyCastleVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcutil-jdk18on', version: "${bouncyCastleVersion}") {
         transitive = false
     }
-    externalJars(group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncycastleVersion}") {
+    externalJars(group: 'org.bouncycastle', name: 'bcpg-jdk18on', version: "${bouncyCastleVersion}") {
+        transitive = false
+    }
+    externalFipsJars(group: 'org.bouncycastle', name: 'bcpkix-fips', version: "${bouncyCastlePkixFipsVersion}") {
+        transitive = false
+    }
+    externalFipsJars(group: 'org.bouncycastle', name: 'bc-fips', version: "${bouncyCastleFipsVersion}") {
+        transitive = false
+    }
+    externalFipsJars(group: 'org.bouncycastle', name: 'bcpg-fips', version: "${bouncyCastlePgFipsVersion}") {
         transitive = false
     }
 }
 
 task updateTomlFiles {
     doLast {
-        def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
+        def stdlibDependentBouncycastleVersion = project.bouncyCastleVersion
 
         def newBallerinaToml = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
@@ -92,6 +102,16 @@ task commitTomlFiles {
     }
 }
 
+task copyFipsJars(type: Copy) {
+    if (project.configurations.find { it.name == "externalFipsJars" }) {
+        into "$project.projectDir/fips/java21"
+        from project.configurations.externalFipsJars
+    }
+    into "$project.projectDir/fips/java21"
+    from "$project.projectDir/../fips-native/build/libs/crypto-fips-native-${project.version}.jar"
+    rename "crypto-fips-native-${project.version}.jar", "crypto-native-${project.version}.jar"
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
@@ -111,12 +131,17 @@ publishing {
     }
 }
 
+copyFipsJars.dependsOn ":${packageName}-fips-native:build"
+
 updateTomlFiles.dependsOn copyStdlibs
+updateTomlFiles.dependsOn copyFipsJars
 
 test.dependsOn ":${packageName}-native:build"
+test.dependsOn ":${packageName}-fips-native:build"
 
 build.dependsOn "generatePomFileForMavenPublication"
 build.dependsOn ":${packageName}-native:build"
+build.dependsOn ":${packageName}-fips-native:build"
 
 publishToMavenLocal.dependsOn build
 publish.dependsOn build

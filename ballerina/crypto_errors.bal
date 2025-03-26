@@ -16,3 +16,6 @@
 
 # Represents the error type of the module.
 public type Error distinct error;
+
+# Represents the error related to FIPS restrictions.
+public type FipsError distinct Error;
