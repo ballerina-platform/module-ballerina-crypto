@@ -16,7 +16,9 @@
 
 import ballerina/test;
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncapsulateandDecapsulateMlKem768() returns Error? {
     KeyStore mlkemKeyStore = {
         path: MLKEM_KEYSTORE_PATH,
@@ -31,7 +33,9 @@ isolated function testEncapsulateandDecapsulateMlKem768() returns Error? {
     test:assertEquals(sharedSecret, encapsulationResult.sharedSecret);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncapsulateMlKem768WithInvalidPublicKey() returns Error? {
     KeyStore rsaKeyStore = {
         path: KEYSTORE_PATH,
@@ -46,7 +50,9 @@ isolated function testEncapsulateMlKem768WithInvalidPublicKey() returns Error? {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testDecapsulateMlKem768WithInvalidPrivateKey() returns Error? {
     KeyStore mlkemKeyStore = {
         path: MLKEM_KEYSTORE_PATH,
@@ -69,7 +75,9 @@ isolated function testDecapsulateMlKem768WithInvalidPrivateKey() returns Error? 
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncapsulateAndDecapsulateRsaKem() returns Error? {
     KeyStore rsaKeyStore = {
         path: KEYSTORE_PATH,
@@ -84,7 +92,9 @@ isolated function testEncapsulateAndDecapsulateRsaKem() returns Error? {
     test:assertEquals(sharedSecret, encapsulationResult.sharedSecret);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncapsulateRsaKemWithInvalidPublicKey() returns Error? {
     KeyStore mlkemKeyStore = {
         path: MLKEM_KEYSTORE_PATH,
@@ -100,7 +110,9 @@ isolated function testEncapsulateRsaKemWithInvalidPublicKey() returns Error? {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testDecapsulateRsaKemWithInvalidPrivateKey() returns Error? {
     KeyStore rsaKeyStore = {
         path: KEYSTORE_PATH,
@@ -123,7 +135,9 @@ isolated function testDecapsulateRsaKemWithInvalidPrivateKey() returns Error? {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncapsulateAndDecapsulateRsaKemMlKem768() returns Error? {
     KeyStore mlkemKeyStore = {
         path: MLKEM_KEYSTORE_PATH,

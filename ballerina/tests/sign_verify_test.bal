@@ -106,7 +106,9 @@ isolated function testSignRsaSha512() returns Error? {
     test:assertEquals(sha512Signature.toBase16(), expectedSha512Signature);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testSignMlDsa65() returns Error? {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
@@ -261,7 +263,9 @@ isolated function testSignRsaSha512WithInvalidKey() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testSignMlDsa65WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
     PrivateKey privateKey = {algorithm: "ML-DSA-65"};
@@ -364,7 +368,9 @@ isolated function testVerifySha256withEcdsa() returns Error? {
     test:assertTrue(check verifySha256withEcdsaSignature(payload, sha256withEcdsaSignature, publicKey));
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testVerifyMlDsa65() returns Error? {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {

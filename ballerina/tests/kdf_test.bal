@@ -17,7 +17,9 @@
 import ballerina/test;
 import ballerina/lang.array;
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHkdfSha256() returns error? {
     string sharedSecret = "Hu7q5+8SI61d7kKsD3qMxkdPYOnp+6tMp5YkR6NuN28=";
     string expectedDerivedKey = "Oze/CwrXylVzqWXirsT15/qGWe/iXwe+xeCRB9PrRZE=";
@@ -29,7 +31,9 @@ isolated function testHkdfSha256() returns error? {
     test:assertEquals(encodedDerivedKey, expectedDerivedKey);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHkdfSha256WithSalt() returns error? {
     string sharedSecret = "Hu7q5+8SI61d7kKsD3qMxkdPYOnp+6tMp5YkR6NuN28=";
     string salt = "NaCl";
@@ -41,7 +45,9 @@ isolated function testHkdfSha256WithSalt() returns error? {
     test:assertEquals(encodedDerivedKey, expectedDerivedKey);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHkdfSha256WithInfo() returns error? {
     string sharedSecret = "Hu7q5+8SI61d7kKsD3qMxkdPYOnp+6tMp5YkR6NuN28=";
     string info = "info";
@@ -53,7 +59,9 @@ isolated function testHkdfSha256WithInfo() returns error? {
     test:assertEquals(encodedDerivedKey, expectedDerivedKey);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHkdfSha256WithSaltAndInfo() returns error? {
     string sharedSecret = "Hu7q5+8SI61d7kKsD3qMxkdPYOnp+6tMp5YkR6NuN28=";   
     string salt = "NaCl";

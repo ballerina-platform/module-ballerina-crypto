@@ -16,7 +16,9 @@
 
 import ballerina/test;
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncryptAndDecryptMlKem768Hpke() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore mlkemKeyStore = {
@@ -32,7 +34,9 @@ isolated function testEncryptAndDecryptMlKem768Hpke() returns Error? {
     test:assertEquals(decryptedMessage, message);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testEncryptAndDecryptRsaMlKem768Hpke() returns Error? {
     byte[] message = "Ballerina crypto test           ".toBytes();
     KeyStore mlkemKeyStore = {

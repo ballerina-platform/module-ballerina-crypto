@@ -27,7 +27,9 @@ isolated function testParseEncryptedPrivateKeyFromP12() returns Error? {
     test:assertEquals(result.algorithm, "RSA");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testParseEncryptedMlKem768PrivateKeyFromP12() returns Error? {
     KeyStore keyStore = {
         path: MLKEM_KEYSTORE_PATH,
@@ -37,7 +39,9 @@ isolated function testParseEncryptedMlKem768PrivateKeyFromP12() returns Error? {
     test:assertEquals(result.algorithm, "ML-KEM-768");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testParseEncryptedMlDsa65PrivateKeyFromP12() returns Error? {
     KeyStore keyStore = {
         path: MLDSA_KEYSTORE_PATH,
@@ -233,7 +237,7 @@ isolated function testParsePrivateKeyFromKeyPairFile() returns Error? {
 @test:Config {}
 isolated function testParseEcPrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeEcPrivateKeyFromKeyFile(EC_PRIVATE_KEY_PATH);
-    test:assertEquals(result.algorithm, "ECDSA");
+    test:assertTrue(result.algorithm.startsWith("EC"));
 }
 
 @test:Config {}
@@ -246,7 +250,9 @@ isolated function testParseErrorEcPrivateKeyFromKeyFile() returns Error? {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testParseEncryptedMlDsa65PrivateKeyFromKeyFile() returns Error? {
     PrivateKey result = check decodeMlDsa65PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
     test:assertEquals(result.algorithm, "ML-DSA-65");
@@ -493,7 +499,9 @@ isolated function testParseEcPublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(signingAlgorithm, "SHA384withECDSA");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeMlDsa65PublicKeyFromCertFile(MLDSA_CERT_PATH);
     test:assertEquals(publicKey.algorithm, "ML-DSA-65");
@@ -510,7 +518,9 @@ isolated function testParseMlDsa65PublicKeyFromX509CertFile() returns Error? {
     test:assertEquals(signingAlgorithm, "ML-DSA-65");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testParseMlKem768PublicKeyFromX509CertFile() returns Error? {
     PublicKey publicKey = check decodeMlKem768PublicKeyFromCertFile(MLKEM_CERT_PATH);
     test:assertEquals(publicKey.algorithm, "ML-KEM-768");

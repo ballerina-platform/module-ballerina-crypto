@@ -135,7 +135,9 @@ isolated function testHashSha512WithSalt() {
 }
 
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHashKeccak256() {
     byte[] input = "Ballerina test".toBytes();
     string expectedKeccak256Hash =
@@ -144,7 +146,9 @@ isolated function testHashKeccak256() {
 }
 
 // tests for Argon2
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHashPasswordArgon2Default() returns error? {
     string password = "Ballerina@123";
     string hash = check hashArgon2(password);
@@ -152,7 +156,9 @@ isolated function testHashPasswordArgon2Default() returns error? {
     test:assertTrue(hash.length() > 50);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHashPasswordArgon2Custom() returns error? {
     string password = "Ballerina@123";
     string hash = check hashArgon2(password, 4, 131072, 8);
@@ -161,7 +167,8 @@ isolated function testHashPasswordArgon2Custom() returns error? {
 }
 
 @test:Config {
-    dataProvider: complexPasswordsDataProvider
+    dataProvider: complexPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testHashPasswordArgon2ComplexPasswords(ComplexPassword data) returns error? {
     string hash = check hashArgon2(data.password);
@@ -171,7 +178,8 @@ isolated function testHashPasswordArgon2ComplexPasswords(ComplexPassword data) r
 }
 
 @test:Config {
-    dataProvider: invalidArgon2ParamsDataProvider
+    dataProvider: invalidArgon2ParamsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testHashPasswordArgon2InvalidParams(InvalidArgon2Params data) {
     string password = "Ballerina@123";
@@ -183,7 +191,8 @@ isolated function testHashPasswordArgon2InvalidParams(InvalidArgon2Params data) 
 }
 
 @test:Config {
-    dataProvider: validPasswordsDataProvider
+    dataProvider: validPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordArgon2Success(ValidPassword data) returns error? {
     string hash = check hashArgon2(data.password);
@@ -192,7 +201,8 @@ isolated function testVerifyPasswordArgon2Success(ValidPassword data) returns er
 }
 
 @test:Config {
-    dataProvider: wrongPasswordsDataProvider
+    dataProvider: wrongPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordArgon2Failure(PasswordPair data) returns error? {
     string hash = check hashArgon2(data.correctPassword);
@@ -201,7 +211,8 @@ isolated function testVerifyPasswordArgon2Failure(PasswordPair data) returns err
 }
 
 @test:Config {
-    dataProvider: invalidArgon2HashesDataProvider
+    dataProvider: invalidArgon2HashesDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordArgon2InvalidHashFormat(InvalidHash data) {
     string password = "Ballerina@123";
@@ -213,7 +224,8 @@ isolated function testVerifyPasswordArgon2InvalidHashFormat(InvalidHash data) {
 }
 
 @test:Config {
-    dataProvider: uniquenessPasswordsDataProvider
+    dataProvider: uniquenessPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testArgon2PasswordHashUniqueness(ValidPassword data) returns error? {
     string hash1 = check hashArgon2(data.password);
@@ -233,7 +245,9 @@ isolated function testArgon2PasswordHashUniqueness(ValidPassword data) returns e
 }
 
 // tests for Bcrypt
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHashPasswordBcryptDefault() returns error? {
     string password = "Ballerina@123";
     string hash = check hashBcrypt(password);
@@ -241,7 +255,9 @@ isolated function testHashPasswordBcryptDefault() returns error? {
     test:assertTrue(hash.length() > 50);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["non-fips"]
+}
 isolated function testHashPasswordBcryptCustomWorkFactor() returns error? {
     string password = "Ballerina@123";
     string hash = check hashBcrypt(password, 10);
@@ -250,7 +266,8 @@ isolated function testHashPasswordBcryptCustomWorkFactor() returns error? {
 }
 
 @test:Config {
-    dataProvider: complexPasswordsDataProvider
+    dataProvider: complexPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testHashPasswordBcryptComplexPasswords(ComplexPassword data) returns error? {
     string hash = check hashBcrypt(data.password);
@@ -262,7 +279,8 @@ isolated function testHashPasswordBcryptComplexPasswords(ComplexPassword data) r
 }
 
 @test:Config {
-    dataProvider: invalidBcryptWorkFactorsDataProvider
+    dataProvider: invalidBcryptWorkFactorsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testHashPasswordBcryptInvalidWorkFactor(InvalidWorkFactor data) {
     string password = "Ballerina@123";
@@ -274,7 +292,8 @@ isolated function testHashPasswordBcryptInvalidWorkFactor(InvalidWorkFactor data
 }
 
 @test:Config {
-    dataProvider: validPasswordsDataProvider
+    dataProvider: validPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordBcryptSuccess(ValidPassword data) returns error? {
     string hash = check hashBcrypt(data.password);
@@ -283,7 +302,8 @@ isolated function testVerifyPasswordBcryptSuccess(ValidPassword data) returns er
 }
 
 @test:Config {
-    dataProvider: wrongPasswordsDataProvider
+    dataProvider: wrongPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordBcryptFailure(PasswordPair data) returns error? {
     string hash = check hashBcrypt(data.correctPassword);
@@ -292,7 +312,8 @@ isolated function testVerifyPasswordBcryptFailure(PasswordPair data) returns err
 }
 
 @test:Config {
-    dataProvider: invalidBcryptHashesDataProvider
+    dataProvider: invalidBcryptHashesDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testVerifyPasswordBcryptInvalidHashFormat(InvalidHash data) {
     string password = "Ballerina@123";
@@ -304,7 +325,8 @@ isolated function testVerifyPasswordBcryptInvalidHashFormat(InvalidHash data) {
 }
 
 @test:Config {
-    dataProvider: uniquenessPasswordsDataProvider
+    dataProvider: uniquenessPasswordsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testBcryptPasswordHashUniqueness(ValidPassword data) returns error? {
     string hash1 = check hashBcrypt(data.password);
@@ -325,7 +347,8 @@ isolated function testBcryptPasswordHashUniqueness(ValidPassword data) returns e
 
 // common tests for both algorithms
 @test:Config {
-    dataProvider: hashingAlgorithmsDataProvider
+    dataProvider: hashingAlgorithmsDataProvider,
+    groups: ["non-fips"]
 }
 isolated function testEmptyPasswordError(string algorithm) returns error? {
     string password = "";
