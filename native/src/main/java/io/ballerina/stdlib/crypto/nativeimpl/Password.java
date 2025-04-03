@@ -177,8 +177,9 @@ public class Password {
             if (iterations <= 0) {
                 return CryptoUtils.createError("Iterations must be positive");
             }
-            if (memory < 8192) {
-                return CryptoUtils.createError("Memory must be at least 8192 KB (8MB)");
+            if (memory < PasswordUtils.PBKDF2_MIN_MEMORY_COST) {
+                return CryptoUtils.createError(String.format("Memory must be at least %d KB (%d MB)", 
+                        PasswordUtils.PBKDF2_MIN_MEMORY_COST, PasswordUtils.PBKDF2_MIN_MEMORY_COST / 1024));
             }
             if (parallelism <= 0) {
                 return CryptoUtils.createError("Parallelism must be positive");

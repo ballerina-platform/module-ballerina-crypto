@@ -87,6 +87,11 @@ public class PasswordUtils {
      * Default HMAC algorithm for PBKDF2.
      */
     public static final String DEFAULT_PBKDF2_ALGORITHM = "SHA256";
+
+    /**
+     * Minimum allowed memory cost for PBKDF2.
+     */
+    public static final int PBKDF2_MIN_MEMORY_COST = 8192;
     
     /**
      * Supported HMAC algorithms for PBKDF2.
