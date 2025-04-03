@@ -19,6 +19,7 @@ package io.ballerina.stdlib.crypto.nativeimpl;
 
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
+import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.crypto.PasswordUtils;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
@@ -357,7 +358,7 @@ public class Password {
     public static Object verifyPasswordPBKDF2(BString password, BString hashedPassword) {
         try {
             String hash = hashedPassword.getValue();
-            Pattern pattern = Pattern.compile("\\$pbkdf2-(\\w+)\\$i=(\\d+)\\$([A-Za-z0-9+/=]+)\\$([A-Za-z0-9+/=]+)");
+            Pattern pattern = Pattern.compile(Constants.PBKDF2_HASH_PATTERN);
             Matcher matcher = pattern.matcher(hash);
             
             if (!matcher.matches()) {

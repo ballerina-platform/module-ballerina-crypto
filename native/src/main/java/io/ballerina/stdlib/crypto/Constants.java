@@ -143,4 +143,13 @@ public class Constants {
     public static final String SHA384 = "SHA-384";
     public static final String SHA512 = "SHA-512";
     public static final String KECCAK256 = "Keccak-256";
+
+    // Password hashing constants
+    public static final String BCRYPT_HASH_FORMAT = "$2a$%02d$%s";
+    public static final String ARGON2_SALT_FORMAT = "$argon2id$v=19$m=%d,t=%d,p=%d$%s";
+    public static final String ARGON2_HASH_FORMAT = "$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s";
+    public static final String PBKDF2_HASH_PATTERN = 
+                        "\\$pbkdf2-(\\w+)\\$i=(\\d+)\\$([A-Za-z0-9+/=]+)\\$([A-Za-z0-9+/=]+)";
+    public static final String PBKDF2_SALT_FORMAT = "$pbkdf2-%s$i=%d$%s";
+    public static final String PBKDF2_HASH_FORMAT = "$pbkdf2-%s$i=%d$%s$%s";
 }

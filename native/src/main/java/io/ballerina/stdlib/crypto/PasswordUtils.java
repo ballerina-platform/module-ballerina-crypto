@@ -173,7 +173,7 @@ public class PasswordUtils {
      */
     public static String formatBCryptHash(long workFactor, byte[] saltAndHash) {
         String saltAndHashBase64 = Base64.toBase64String(saltAndHash);
-        return String.format(Locale.ROOT, "$2a$%02d$%s", workFactor, saltAndHashBase64);
+        return String.format(Locale.ROOT, Constants.BCRYPT_HASH_FORMAT, workFactor, saltAndHashBase64);
     }
 
     /**
@@ -188,7 +188,7 @@ public class PasswordUtils {
      */
     public static String formatArgon2Hash(long memory, long iterations, long parallelism, 
             String saltBase64, String hashBase64) {
-        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
+        return String.format(Locale.ROOT, Constants.ARGON2_HASH_FORMAT,
                 memory, iterations, parallelism, saltBase64, hashBase64);
     }
 
@@ -202,7 +202,7 @@ public class PasswordUtils {
      * @return formatted Argon2 salt string
      */
     public static String formatArgon2Salt(long memory, long iterations, long parallelism, String saltBase64) {
-        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s",
+        return String.format(Locale.ROOT, Constants.ARGON2_SALT_FORMAT,
                 memory, iterations, parallelism, saltBase64);
     }
     
@@ -217,7 +217,7 @@ public class PasswordUtils {
      */
     public static String formatPBKDF2Hash(String algorithm, long iterations, 
             String saltBase64, String hashBase64) {
-        return String.format(Locale.ROOT, "$pbkdf2-%s$i=%d$%s$%s",
+        return String.format(Locale.ROOT, Constants.PBKDF2_HASH_FORMAT,
                 algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64, hashBase64);
     }
     
@@ -230,7 +230,7 @@ public class PasswordUtils {
      * @return formatted PBKDF2 salt string
      */
     public static String formatPBKDF2Salt(String algorithm, long iterations, String saltBase64) {
-        return String.format(Locale.ROOT, "$pbkdf2-%s$i=%d$%s",
+        return String.format(Locale.ROOT, Constants.PBKDF2_SALT_FORMAT,
                 algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64);
     }
 
