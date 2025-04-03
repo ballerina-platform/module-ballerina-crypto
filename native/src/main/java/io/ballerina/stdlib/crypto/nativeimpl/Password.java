@@ -458,7 +458,9 @@ public class Password {
             default:
                 throw new NoSuchAlgorithmException("Unsupported algorithm: " + algorithm);
         }
-        
+        // PBEKeySpec requires keyLength in bits
+        // and the length of the key in bytes is keyLength / 8
+        // so we need to multiply by 8 to get the key length in bits
         PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keyLength * 8);
         SecretKeyFactory factory = SecretKeyFactory.getInstance(pbkdf2Algorithm);
         return factory.generateSecret(spec).getEncoded();
