@@ -318,7 +318,7 @@ public class Password {
                 return validationError;
             }
             
-            validationError = PasswordUtils.validatePBKDF2Algorithm(alg);
+            validationError = PasswordUtils.validatePbkdf2Algorithm(alg);
             if (validationError != null) {
                 return validationError;
             }
@@ -408,7 +408,7 @@ public class Password {
                 return validationError;
             }
             
-            validationError = PasswordUtils.validatePBKDF2Algorithm(alg);
+            validationError = PasswordUtils.validatePbkdf2Algorithm(alg);
             if (validationError != null) {
                 return validationError;
             }

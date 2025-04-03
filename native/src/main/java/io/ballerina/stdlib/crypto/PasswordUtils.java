@@ -136,7 +136,7 @@ public class PasswordUtils {
      * @param algorithm the HMAC algorithm to validate
      * @return null if valid, error if invalid
      */
-    public static Object validatePBKDF2Algorithm(String algorithm) {
+    public static Object validatePbkdf2Algorithm(String algorithm) {
         for (String supportedAlg : SUPPORTED_PBKDF2_ALGORITHMS) {
             if (supportedAlg.equalsIgnoreCase(algorithm)) {
                 return null;
