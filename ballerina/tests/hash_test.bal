@@ -48,7 +48,7 @@ type InvalidHash record {|
 
 type InvalidPbkdf2Params record {|
     int iterations;
-    string algorithm;
+    HmacAlgorithm algorithm;
     string expectedError;
 |};
 
@@ -433,15 +433,15 @@ isolated function testPbkdf2PasswordHashUniqueness(ValidPassword data) returns e
 @test:Config {
     dataProvider: pbkdf2AlgorithmsDataProvider
 }
-isolated function testPbkdf2DifferentAlgorithms(string algorithm) returns error? {
+isolated function testPbkdf2DifferentAlgorithms(HmacAlgorithm algorithm) returns error? {
     string password = "Ballerina@123";
     string hash = check hashPbkdf2(password, 10000, algorithm);
     
-    test:assertTrue(hash.startsWith("$pbkdf2-" + algorithm.toLowerAscii() + "$"), 
+    test:assertTrue(hash.startsWith("$pbkdf2-" + algorithm.toString().toLowerAscii() + "$"), 
             "Hash should start with correct algorithm identifier");
     
     boolean result = check verifyPbkdf2(password, hash);
-    test:assertTrue(result, "Password verification failed for algorithm: " + algorithm);
+    test:assertTrue(result, "Password verification failed for algorithm: " + algorithm.toString());
 }
 
 // data Providers for password tests
@@ -541,11 +541,9 @@ isolated function hashingAlgorithmsDataProvider() returns string[][] {
 // Additional data providers for PBKDF2 tests
 isolated function invalidPbkdf2ParamsDataProvider() returns InvalidPbkdf2Params[][] {
     return [
-        [{iterations: 0, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}],
-        [{iterations: 500, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}],
-        [{iterations: 10000, algorithm: "MD5", expectedError: "Unsupported algorithm. Must be one of: SHA1, SHA256, SHA512"}],
-        [{iterations: 10000, algorithm: "invalid-alg", expectedError: "Unsupported algorithm. Must be one of: SHA1, SHA256, SHA512"}],
-        [{iterations: -100, algorithm: "SHA256", expectedError: "Iterations must be at least 10000"}]
+        [{iterations: 0, algorithm: SHA256, expectedError: "Iterations must be at least 10000"}],
+        [{iterations: 500, algorithm: SHA256, expectedError: "Iterations must be at least 10000"}],
+        [{iterations: -100, algorithm: SHA256, expectedError: "Iterations must be at least 10000"}]
     ];
 }
 
@@ -557,12 +555,11 @@ isolated function invalidPbkdf2HashesDataProvider() returns InvalidHash[][] {
         [{hash: "$pbkdf2-md5$i=10000$salt$hash", expectedError: "Error occurred while verifying password: Unsupported algorithm: MD5"}]
     ];
 }
-
-isolated function pbkdf2AlgorithmsDataProvider() returns string[][] {
+isolated function pbkdf2AlgorithmsDataProvider() returns HmacAlgorithm[][] {
     return [
-        ["SHA1"],
-        ["SHA256"],
-        ["SHA512"]
+        [SHA1],
+        [SHA256],
+        [SHA512]
     ];
 }
 

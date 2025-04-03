@@ -16,6 +16,13 @@
 
 import ballerina/jballerina.java;
 
+# Supported HMAC algorithms for PBKDF2
+public enum HmacAlgorithm {
+    SHA1,
+    SHA256,
+    SHA512
+}
+
 # Returns the MD5 hash of the given data.
 # ```ballerina
 # string dataString = "Hello Ballerina";
@@ -190,7 +197,7 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 # + iterations - Optional number of iterations. Default is 10000
 # + algorithm - Optional HMAC algorithm (SHA1, SHA256, SHA512). Default is SHA256
 # + return - PBKDF2 hashed password string or Error if hashing fails
-public isolated function hashPbkdf2(string password, int iterations = 10000, "SHA1"|"SHA256"|"SHA512" algorithm = "SHA256") returns string|Error = @java:Method {
+public isolated function hashPbkdf2(string password, int iterations = 10000, HmacAlgorithm algorithm = "SHA256") returns string|Error = @java:Method {
     name: "hashPasswordPBKDF2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
