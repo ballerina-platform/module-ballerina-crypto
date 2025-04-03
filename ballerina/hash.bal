@@ -195,9 +195,9 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 #
 # + password - Password string to be hashed
 # + iterations - Optional number of iterations. Default is 10000
-# + algorithm - Optional HMAC algorithm (SHA1, SHA256, SHA512). Default is SHA256
+# + algorithm - Optional HMAC algorithm (`SHA1`, `SHA256`, `SHA512`). Default is SHA256
 # + return - PBKDF2 hashed password string or Error if hashing fails
-public isolated function hashPbkdf2(string password, int iterations = 10000, HmacAlgorithm algorithm = "SHA256") returns string|Error = @java:Method {
+public isolated function hashPbkdf2(string password, int iterations = 10000, HmacAlgorithm algorithm = SHA256) returns string|Error = @java:Method {
     name: "hashPasswordPBKDF2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
