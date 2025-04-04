@@ -31,10 +31,16 @@ This proposal aims to introduce secure PBKDF2 password hashing and verification 
 A new API will be introduced to generate PBKDF2 hashes with configurable parameters:
 
 ```ballerina
+public enum HmacAlgorithm {
+    SHA1,
+    SHA256,
+    SHA512
+}
+
 public isolated function hashPbkdf2(
     string password,
     int iterations = 10000,
-    "SHA1"|"SHA256"|"SHA512" algorithm = "SHA256"
+    HmacAlgorithm algorithm = SHA256
 ) returns string|Error;
 ```
 
