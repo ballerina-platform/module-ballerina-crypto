@@ -4,7 +4,7 @@ _Owners_: @shafreenAnfar @bhashinee
 _Reviewers_: @shafreenAnfar  
 _Created_: 2022/08/23  
 _Updated_: 2025/01/20  
-_Edition_: Swan Lake
+_Edition_: Swan Lake  
 
 ## Introduction
 
@@ -17,97 +17,97 @@ If you have any feedback or suggestions about the library, start a discussion vi
 The conforming implementation of the specification is released and included in the distribution. Any deviation from the specification is considered a bug.
 
 ## Contents
-
 1. [Overview](#1-overview)
 2. [Hash](#2-hash)
-   - 2.1. [MD5](#21-md5)
-   - 2.2. [SHA1](#22-sha1)
-   - 2.3. [SHA256](#23-sha256)
-   - 2.4. [SHA384](#24-sha384)
-   - 2.5. [SHA512](#25-sha512)
-   - 2.6. [CRC32B](#26-crc32b)
-   - 2.7. [KECCAK256](#27-keccak256)
+   * 2.1. [MD5](#21-md5)
+   * 2.2. [SHA1](#22-sha1)
+   * 2.3. [SHA256](#23-sha256)
+   * 2.4. [SHA384](#24-sha384)
+   * 2.5. [SHA512](#25-sha512)
+   * 2.6. [CRC32B](#26-crc32b)
+   * 2.7. [KECCAK256](#27-keccak256)
 3. [HMAC](#3-hmac)
-   - 3.1. [MD5](#31-md5)
-   - 3.2. [SHA1](#32-sha1)
-   - 3.3. [SHA256](#33-sha256)
-   - 3.4. [SHA384](#34-sha384)
-   - 3.5. [SHA512](#35-sha512)
+   * 3.1. [MD5](#31-md5)
+   * 3.2. [SHA1](#32-sha1)
+   * 3.3. [SHA256](#33-sha256)
+   * 3.4. [SHA384](#34-sha384)
+   * 3.5. [SHA512](#35-sha512)
 4. [Decode private/public key](#4-decode-private-public-keys)
-   - 4.1. [Decode RSA Private key from PKCS12 file](#41-rsa-decode-private-key-from-pkcs12-file)
-   - 4.2. [Decode RSA Private key using Private key and Password](#42-decode-rsa-private-key-using-private-key-and-password)
-   - 4.3. [Decode RSA Private key using Private key content and Password](#43-decode-rsa-private-key-using-private-key-content-and-password)
-   - 4.4. [Decode RSA Public key from PKCS12 file](#44-decode-rsa-public-key-from-pkcs12-file)
-   - 4.5. [Decode RSA Public key from the certificate file](#45-decode-rsa-public-key-from-the-certificate-file)
-   - 4.6. [Decode RSA Public key from the certificate content](#46-decode-rsa-public-key-from-the-certificate-content)
-   - 4.7. [Decode EC Private key from PKCS12 file](#47-decode-ec-private-key-from-pkcs12-file)
-   - 4.8. [Decode EC Private key using Private key and Password](#48-decode-ec-private-key-using-private-key-and-password)
-   - 4.9. [Decode EC Public key from PKCS12 file](#49-decode-ec-public-key-from-pkcs12-file)
-   - 4.10. [Decode EC Public key from the certificate file](#410-decode-ec-public-key-from-the-certificate-file)
-   - 4.11. [Build RSA Public key from modulus and exponent parameters](#411-build-rsa-public-key-from-modulus-and-exponent-parameters)
-   - 4.12. [Decode ML-DSA-65 Private key from PKCS12 file](#412-decode-ml-dsa-65-private-key-from-pkcs12-file)
-   - 4.13. [Decode ML-DSA-65 Private key using Private key and Password](#413-decode-ml-dsa-65-private-key-using-private-key-and-password)
-   - 4.14. [Decode ML-DSA-65 Public key from PKCS12 file](#414-decode-ml-dsa-65-public-key-from-pkcs12-file)
-   - 4.15. [Decode ML-DSA-65 Public key from the certificate file](#415-decode-ml-dsa-65-public-key-from-the-certificate-file)
-   - 4.16. [Decode ML-KEM-768 Private key from PKCS12 file](#416-decode-ml-kem-768-private-key-from-pkcs12-file)
-   - 4.17. [Decode ML-KEM-768 Private key using Private key and Password](#417-decode-ml-kem-768-private-key-using-private-key-and-password)
-   - 4.18. [Decode ML-KEM-768 Public key from PKCS12 file](#418-decode-ml-kem-768-public-key-from-pkcs12-file)
-   - 4.19. [Decode ML-KEM-768 Public key from the certificate file](#419-decode-ml-kem-768-public-key-from-the-certificate-file)
-5. [Encrypt-Decrypt](#5-encrypt-decrypt)
-   - 5.1. [Encryption](#51-encryption)
-     - 5.1.1. [RSA](#511-rsa)
-     - 5.1.2. [AES-CBC](#512-aes-cbc)
-     - 5.1.3. [AES-ECB](#513-aes-ecb)
-     - 5.1.4. [AES-GCM](#514-aes-gcm)
-     - 5.1.5. [PGP](#515-pgp)
-   - 5.2. [Decryption](#52-decryption)
-     - 5.2.1. [RSA-ECB](#521-rsa-ecb)
-     - 5.2.2. [AES-CBC](#522-aes-cbc)
-     - 5.2.3. [AES-ECB](#523-aes-ecb)
-     - 5.2.4. [AES-GCM](#524-aes-gcm)
-     - 5.2.5. [PGP](#525-pgp)
+   * 4.1. [Decode RSA Private key from PKCS12 file](#41-rsa-decode-private-key-from-pkcs12-file)
+   * 4.2. [Decode RSA Private key using Private key and Password](#42-decode-rsa-private-key-using-private-key-and-password)
+   * 4.3. [Decode RSA Private key using Private key content and Password](#43-decode-rsa-private-key-using-private-key-content-and-password)
+   * 4.4. [Decode RSA Public key from PKCS12 file](#44-decode-rsa-public-key-from-pkcs12-file)
+   * 4.5. [Decode RSA Public key from the certificate file](#45-decode-rsa-public-key-from-the-certificate-file)
+   * 4.6. [Decode RSA Public key from the certificate content](#46-decode-rsa-public-key-from-the-certificate-content)
+   * 4.7. [Decode EC Private key from PKCS12 file](#47-decode-ec-private-key-from-pkcs12-file)
+   * 4.8. [Decode EC Private key using Private key and Password](#48-decode-ec-private-key-using-private-key-and-password)
+   * 4.9. [Decode EC Public key from PKCS12 file](#49-decode-ec-public-key-from-pkcs12-file)
+   * 4.10. [Decode EC Public key from the certificate file](#410-decode-ec-public-key-from-the-certificate-file)
+   * 4.11. [Build RSA Public key from modulus and exponent parameters](#411-build-rsa-public-key-from-modulus-and-exponent-parameters)
+   * 4.12. [Decode ML-DSA-65 Private key from PKCS12 file](#412-decode-ml-dsa-65-private-key-from-pkcs12-file)
+   * 4.13. [Decode ML-DSA-65 Private key using Private key and Password](#413-decode-ml-dsa-65-private-key-using-private-key-and-password)
+   * 4.14. [Decode ML-DSA-65 Public key from PKCS12 file](#414-decode-ml-dsa-65-public-key-from-pkcs12-file)
+   * 4.15. [Decode ML-DSA-65 Public key from the certificate file](#415-decode-ml-dsa-65-public-key-from-the-certificate-file)
+   * 4.16. [Decode ML-KEM-768 Private key from PKCS12 file](#416-decode-ml-kem-768-private-key-from-pkcs12-file)
+   * 4.17. [Decode ML-KEM-768 Private key using Private key and Password](#417-decode-ml-kem-768-private-key-using-private-key-and-password)
+   * 4.18. [Decode ML-KEM-768 Public key from PKCS12 file](#418-decode-ml-kem-768-public-key-from-pkcs12-file)
+   * 4.19. [Decode ML-KEM-768 Public key from the certificate file](#419-decode-ml-kem-768-public-key-from-the-certificate-file)
+5. [Encrypt-Decrypt](#5-encrypt-decrypt)   
+   * 5.1. [Encryption](#51-encryption)
+     * 5.1.1. [RSA](#511-rsa)
+     * 5.1.2. [AES-CBC](#512-aes-cbc)
+     * 5.1.3. [AES-ECB](#513-aes-ecb)
+     * 5.1.4. [AES-GCM](#514-aes-gcm)
+     * 5.1.5. [PGP](#515-pgp)
+   * 5.2. [Decryption](#52-decryption)
+     * 5.2.1. [RSA-ECB](#521-rsa-ecb)
+     * 5.2.2. [AES-CBC](#522-aes-cbc)
+     * 5.2.3. [AES-ECB](#523-aes-ecb)
+     * 5.2.4. [AES-GCM](#524-aes-gcm)
+     * 5.2.5. [PGP](#525-pgp)
 6. [Sign and Verify](#6-sign-and-verify)
-   - 6.1. [Sign messages](#61-sign-messages)
-     - 6.1.1. [RSA-MD5](#611-rsa-md5)
-     - 6.1.2. [RSA-SHA1](#612-rsa-sha1)
-     - 6.1.3. [RSA-SHA256](#613-rsa-sha256)
-     - 6.1.4. [RSA-SHA384](#614-rsa-sha384)
-     - 6.1.5. [RSA-SHA512](#615-rsa-sha512)
-     - 6.1.6. [SHA384withECDSA](#616-sha384withecdsa)
-     - 6.1.7. [SHA256withECDSA](#617-sha256withecdsa)
-     - 6.1.8. [ML-DSA-65](#618-mldsa65)
-   - 6.2. [Verify signature](#62-verify-signature)
-     - 6.2.1. [RSA-MD5](#621-rsa-md5)
-     - 6.2.2. [RSA-SHA1](#622-rsa-sha1)
-     - 6.2.3. [RSA-SHA256](#623-rsa-sha256)
-     - 6.2.4. [RSA-SHA384](#624-rsa-sha384)
-     - 6.2.5. [RSA-SHA512](#625-rsa-sha512)
-     - 6.2.6. [SHA384withECDSA](#626-sha384withecdsa)
-     - 6.2.7. [SHA256withECDSA](#627-sha256withecdsa)
-     - 6.2.8. [ML-DSA-65](#618-mldsa65)
+    * 6.1. [Sign messages](#61-sign-messages)
+      * 6.1.1. [RSA-MD5](#611-rsa-md5)
+      * 6.1.2. [RSA-SHA1](#612-rsa-sha1)
+      * 6.1.3. [RSA-SHA256](#613-rsa-sha256)
+      * 6.1.4. [RSA-SHA384](#614-rsa-sha384)
+      * 6.1.5. [RSA-SHA512](#615-rsa-sha512)
+      * 6.1.6. [SHA384withECDSA](#616-sha384withecdsa)
+      * 6.1.7. [SHA256withECDSA](#617-sha256withecdsa)
+      * 6.1.8. [ML-DSA-65](#618-mldsa65)
+   * 6.2. [Verify signature](#62-verify-signature)
+       * 6.2.1. [RSA-MD5](#621-rsa-md5)
+       * 6.2.2. [RSA-SHA1](#622-rsa-sha1)
+       * 6.2.3. [RSA-SHA256](#623-rsa-sha256)
+       * 6.2.4. [RSA-SHA384](#624-rsa-sha384)
+       * 6.2.5. [RSA-SHA512](#625-rsa-sha512)
+       * 6.2.6. [SHA384withECDSA](#626-sha384withecdsa)
+       * 6.2.7. [SHA256withECDSA](#627-sha256withecdsa)
+       * 6.2.8. [ML-DSA-65](#618-mldsa65)
 7. [Key Derivation Function (KDF)](#7-key-derivation-function-kdf)
-   - 7.1. [HKDF-SHA256](#71-hkdf-sha256)
+    * 7.1. [HKDF-SHA256](#71-hkdf-sha256)
 8. [Key Exchange Mechanism (KEM)](#8-key-exchange-mechanism-kem)
-   - 8.1 [Encapsulation](#81-encapsulation)
-     - 8.1.1 [RSA-KEM](#811-rsa-kem)
-     - 8.1.2 [ML-KEM-768](#812-ml-kem-768)
-     - 8.1.3 [RSA-KEM-ML-KEM-768](#813-rsa-kem-ml-kem-768)
-   - 8.2 [Decapsulation](#81-encapsulation)
-     - 8.2.1 [RSA-KEM](#821-rsa-kem)
-     - 8.2.2 [ML-KEM-768](#822-ml-kem-768)
-     - 8.2.3 [RSA-KEM-ML-KEM-768](#823-rsa-kem-ml-kem-768)
+    * 8.1 [Encapsulation](#81-encapsulation)
+       * 8.1.1 [RSA-KEM](#811-rsa-kem)
+       * 8.1.2 [ML-KEM-768](#812-ml-kem-768)
+       * 8.1.3 [RSA-KEM-ML-KEM-768](#813-rsa-kem-ml-kem-768)
+    * 8.2 [Decapsulation](#81-encapsulation)
+       * 8.2.1 [RSA-KEM](#821-rsa-kem)
+       * 8.2.2 [ML-KEM-768](#822-ml-kem-768)
+       * 8.2.3 [RSA-KEM-ML-KEM-768](#823-rsa-kem-ml-kem-768)
 9. [Hybrid Public Key Encryption (HPKE)](#9-hybrid-public-key-encryption-hpke)
-   - 9.1 [Encrypt](#91-encrypt)
-     - 9.1.1 [ML-KEM-768-HPKE](#911-ml-kem-768-hpke)
-     - 9.1.2 [RSA-KEM-ML-KEM-768-HPKE](#912-rsa-kem-ml-kem-768-hpke)
-   - 9.2 [Decrypt](#92-decrypt)
-     - 9.2.1 [ML-KEM-768-HPKE](#921-ml-kem-768-hpke)
-     - 9.2.2 [RSA-KEM-ML-KEM-768-HPKE](#922-rsa-kem-ml-kem-768-hpke)
+    * 9.1 [Encrypt](#91-encrypt)
+       * 9.1.1 [ML-KEM-768-HPKE](#911-ml-kem-768-hpke)
+       * 9.1.2 [RSA-KEM-ML-KEM-768-HPKE](#912-rsa-kem-ml-kem-768-hpke)
+    * 9.2 [Decrypt](#92-decrypt)
+       * 9.2.1 [ML-KEM-768-HPKE](#921-ml-kem-768-hpke)
+       * 9.2.2 [RSA-KEM-ML-KEM-768-HPKE](#922-rsa-kem-ml-kem-768-hpke)
 10. [Password hashing](#10-password-hashing)
-    - 10.1 [BCrypt](#101-bcrypt)
-    - 10.2 [Argon2](#102-argon2)
-    - 10.3 [PBKDF2](#103-pbkdf2)
+    * 10.1 [BCrypt](#101-bcrypt)
+    * 10.2 [Argon2](#102-argon2)
+    * 10.3 [PBKDF2](#103-pbkdf2)
 
+       
 ## 1. [Overview](#1-overview)
 
 The Ballerina `crypto` library facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
@@ -119,7 +119,6 @@ The `crypto` library supports generating hashes with 5 different hash algorithms
 ### 2.1. [MD5](#21-md)
 
 This API can be used to create the MD5 hash of the given data.
-
 ```ballerina
 string dataString = "Hello Ballerina";
 byte[] data = dataString.toBytes();
@@ -129,7 +128,6 @@ byte[] hash = crypto:hashMd5(data);
 ### 2.2. [SHA1](#22-sha1)
 
 This API can be used to create the SHA-1 hash of the given data.
-
 ```ballerina
 string dataString = "Hello Ballerina";
 byte[] data = dataString.toBytes();
@@ -139,7 +137,6 @@ byte[] hash = crypto:hashSha1(data);
 ### 2.3. [SHA256](#23-sha256)
 
 This API can be used to create the SHA-256 hash of the given data.
-
 ```ballerina
 string dataString = "Hello Ballerina";
 byte[] data = dataString.toBytes();
@@ -149,7 +146,6 @@ byte[] hash = crypto:hashSha256(data);
 ### 2.4. [SHA384](#24-sha384)
 
 This API can be used to create the SHA-384 hash of the given data.
-
 ```ballerina
 string dataString = "Hello Ballerina";
 byte[] data = dataString.toBytes();
@@ -159,7 +155,6 @@ byte[] hash = crypto:hashSha384(data);
 ### 2.5. [SHA512](#25-sha512)
 
 This API can be used to create the SHA-512 hash of the given data.
-
 ```ballerina
 string dataString = "Hello Ballerina";
 byte[] data = dataString.toBytes();
@@ -169,7 +164,6 @@ byte[] hash = crypto:hashSha512(data);
 ### 2.6. [CRC32B](#26-crc32b)
 
 This API can be used to create the Hex-encoded CRC32B value of the given data.
-
 ```ballerina
 string stringData = "Hello Ballerina";
 byte[] data = stringData.toBytes();
@@ -179,7 +173,6 @@ string checksum = crypto:crc32b(data);
 ### 2.7. [KECCAK256](#27-keccak256)
 
 This API can be used to create the Hex-encoded KECCAK-256 value of the given data.
-
 ```ballerina
 string stringData = "Hello Ballerina";
 byte[] data = stringData.toBytes();
@@ -453,7 +446,7 @@ string certFile = "/path/to/public.cert";
 crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromCertFile(certFile);
 ```
 
-## 5. [Encrypt-Decrypt](#5-encrypt-decrypt)
+## 5. [Encrypt-Decrypt](#5-encrypt-decrypt) 
 
 The `crypto` library supports both symmetric key encryption/decryption and asymmetric key encryption/decryption. The RSA algorithm can be used for asymmetric-key encryption/decryption with the use of private and public keys. The AES algorithm can be used for symmetric-key encryption/decryption with the use of a shared key.
 
@@ -539,7 +532,7 @@ byte[] cipherText = check crypto:encryptPgp(data, publicKeyPath);
 The following encryption options can be configured in the PGP encryption.
 
 | Option                | Description                                                       | Default Value |
-| --------------------- | ----------------------------------------------------------------- | ------------- |
+|-----------------------|-------------------------------------------------------------------|---------------|
 | compressionAlgorithm  | Specifies the compression algorithm used for PGP encryption       | ZIP           |
 | symmetricKeyAlgorithm | Specifies the symmetric key algorithm used for encryption         | AES_256       |
 | armor                 | Indicates whether ASCII armor is enabled for the encrypted output | true          |
@@ -920,6 +913,7 @@ crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromTrustStore(k
 boolean validity = check crypto:verifyMlDsa65Signature(data, signature, publicKey);
 ```
 
+
 ## 7. [Key Derivation Function (KDF)](#7-key-derivation-function-kdf)
 
 The `crypto` module supports HMAC-based Key Derivation Function (HKDF). HKDF is a key derivation function that uses a Hash-based Message Authentication Code (HMAC) to derive keys.
@@ -939,10 +933,10 @@ byte[] hash = crypto:hkdfSha256(key, 32);
 The `crypto` module supports Key Exchange Mechanisms (KEM). It includes RSA-KEM and post-quantum ML-KEM-768 for both encapsulation and decapsulation.
 
 ### 8.1. [Encapsulation](#81-encapsulation)
-
+    
 #### 8.1.1. [RSA-KEM](#811-rsa-kem)
 
-This API can be used to create shared secret and its encapsulation using RSA-KEM function.
+This API can be used to create shared secret and its encapsulation using RSA-KEM function. 
 
 ```ballerina
 crypto:KeyStore keyStore = {
@@ -952,10 +946,10 @@ crypto:KeyStore keyStore = {
 crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateRsaKem(publicKey);
 ```
-
+    
 #### 8.1.2. [ML-KEM-768](#812-ml-kem-768)
 
-This API can be used to create shared secret and its encapsulation using ML-KEM-768 function.
+This API can be used to create shared secret and its encapsulation using ML-KEM-768 function. 
 
 ```ballerina
 crypto:KeyStore keyStore = {
@@ -965,10 +959,10 @@ crypto:KeyStore keyStore = {
 crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
 crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateMlKem768(publicKey);
 ```
-
+    
 #### 8.1.3. [RSA-KEM-ML-KEM-768](#813-rsa-kem-ml-kem-768)
 
-This API can be used to create shared secret and its encapsulation using RSA-KEM-ML-KEM-768 function.
+This API can be used to create shared secret and its encapsulation using RSA-KEM-ML-KEM-768 function. 
 
 ```ballerina
 crypto:KeyStore mlkemKeyStore = {
@@ -989,10 +983,10 @@ byte[] sharedSecret = check crypto:decapsulateRsaKemMlKem768(encapsulatedSecret,
 ```
 
 ### 8.2. [Decapsulation](#81-encapsulation)
-
+    
 #### 8.2.1. [RSA-KEM](#821-rsa-kem)
 
-This API can be used to decapsulate shared secret using RSA-KEM function of the given data.
+This API can be used to decapsulate shared secret using RSA-KEM function of the given data. 
 
 ```ballerina
 crypto:KeyStore keyStore = {
@@ -1005,10 +999,10 @@ byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
 crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 byte[] sharedSecret = check crypto:decapsulateRsaKem(encapsulatedSecret, privateKey);
 ```
-
+    
 #### 8.2.2. [ML-KEM-768](#822-ml-kem-768)
 
-This API can be used to decapsulate shared secret using ML-KEM-768 function of the given data.
+This API can be used to decapsulate shared secret using ML-KEM-768 function of the given data. 
 
 ```ballerina
 crypto:KeyStore keyStore = {
@@ -1021,10 +1015,10 @@ byte[] encapsulatedSecret = encapsulationResult.encapsulatedSecret;
 crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 byte[] sharedSecret = check crypto:decapsulateMlKem768(encapsulatedSecret, privateKey);
 ```
-
+    
 #### 8.2.3. [RSA-KEM-ML-KEM-768](#823-rsa-kem-ml-kem-768)
 
-This API can be used to decapsulate shared secret using RSA-KEM-ML-KEM-768 function of the given data.
+This API can be used to decapsulate shared secret using RSA-KEM-ML-KEM-768 function of the given data. 
 
 ```ballerina
 crypto:KeyStore mlkemKeyStore = {
@@ -1049,7 +1043,7 @@ byte[] sharedSecret = check crypto:decapsulateRsaKemMlKem768(encapsulatedSecret,
 The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supports post-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
 
 ### 9.1. [Encrypt](#91-encrypt)
-
+    
 #### 9.1.1. [ML-KEM-768-HPKE](#911-ml-kem-768-hpke)
 
 This API can be used to create the ML-KEM-768-hybrid-encrypted value of the given data.
@@ -1064,7 +1058,7 @@ crypto:KeyStore keyStore = {
 crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
 crypto:HybridEncryptionResult encryptionResult = check crypto:encryptMlKem768Hpke(data, publicKey);
 ```
-
+    
 #### 9.1.2. [RSA-KEM-ML-KEM-768-HPKE](#912-rsa-kem-ml-kem-768-hpke)
 
 This API can be used to create the RSA-KEM-ML-KEM-768-hybrid-encrypted value of the given data.
@@ -1086,7 +1080,7 @@ crypto:HybridEncryptionResult encryptionResult = check crypto:encryptRsaKemMlKem
 ```
 
 ### 9.2. [Decrypt](#92-decrypt)
-
+    
 #### 9.2.1. [ML-KEM-768-HPKE](#921-ml-kem-768-hpke)
 
 This API can be used to create the ML-KEM-768-hybrid-decrypted value of the given data.
@@ -1105,7 +1099,7 @@ byte[] encapsulatedKey = encryptionResult.encapsulatedSecret;
 crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 byte[] decryptedData = check crypto:decryptMlKem768Hpke(cipherText, encapsulatedKey, privateKey);
 ```
-
+    
 #### 9.2.2. [RSA-KEM-ML-KEM-768-HPKE](#922-rsa-kem-ml-kem-768-hpke)
 
 This API can be used to create the RSA-KEM-ML-KEM-768-hybrid-decrypted value of the given data.
@@ -1144,7 +1138,6 @@ public isolated function hashBcrypt(string password, int workFactor = 12) return
 ```
 
 Parameters:
-
 - `password`: The plain text password to hash
 - `workFactor`: Computational complexity factor (4-31, default: 12)
 
@@ -1153,7 +1146,6 @@ public isolated function verifyBcrypt(string password, string hashedPassword) re
 ```
 
 Example:
-
 ```ballerina
 string password = "your-password";
 // Hash with default work factor (12)
@@ -1168,12 +1160,11 @@ boolean isValid = check crypto:verifyBcrypt(password, hashedPassword1);
 Implements the Argon2id variant of the Argon2 password hashing algorithm, optimized for both high memory usage and GPU resistance.
 
 ```ballerina
-public isolated function hashArgon2(string password, int iterations = 3,
+public isolated function hashArgon2(string password, int iterations = 3, 
     int memory = 65536, int parallelism = 4) returns string|Error
 ```
 
 Parameters:
-
 - `password`: The plain text password to hash
 - `iterations`: Number of iterations (default: 3)
 - `memory`: Memory usage in KB (minimum: 8192, default: 65536)
@@ -1186,7 +1177,6 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 ```
 
 Example:
-
 ```ballerina
 string password = "your-password";
 // Hash with default parameters
@@ -1206,7 +1196,6 @@ public enum HmacAlgorithm {
     SHA256,
     SHA512
 }
-
 public isolated function hashPbkdf2(string password, int iterations = 10000,
     HmacAlgorithm algorithm = SHA256) returns string|Error
 ```
