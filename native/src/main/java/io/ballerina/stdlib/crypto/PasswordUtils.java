@@ -39,54 +39,19 @@ public class PasswordUtils {
     public static final int MAX_WORK_FACTOR = 31;
 
     /**
-     * Default work factor used for BCrypt password hashing if not specified.
-     */
-    public static final int DEFAULT_WORK_FACTOR = 12;
-
-    /**
      * Length of the random salt used in password hashing.
      */
     public static final int SALT_LENGTH = 16;
 
     /**
-     * Default number of iterations for Argon2.
-     */
-    public static final int DEFAULT_ITERATIONS = 3;
-       
-    /**
-     * Default memory usage in KB (64MB) for Argon2.
-     */
-    public static final int DEFAULT_MEMORY = 65536;
-    
-    /**
-     * Default number of parallel threads for Argon2.
-     */
-    public static final int DEFAULT_PARALLELISM = 4;
-    
-    /**
      * Length of the generated hash in bytes for Argon2.
      */
     public static final int HASH_LENGTH = 32;
-    
-    /**
-     * Default number of iterations for PBKDF2.
-     */
-    public static final int DEFAULT_PBKDF2_ITERATIONS = 10000;
-    
+  
     /**
      * Minimum number of iterations for PBKDF2.
      */
     public static final int MIN_PBKDF2_ITERATIONS = 10000;
-    
-    /**
-     * Length of the generated hash in bytes for PBKDF2.
-     */
-    public static final int PBKDF2_HASH_LENGTH = 32;
-    
-    /**
-     * Default HMAC algorithm for PBKDF2.
-     */
-    public static final String DEFAULT_PBKDF2_ALGORITHM = "SHA256";
 
     /**
      * Minimum allowed memory cost for PBKDF2.

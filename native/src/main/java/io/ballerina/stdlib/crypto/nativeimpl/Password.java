@@ -78,16 +78,6 @@ public class Password {
     }
 
     /**
-     * Hash a password using BCrypt with the default work factor.
-     *
-     * @param password the password to hash
-     * @return hashed password string or error
-     */
-    public static Object hashPassword(BString password) {
-        return hashPassword(password, PasswordUtils.DEFAULT_WORK_FACTOR);
-    }
-
-    /**
      * Verify a password against a BCrypt hash.
      *
      * @param password the password to verify
@@ -142,27 +132,7 @@ public class Password {
         }
     }
 
-    /**
-     * Generate a salt string for BCrypt with the default work factor.
-     *
-     * @return formatted salt string or error
-     */
-    public static Object generateSalt() {
-        return generateSalt(PasswordUtils.DEFAULT_WORK_FACTOR);
-    }
-
     // Argon2 methods
-
-    /**
-     * Hash a password using Argon2 with default parameters.
-     *
-     * @param password the password to hash
-     * @return hashed password string or error
-     */
-    public static Object hashPasswordArgon2(BString password) {
-        return hashPasswordArgon2(password, PasswordUtils.DEFAULT_ITERATIONS, PasswordUtils.DEFAULT_MEMORY, 
-        PasswordUtils.DEFAULT_PARALLELISM);
-    }
 
     /**
      * Hash a password using Argon2 with custom parameters.
@@ -260,16 +230,6 @@ public class Password {
     }
 
     /**
-     * Generate a salt string for Argon2 with default parameters.
-     *
-     * @return formatted salt string or error
-     */
-    public static Object generateSaltArgon2() {
-        return generateSaltArgon2(PasswordUtils.DEFAULT_ITERATIONS, PasswordUtils.DEFAULT_MEMORY, 
-        PasswordUtils.DEFAULT_PARALLELISM);
-    }
-
-    /**
      * Generate a salt string for Argon2 with custom parameters.
      *
      * @param iterations number of iterations
@@ -291,18 +251,7 @@ public class Password {
     }
 
     // PBKDF2 methods
-    
-    /**
-     * Hash a password using PBKDF2 with default parameters.
-     *
-     * @param password the password to hash
-     * @return hashed password string or error
-     */
-    public static Object hashPasswordPBKDF2(BString password) {
-        return hashPasswordPBKDF2(password, PasswordUtils.DEFAULT_PBKDF2_ITERATIONS, 
-                                  StringUtils.fromString(PasswordUtils.DEFAULT_PBKDF2_ALGORITHM));
-    }
-    
+  
     /**
      * Hash a password using PBKDF2 with custom parameters.
      *
@@ -383,17 +332,7 @@ public class Password {
             return CryptoUtils.createError("Error occurred while verifying password: " + e.getMessage());
         } 
     }
-    
-    /**
-     * Generate a salt string for PBKDF2 with default parameters.
-     *
-     * @return formatted salt string or error
-     */
-    public static Object generateSaltPBKDF2() {
-        return generateSaltPBKDF2(PasswordUtils.DEFAULT_PBKDF2_ITERATIONS, 
-                                 StringUtils.fromString(PasswordUtils.DEFAULT_PBKDF2_ALGORITHM));
-    }
-    
+
     /**
      * Generate a salt string for PBKDF2 with custom parameters.
      *
