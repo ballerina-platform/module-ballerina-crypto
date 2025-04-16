@@ -16,6 +16,13 @@
 
 import ballerina/jballerina.java;
 
+# Supported HMAC algorithms for PBKDF2
+public enum HmacAlgorithm {
+    SHA1,
+    SHA256,
+    SHA512
+}
+
 # Returns the MD5 hash of the given data.
 # ```ballerina
 # string dataString = "Hello Ballerina";
@@ -162,7 +169,7 @@ public isolated function verifyBcrypt(string password, string hashedPassword) re
 # + return - Argon2id hashed password string or Error if hashing fails
 public isolated function hashArgon2(string password, int iterations = 3, int memory = 65536, int parallelism = 4) returns string|Error = @java:Method {
     name: "hashPasswordArgon2",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.PasswordArgon2"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;
 
 # Verifies if a password matches an Argon2id hashed password.
@@ -177,5 +184,35 @@ public isolated function hashArgon2(string password, int iterations = 3, int mem
 # + return - Boolean indicating if password matches or Error if verification fails
 public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error = @java:Method {
     name: "verifyPasswordArgon2",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.PasswordArgon2"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
+} external;
+
+# Returns a PBKDF2 hash of the given password with optional parameters.
+# ```ballerina
+# string password = "mySecurePassword123";
+# string|crypto:Error hash = crypto:hashPbkdf2(password);
+# ```
+#
+# + password - Password string to be hashed
+# + iterations - Optional number of iterations. Default is 10000
+# + algorithm - Optional HMAC algorithm (`SHA1`, `SHA256`, `SHA512`). Default is SHA256
+# + return - PBKDF2 hashed password string or Error if hashing fails
+public isolated function hashPbkdf2(string password, int iterations = 10000, HmacAlgorithm algorithm = SHA256) returns string|Error = @java:Method {
+    name: "hashPasswordPBKDF2",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
+} external;
+
+# Verifies if a password matches a PBKDF2 hashed password.
+# ```ballerina
+# string password = "mySecurePassword123";
+# string hashedPassword = "$pbkdf2-sha256$i=10000$salt$hash";
+# boolean|crypto:Error matches = crypto:verifyPbkdf2(password, hashedPassword);
+# ```
+#
+# + password - Password string to verify
+# + hashedPassword - PBKDF2 hashed password to verify against
+# + return - Boolean indicating if password matches or Error if verification fails
+public isolated function verifyPbkdf2(string password, string hashedPassword) returns boolean|Error = @java:Method {
+    name: "verifyPasswordPBKDF2",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
 } external;

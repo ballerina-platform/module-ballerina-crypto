@@ -39,34 +39,29 @@ public class PasswordUtils {
     public static final int MAX_WORK_FACTOR = 31;
 
     /**
-     * Default work factor used for BCrypt password hashing if not specified.
-     */
-    public static final int DEFAULT_WORK_FACTOR = 12;
-
-    /**
      * Length of the random salt used in password hashing.
      */
     public static final int SALT_LENGTH = 16;
 
     /**
-     * Default number of iterations for Argon2.
-     */
-    public static final int DEFAULT_ITERATIONS = 3;
-       
-    /**
-     * Default memory usage in KB (64MB) for Argon2.
-     */
-    public static final int DEFAULT_MEMORY = 65536;
-    
-    /**
-     * Default number of parallel threads for Argon2.
-     */
-    public static final int DEFAULT_PARALLELISM = 4;
-    
-    /**
      * Length of the generated hash in bytes for Argon2.
      */
     public static final int HASH_LENGTH = 32;
+  
+    /**
+     * Minimum number of iterations for PBKDF2.
+     */
+    public static final int MIN_PBKDF2_ITERATIONS = 10000;
+
+    /**
+     * Minimum allowed memory cost for PBKDF2.
+     */
+    public static final int PBKDF2_MIN_MEMORY_COST = 8192;
+    
+    /**
+     * Supported HMAC algorithms for PBKDF2.
+     */
+    static final String[] SUPPORTED_PBKDF2_ALGORITHMS = {"SHA1", "SHA256", "SHA512"}; 
     
     /**
      * Secure random number generator for salt generation.
@@ -89,6 +84,39 @@ public class PasswordUtils {
         }
         return null;
     }
+    
+    /**
+     * Validate if the provided PBKDF2 iterations is within acceptable bounds.
+     *
+     * @param iterations the iterations count to validate
+     * @return null if valid, error if invalid
+     */
+    public static Object validatePBKDF2Iterations(long iterations) {
+        if (iterations < MIN_PBKDF2_ITERATIONS) {
+            return CryptoUtils.createError(
+                String.format("Iterations must be at least %d", MIN_PBKDF2_ITERATIONS)
+            );
+        }
+        return null;
+    }
+    
+    /**
+     * Validate if the provided PBKDF2 algorithm is supported.
+     *
+     * @param algorithm the HMAC algorithm to validate
+     * @return null if valid, error if invalid
+     */
+    public static Object validatePbkdf2Algorithm(String algorithm) {
+        for (String supportedAlg : SUPPORTED_PBKDF2_ALGORITHMS) {
+            if (supportedAlg.equalsIgnoreCase(algorithm)) {
+                return null;
+            }
+        }
+        return CryptoUtils.createError(
+            String.format("Unsupported algorithm. Must be one of: %s", 
+                String.join(", ", SUPPORTED_PBKDF2_ALGORITHMS))
+        );
+    }
 
     /**
      * Generate a cryptographically secure random salt.
@@ -110,7 +138,7 @@ public class PasswordUtils {
      */
     public static String formatBCryptHash(long workFactor, byte[] saltAndHash) {
         String saltAndHashBase64 = Base64.toBase64String(saltAndHash);
-        return String.format(Locale.ROOT, "$2a$%02d$%s", workFactor, saltAndHashBase64);
+        return String.format(Locale.ROOT, Constants.BCRYPT_HASH_FORMAT, workFactor, saltAndHashBase64);
     }
 
     /**
@@ -125,7 +153,7 @@ public class PasswordUtils {
      */
     public static String formatArgon2Hash(long memory, long iterations, long parallelism, 
             String saltBase64, String hashBase64) {
-        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
+        return String.format(Locale.ROOT, Constants.ARGON2_HASH_FORMAT,
                 memory, iterations, parallelism, saltBase64, hashBase64);
     }
 
@@ -139,8 +167,36 @@ public class PasswordUtils {
      * @return formatted Argon2 salt string
      */
     public static String formatArgon2Salt(long memory, long iterations, long parallelism, String saltBase64) {
-        return String.format(Locale.ROOT, "$argon2id$v=19$m=%d,t=%d,p=%d$%s",
+        return String.format(Locale.ROOT, Constants.ARGON2_SALT_FORMAT,
                 memory, iterations, parallelism, saltBase64);
+    }
+    
+    /**
+     * Format a PBKDF2 hash string according to the standard format.
+     *
+     * @param algorithm the HMAC algorithm used
+     * @param iterations iteration count
+     * @param saltBase64 Base64 encoded salt
+     * @param hashBase64 Base64 encoded hash
+     * @return formatted PBKDF2 hash string
+     */
+    public static String formatPBKDF2Hash(String algorithm, long iterations, 
+            String saltBase64, String hashBase64) {
+        return String.format(Locale.ROOT, Constants.PBKDF2_HASH_FORMAT,
+                algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64, hashBase64);
+    }
+    
+    /**
+     * Format a PBKDF2 salt string according to the standard format.
+     *
+     * @param algorithm the HMAC algorithm used
+     * @param iterations iteration count
+     * @param saltBase64 Base64 encoded salt
+     * @return formatted PBKDF2 salt string
+     */
+    public static String formatPBKDF2Salt(String algorithm, long iterations, String saltBase64) {
+        return String.format(Locale.ROOT, Constants.PBKDF2_SALT_FORMAT,
+                algorithm.toLowerCase(Locale.ROOT), iterations, saltBase64);
     }
 
     /**

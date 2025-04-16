@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- [Introduce support for PBKDF2 password hashing and verification](https://github.com/ballerina-platform/ballerina-lang/issues/43926)
+
 ### Changed
 - [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
 
