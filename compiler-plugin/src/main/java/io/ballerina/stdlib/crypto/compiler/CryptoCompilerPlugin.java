@@ -18,9 +18,22 @@
 
 package io.ballerina.stdlib.crypto.compiler;
 
+import io.ballerina.projects.plugins.CompilerPlugin;
+import io.ballerina.projects.plugins.CompilerPluginContext;
+import io.ballerina.scan.ScannerContext;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoCodeAnalyzer;
+
 /**
  * JWT compiler plugin.
  */
-public class CryptoCompilerPlugin {
+public class CryptoCompilerPlugin extends CompilerPlugin {
+    private static final String SCANNER_CONTEXT = "ScannerContext";
 
+    @Override
+    public void init(CompilerPluginContext context) {
+        Object object = context.userData().get(SCANNER_CONTEXT);
+        if (object instanceof ScannerContext scannerContext) {
+            context.addCodeAnalyzer(new CryptoCodeAnalyzer(scannerContext.getReporter()));
+        }
+    }
 }

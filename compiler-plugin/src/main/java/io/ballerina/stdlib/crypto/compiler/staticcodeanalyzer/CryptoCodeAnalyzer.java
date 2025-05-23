@@ -18,6 +18,21 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
-public class CryptoCodeAnalyzer {
+import io.ballerina.compiler.syntax.tree.SyntaxKind;
+import io.ballerina.projects.plugins.CodeAnalysisContext;
+import io.ballerina.projects.plugins.CodeAnalyzer;
+import io.ballerina.scan.Reporter;
 
+public class CryptoCodeAnalyzer extends CodeAnalyzer {
+    private final Reporter reporter;
+
+    public CryptoCodeAnalyzer(Reporter reporter) {
+        this.reporter = reporter;
+    }
+
+    @Override
+    public void init(CodeAnalysisContext codeAnalysisContext) {
+        codeAnalysisContext.addSyntaxNodeAnalysisTask(new CryptoCipherAlgorithmAnalyzer(reporter),
+                SyntaxKind.FUNCTION_CALL);
+    }
 }
