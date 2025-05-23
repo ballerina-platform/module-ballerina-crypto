@@ -28,6 +28,8 @@ def packageOrg = "ballerina"
 def tomlVersion = stripBallerinaExtensionVersion("${project.version}")
 def ballerinaTomlFile = new File("$project.projectDir/Ballerina.toml")
 def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/Ballerina.toml")
+def compilerPluginTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/CompilerPlugin.toml")
+def compilerPluginTomlFile = new File("$project.projectDir/CompilerPlugin.toml")
 
 def stripBallerinaExtensionVersion(String extVersion) {
     if (extVersion.matches(project.ext.timestampedVersionRegex)) {
@@ -68,18 +70,20 @@ dependencies {
     }
 }
 
-task updateTomlFiles {
+tasks.register('updateTomlFiles') {
     doLast {
         def stdlibDependentBouncycastleVersion = project.bouncycastleVersion
 
         def newBallerinaToml = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
         newBallerinaToml = newBallerinaToml.replace("@bouncycastle.version@", stdlibDependentBouncycastleVersion)
+        def newCompilerPluginToml = compilerPluginTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         ballerinaTomlFile.text = newBallerinaToml
+        compilerPluginTomlFile.text = newCompilerPluginToml
     }
 }
 
-task commitTomlFiles {
+tasks.register('commitTomlFiles') {
     doLast {
         project.exec {
             ignoreExitValue true
@@ -117,6 +121,8 @@ test.dependsOn ":${packageName}-native:build"
 
 build.dependsOn "generatePomFileForMavenPublication"
 build.dependsOn ":${packageName}-native:build"
+build.dependsOn ":${packageName}-compiler-plugin:build"
+test.dependsOn ":${packageName}-compiler-plugin:build"
 
 publishToMavenLocal.dependsOn build
 publish.dependsOn build
