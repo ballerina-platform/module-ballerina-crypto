@@ -1,0 +1,6 @@
+[plugin]
+id = "crypto-compiler-plugin"
+class = "io.ballerina.stdlib.crypto.compiler.CryptoCompilerPlugin"
+
+[[dependency]]
+path = "../compiler-plugin/build/libs/crypto-compiler-plugin-@project.version@.jar"

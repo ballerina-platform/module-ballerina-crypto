@@ -37,10 +37,14 @@ rootProject.name = 'crypto'
 include ':checkstyle'
 include ':crypto-native'
 include ':crypto-ballerina'
+include ':crypto-compiler-plugin'
+include ':crypto-compiler-plugin-tests'
 
 project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
 project(':crypto-native').projectDir = file('native')
 project(':crypto-ballerina').projectDir = file('ballerina')
+project(':crypto-compiler-plugin').projectDir = file('compiler-plugin')
+project(':crypto-compiler-plugin-tests').projectDir = file('compiler-plugin-tests')
 
 gradleEnterprise {
     buildScan {
