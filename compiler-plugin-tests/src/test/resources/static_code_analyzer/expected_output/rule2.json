@@ -1,0 +1,582 @@
+[
+  {
+    "location": {
+      "filePath": "argon_func.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 726,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func_var_named_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func_var_pos_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_inline_named_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_inline_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_inline_pos_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_inline_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_mod_var_named_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 763,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_mod_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_mod_var_pos_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 757,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_mod_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_func_var_named_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_func_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_func_var_pos_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_func_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_inline_named_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_inline_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_inline_pos_arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_inline_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_mod_var_named_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 701,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_mod_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_mod_var_pos_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 699,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_mod_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func.bal",
+      "startLine": 31,
+      "endLine": 31,
+      "startColumn": 14,
+      "endColumn": 46,
+      "startOffset": 1238,
+      "length": 32
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func.bal",
+      "startLine": 33,
+      "endLine": 33,
+      "startColumn": 14,
+      "endColumn": 58,
+      "startOffset": 1300,
+      "length": 44
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func.bal",
+      "startLine": 35,
+      "endLine": 35,
+      "startColumn": 14,
+      "endColumn": 60,
+      "startOffset": 1388,
+      "length": 46
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func.bal",
+      "startLine": 37,
+      "endLine": 37,
+      "startColumn": 14,
+      "endColumn": 64,
+      "startOffset": 1485,
+      "length": 50
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func_var_named_arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 117,
+      "startOffset": 857,
+      "length": 96
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_func_var_pos_arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 81,
+      "startOffset": 855,
+      "length": 60
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_func_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_inline_named_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 21,
+      "endColumn": 96,
+      "startOffset": 778,
+      "length": 75
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_inline_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_inline_pos_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 21,
+      "endColumn": 60,
+      "startOffset": 776,
+      "length": 39
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_inline_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_mod_var_named_arg.bal",
+      "startLine": 24,
+      "endLine": 24,
+      "startColumn": 21,
+      "endColumn": 150,
+      "startOffset": 878,
+      "length": 129
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_mod_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon_mod_var_pos_arg.bal",
+      "startLine": 24,
+      "endLine": 24,
+      "startColumn": 21,
+      "endColumn": 144,
+      "startOffset": 870,
+      "length": 123
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/argon_mod_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_func_var_named_arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 73,
+      "startOffset": 810,
+      "length": 52
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_func_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_func_var_pos_arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 60,
+      "startOffset": 808,
+      "length": 39
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_func_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_inline_named_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 21,
+      "endColumn": 64,
+      "startOffset": 779,
+      "length": 43
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_inline_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_inline_pos_arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 21,
+      "endColumn": 51,
+      "startOffset": 777,
+      "length": 30
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_inline_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_mod_var_named_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 84,
+      "startOffset": 817,
+      "length": 63
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_mod_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_mod_var_pos_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 69,
+      "startOffset": 813,
+      "length": 48
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "Avoid using fast hashing algorithms",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_mod_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
+  }
+]
