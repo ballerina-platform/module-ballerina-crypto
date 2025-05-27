@@ -1,0 +1,722 @@
+[
+  {
+    "location": {
+      "filePath": "argon-func-var-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-func-var-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-inline-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-inline-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-mod-var-named-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 126,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-mod-var-pos-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 120,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-func-var-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-func-var-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-inline-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-inline-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-mod-var-named-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 62,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-mod-var-pos-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 60,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-func-var-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-func-var-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-inline-named-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-inline-pos-arg.bal",
+      "startLine": 2,
+      "endLine": 2,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 28,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-mod-var-named-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 72,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-mod-var-pos-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 70,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-func-var-named-arg.bal",
+      "startLine": 7,
+      "endLine": 7,
+      "startColumn": 21,
+      "endColumn": 117,
+      "startOffset": 221,
+      "length": 96
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-func-var-pos-arg.bal",
+      "startLine": 7,
+      "endLine": 7,
+      "startColumn": 21,
+      "endColumn": 81,
+      "startOffset": 219,
+      "length": 60
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-inline-named-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 96,
+      "startOffset": 139,
+      "length": 75
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-inline-pos-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 60,
+      "startOffset": 137,
+      "length": 39
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-mod-var-named-arg.bal",
+      "startLine": 8,
+      "endLine": 8,
+      "startColumn": 21,
+      "endColumn": 150,
+      "startOffset": 243,
+      "length": 129
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "argon-mod-var-pos-arg.bal",
+      "startLine": 8,
+      "endLine": 8,
+      "startColumn": 21,
+      "endColumn": 144,
+      "startOffset": 235,
+      "length": 123
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\argon-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\argon-mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-func-var-named-arg.bal",
+      "startLine": 5,
+      "endLine": 5,
+      "startColumn": 21,
+      "endColumn": 73,
+      "startOffset": 172,
+      "length": 52
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-func-var-pos-arg.bal",
+      "startLine": 5,
+      "endLine": 5,
+      "startColumn": 21,
+      "endColumn": 60,
+      "startOffset": 170,
+      "length": 39
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-inline-named-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 64,
+      "startOffset": 140,
+      "length": 43
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-inline-pos-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 51,
+      "startOffset": 138,
+      "length": 30
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-mod-var-named-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 21,
+      "endColumn": 84,
+      "startOffset": 180,
+      "length": 63
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt-mod-var-pos-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 21,
+      "endColumn": 69,
+      "startOffset": 176,
+      "length": 48
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\bcrypt-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\bcrypt-mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-func-var-named-arg.bal",
+      "startLine": 5,
+      "endLine": 5,
+      "startColumn": 21,
+      "endColumn": 73,
+      "startOffset": 176,
+      "length": 52
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-func-var-pos-arg.bal",
+      "startLine": 5,
+      "endLine": 5,
+      "startColumn": 21,
+      "endColumn": 60,
+      "startOffset": 174,
+      "length": 39
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-inline-named-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 68,
+      "startOffset": 140,
+      "length": 47
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-inline-pos-arg.bal",
+      "startLine": 4,
+      "endLine": 4,
+      "startColumn": 21,
+      "endColumn": 55,
+      "startOffset": 138,
+      "length": 34
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-mod-var-named-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 21,
+      "endColumn": 90,
+      "startOffset": 190,
+      "length": 69
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "pbkdf2-mod-var-pos-arg.bal",
+      "startLine": 6,
+      "endLine": 6,
+      "startColumn": 21,
+      "endColumn": 75,
+      "startOffset": 186,
+      "length": 54
+    },
+    "rule": {
+      "id": "ballerina\\crypto:2",
+      "numericId": 2,
+      "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2\\pbkdf2-mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule2\\pbkdf2-mod-var-pos-arg.bal"
+  }
+]

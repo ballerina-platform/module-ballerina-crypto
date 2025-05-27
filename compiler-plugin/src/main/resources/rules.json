@@ -3,5 +3,10 @@
     "id": 1,
     "kind": "VULNERABILITY",
     "description": "Encryption algorithms should be used with secure mode and padding scheme"
+  },
+  {
+    "id": 2,
+    "kind": "VULNERABILITY",
+    "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm"
   }
 ]

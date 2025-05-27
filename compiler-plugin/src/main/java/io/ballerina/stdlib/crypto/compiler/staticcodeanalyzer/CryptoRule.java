@@ -18,36 +18,17 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
-import io.ballerina.scan.Rule;
-
-import static io.ballerina.scan.RuleKind.VULNERABILITY;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory.createRule;
-
 public enum CryptoRule {
-    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(
-            1,
-            "Encryption algorithms should be used with"
-                    + " secure mode and padding scheme",
-            VULNERABILITY)
-    );
+    AVOID_WEAK_CIPHER_ALGORITHMS(1),
+    AVOID_FAST_HASH_ALGORITHMS(2);
 
-    private final Rule rule;
+    private final int id;
 
-    CryptoRule(Rule rule) {
-        this.rule = rule;
+    CryptoRule(int id) {
+        this.id = id;
     }
 
     public int getId() {
-        return this.rule.numericId();
-    }
-
-    public Rule getRule() {
-        return this.rule;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"id\":" + this.getId() + ", \"kind\":\"" + this.rule.kind() + "\"," +
-                " \"description\" : \"" + this.rule.description() + "\"}";
+        return this.id;
     }
 }
