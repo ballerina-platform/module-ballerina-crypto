@@ -1,0 +1,162 @@
+[
+  {
+    "location": {
+      "filePath": "aes_cbc.bal",
+      "startLine": 3,
+      "endLine": 3,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 54,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_cbc.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_cbc.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_cbc_as_import.bal",
+      "startLine": 3,
+      "endLine": 3,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 59,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_cbc_as_import.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_cbc_as_import.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_ecb.bal",
+      "startLine": 3,
+      "endLine": 3,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 54,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_ecb.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_ecb.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_ecb_as_import.bal",
+      "startLine": 3,
+      "endLine": 3,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 59,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_ecb_as_import.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_ecb_as_import.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_cbc.bal",
+      "startLine": 14,
+      "endLine": 14,
+      "startColumn": 21,
+      "endColumn": 67,
+      "startOffset": 574,
+      "length": 46
+    },
+    "rule": {
+      "id": "ballerina\\crypto:1",
+      "numericId": 1,
+      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_cbc.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_cbc.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_cbc_as_import.bal",
+      "startLine": 14,
+      "endLine": 14,
+      "startColumn": 21,
+      "endColumn": 62,
+      "startOffset": 587,
+      "length": 41
+    },
+    "rule": {
+      "id": "ballerina\\crypto:1",
+      "numericId": 1,
+      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_cbc_as_import.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_cbc_as_import.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_ecb.bal",
+      "startLine": 10,
+      "endLine": 10,
+      "startColumn": 21,
+      "endColumn": 52,
+      "startOffset": 379,
+      "length": 31
+    },
+    "rule": {
+      "id": "ballerina\\crypto:1",
+      "numericId": 1,
+      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_ecb.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_ecb.bal"
+  },
+  {
+    "location": {
+      "filePath": "aes_ecb_as_import.bal",
+      "startLine": 10,
+      "endLine": 10,
+      "startColumn": 21,
+      "endColumn": 47,
+      "startOffset": 392,
+      "length": 26
+    },
+    "rule": {
+      "id": "ballerina\\crypto:1",
+      "numericId": 1,
+      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1\\aes_ecb_as_import.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule1\\aes_ecb_as_import.bal"
+  }
+]

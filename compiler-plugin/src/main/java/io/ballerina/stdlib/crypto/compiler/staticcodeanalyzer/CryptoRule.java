@@ -18,5 +18,16 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
-public class CryptoRule {
+public enum CryptoRule {
+    AVOID_WEAK_CIPHER_ALGORITHMS(1);
+
+    private final int id;
+
+    CryptoRule(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }
