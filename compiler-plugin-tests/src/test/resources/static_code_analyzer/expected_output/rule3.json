@@ -1,0 +1,242 @@
+[
+  {
+    "location": {
+      "filePath": "func-var-named-arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 687,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "func-var-pos-arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 687,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "inline-named-arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 687,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "inline-pos-arg.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 687,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "mod-var-named-arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 780,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "mod-var-pos-arg.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 778,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\mod-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "func-var-named-arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 77,
+      "startOffset": 975,
+      "length": 56
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\func-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\func-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "func-var-pos-arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 72,
+      "startOffset": 973,
+      "length": 51
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\func-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\func-var-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "inline-named-arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 119,
+      "startOffset": 887,
+      "length": 98
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\inline-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\inline-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "inline-pos-arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 114,
+      "startOffset": 885,
+      "length": 93
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\inline-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\inline-pos-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "mod-var-named-arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 85,
+      "startOffset": 980,
+      "length": 64
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\mod-var-named-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\mod-var-named-arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "mod-var-pos-arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 78,
+      "startOffset": 976,
+      "length": 57
+    },
+    "rule": {
+      "id": "ballerina\\crypto:3",
+      "numericId": 3,
+      "description": "Counter Mode initialization vectors should not be reused",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3\\mod-var-pos-arg.bal",
+    "filePath": "C:\\Users\\nureka\\Documents\\GitHub\\module-ballerina-crypto\\compiler-plugin-tests\\src\\test\\resources\\static_code_analyzer\\ballerina_packages\\rule3\\mod-var-pos-arg.bal"
+  }
+]

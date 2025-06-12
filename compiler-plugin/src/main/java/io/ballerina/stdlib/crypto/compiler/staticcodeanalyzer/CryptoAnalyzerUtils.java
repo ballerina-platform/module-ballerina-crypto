@@ -46,6 +46,7 @@ public final class CryptoAnalyzerUtils {
     // Constants for crypto algorithms and parameters
     public static final String ENCRYPT_AES_ECB = "encryptAesEcb";
     public static final String ENCRYPT_AES_CBC = "encryptAesCbc";
+    public static final String ENCRYPT_AES_GCM = "encryptAesGcm";
     public static final String HASH_BCRYPT = "hashBcrypt";
     public static final String HASH_ARGON2 = "hashArgon2";
     public static final String HASH_PBKDF2 = "hashPbkdf2";
@@ -68,7 +69,7 @@ public final class CryptoAnalyzerUtils {
     }
 
     private CryptoAnalyzerUtils() {
-        // Utility class - prevent instantiation
+        // Prevent instantiation
     }
 
     /**
@@ -79,6 +80,16 @@ public final class CryptoAnalyzerUtils {
      */
     public static boolean isWeakCipherFunction(String functionName) {
         return ENCRYPT_AES_ECB.equals(functionName) || ENCRYPT_AES_CBC.equals(functionName);
+    }
+
+    /**
+     * Checks if the given function requires secure initialization vectors.
+     *
+     * @param functionName the name of the function
+     * @return true if the function requires secure IVs, false otherwise
+     */
+    public static boolean requiresSecureIV(String functionName) {
+        return ENCRYPT_AES_GCM.equals(functionName);
     }
 
     /**
@@ -215,6 +226,158 @@ public final class CryptoAnalyzerUtils {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    /**
+     * Checks if the given expression represents a hardcoded initialization vector.
+     * A hardcoded IV is considered one that contains literal values or array
+     * literals.
+     *
+     * @param expression the expression to check
+     * @return true if the expression is a hardcoded IV, false otherwise
+     */
+    public static boolean isHardcodedIV(ExpressionNode expression) {
+        // Check for basic literals like 123, "abc", etc.
+        if (expression instanceof BasicLiteralNode) {
+            return true;
+        } else if (expression instanceof SimpleNameReferenceNode varRef) {
+            return hasHardcodedIVDeclaration(varRef);
+        }
+        // Check for array literals like [1, 2, 3, 4, ...] or byte array constructions
+        String sourceCode = expression.toSourceCode().trim();
+        return isArrayLiteralPattern(sourceCode);
+    }
+
+    /**
+     * Checks if the source code represents an array literal pattern that indicates
+     * hardcoded values.
+     *
+     * @param sourceCode the source code to check
+     * @return true if it's an array literal pattern, false otherwise
+     */
+    private static boolean isArrayLiteralPattern(String sourceCode) {
+        // Check for patterns like [1, 2, 3, ...] or similar hardcoded array constructions
+        if (sourceCode.startsWith("[") && sourceCode.endsWith("]")) {
+            String content = sourceCode.substring(1, sourceCode.length() - 1).trim();
+            if (content.isEmpty()) {
+                return false;
+            }
+            // Check if content contains only numbers, commas, and whitespace (indicating literal values)
+            return content.matches("^[\\d,\\s]+$");
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given variable reference refers to a variable with a hardcoded
+     * IV declaration.
+     *
+     * @param varRef the variable reference
+     * @return true if the variable has a hardcoded IV declaration, false otherwise
+     */
+    private static boolean hasHardcodedIVDeclaration(SimpleNameReferenceNode varRef) {
+        String varName = varRef.name().text();
+        return hasHardcodedIVInScope(varRef.parent(), varName);
+    }
+
+    /**
+     * Checks if a variable with the given name has a hardcoded IV declaration
+     * within a specific scope.
+     *
+     * @param startNode the node to start searching from
+     * @param varName   the name of the variable
+     * @return true if a hardcoded IV declaration is found, false otherwise
+     */
+    private static boolean hasHardcodedIVInScope(Node startNode, String varName) {
+        Node current = startNode;
+        while (current != null) {
+            if (current instanceof FunctionBodyBlockNode functionBodyBlock) {
+                if (checkStatementsForHardcodedIV(functionBodyBlock.statements(), varName)) {
+                    return true;
+                }
+            } else if (current instanceof ModulePartNode modulePart
+                    && checkModuleMembersForHardcodedIV(modulePart.members(), varName)) {
+                return true;
+            }
+
+            current = current.parent();
+        }
+        return false;
+    }
+
+    /**
+     * Checks a list of statements for a hardcoded IV declaration.
+     *
+     * @param statements the statements to check
+     * @param varName    the name of the variable
+     * @return true if a hardcoded IV declaration is found, false otherwise
+     */
+    private static boolean checkStatementsForHardcodedIV(NodeList<StatementNode> statements, String varName) {
+        for (StatementNode stmt : statements) {
+            if (isHardcodedIVVariable(stmt, varName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks a list of module members for a hardcoded IV declaration.
+     *
+     * @param members the module members to check
+     * @param varName the name of the variable
+     * @return true if a hardcoded IV declaration is found, false otherwise
+     */
+    private static boolean checkModuleMembersForHardcodedIV(NodeList<ModuleMemberDeclarationNode> members,
+            String varName) {
+        for (ModuleMemberDeclarationNode member : members) {
+            if (isHardcodedIVVariable(member, varName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given statement declares a variable with a hardcoded IV value.
+     *
+     * @param stmt    the statement to check
+     * @param varName the name of the variable
+     * @return true if the statement declares a variable with a hardcoded IV, false
+     *         otherwise
+     */
+    private static boolean isHardcodedIVVariable(Node stmt, String varName) {
+        return isWeakVariableWithInitializer(stmt, varName, CryptoAnalyzerUtils::isHardcodedIVInitializer);
+    }
+
+    /**
+     * Checks if the given initializer represents a hardcoded IV.
+     *
+     * @param initText the initializer text
+     * @return true if the initializer is a hardcoded IV, false otherwise
+     */
+    private static boolean isHardcodedIVInitializer(String initText) {
+        initText = initText.trim();
+
+        // Check for array literal patterns
+        if (isArrayLiteralPattern(initText)) {
+            return true;
+        }
+
+        // Check for patterns that indicate hardcoded values like byte[16] with literal assignments
+        if (initText.contains("[") && initText.contains("]")) {
+            return true;
+        }
+
+        // Check for simple literal values
+        try {
+            Integer.parseInt(initText);
+            return true;
+        } catch (NumberFormatException e) {
+            // Not a simple integer
+        }
+
+        return false;
     }
 
     /**

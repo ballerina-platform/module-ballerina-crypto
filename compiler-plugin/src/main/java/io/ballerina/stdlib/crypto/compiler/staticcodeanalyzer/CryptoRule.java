@@ -20,7 +20,8 @@ package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
 public enum CryptoRule {
     AVOID_WEAK_CIPHER_ALGORITHMS(1),
-    AVOID_FAST_HASH_ALGORITHMS(2);
+    AVOID_FAST_HASH_ALGORITHMS(2),
+    AVOID_HARDCODED_INITIALIZATION_VECTORS(3);
 
     private final int id;
 

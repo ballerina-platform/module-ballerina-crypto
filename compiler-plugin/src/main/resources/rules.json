@@ -8,5 +8,10 @@
     "id": 2,
     "kind": "VULNERABILITY",
     "description": "Passwords should not be stored in plaintext or with a fast hashing algorithm"
+  },
+  {
+    "id": 3,
+    "kind": "VULNERABILITY",
+    "description": "Counter Mode initialization vectors should not be reused"
   }
 ]

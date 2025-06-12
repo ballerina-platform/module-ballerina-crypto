@@ -81,6 +81,10 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
             report(context, CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS.getId());
         }
 
+        if (CryptoAnalyzerUtils.requiresSecureIV(functionName)) {
+            checkHardcodedIVUsage(functionCall, context);
+        }
+
         if (CryptoAnalyzerUtils.HASH_BCRYPT.equals(functionName)) {
             checkWeakBcryptUsage(functionCall, context);
         } else if (CryptoAnalyzerUtils.HASH_ARGON2.equals(functionName)) {
@@ -204,6 +208,40 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
 
         if (hasWeakParameters) {
             report(context, CryptoRule.AVOID_FAST_HASH_ALGORITHMS.getId());
+        }
+    }
+
+    /**
+     * Checks if the AES-GCM function is used with hardcoded initialization vectors.
+     * For encryptAesGcm(input, key, iv, padding, tagSize), the third parameter (iv)
+     * is checked.
+     *
+     * @param functionCall the function call node
+     * @param context      the syntax node analysis context
+     */
+    private void checkHardcodedIVUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
+        // Check if there are enough arguments to analyze
+        if (functionCall.arguments().stream().count() < 3) {
+            return;
+        }
+
+        Node ivArgument = functionCall.arguments().get(2);
+
+        // Check for positional arguments
+        if (ivArgument instanceof PositionalArgumentNode positional) {
+            ExpressionNode expr = positional.expression();
+            if (CryptoAnalyzerUtils.isHardcodedIV(expr)) {
+                report(context, CryptoRule.AVOID_HARDCODED_INITIALIZATION_VECTORS.getId());
+            }
+        } else if (ivArgument instanceof NamedArgumentNode named) {
+            // Check for named arguments
+            String paramName = named.argumentName().name().text();
+            if ("iv".equals(paramName)) {
+                ExpressionNode expr = named.expression();
+                if (CryptoAnalyzerUtils.isHardcodedIV(expr)) {
+                    report(context, CryptoRule.AVOID_HARDCODED_INITIALIZATION_VECTORS.getId());
+                }
+            }
         }
     }
 
