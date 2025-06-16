@@ -2,11 +2,11 @@
   {
     "location": {
       "filePath": "argon-func-var-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -22,11 +22,11 @@
   {
     "location": {
       "filePath": "argon-func-var-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -42,11 +42,11 @@
   {
     "location": {
       "filePath": "argon-inline-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -62,11 +62,11 @@
   {
     "location": {
       "filePath": "argon-inline-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -82,11 +82,11 @@
   {
     "location": {
       "filePath": "argon-mod-var-named-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 126,
+      "startOffset": 785,
       "length": 6
     },
     "rule": {
@@ -102,11 +102,11 @@
   {
     "location": {
       "filePath": "argon-mod-var-pos-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 120,
+      "startOffset": 779,
       "length": 6
     },
     "rule": {
@@ -122,11 +122,11 @@
   {
     "location": {
       "filePath": "bcrypt-func-var-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -142,11 +142,11 @@
   {
     "location": {
       "filePath": "bcrypt-func-var-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -162,11 +162,11 @@
   {
     "location": {
       "filePath": "bcrypt-inline-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -182,11 +182,11 @@
   {
     "location": {
       "filePath": "bcrypt-inline-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -202,11 +202,11 @@
   {
     "location": {
       "filePath": "bcrypt-mod-var-named-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 62,
+      "startOffset": 721,
       "length": 6
     },
     "rule": {
@@ -222,11 +222,11 @@
   {
     "location": {
       "filePath": "bcrypt-mod-var-pos-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 60,
+      "startOffset": 719,
       "length": 6
     },
     "rule": {
@@ -242,11 +242,11 @@
   {
     "location": {
       "filePath": "pbkdf2-func-var-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -262,11 +262,11 @@
   {
     "location": {
       "filePath": "pbkdf2-func-var-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -282,11 +282,11 @@
   {
     "location": {
       "filePath": "pbkdf2-inline-named-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -302,11 +302,11 @@
   {
     "location": {
       "filePath": "pbkdf2-inline-pos-arg.bal",
-      "startLine": 2,
-      "endLine": 2,
+      "startLine": 18,
+      "endLine": 18,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 28,
+      "startOffset": 687,
       "length": 6
     },
     "rule": {
@@ -322,11 +322,11 @@
   {
     "location": {
       "filePath": "pbkdf2-mod-var-named-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 72,
+      "startOffset": 731,
       "length": 6
     },
     "rule": {
@@ -342,11 +342,11 @@
   {
     "location": {
       "filePath": "pbkdf2-mod-var-pos-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 70,
+      "startOffset": 729,
       "length": 6
     },
     "rule": {
@@ -362,11 +362,11 @@
   {
     "location": {
       "filePath": "argon-func-var-named-arg.bal",
-      "startLine": 7,
-      "endLine": 7,
+      "startLine": 23,
+      "endLine": 23,
       "startColumn": 21,
       "endColumn": 117,
-      "startOffset": 221,
+      "startOffset": 880,
       "length": 96
     },
     "rule": {
@@ -382,11 +382,11 @@
   {
     "location": {
       "filePath": "argon-func-var-pos-arg.bal",
-      "startLine": 7,
-      "endLine": 7,
+      "startLine": 23,
+      "endLine": 23,
       "startColumn": 21,
       "endColumn": 81,
-      "startOffset": 219,
+      "startOffset": 878,
       "length": 60
     },
     "rule": {
@@ -402,11 +402,11 @@
   {
     "location": {
       "filePath": "argon-inline-named-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 96,
-      "startOffset": 139,
+      "startOffset": 798,
       "length": 75
     },
     "rule": {
@@ -422,11 +422,11 @@
   {
     "location": {
       "filePath": "argon-inline-pos-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 60,
-      "startOffset": 137,
+      "startOffset": 796,
       "length": 39
     },
     "rule": {
@@ -442,11 +442,11 @@
   {
     "location": {
       "filePath": "argon-mod-var-named-arg.bal",
-      "startLine": 8,
-      "endLine": 8,
+      "startLine": 24,
+      "endLine": 24,
       "startColumn": 21,
       "endColumn": 150,
-      "startOffset": 243,
+      "startOffset": 902,
       "length": 129
     },
     "rule": {
@@ -462,11 +462,11 @@
   {
     "location": {
       "filePath": "argon-mod-var-pos-arg.bal",
-      "startLine": 8,
-      "endLine": 8,
+      "startLine": 24,
+      "endLine": 24,
       "startColumn": 21,
       "endColumn": 144,
-      "startOffset": 235,
+      "startOffset": 894,
       "length": 123
     },
     "rule": {
@@ -482,11 +482,11 @@
   {
     "location": {
       "filePath": "bcrypt-func-var-named-arg.bal",
-      "startLine": 5,
-      "endLine": 5,
+      "startLine": 21,
+      "endLine": 21,
       "startColumn": 21,
       "endColumn": 73,
-      "startOffset": 172,
+      "startOffset": 831,
       "length": 52
     },
     "rule": {
@@ -502,11 +502,11 @@
   {
     "location": {
       "filePath": "bcrypt-func-var-pos-arg.bal",
-      "startLine": 5,
-      "endLine": 5,
+      "startLine": 21,
+      "endLine": 21,
       "startColumn": 21,
       "endColumn": 60,
-      "startOffset": 170,
+      "startOffset": 829,
       "length": 39
     },
     "rule": {
@@ -522,11 +522,11 @@
   {
     "location": {
       "filePath": "bcrypt-inline-named-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 64,
-      "startOffset": 140,
+      "startOffset": 799,
       "length": 43
     },
     "rule": {
@@ -542,11 +542,11 @@
   {
     "location": {
       "filePath": "bcrypt-inline-pos-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 51,
-      "startOffset": 138,
+      "startOffset": 797,
       "length": 30
     },
     "rule": {
@@ -562,11 +562,11 @@
   {
     "location": {
       "filePath": "bcrypt-mod-var-named-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 21,
       "endColumn": 84,
-      "startOffset": 180,
+      "startOffset": 839,
       "length": 63
     },
     "rule": {
@@ -582,11 +582,11 @@
   {
     "location": {
       "filePath": "bcrypt-mod-var-pos-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 21,
       "endColumn": 69,
-      "startOffset": 176,
+      "startOffset": 835,
       "length": 48
     },
     "rule": {
@@ -602,11 +602,11 @@
   {
     "location": {
       "filePath": "pbkdf2-func-var-named-arg.bal",
-      "startLine": 5,
-      "endLine": 5,
+      "startLine": 21,
+      "endLine": 21,
       "startColumn": 21,
       "endColumn": 73,
-      "startOffset": 176,
+      "startOffset": 835,
       "length": 52
     },
     "rule": {
@@ -622,11 +622,11 @@
   {
     "location": {
       "filePath": "pbkdf2-func-var-pos-arg.bal",
-      "startLine": 5,
-      "endLine": 5,
+      "startLine": 21,
+      "endLine": 21,
       "startColumn": 21,
       "endColumn": 60,
-      "startOffset": 174,
+      "startOffset": 833,
       "length": 39
     },
     "rule": {
@@ -642,11 +642,11 @@
   {
     "location": {
       "filePath": "pbkdf2-inline-named-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 68,
-      "startOffset": 140,
+      "startOffset": 799,
       "length": 47
     },
     "rule": {
@@ -662,11 +662,11 @@
   {
     "location": {
       "filePath": "pbkdf2-inline-pos-arg.bal",
-      "startLine": 4,
-      "endLine": 4,
+      "startLine": 20,
+      "endLine": 20,
       "startColumn": 21,
       "endColumn": 55,
-      "startOffset": 138,
+      "startOffset": 797,
       "length": 34
     },
     "rule": {
@@ -682,11 +682,11 @@
   {
     "location": {
       "filePath": "pbkdf2-mod-var-named-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 21,
       "endColumn": 90,
-      "startOffset": 190,
+      "startOffset": 849,
       "length": 69
     },
     "rule": {
@@ -702,11 +702,11 @@
   {
     "location": {
       "filePath": "pbkdf2-mod-var-pos-arg.bal",
-      "startLine": 6,
-      "endLine": 6,
+      "startLine": 22,
+      "endLine": 22,
       "startColumn": 21,
       "endColumn": 75,
-      "startOffset": 186,
+      "startOffset": 845,
       "length": 54
     },
     "rule": {

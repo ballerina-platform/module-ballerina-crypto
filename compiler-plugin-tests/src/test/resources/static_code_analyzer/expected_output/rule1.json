@@ -2,11 +2,11 @@
   {
     "location": {
       "filePath": "aes_cbc.bal",
-      "startLine": 3,
-      "endLine": 3,
+      "startLine": 19,
+      "endLine": 19,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 54,
+      "startOffset": 713,
       "length": 6
     },
     "rule": {
@@ -22,11 +22,11 @@
   {
     "location": {
       "filePath": "aes_cbc_as_import.bal",
-      "startLine": 3,
-      "endLine": 3,
+      "startLine": 19,
+      "endLine": 19,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 59,
+      "startOffset": 718,
       "length": 6
     },
     "rule": {
@@ -42,11 +42,11 @@
   {
     "location": {
       "filePath": "aes_ecb.bal",
-      "startLine": 3,
-      "endLine": 3,
+      "startLine": 19,
+      "endLine": 19,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 54,
+      "startOffset": 713,
       "length": 6
     },
     "rule": {
@@ -62,11 +62,11 @@
   {
     "location": {
       "filePath": "aes_ecb_as_import.bal",
-      "startLine": 3,
-      "endLine": 3,
+      "startLine": 19,
+      "endLine": 19,
       "startColumn": 0,
       "endColumn": 6,
-      "startOffset": 59,
+      "startOffset": 718,
       "length": 6
     },
     "rule": {
@@ -82,11 +82,11 @@
   {
     "location": {
       "filePath": "aes_cbc.bal",
-      "startLine": 14,
-      "endLine": 14,
+      "startLine": 30,
+      "endLine": 30,
       "startColumn": 21,
       "endColumn": 67,
-      "startOffset": 574,
+      "startOffset": 1233,
       "length": 46
     },
     "rule": {
@@ -102,11 +102,11 @@
   {
     "location": {
       "filePath": "aes_cbc_as_import.bal",
-      "startLine": 14,
-      "endLine": 14,
+      "startLine": 30,
+      "endLine": 30,
       "startColumn": 21,
       "endColumn": 62,
-      "startOffset": 587,
+      "startOffset": 1246,
       "length": 41
     },
     "rule": {
@@ -122,11 +122,11 @@
   {
     "location": {
       "filePath": "aes_ecb.bal",
-      "startLine": 10,
-      "endLine": 10,
+      "startLine": 26,
+      "endLine": 26,
       "startColumn": 21,
       "endColumn": 52,
-      "startOffset": 379,
+      "startOffset": 1038,
       "length": 31
     },
     "rule": {
@@ -142,11 +142,11 @@
   {
     "location": {
       "filePath": "aes_ecb_as_import.bal",
-      "startLine": 10,
-      "endLine": 10,
+      "startLine": 26,
+      "endLine": 26,
       "startColumn": 21,
       "endColumn": 47,
-      "startOffset": 392,
+      "startOffset": 1051,
       "length": 26
     },
     "rule": {
