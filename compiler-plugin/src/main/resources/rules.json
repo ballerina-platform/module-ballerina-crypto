@@ -1,0 +1,7 @@
+[
+  {
+    "id": 1,
+    "kind": "VULNERABILITY",
+    "description": "Encryption algorithms should be used with secure mode and padding scheme"
+  }
+]
