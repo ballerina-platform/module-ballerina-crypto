@@ -385,17 +385,17 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
         if (stmt instanceof VariableDeclarationNode varDecl &&
                 varDecl.typedBindingPattern().bindingPattern() instanceof CaptureBindingPatternNode capture &&
                 capture.variableName().text().equals(varName) &&
-                varDecl.initializer().isPresent()) {
-
-            return initializerChecker.test(varDecl.initializer().get().toSourceCode());
+                varDecl.initializer().isPresent() &&
+                varDecl.initializer().get() instanceof BasicLiteralNode basicLiteral) {
+            return initializerChecker.test(basicLiteral.literalToken().text());
         }
 
         if (stmt instanceof ModuleVariableDeclarationNode varDecl &&
                 varDecl.typedBindingPattern().bindingPattern() instanceof CaptureBindingPatternNode capture &&
                 capture.variableName().text().equals(varName) &&
-                varDecl.initializer().isPresent()) {
-
-            return initializerChecker.test(varDecl.initializer().get().toSourceCode());
+                varDecl.initializer().isPresent() &&
+                varDecl.initializer().get() instanceof BasicLiteralNode basicLiteral) {
+            return initializerChecker.test(basicLiteral.literalToken().text());
         }
 
         return false;
