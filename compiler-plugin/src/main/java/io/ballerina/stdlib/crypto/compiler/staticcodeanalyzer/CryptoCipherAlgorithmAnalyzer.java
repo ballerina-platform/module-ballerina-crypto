@@ -157,7 +157,11 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     private boolean isWeakBcryptParameter(ExpressionNode expression) {
         if (expression instanceof BasicLiteralNode basicLiteral) {
-            return Integer.parseInt(basicLiteral.literalToken().text()) < BCRYPT_RECOMMENDED_WORK_FACTOR;
+            try {
+                return Integer.parseInt(basicLiteral.literalToken().text()) < BCRYPT_RECOMMENDED_WORK_FACTOR;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         } else if (expression instanceof SimpleNameReferenceNode varRef) {
             return hasWeakParameterSettings(varRef, this::isWeakBcryptVariable);
         }
@@ -231,12 +235,16 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     private boolean isWeakArgon2Parameter(ExpressionNode expression, ArgonParameter paramType) {
         if (expression instanceof BasicLiteralNode basicLiteral) {
-            int value = Integer.parseInt(basicLiteral.literalToken().text());
-            return switch (paramType) {
-                case ITERATIONS -> value < ARGON2_RECOMMENDED_ITERATIONS;
-                case MEMORY -> value < ARGON2_RECOMMENDED_MEMORY;
-                case PARALLELISM -> value < ARGON2_RECOMMENDED_PARALLELISM;
-            };
+            try {
+                int value = Integer.parseInt(basicLiteral.literalToken().text());
+                return switch (paramType) {
+                    case ITERATIONS -> value < ARGON2_RECOMMENDED_ITERATIONS;
+                    case MEMORY -> value < ARGON2_RECOMMENDED_MEMORY;
+                    case PARALLELISM -> value < ARGON2_RECOMMENDED_PARALLELISM;
+                };
+            } catch (NumberFormatException e) {
+                return false;
+            }
         } else if (expression instanceof SimpleNameReferenceNode varRef) {
             return hasWeakParameterSettings(varRef, (stmt, varName) -> isWeakArgon2Variable(stmt, varName, paramType));
         }
@@ -287,8 +295,12 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     private boolean isWeakPbkdf2Parameter(ExpressionNode expression) {
         if (expression instanceof BasicLiteralNode basicLiteral) {
-            int value = Integer.parseInt(basicLiteral.literalToken().text());
-            return value < PBKDF2_RECOMMENDED_ITERATIONS;
+            try {
+                int value = Integer.parseInt(basicLiteral.literalToken().text());
+                return value < PBKDF2_RECOMMENDED_ITERATIONS;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         } else if (expression instanceof SimpleNameReferenceNode varRef) {
             return hasWeakParameterSettings(varRef, this::isWeakPbkdf2Variable);
         }
