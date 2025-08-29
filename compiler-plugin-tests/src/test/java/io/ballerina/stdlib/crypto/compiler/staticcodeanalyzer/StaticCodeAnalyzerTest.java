@@ -83,12 +83,12 @@ public class StaticCodeAnalyzerTest {
             Assertions.assertRule(
                     rules,
                     "ballerina/crypto:1",
-                    "Avoid using insecure cipher modes or padding schemes",
+                    AVOID_WEAK_CIPHER_ALGORITHMS.getDescription(),
                     VULNERABILITY);
             Assertions.assertRule(
                     rules,
                     "ballerina/crypto:2",
-                    "Avoid using fast hashing algorithms",
+                    AVOID_FAST_HASH_ALGORITHMS.getDescription(),
                     VULNERABILITY);
 
             // validate the issues
