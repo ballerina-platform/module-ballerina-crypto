@@ -130,7 +130,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      * @param context      the syntax node analysis context
      */
     private void checkWeakBcryptUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        if (functionCall.arguments().stream().count() < 2) {
+        if (functionCall.arguments().size() < 2) {
             return;
         }
 
@@ -176,7 +176,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     private void checkWeakArgon2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
         // Check if there are enough arguments to analyze
-        int argsCount = (int) functionCall.arguments().stream().count();
+        int argsCount = functionCall.arguments().size();
         if (argsCount < 2) {
             return;
         }
@@ -259,7 +259,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     private void checkWeakPbkdf2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
         // Check if there are enough arguments to analyze
-        int argsCount = (int) functionCall.arguments().stream().count();
+        int argsCount = functionCall.arguments().size();
         if (argsCount < 2) {
             report(context, CryptoRule.AVOID_FAST_HASH_ALGORITHMS.getId());
             return;
