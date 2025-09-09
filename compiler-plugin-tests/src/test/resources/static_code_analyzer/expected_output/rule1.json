@@ -92,7 +92,7 @@
     "rule": {
       "id": "ballerina/crypto:1",
       "numericId": 1,
-      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "description": "Avoid using insecure cipher modes or padding schemes",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -112,7 +112,7 @@
     "rule": {
       "id": "ballerina/crypto:1",
       "numericId": 1,
-      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "description": "Avoid using insecure cipher modes or padding schemes",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -132,7 +132,7 @@
     "rule": {
       "id": "ballerina/crypto:1",
       "numericId": 1,
-      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "description": "Avoid using insecure cipher modes or padding schemes",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -152,7 +152,7 @@
     "rule": {
       "id": "ballerina/crypto:1",
       "numericId": 1,
-      "description": "Encryption algorithms should be used with secure mode and padding scheme",
+      "description": "Avoid using insecure cipher modes or padding schemes",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

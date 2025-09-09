@@ -24,8 +24,8 @@ import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory.createRule;
 
 public enum CryptoRule {
-    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "Encryption algorithms should be used with secure mode " +
-            "and padding scheme", VULNERABILITY));
+    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
+    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "Avoid using fast hashing algorithms", VULNERABILITY));
 
     private final Rule rule;
 
@@ -37,8 +37,8 @@ public enum CryptoRule {
         return this.rule.numericId();
     }
 
-    public Rule getRule() {
-        return this.rule;
+    public String getDescription() {
+        return this.rule.description();
     }
 
     @Override

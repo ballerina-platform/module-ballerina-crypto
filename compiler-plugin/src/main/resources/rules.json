@@ -2,6 +2,11 @@
   {
     "id": 1,
     "kind": "VULNERABILITY",
-    "description": "Encryption algorithms should be used with secure mode and padding scheme"
+    "description": "Avoid using insecure cipher modes or padding schemes"
+  },
+  {
+    "id": 2,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using fast hashing algorithms"
   }
 ]
