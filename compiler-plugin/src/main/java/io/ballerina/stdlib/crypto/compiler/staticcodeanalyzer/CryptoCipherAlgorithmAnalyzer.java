@@ -103,7 +103,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
         if (isWeakCipherFunction(functionName)) {
             report(context, CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS.getId());
         }
-
         if (HASH_BCRYPT.equals(functionName)) {
             checkWeakBcryptUsage(functionCall, context);
         } else if (HASH_ARGON2.equals(functionName)) {
