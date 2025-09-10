@@ -217,16 +217,15 @@ public class StaticCodeAnalyzerTest {
     }
 
     private static String normalizeString(String json) {
-        String normalizedJson = json.replaceAll("\\s*\"\\s*", "\"")
-                .replaceAll("\\s*:\\s*", ":")
-                .replaceAll("\\s*,\\s*", ",")
-                .replaceAll("\\s*\\{\\s*", "{")
-                .replaceAll("\\s*}\\s*", "}")
-                .replaceAll("\\s*\\[\\s*", "[")
-                .replaceAll("\\s*]\\s*", "]")
-                .replaceAll("\n", "")
-                .replaceAll(":\".*" + MODULE_BALLERINA_CRYPTO, ":\"" + MODULE_BALLERINA_CRYPTO);
-        return isWindows() ? normalizedJson.replaceAll("/", "\\\\\\\\") : normalizedJson;
+        try {
+            ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+            JsonNode node = mapper.readTree(json);
+            String normalizedJson = mapper.writeValueAsString(node)
+                    .replaceAll(":\".*" + MODULE_BALLERINA_CRYPTO, ":\"" + MODULE_BALLERINA_CRYPTO);
+            return isWindows() ? normalizedJson.replace("/", "\\\\") : normalizedJson;
+        } catch (Exception ignore) {
+            return json;
+        }
     }
 
     private static boolean isWindows() {
