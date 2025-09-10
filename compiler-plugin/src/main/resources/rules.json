@@ -8,5 +8,10 @@
     "id": 2,
     "kind": "VULNERABILITY",
     "description": "Avoid using fast hashing algorithms"
+  },
+  {
+    "id": 3,
+    "kind": "VULNERABILITY",
+    "description": "Avoid reusing counter mode initialization vectors"
   }
 ]

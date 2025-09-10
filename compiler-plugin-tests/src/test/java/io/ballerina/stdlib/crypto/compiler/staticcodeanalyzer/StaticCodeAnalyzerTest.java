@@ -18,6 +18,9 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.ballerina.projects.Project;
 import io.ballerina.projects.ProjectEnvironmentBuilder;
 import io.ballerina.projects.directory.BuildProject;
@@ -45,6 +48,7 @@ import java.util.stream.Collectors;
 
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -70,87 +74,128 @@ public class StaticCodeAnalyzerTest {
     public void testStaticCodeRulesWithAPI() throws IOException {
         ByteArrayOutputStream console = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(console, true, UTF_8);
+
         for (CryptoRule rule : CryptoRule.values()) {
-            String targetPackageName = "rule" + rule.getId();
-            Path targetPackagePath = RESOURCE_PACKAGES_DIRECTORY.resolve(targetPackageName);
-            Project project = BuildProject.load(getEnvironmentBuilder(), targetPackagePath);
-            TestOptions options = TestOptions.builder(project).setOutputStream(printStream).build();
-            TestRunner testRunner = new TestRunner(options);
-            testRunner.performScan();
-
-            // validate the rules
-            List<Rule> rules = testRunner.getRules();
-            Assertions.assertRule(
-                    rules,
-                    "ballerina/crypto:1",
-                    AVOID_WEAK_CIPHER_ALGORITHMS.getDescription(),
-                    VULNERABILITY);
-            Assertions.assertRule(
-                    rules,
-                    "ballerina/crypto:2",
-                    AVOID_FAST_HASH_ALGORITHMS.getDescription(),
-                    VULNERABILITY);
-
-            // validate the issues
-            List<Issue> issues = testRunner.getIssues();
-            int index = 0;
-            if (rule == AVOID_WEAK_CIPHER_ALGORITHMS) {
-                Assert.assertEquals(issues.size(), 4);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc.bal",
-                        30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc_as_import.bal",
-                        30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_ecb.bal",
-                        26, 26, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:1", "aes_ecb_as_import.bal",
-                        26, 26, Source.BUILT_IN);
-            } else if (rule == AVOID_FAST_HASH_ALGORITHMS) {
-                Assert.assertEquals(issues.size(), 18);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func_var_named_arg.bal",
-                        23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func_var_pos_arg.bal",
-                        23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_inline_named_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_inline_pos_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_mod_var_named_arg.bal",
-                        24, 24, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_mod_var_pos_arg.bal",
-                        24, 24, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_func_var_named_arg.bal",
-                        21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_func_var_pos_arg.bal",
-                        21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_named_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_pos_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_mod_var_named_arg.bal",
-                        22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_mod_var_pos_arg.bal",
-                        22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func_var_named_arg.bal",
-                        21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func_var_pos_arg.bal",
-                        21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_inline_named_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_inline_pos_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_mod_var_named_arg.bal",
-                        22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
-                        22, 22, Source.BUILT_IN);
-            }
-
-            // validate the output
-            String output = console.toString(UTF_8);
-            String jsonOutput = extractJson(output);
-            String expectedOutput = Files.readString(EXPECTED_OUTPUT_DIRECTORY.resolve(targetPackageName + ".json"));
-            assertJsonEqual(jsonOutput, expectedOutput);
-            console.reset();
+            testIndividualRule(rule, console, printStream);
         }
+    }
+
+    private void testIndividualRule(CryptoRule rule, ByteArrayOutputStream console, PrintStream printStream)
+            throws IOException {
+        String targetPackageName = "rule" + rule.getId();
+        Path targetPackagePath = RESOURCE_PACKAGES_DIRECTORY.resolve(targetPackageName);
+
+        TestRunner testRunner = setupTestRunner(targetPackagePath, printStream);
+        testRunner.performScan();
+
+        validateRules(testRunner.getRules());
+        validateIssues(rule, testRunner.getIssues());
+        validateOutput(console, targetPackageName);
+
+        console.reset();
+    }
+
+    private TestRunner setupTestRunner(Path targetPackagePath, PrintStream printStream) {
+        Project project = BuildProject.load(getEnvironmentBuilder(), targetPackagePath);
+        TestOptions options = TestOptions.builder(project).setOutputStream(printStream).build();
+        return new TestRunner(options);
+    }
+
+    private void validateRules(List<Rule> rules) {
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:1",
+                AVOID_WEAK_CIPHER_ALGORITHMS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:2",
+                AVOID_FAST_HASH_ALGORITHMS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:3",
+                AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
+                VULNERABILITY);
+    }
+
+    private void validateIssues(CryptoRule rule, List<Issue> issues) {
+        switch (rule) {
+            case AVOID_WEAK_CIPHER_ALGORITHMS:
+                Assert.assertEquals(issues.size(), 4);
+                Assertions.assertIssue(issues, 0, "ballerina/crypto:1", "aes_cbc.bal",
+                        30, 30, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 1, "ballerina/crypto:1", "aes_cbc_as_import.bal",
+                        30, 30, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 2, "ballerina/crypto:1", "aes_ecb.bal",
+                        26, 26, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 3, "ballerina/crypto:1", "aes_ecb_as_import.bal",
+                        26, 26, Source.BUILT_IN);
+                break;
+            case AVOID_FAST_HASH_ALGORITHMS:
+                Assert.assertEquals(issues.size(), 18);
+                Assertions.assertIssue(issues, 0, "ballerina/crypto:2", "argon_func_var_named_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 1, "ballerina/crypto:2", "argon_func_var_pos_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 2, "ballerina/crypto:2", "argon_inline_named_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 3, "ballerina/crypto:2", "argon_inline_pos_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 4, "ballerina/crypto:2", "argon_mod_var_named_arg.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 5, "ballerina/crypto:2", "argon_mod_var_pos_arg.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 6, "ballerina/crypto:2", "bcrypt_func_var_named_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 7, "ballerina/crypto:2", "bcrypt_func_var_pos_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 8, "ballerina/crypto:2", "bcrypt_inline_named_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 9, "ballerina/crypto:2", "bcrypt_inline_pos_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 10, "ballerina/crypto:2", "bcrypt_mod_var_named_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 11, "ballerina/crypto:2", "bcrypt_mod_var_pos_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 12, "ballerina/crypto:2", "pbkdf2_func_var_named_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 13, "ballerina/crypto:2", "pbkdf2_func_var_pos_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 14, "ballerina/crypto:2", "pbkdf2_inline_named_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 15, "ballerina/crypto:2", "pbkdf2_inline_pos_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 16, "ballerina/crypto:2", "pbkdf2_mod_var_named_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 17, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                break;
+            case AVOID_REUSING_COUNTER_MODE_VECTORS:
+                Assert.assertEquals(issues.size(), 6);
+                Assertions.assertIssue(issues, 0, "ballerina/crypto:3", "func_var_named_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 1, "ballerina/crypto:3", "func_var_pos_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 2, "ballerina/crypto:3", "inline_named_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 3, "ballerina/crypto:3", "inline_pos_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 4, "ballerina/crypto:3", "mod_var_named_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 5, "ballerina/crypto:3", "mod_var_pos_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void validateOutput(ByteArrayOutputStream console, String targetPackageName) throws IOException {
+        String output = console.toString(UTF_8);
+        String jsonOutput = extractJson(output);
+        String expectedOutput = Files.readString(EXPECTED_OUTPUT_DIRECTORY.resolve(targetPackageName + ".json"));
+        assertJsonEqual(jsonOutput, expectedOutput);
     }
 
     private static ProjectEnvironmentBuilder getEnvironmentBuilder() {
