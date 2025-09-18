@@ -25,7 +25,9 @@ import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory
 
 public enum CryptoRule {
     AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
-    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "Avoid using fast hashing algorithms", VULNERABILITY));
+    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "Avoid using fast hashing algorithms", VULNERABILITY)),
+    AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3,
+            "Avoid reusing counter mode initialization vectors", VULNERABILITY));
 
     private final Rule rule;
 
