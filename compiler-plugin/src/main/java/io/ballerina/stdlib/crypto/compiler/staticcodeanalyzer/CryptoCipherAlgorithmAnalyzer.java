@@ -45,6 +45,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
     private final Reporter reporter;
     private static final String BALLERINA_ORG = "ballerina";
     private static final String CRYPTO = "crypto";
+    private static final String IV = "iv";
     private final Set<String> cryptoPrefixes = new HashSet<>();
 
     public CryptoCipherAlgorithmAnalyzer(Reporter reporter) {
@@ -210,7 +211,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
     }
 
     /**
-     * Checks if the AES-GCM function is used with hardcoded initialization vectors.
+     * Checks if the AES-GCM/AES-ECB functions are used with hardcoded initialization vectors.
      * For encryptAesGcm(input, key, iv, padding, tagSize), the third parameter (iv)
      * is checked.
      *
@@ -228,15 +229,15 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
         // Check for positional arguments
         if (ivArgument instanceof PositionalArgumentNode positional) {
             ExpressionNode expr = positional.expression();
-            if (CryptoAnalyzerUtils.isHardcodedIV(expr)) {
+            if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
                 report(context, AVOID_REUSING_COUNTER_MODE_VECTORS.getId());
             }
         } else if (ivArgument instanceof NamedArgumentNode named) {
             // Check for named arguments
             String paramName = named.argumentName().name().text();
-            if ("iv".equals(paramName)) {
+            if (IV.equals(paramName)) {
                 ExpressionNode expr = named.expression();
-                if (CryptoAnalyzerUtils.isHardcodedIV(expr)) {
+                if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
                     report(context, AVOID_REUSING_COUNTER_MODE_VECTORS.getId());
                 }
             }
