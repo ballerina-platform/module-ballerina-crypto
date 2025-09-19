@@ -24,10 +24,14 @@ import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory.createRule;
 
 public enum CryptoRule {
-    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
-    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "Avoid using fast hashing algorithms", VULNERABILITY)),
+    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1,
+            "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
+    AVOID_FAST_HASH_ALGORITHMS(createRule(2,
+            "Avoid using fast hashing algorithms", VULNERABILITY)),
     AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3,
-            "Avoid reusing counter mode initialization vectors", VULNERABILITY));
+            "Avoid reusing counter mode initialization vectors", VULNERABILITY)),
+    AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS(createRule(4,
+            "Secure random number generators should not output predictable values", VULNERABILITY));
 
     private final Rule rule;
 

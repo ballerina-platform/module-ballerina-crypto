@@ -46,11 +46,14 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
     private static final String BALLERINA_ORG = "ballerina";
     private static final String CRYPTO = "crypto";
     private static final String IV = "iv";
+    private static final String RANDOM = "random";
     private final Set<String> cryptoPrefixes = new HashSet<>();
+    private final Set<String> randomPrefixes = new HashSet<>();
 
     public CryptoCipherAlgorithmAnalyzer(Reporter reporter) {
         this.reporter = reporter;
         this.cryptoPrefixes.add(CRYPTO);
+        this.randomPrefixes.add(RANDOM);
     }
 
     /**
@@ -82,6 +85,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
 
         if (CryptoAnalyzerUtils.requiresSecureIV(functionName)) {
             checkHardcodedIVUsage(functionCall, context);
+            checkUnsecureRandomUsage(functionCall, context);
         }
 
         if (CryptoAnalyzerUtils.HASH_BCRYPT.equals(functionName)) {
@@ -126,7 +130,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      * @param context      the syntax node analysis context
      */
     private void checkWeakArgon2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        // Check if there are enough arguments to analyze
         int argsCount = (int) functionCall.arguments().stream().count();
         if (argsCount < 2) {
             return;
@@ -134,7 +137,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
 
         boolean hasWeakParameters = false;
 
-        // Check for named arguments
         for (Node arg : functionCall.arguments()) {
             if (arg instanceof NamedArgumentNode named) {
                 String paramName = named.argumentName().name().text();
@@ -181,7 +183,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      * @param context      the syntax node analysis context
      */
     private void checkWeakPbkdf2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        // Check if there are enough arguments to analyze
         int argsCount = (int) functionCall.arguments().stream().count();
         if (argsCount < 2) {
             report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
@@ -190,7 +191,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
 
         boolean hasWeakParameters = false;
 
-        // Check for named arguments
         for (Node arg : functionCall.arguments()) {
             if (arg instanceof NamedArgumentNode named) {
                 String paramName = named.argumentName().name().text();
@@ -200,7 +200,6 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
             }
         }
 
-        // Check for positional arguments
         if (functionCall.arguments().get(1) instanceof PositionalArgumentNode iterationsArg) {
             hasWeakParameters |= CryptoAnalyzerUtils.isWeakPbkdf2Parameter(iterationsArg.expression());
         }
@@ -211,7 +210,7 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
     }
 
     /**
-     * Checks if the AES-GCM/AES-ECB functions are used with hardcoded initialization vectors.
+     * Checks if the AES-GCM/AES-ECB functions use hardcoded initialization vectors.
      * For encryptAesGcm(input, key, iv, padding, tagSize), the third parameter (iv)
      * is checked.
      *
@@ -219,14 +218,12 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      * @param context      the syntax node analysis context
      */
     private void checkHardcodedIVUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        // Check if there are enough arguments to analyze
         if (functionCall.arguments().stream().count() < 3) {
             return;
         }
 
         Node ivArgument = functionCall.arguments().get(2);
 
-        // Check for positional arguments
         if (ivArgument instanceof PositionalArgumentNode positional) {
             ExpressionNode expr = positional.expression();
             if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
@@ -239,6 +236,38 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
                 ExpressionNode expr = named.expression();
                 if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
                     report(context, AVOID_REUSING_COUNTER_MODE_VECTORS.getId());
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if the AES-GCM/AES-ECB functions use unsecure random number generation for
+     * initialization vectors.
+     * For encryptAes(input, key, iv, padding, tagSize), the third parameter (iv)
+     * is checked for usage of random:createIntInRange().
+     *
+     * @param functionCall the function call node
+     * @param context      the syntax node analysis context
+     */
+    private void checkUnsecureRandomUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
+        if (functionCall.arguments().stream().count() < 3) {
+            return;
+        }
+
+        Node ivArgument = functionCall.arguments().get(2);
+
+        if (ivArgument instanceof PositionalArgumentNode positional) {
+            ExpressionNode expr = positional.expression();
+            if (CryptoAnalyzerUtils.usesUnsecureRandom(expr, randomPrefixes)) {
+                report(context, CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getId());
+            }
+        } else if (ivArgument instanceof NamedArgumentNode named) {
+            String paramName = named.argumentName().name().text();
+            if ("iv".equals(paramName)) {
+                ExpressionNode expr = named.expression();
+                if (CryptoAnalyzerUtils.usesUnsecureRandom(expr, randomPrefixes)) {
+                    report(context, CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getId());
                 }
             }
         }
@@ -271,13 +300,24 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
             modulePartNode.imports().forEach(importDeclarationNode -> {
                 ImportOrgNameNode importOrgNameNode = importDeclarationNode.orgName().orElse(null);
 
-                if (importOrgNameNode != null && BALLERINA_ORG.equals(importOrgNameNode.orgName().text())
-                        && importDeclarationNode.moduleName().stream()
-                        .anyMatch(moduleNameNode -> CRYPTO.equals(moduleNameNode.text()))) {
-                    ImportPrefixNode importPrefixNode = importDeclarationNode.prefix().orElse(null);
-                    String prefix = importPrefixNode != null ? importPrefixNode.prefix().text() : CRYPTO;
+                if (importOrgNameNode != null && BALLERINA_ORG.equals(importOrgNameNode.orgName().text())) {
+                    if (importDeclarationNode.moduleName().stream()
+                            .anyMatch(moduleNameNode -> CRYPTO.equals(moduleNameNode.text()))) {
 
-                    cryptoPrefixes.add(prefix);
+                        ImportPrefixNode importPrefixNode = importDeclarationNode.prefix().orElse(null);
+                        String prefix = importPrefixNode != null ? importPrefixNode.prefix().text() : CRYPTO;
+
+                        cryptoPrefixes.add(prefix);
+                    }
+
+                    if (importDeclarationNode.moduleName().stream()
+                            .anyMatch(moduleNameNode -> RANDOM.equals(moduleNameNode.text()))) {
+
+                        ImportPrefixNode importPrefixNode = importDeclarationNode.prefix().orElse(null);
+                        String prefix = importPrefixNode != null ? importPrefixNode.prefix().text() : RANDOM;
+
+                        randomPrefixes.add(prefix);
+                    }
                 }
             });
         }
