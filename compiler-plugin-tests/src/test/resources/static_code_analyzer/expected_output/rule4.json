@@ -1,0 +1,22 @@
+[
+  {
+    "location": {
+      "filePath": "main.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 21,
+      "endColumn": 72,
+      "startOffset": 1058,
+      "length": 51
+    },
+    "rule": {
+      "id": "ballerina/crypto:4",
+      "numericId": 4,
+      "description": "Secure random number generators should not output predictable values",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule4/main.bal",
+    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule4/main.bal"
+  }
+]

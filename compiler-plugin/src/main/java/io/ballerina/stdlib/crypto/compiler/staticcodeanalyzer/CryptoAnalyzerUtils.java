@@ -39,6 +39,7 @@ import io.ballerina.projects.Module;
 import io.ballerina.projects.plugins.SyntaxNodeAnalysisContext;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -57,6 +58,7 @@ public final class CryptoAnalyzerUtils {
     public static final String ITERATIONS = "iterations";
     public static final String MEMORY = "memory";
     public static final String PARALLELISM = "parallelism";
+    public static final String CREATE_INT_IN_RANGE = "createIntInRange";
     public static final int BCRYPT_RECOMMENDED_WORK_FACTOR = 10;
     public static final int ARGON2_RECOMMENDED_ITERATIONS = 2;
     public static final int ARGON2_RECOMMENDED_MEMORY = 19456;
@@ -354,6 +356,117 @@ public final class CryptoAnalyzerUtils {
                                                              BiPredicate<Node, String> checker) {
         for (ModuleMemberDeclarationNode member : members) {
             if (checker.test(member, varName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given expression uses unsecure random number generation.
+     * This includes checking for random:createIntInRange() calls with various
+     * prefixes.
+     *
+     * @param expression     the expression to check
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if the expression uses unsecure random, false otherwise
+     */
+    public static boolean usesUnsecureRandom(ExpressionNode expression, Set<String> randomPrefixes) {
+        if (expression instanceof SimpleNameReferenceNode varRef) {
+            return hasUnsecureRandomInVariableDeclaration(varRef, randomPrefixes);
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given variable reference refers to a variable that uses
+     * unsecure random.
+     *
+     * @param varRef         the variable reference
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if the variable uses unsecure random, false otherwise
+     */
+    private static boolean hasUnsecureRandomInVariableDeclaration(SimpleNameReferenceNode varRef,
+            Set<String> randomPrefixes) {
+        String varName = varRef.name().text();
+        return hasUnsecureRandomInScope(varRef.parent(), varName, randomPrefixes);
+    }
+
+    /**
+     * Checks if a variable with the given name uses unsecure random within a
+     * specific scope.
+     *
+     * @param startNode      the node to start searching from
+     * @param varName        the name of the variable
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if unsecure random usage is found, false otherwise
+     */
+    private static boolean hasUnsecureRandomInScope(Node startNode, String varName, Set<String> randomPrefixes) {
+        Node current = startNode;
+        while (current != null) {
+            if (current instanceof FunctionBodyBlockNode functionBodyBlock) {
+                if (checkStatementsForUnsecureRandom(functionBodyBlock.statements(), varName, randomPrefixes)) {
+                    return true;
+                }
+            } else if (current instanceof ModulePartNode modulePart
+                    && checkModuleMembersForUnsecureRandom(modulePart.members(), varName, randomPrefixes)) {
+                return true;
+            }
+
+            current = current.parent();
+        }
+        return false;
+    }
+
+    /**
+     * Checks a list of statements for unsecure random usage.
+     *
+     * @param statements     the statements to check
+     * @param varName        the name of the variable
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if unsecure random usage is found, false otherwise
+     */
+    private static boolean checkStatementsForUnsecureRandom(NodeList<StatementNode> statements, String varName,
+            Set<String> randomPrefixes) {
+        for (StatementNode stmt : statements) {
+            if (containsUnsecureRandomUsage(stmt.toSourceCode(), varName, randomPrefixes)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks a list of module members for unsecure random usage.
+     *
+     * @param members        the module members to check
+     * @param varName        the name of the variable
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if unsecure random usage is found, false otherwise
+     */
+    private static boolean checkModuleMembersForUnsecureRandom(NodeList<ModuleMemberDeclarationNode> members,
+            String varName, Set<String> randomPrefixes) {
+        for (ModuleMemberDeclarationNode member : members) {
+            if (containsUnsecureRandomUsage(member.toSourceCode(), varName, randomPrefixes)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the source code contains unsecure random usage for a specific
+     * variable.
+     *
+     * @param sourceCode     the source code to check
+     * @param varName        the name of the variable
+     * @param randomPrefixes set of prefixes used for the random module
+     * @return true if unsecure random usage is found, false otherwise
+     */
+    private static boolean containsUnsecureRandomUsage(String sourceCode, String varName, Set<String> randomPrefixes) {
+        for (String prefix : randomPrefixes) {
+            String randomCallPattern = prefix + ":" + CREATE_INT_IN_RANGE;
+            if (sourceCode.contains(varName) && sourceCode.contains(randomCallPattern)) {
                 return true;
             }
         }

@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -117,19 +118,28 @@ public class StaticCodeAnalyzerTest {
                 "ballerina/crypto:3",
                 AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
                 VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:4",
+                AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getDescription(),
+                VULNERABILITY);
     }
 
     private void validateIssues(CryptoRule rule, List<Issue> issues) {
         switch (rule) {
             case AVOID_WEAK_CIPHER_ALGORITHMS:
-                Assert.assertEquals(issues.size(), 4);
+                Assert.assertEquals(issues.size(), 6);
                 Assertions.assertIssue(issues, 0, "ballerina/crypto:1", "aes_cbc.bal",
                         30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 1, "ballerina/crypto:1", "aes_cbc_as_import.bal",
+                Assertions.assertIssue(issues, 1, "ballerina/crypto:4", "aes_cbc.bal",
                         30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 2, "ballerina/crypto:1", "aes_ecb.bal",
+                Assertions.assertIssue(issues, 2, "ballerina/crypto:1", "aes_cbc_as_import.bal",
+                        30, 30, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 3, "ballerina/crypto:4", "aes_cbc_as_import.bal",
+                        30, 30, Source.BUILT_IN);
+                Assertions.assertIssue(issues, 4, "ballerina/crypto:1", "aes_ecb.bal",
                         26, 26, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 3, "ballerina/crypto:1", "aes_ecb_as_import.bal",
+                Assertions.assertIssue(issues, 5, "ballerina/crypto:1", "aes_ecb_as_import.bal",
                         26, 26, Source.BUILT_IN);
                 break;
             case AVOID_FAST_HASH_ALGORITHMS:
@@ -185,6 +195,11 @@ public class StaticCodeAnalyzerTest {
                         23, 23, Source.BUILT_IN);
                 Assertions.assertIssue(issues, 5, "ballerina/crypto:3", "mod_var_pos_arg.bal",
                         23, 23, Source.BUILT_IN);
+                break;
+            case AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS:
+                Assert.assertEquals(issues.size(), 1);
+                Assertions.assertIssue(issues, 0, "ballerina/crypto:4", "main.bal",
+                        27, 27, Source.BUILT_IN);
                 break;
             default:
                 Assert.fail("Unhandled rule in validateIssues: " + rule);
