@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
+- [Optimize hardcoded IV detection using semantic model reference counting](https://github.com/ballerina-platform/ballerina-library/issues/8257)
 
 ## [2.8.0] - 2025-02-11
 
