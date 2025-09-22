@@ -17,6 +17,6 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule4/main.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule4/main.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule4/main.bal"
   }
 ]

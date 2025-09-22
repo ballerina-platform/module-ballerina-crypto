@@ -17,7 +17,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -37,7 +37,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -57,7 +57,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
   },
   {
     "location": {
@@ -77,7 +77,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -97,7 +97,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -117,7 +117,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
   },
   {
     "location": {
@@ -137,7 +137,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -157,7 +157,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -177,7 +177,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
   },
   {
     "location": {
@@ -197,7 +197,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -217,7 +217,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -237,7 +237,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
   },
   {
     "location": {
@@ -257,7 +257,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -277,7 +277,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -297,7 +297,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_named_arg.bal"
   },
   {
     "location": {
@@ -317,7 +317,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -337,7 +337,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -357,7 +357,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_pos_arg.bal"
   },
   {
     "location": {
@@ -377,7 +377,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -397,7 +397,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -417,7 +417,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_named_arg.bal"
   },
   {
     "location": {
@@ -437,7 +437,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -457,7 +457,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -477,7 +477,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/argon_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/argon_mod_var_pos_arg.bal"
   },
   {
     "location": {
@@ -497,7 +497,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -517,7 +517,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -537,7 +537,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_named_arg.bal"
   },
   {
     "location": {
@@ -557,7 +557,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -577,7 +577,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -597,7 +597,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_mod_var_pos_arg.bal"
   },
   {
     "location": {
@@ -617,7 +617,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_func_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_named_arg.bal"
   },
   {
     "location": {
@@ -637,7 +637,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_func_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_func_var_pos_arg.bal"
   },
   {
     "location": {
@@ -657,7 +657,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_inline_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_named_arg.bal"
   },
   {
     "location": {
@@ -677,7 +677,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_inline_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_inline_pos_arg.bal"
   },
   {
     "location": {
@@ -697,7 +697,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_mod_var_named_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_named_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_named_arg.bal"
   },
   {
     "location": {
@@ -717,6 +717,6 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule2/pbkdf2_mod_var_pos_arg.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_pos_arg.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/pbkdf2_mod_var_pos_arg.bal"
   }
 ]

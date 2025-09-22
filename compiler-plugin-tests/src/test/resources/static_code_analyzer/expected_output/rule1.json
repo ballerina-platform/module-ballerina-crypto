@@ -17,7 +17,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
   },
   {
     "location": {
@@ -37,7 +37,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc_as_import.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
   },
   {
     "location": {
@@ -57,7 +57,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_ecb.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb.bal"
   },
   {
     "location": {
@@ -77,7 +77,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_ecb_as_import.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb_as_import.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb_as_import.bal"
   },
   {
     "location": {
@@ -97,7 +97,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
   },
   {
     "location": {
@@ -117,7 +117,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
   },
   {
     "location": {
@@ -137,7 +137,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc_as_import.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
   },
   {
     "location": {
@@ -157,7 +157,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_cbc_as_import.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
   },
   {
     "location": {
@@ -177,7 +177,7 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_ecb.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb.bal"
   },
   {
     "location": {
@@ -197,6 +197,6 @@
     },
     "source": "BUILT_IN",
     "fileName": "rule1/aes_ecb_as_import.bal",
-    "filePath": "/home/nureka/Documents/GitHub/module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb_as_import.bal"
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb_as_import.bal"
   }
 ]
