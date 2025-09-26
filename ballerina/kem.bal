@@ -18,8 +18,8 @@ import ballerina/jballerina.java;
 
 # Represents the shared secret and its encapsulation used in Key Encapsulation Mechanism (KEM).
 #
-# + encapsulatedSecret - Encapsulated secret 
-# + sharedSecret - Shared secret
+# + encapsulatedSecret - The encapsulated secret, provided as a byte array
+# + sharedSecret - The shared secret, provided as a byte array
 public type EncapsulationResult record {|
     byte[] encapsulatedSecret;
     byte[] sharedSecret;
@@ -34,8 +34,8 @@ public type EncapsulationResult record {|
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(keyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateMlKem768(publicKey);
 # ```
-# + publicKey - Public key
-# + return - Encapsulated secret or else a `crypto:Error` if the public key is invalid
+# + publicKey - The ML-KEM-768 public key used for encapsulation, provided as a `crypto:PublicKey` record
+# + return - The encapsulated secret as a `crypto:EncapsulationResult`, or a `crypto:Error` if the public key is invalid
 public isolated function encapsulateMlKem768(PublicKey publicKey)
                                     returns EncapsulationResult|Error = @java:Method {
     name: "encapsulateMlKem768",
@@ -54,9 +54,9 @@ public isolated function encapsulateMlKem768(PublicKey publicKey)
 # crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateMlKem768(encapsulatedSecret, privateKey);
 # ```
-# + encapsulatedSecret - Encapsulated secret
-# + privateKey - Private key
-# + return - Shared secret or else a `crypto:Error` if the encapsulatedSecret or the private key is invalid
+# + encapsulatedSecret - The encapsulated secret, provided as a byte array
+# + privateKey - The ML-KEM-768 private key used for decryption, provided as a `crypto:PrivateKey` record
+# + return - The shared secret as a byte array, or a `crypto:Error` if the encapsulated secret or the private key is invalid
 public isolated function decapsulateMlKem768(byte[] encapsulatedSecret, PrivateKey privateKey)
                                         returns byte[]|Error = @java:Method {
     name: "decapsulateMlKem768",
@@ -77,9 +77,9 @@ public isolated function decapsulateMlKem768(byte[] encapsulatedSecret, PrivateK
 # crypto:PublicKey rsaPublicKey = check crypto:decodeRsaPublicKeyFromTrustStore(rsaKeyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateRsaKemMlKem768(rsaPublicKey, mlkemPublicKey);
 # ```
-# + rsaPublicKey - RSA public key
-# + mlkemPublicKey - MlKem public key
-# + return - Encapsulated secret or else a `crypto:Error` if the keysize or public keys are invalid
+# + rsaPublicKey - The RSA public key used for encapsulation, provided as a `crypto:PublicKey` record
+# + mlkemPublicKey - The ML-KEM-768 public key used for encapsulation, provided as a `crypto:PublicKey` record
+# + return - The encapsulated secret as a `crypto:EncapsulationResult`, or a `crypto:Error` if the key size or public keys are invalid
 public isolated function encapsulateRsaKemMlKem768(PublicKey rsaPublicKey, PublicKey mlkemPublicKey)
                                         returns EncapsulationResult|Error {
     EncapsulationResult rsaEncapsulationResult = check encapsulateRsaKem(rsaPublicKey);
@@ -109,10 +109,10 @@ public isolated function encapsulateRsaKemMlKem768(PublicKey rsaPublicKey, Publi
 # crypto:PrivateKey rsaPrivateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(rsaKeyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateRsaKemMlKem768(encapsulatedSecret, rsaPrivateKey, mlkemPrivateKey);
 # ```
-# + encapsulatedSecret - Encapsulated secret
-# + rsaPrivateKey - RSA private key
-# + mlkemPrivateKey - MlKem private key
-# + return - Shared secret or else a `crypto:Error` if the keysize or private keys are invalid
+# + encapsulatedSecret - The encapsulated secret, provided as a byte array
+# + rsaPrivateKey - The RSA private key used for decryption, provided as a `crypto:PrivateKey` record
+# + mlkemPrivateKey - The ML-KEM-768 private key used for decryption, provided as a `crypto:PrivateKey` record
+# + return - The shared secret as a byte array, or a `crypto:Error` if the encapsulated secret or the private keys are invalid
 public isolated function decapsulateRsaKemMlKem768(byte[] encapsulatedSecret, PrivateKey rsaPrivateKey, PrivateKey mlkemPrivateKey)
                                         returns byte[]|Error {
     byte[] rsaEncapsulatedSecret = encapsulatedSecret.slice(0, 256);
@@ -131,8 +131,8 @@ public isolated function decapsulateRsaKemMlKem768(byte[] encapsulatedSecret, Pr
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
 # crypto:EncapsulationResult encapsulationResult = check crypto:encapsulateRsaKem(publicKey);
 # ```
-# + publicKey - Public key
-# + return - Encapsulated secret or else a `crypto:Error` if the public key is invalid
+# + publicKey - The RSA public key used for encapsulation, provided as a `crypto:PublicKey` record
+# + return - The encapsulated secret as a `crypto:EncapsulationResult`, or a `crypto:Error` if the public key is invalid
 public isolated function encapsulateRsaKem(PublicKey publicKey)
                                     returns EncapsulationResult|Error = @java:Method {
     name: "encapsulateRsaKem",
@@ -151,9 +151,9 @@ public isolated function encapsulateRsaKem(PublicKey publicKey)
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyStorePassword");
 # byte[] sharedSecret = check crypto:decapsulateRsaKem(encapsulatedSecret, privateKey);
 # ```
-# + encapsulatedSecret - Encapsulated secret
-# + privateKey - Private key
-# + return - Shared secret or else a `crypto:Error` if the encapsulatedSecret or the private key is invalid
+# + encapsulatedSecret - The encapsulated secret, provided as a byte array
+# + privateKey - The RSA private key used for decryption, provided as a `crypto:PrivateKey` record
+# + return - The shared secret as a byte array, or a `crypto:Error` if the encapsulated secret or the private key is invalid
 public isolated function decapsulateRsaKem(byte[] encapsulatedSecret, PrivateKey privateKey)
                                     returns byte[]|Error = @java:Method {
     name: "decapsulateRsaKem",

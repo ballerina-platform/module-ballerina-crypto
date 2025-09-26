@@ -25,9 +25,9 @@ import ballerina/jballerina.java;
 # byte[] hmac = check crypto:hmacMd5(data, key);
 # ```
 #
-# + input - Value to be hashed
-# + key - Key used for HMAC generation
-# + return - The HMAC output or a `crypto:Error` if an error occurred
+# + input - The data to be hashed, provided as a byte array
+# + key - The secret key used for HMAC generation, provided as a byte array
+# + return - The HMAC output as a byte array, or a `crypto:Error` if an error occurred
 public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacMd5",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
@@ -42,9 +42,9 @@ public isolated function hmacMd5(byte[] input, byte[] key) returns byte[]|Error 
 # byte[] hmac = check crypto:hmacSha1(data, key);
 # ```
 #
-# + input - Value to be hashed
-# + key - Key used for HMAC generation
-# + return - The HMAC output or a `crypto:Error` if an error occurred
+# + input - The data to be hashed, provided as a byte array
+# + key - The secret key used for HMAC generation, provided as a byte array
+# + return - The HMAC output as a byte array, or a `crypto:Error` if an error occurred
 public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha1",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
@@ -59,9 +59,9 @@ public isolated function hmacSha1(byte[] input, byte[] key) returns byte[]|Error
 # byte[] hmac = check crypto:hmacSha256(data, key);
 # ```
 #
-# + input - Value to be hashed
-# + key - Key used for HMAC generation
-# + return - The HMAC output or a `crypto:Error` if an error occurred
+# + input - The data to be hashed, provided as a byte array
+# + key - The secret key used for HMAC generation, provided as a byte array
+# + return - The HMAC output as a byte array, or a `crypto:Error` if an error occurred
 public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
@@ -76,9 +76,9 @@ public isolated function hmacSha256(byte[] input, byte[] key) returns byte[]|Err
 # byte[] hmac = check crypto:hmacSha384(data, key);
 # ```
 #
-# + input - Value to be hashed
-# + key - Key used for HMAC generation
-# + return - The HMAC output or a `crypto:Error` if an error occurred
+# + input - The data to be hashed, provided as a byte array
+# + key - The secret key used for HMAC generation, provided as a byte array
+# + return - The HMAC output as a byte array, or a `crypto:Error` if an error occurred
 public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha384",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
@@ -93,9 +93,9 @@ public isolated function hmacSha384(byte[] input, byte[] key) returns byte[]|Err
 # byte[] hmac = check crypto:hmacSha512(data, key);
 # ```
 #
-# + input - Value to be hashed
-# + key - Key used for HMAC generation
-# + return - The HMAC output or a `crypto:Error` if an error occurred
+# + input - The data to be hashed, provided as a byte array
+# + key - The secret key used for HMAC generation, provided as a byte array
+# + return - The HMAC output as a byte array, or a `crypto:Error` if an error occurred
 public isolated function hmacSha512(byte[] input, byte[] key) returns byte[]|Error = @java:Method {
     name: "hmacSha512",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hmac"
