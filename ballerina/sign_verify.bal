@@ -29,7 +29,7 @@ import ballerina/jballerina.java;
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaMd5",
@@ -49,7 +49,7 @@ public isolated function signRsaMd5(byte[] input, PrivateKey privateKey) returns
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signMlDsa65(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signMlDsa65",
@@ -69,7 +69,7 @@ public isolated function signMlDsa65(byte[] input, PrivateKey privateKey) return
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha1",
@@ -89,7 +89,7 @@ public isolated function signRsaSha1(byte[] input, PrivateKey privateKey) return
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha256",
@@ -109,7 +109,7 @@ public isolated function signRsaSha256(byte[] input, PrivateKey privateKey) retu
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha384",
@@ -129,7 +129,7 @@ public isolated function signRsaSha384(byte[] input, PrivateKey privateKey) retu
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signRsaSha512",
@@ -149,7 +149,7 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signSha384withEcdsa(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signSha384withEcdsa",
@@ -169,7 +169,7 @@ public isolated function signSha384withEcdsa(byte[] input, PrivateKey privateKey
 # ```
 #
 # + input - The content to be signed as a byte array
-# + privateKey - The RSA private key used for signing
+# + privateKey - The private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signSha256withEcdsa(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
     name: "signSha256withEcdsa",
@@ -192,7 +192,7 @@ public isolated function signSha256withEcdsa(byte[] input, PrivateKey privateKey
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                returns boolean|Error = @java:Method {
@@ -216,7 +216,7 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyMlDsa65Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                returns boolean|Error = @java:Method {
@@ -240,7 +240,7 @@ public isolated function verifyMlDsa65Signature(byte[] data, byte[] signature, P
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                 returns boolean|Error = @java:Method {
@@ -264,7 +264,7 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
@@ -288,7 +288,7 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
@@ -312,7 +312,7 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
@@ -336,7 +336,7 @@ public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature,
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifySha384withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
@@ -360,7 +360,7 @@ public isolated function verifySha384withEcdsaSignature(byte[] data, byte[] sign
 #
 # + data - The content to be verified as a byte array
 # + signature - The signature value as a byte array
-# + publicKey - The RSA public key used for verification
+# + publicKey - The public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifySha256withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
                                                   returns boolean|Error = @java:Method {
