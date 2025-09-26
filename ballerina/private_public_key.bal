@@ -20,19 +20,19 @@ import ballerina/time;
 # Represents the supported public key algorithms.
 public type KeyAlgorithm RSA|MLKEM768|MLDSA65;
 
-# The `RSA` algorithm.
+# Represents the `RSA` algorithm.
 public const RSA = "RSA";
 
-# The `ML-KEM-768` algorithm.
+# Represents the `ML-KEM-768` algorithm.
 public const MLKEM768 = "ML-KEM-768";
 
-# The `ML-DSA-65` algorithm.
+# Represents the `ML-DSA-65` algorithm.
 public const MLDSA65 = "ML-DSA-65";
 
 # Represents the KeyStore-related configurations.
 #
-# + path - Path to the KeyStore file
-# + password - KeyStore password
+# + path - The KeyStore file path
+# + password - The KeyStore password
 public type KeyStore record {|
     string path;
     string password;
@@ -40,8 +40,8 @@ public type KeyStore record {|
 
 # Represents the truststore-related configurations.
 #
-# + path - Path to the TrustStore file
-# + password - TrustStore password
+# + path - The TrustStore file path
+# + password - The TrustStore password
 public type TrustStore record {|
     string path;
     string password;
@@ -49,15 +49,15 @@ public type TrustStore record {|
 
 # Represents the private key used in cryptographic operations.
 #
-# + algorithm - Key algorithm
+# + algorithm - Specifies the cryptographic algorithm used for the private key. Must be one of the supported algorithms(RSA, MLKEM768, MLDSA65)
 public type PrivateKey record {|
     KeyAlgorithm algorithm;
 |};
 
 # Represents the public key used in cryptographic operations.
 #
-# + algorithm - Key algorithm
-# + certificate - Public key certificate
+# + algorithm - Specifies the cryptographic algorithm used for the public key. Must be one of the supported algorithms(RSA, MLKEM768, MLDSA65)
+# + certificate - Optional X.509 certificate associated with the public key
 public type PublicKey record {|
     KeyAlgorithm algorithm;
     Certificate certificate?;
@@ -65,14 +65,14 @@ public type PublicKey record {|
 
 # Represents the X509 public key certificate information.
 #
-# + version0 - Version number
-# + serial - Serial number
-# + issuer - Issuer name
-# + subject - Subject name
-# + notBefore - Not before validity period of certificate
-# + notAfter - Not after validity period of certificate
-# + signature - Raw signature bits
-# + signingAlgorithm - Signature algorithm
+# + version0 - Version number of the certificate
+# + serial - Serial number of the certificate
+# + issuer - Issuer name of the certificate
+# + subject - Subject name of the certificate
+# + notBefore - The start of the validity period of the certificate
+# + notAfter - The end of the validity period of the certificate
+# + signature - Raw signature bits of the certificate
+# + signingAlgorithm - The algorithm used to sign the certificate
 public type Certificate record {|
     int version0;
     int serial;
@@ -93,9 +93,9 @@ public type Certificate record {|
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - KeyStore configurations
-# + keyAlias - Key alias
-# + keyPassword - Key password
+# + keyStore - The KeyStore configurations containing the file path and password
+# + keyAlias - The alias of the private key in the KeyStore
+# + keyPassword - The password used to access the private key in the KeyStore
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
                                                          returns PrivateKey|Error = @java:Method {
@@ -111,9 +111,9 @@ public isolated function decodeRsaPrivateKeyFromKeyStore(KeyStore keyStore, stri
 # crypto:PrivateKey privateKey = check crypto:decodeEcPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - KeyStore configurations
-# + keyAlias - Key alias
-# + keyPassword - Key password
+# + keyStore - The KeyStore configurations containing the file path and password
+# + keyAlias - The alias of the private key in the KeyStore
+# + keyPassword - The password used to access the private key in the KeyStore
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeEcPrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
                                                          returns PrivateKey|Error = @java:Method {
@@ -129,9 +129,9 @@ public isolated function decodeEcPrivateKeyFromKeyStore(KeyStore keyStore, strin
 # crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - KeyStore configurations
-# + keyAlias - Key alias
-# + keyPassword - Key password
+# + keyStore - The KeyStore configurations containing the file path and password
+# + keyAlias - The alias of the private key in the KeyStore
+# + keyPassword - The password used to access the private key in the KeyStore
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeMlDsa65PrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
                                                         returns PrivateKey|Error = @java:Method {
@@ -147,9 +147,9 @@ public isolated function decodeMlDsa65PrivateKeyFromKeyStore(KeyStore keyStore, 
 # crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
 # ```
 #
-# + keyStore - KeyStore configurations
-# + keyAlias - Key alias
-# + keyPassword - Key password
+# + keyStore - The KeyStore configurations containing the file path and password
+# + keyAlias - The alias of the private key in the KeyStore
+# + keyPassword - The password used to access the private key in the KeyStore
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeMlKem768PrivateKeyFromKeyStore(KeyStore keyStore, string keyAlias, string keyPassword)
                                                         returns PrivateKey|Error = @java:Method {
@@ -162,8 +162,8 @@ public isolated function decodeMlKem768PrivateKeyFromKeyStore(KeyStore keyStore,
 # crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyFile(keyFile, "keyPassword");
 # ```
 #
-# + keyFile - Path to the key file
-# + keyPassword - Password of the key file if it is encrypted
+# + keyFile - The private key file path
+# + keyPassword - The password used to decrypt the private key file if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeRsaPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
@@ -189,8 +189,8 @@ public isolated function decodeRsaPrivateKeyFromContent(byte[] content, string? 
 # crypto:PrivateKey privateKey = check crypto:decodeEcPrivateKeyFromKeyFile(keyFile, "keyPassword");
 # ```
 #
-# + keyFile - Path to the key file
-# + keyPassword - Password of the key file if it is encrypted
+# + keyFile - The private key file path
+# + keyPassword - The password used to decrypt the private key file if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeEcPrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
@@ -203,8 +203,8 @@ public isolated function decodeEcPrivateKeyFromKeyFile(string keyFile, string? k
 # crypto:PrivateKey privateKey = check crypto:decodeMlDsa65PrivateKeyFromKeyFile(keyFile, "keyPassword");
 # ```
 #
-# + keyFile - Path to the key file
-# + keyPassword - Password of the key file if it is encrypted
+# + keyFile - The private key file path
+# + keyPassword - The password used to decrypt the private key file if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeMlDsa65PrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
@@ -217,8 +217,8 @@ public isolated function decodeMlDsa65PrivateKeyFromKeyFile(string keyFile, stri
 # crypto:PrivateKey privateKey = check crypto:decodeMlKem768PrivateKeyFromKeyFile(keyFile, "keyPassword");
 # ```
 #
-# + keyFile - Path to the key file
-# + keyPassword - Password of the key file if it is encrypted
+# + keyFile - The private key file path
+# + keyPassword - The password used to decrypt the private key file if it is encrypted
 # + return - Reference to the private key or else a `crypto:Error` if the private key was unreadable
 public isolated function decodeMlKem768PrivateKeyFromKeyFile(string keyFile, string? keyPassword = ())
                                                         returns PrivateKey|Error = @java:Method {
@@ -234,8 +234,8 @@ public isolated function decodeMlKem768PrivateKeyFromKeyFile(string keyFile, str
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + trustStore - TrustStore configurations
-# + keyAlias - Key alias
+# + trustStore - The trustStore configurations containing the file path and password
+# + keyAlias - The alias of the public key in the TrustStore
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
                                                           returns PublicKey|Error = @java:Method {
@@ -251,8 +251,8 @@ public isolated function decodeRsaPublicKeyFromTrustStore(TrustStore trustStore,
 # crypto:PublicKey publicKey = check crypto:decodeEcPublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + trustStore - TrustStore configurations
-# + keyAlias - Key alias
+# + trustStore - The trustStore configurations containing the file path and password
+# + keyAlias - The alias of the public key in the TrustStore
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeEcPublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
                                                           returns PublicKey|Error = @java:Method {
@@ -268,8 +268,8 @@ public isolated function decodeEcPublicKeyFromTrustStore(TrustStore trustStore, 
 # crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + trustStore - TrustStore configurations
-# + keyAlias - Key alias
+# + trustStore - The trustStore configurations containing the file path and password
+# + keyAlias - The alias of the public key in the TrustStore
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeMlDsa65PublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
                                                         returns PublicKey|Error = @java:Method {
@@ -285,8 +285,8 @@ public isolated function decodeMlDsa65PublicKeyFromTrustStore(TrustStore trustSt
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromTrustStore(trustStore, "keyAlias");
 # ```
 #
-# + trustStore - TrustStore configurations
-# + keyAlias - Key alias
+# + trustStore - The trustStore configurations containing the file path and password
+# + keyAlias - The alias of the public key in the TrustStore
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeMlKem768PublicKeyFromTrustStore(TrustStore trustStore, string keyAlias)
                                                         returns PublicKey|Error = @java:Method {
@@ -299,7 +299,7 @@ public isolated function decodeMlKem768PublicKeyFromTrustStore(TrustStore trustS
 # crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromCertFile(certFile);
 # ```
 #
-# + certFile - Path to the certificate file
+# + certFile - The certificate file path
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeRsaPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
@@ -323,7 +323,7 @@ public isolated function decodeRsaPublicKeyFromContent(byte[] content) returns P
 # crypto:PublicKey publicKey = check crypto:decodeEcPublicKeyFromCertFile(certFile);
 # ```
 #
-# + certFile - Path to the certificate file
+# + certFile - The certificate file path
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeEcPublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
@@ -335,7 +335,7 @@ public isolated function decodeEcPublicKeyFromCertFile(string certFile) returns 
 # crypto:PublicKey publicKey = check crypto:decodeMlDsa65PublicKeyFromCertFile(certFile);
 # ```
 #
-# + certFile - Path to the certificate file
+# + certFile - The certificate file path
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeMlDsa65PublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
@@ -347,7 +347,7 @@ public isolated function decodeMlDsa65PublicKeyFromCertFile(string certFile) ret
 # crypto:PublicKey publicKey = check crypto:decodeMlKem768PublicKeyFromCertFile(certFile);
 # ```
 #
-# + certFile - Path to the certificate file
+# + certFile - The certificate file path
 # + return - Reference to the public key or else a `crypto:Error` if the public key was unreadable
 public isolated function decodeMlKem768PublicKeyFromCertFile(string certFile) returns PublicKey|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decode"
