@@ -18,6 +18,9 @@
 package io.ballerina.stdlib.crypto;
 
 import io.ballerina.runtime.api.Environment;
+import io.ballerina.runtime.api.types.MethodType;
+import io.ballerina.runtime.api.types.ObjectType;
+import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
@@ -27,6 +30,7 @@ import io.ballerina.runtime.api.values.BStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -48,10 +52,19 @@ public class BallerinaInputStream extends InputStream {
     private final BStream ballerinaStream;
     private ByteBuffer buffer = null;
     private boolean endOfStream = false;
+    private boolean hasCloseMethod = true;
 
     public BallerinaInputStream(Environment environment, BStream ballerinaStream) {
         this.ballerinaStream = ballerinaStream;
         this.environment = environment;
+
+        // Implementing a close method for a Ballerina stream is optional
+        // Need to check if the stream has a close method by accessing the iterator object type methods
+        Type iteratorType = ballerinaStream.getIteratorObj().getOriginalType();
+        if (iteratorType instanceof ObjectType iteratorObjectType) {
+            MethodType[] methods = iteratorObjectType.getMethods();
+            hasCloseMethod = Arrays.stream(methods).anyMatch(method -> method.getName().equals(BAL_STREAM_CLOSE));
+        }
     }
 
     @Override
@@ -71,6 +84,9 @@ public class BallerinaInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
+        if (!hasCloseMethod) {
+            return;
+        }
         Object result = callBalStreamMethod(BAL_STREAM_CLOSE);
         if (result instanceof BError bError) {
             throw new IOException((bError).getMessage());
