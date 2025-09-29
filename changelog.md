@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Fixed
+- [Implement optional close method check for BStream](https://github.com/ballerina-platform/ballerina-library/issues/8288)
+
+## [2.9.0] - 2025-03-12
+
 ### Changed
 - [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
 
