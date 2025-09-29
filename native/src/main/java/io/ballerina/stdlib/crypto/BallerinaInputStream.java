@@ -52,18 +52,21 @@ public class BallerinaInputStream extends InputStream {
     private final BStream ballerinaStream;
     private ByteBuffer buffer = null;
     private boolean endOfStream = false;
-    private boolean hasCloseMethod = true;
+    private final boolean hasCloseMethod;
 
     public BallerinaInputStream(Environment environment, BStream ballerinaStream) {
         this.ballerinaStream = ballerinaStream;
         this.environment = environment;
 
         // Implementing a close method for a Ballerina stream is optional
-        // Need to check if the stream has a close method by accessing the iterator object type methods
+        // There is no Ballerina runtime API to check if the stream has a close method
+        // So accessing the iterator object type methods to check if it has a close method
         Type iteratorType = ballerinaStream.getIteratorObj().getOriginalType();
         if (iteratorType instanceof ObjectType iteratorObjectType) {
             MethodType[] methods = iteratorObjectType.getMethods();
             hasCloseMethod = Arrays.stream(methods).anyMatch(method -> method.getName().equals(BAL_STREAM_CLOSE));
+        } else {
+            hasCloseMethod = false;
         }
     }
 
