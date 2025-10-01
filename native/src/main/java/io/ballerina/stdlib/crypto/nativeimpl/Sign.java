@@ -83,6 +83,12 @@ public class Sign {
         return CryptoUtils.sign("SHA512withRSA", key, input);
     }
 
+    public static Object signRsaSsaPss256(BArray inputValue, BMap<?, ?> privateKey) {
+        byte[] input = inputValue.getBytes();
+        PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
+        return CryptoUtils.sign("SHA256withRSAandMGF1", key, input);
+    }
+
     public static Object verifyMlDsa65Signature(BArray dataValue, BArray signatureValue,
                                                BMap<?, ?> publicKey) {
         byte[] data = dataValue.getBytes();
@@ -129,6 +135,14 @@ public class Sign {
         byte[] signature = signatureValue.getBytes();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
         return CryptoUtils.verify("SHA512withRSA", key, data, signature);
+    }
+
+    public static Object verifyRsaSsaPss256Signature(BArray dataValue, BArray signatureValue,
+                                                     BMap<?, ?> publicKey) {
+        byte[] data = dataValue.getBytes();
+        byte[] signature = signatureValue.getBytes();
+        PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
+        return CryptoUtils.verify("SHA256withRSAandMGF1", key, data, signature);
     }
 
     public static Object verifySha384withEcdsaSignature(BArray dataValue, BArray signatureValue, BMap<?, ?> publicKey) {
