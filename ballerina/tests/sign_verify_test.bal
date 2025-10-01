@@ -107,6 +107,18 @@ isolated function testSignRsaSha512() returns Error? {
 }
 
 @test:Config {}
+isolated function testSignRsaSsaPss256() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    byte[] pssSignature = check signRsaSsaPss256(payload, privateKey);
+    test:assertTrue(pssSignature.length() > 0);
+}
+
+@test:Config {}
 isolated function testSignMlDsa65() returns Error? {
     byte[] payload = "Ballerina test".toBytes();
     KeyStore keyStore = {
@@ -204,7 +216,7 @@ isolated function testSignMlDsa65() returns Error? {
 @test:Config {}
 isolated function testSignRsaMd5WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm: "RSA"};
     byte[]|Error result = signRsaMd5(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
@@ -216,7 +228,7 @@ isolated function testSignRsaMd5WithInvalidKey() {
 @test:Config {}
 isolated function testSignRsaSha1WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm: "RSA"};
     byte[]|Error result = signRsaSha1(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
@@ -228,7 +240,7 @@ isolated function testSignRsaSha1WithInvalidKey() {
 @test:Config {}
 isolated function testSignRsaSha256WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm: "RSA"};
     byte[]|Error result = signRsaSha256(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
@@ -240,7 +252,7 @@ isolated function testSignRsaSha256WithInvalidKey() {
 @test:Config {}
 isolated function testSignRsaSha384WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm: "RSA"};
     byte[]|Error result = signRsaSha384(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
@@ -252,8 +264,20 @@ isolated function testSignRsaSha384WithInvalidKey() {
 @test:Config {}
 isolated function testSignRsaSha512WithInvalidKey() {
     byte[] payload = "Ballerina test".toBytes();
-    PrivateKey privateKey = {algorithm:"RSA"};
+    PrivateKey privateKey = {algorithm: "RSA"};
     byte[]|Error result = signRsaSha512(payload, privateKey);
+    if result is Error {
+        test:assertTrue(result.message().includes("Uninitialized private key:"));
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testSignRsaSsaPss256WithInvalidKey() {
+    byte[] payload = "Ballerina test".toBytes();
+    PrivateKey privateKey = {algorithm: "RSA"};
+    byte[]|Error result = signRsaSsaPss256(payload, privateKey);
     if result is Error {
         test:assertTrue(result.message().includes("Uninitialized private key:"));
     } else {
@@ -336,6 +360,19 @@ isolated function testVerifyRsaSha512() returns Error? {
     PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
     byte[] sha512Signature = check signRsaSha512(payload, privateKey);
     test:assertTrue(check verifyRsaSha512Signature(payload, sha512Signature, publicKey));
+}
+
+@test:Config {}
+isolated function testVerifyRsaSsaPss256() returns Error? {
+    byte[] payload = "Ballerina test".toBytes();
+    KeyStore keyStore = {
+        path: KEYSTORE_PATH,
+        password: "ballerina"
+    };
+    PrivateKey privateKey = check decodeRsaPrivateKeyFromKeyStore(keyStore, "ballerina", "ballerina");
+    PublicKey publicKey = check decodeRsaPublicKeyFromTrustStore(keyStore, "ballerina");
+    byte[] pssSignature = check signRsaSsaPss256(payload, privateKey);
+    test:assertTrue(check verifyRsaSsaPss256Signature(payload, pssSignature, publicKey));
 }
 
 @test:Config {}
