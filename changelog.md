@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- [Introduce support for RSASSA-PSS (PS256) signature algorithm](https://github.com/ballerina-platform/ballerina-library/issues/8292)
 - [Introduce support for PBKDF2 password hashing and verification](https://github.com/ballerina-platform/ballerina-lang/issues/43926)
 - [Add static analysis rule - Encryption algorithms should be used with secure mode and padding scheme](https://github.com/ballerina-platform/ballerina-library/issues/7940)
 - [Add static analysis rule - Passwords should not be stored in plaintext or with a fast hashing algorithm](https://github.com/ballerina-platform/ballerina-library/issues/7950)
