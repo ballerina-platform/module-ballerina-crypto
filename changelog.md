@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
 - [Optimize hardcoded IV detection using semantic model reference counting](https://github.com/ballerina-platform/ballerina-library/issues/8257)
 
+### Fixed
+- [Implement optional close method check for BStream](https://github.com/ballerina-platform/ballerina-library/issues/8288)
+
 ## [2.8.0] - 2025-02-11
 
 ### Added
