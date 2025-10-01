@@ -136,6 +136,26 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
+# Returns the RSASSA-PSS with SHA-256 based signature value for the given data.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSsaPss256(data, privateKey);
+# ```
+#
+# + input - The content to be signed
+# + privateKey - Private key used for signing
+# + return - The generated signature or else a `crypto:Error` if the private key is invalid
+public isolated function signRsaSsaPss256(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
+    name: "signRsaSsaPss256",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
 # Returns the SHA384withECDSA based signature value for the given data.
 # ```ballerina
 # string input = "Hello Ballerina";
@@ -195,7 +215,7 @@ public isolated function signSha256withEcdsa(byte[] input, PrivateKey privateKey
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, PublicKey publicKey)
-                                               returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifyRsaMd5Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
@@ -219,7 +239,7 @@ public isolated function verifyRsaMd5Signature(byte[] data, byte[] signature, Pu
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyMlDsa65Signature(byte[] data, byte[] signature, PublicKey publicKey)
-                                               returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifyMlDsa65Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
@@ -267,7 +287,7 @@ public isolated function verifyRsaSha1Signature(byte[] data, byte[] signature, P
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature, PublicKey publicKey)
-                                                  returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifyRsaSha256Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
@@ -291,7 +311,7 @@ public isolated function verifyRsaSha256Signature(byte[] data, byte[] signature,
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature, PublicKey publicKey)
-                                                  returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifyRsaSha384Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
@@ -315,8 +335,32 @@ public isolated function verifyRsaSha384Signature(byte[] data, byte[] signature,
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature, PublicKey publicKey)
-                                                  returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifyRsaSha512Signature",
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
+} external;
+
+# Verifies the RSASSA-PSS with SHA-256 based signature.
+# ```ballerina
+# string input = "Hello Ballerina";
+# byte[] data = input.toBytes();
+# crypto:KeyStore keyStore = {
+#     path: "/path/to/keyStore.p12",
+#     password: "keyStorePassword"
+# };
+# crypto:PrivateKey privateKey = check crypto:decodeRsaPrivateKeyFromKeyStore(keyStore, "keyAlias", "keyPassword");
+# byte[] signature = check crypto:signRsaSsaPss256(data, privateKey);
+# crypto:PublicKey publicKey = check crypto:decodeRsaPublicKeyFromTrustStore(keyStore, "keyAlias");
+# boolean validity = check crypto:verifyRsaSsaPss256Signature(data, signature, publicKey);
+# ```
+#
+# + data - The content to be verified
+# + signature - Signature value
+# + publicKey - Public key used for verification
+# + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
+public isolated function verifyRsaSsaPss256Signature(byte[] data, byte[] signature, PublicKey publicKey)
+                                                    returns boolean|Error = @java:Method {
+    name: "verifyRsaSsaPss256Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
@@ -339,7 +383,7 @@ public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature,
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifySha384withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
-                                                  returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifySha384withEcdsaSignature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
@@ -363,7 +407,7 @@ public isolated function verifySha384withEcdsaSignature(byte[] data, byte[] sign
 # + publicKey - Public key used for verification
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifySha256withEcdsaSignature(byte[] data, byte[] signature, PublicKey publicKey)
-                                                  returns boolean|Error = @java:Method {
+                                                returns boolean|Error = @java:Method {
     name: "verifySha256withEcdsaSignature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
