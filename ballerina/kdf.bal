@@ -22,11 +22,11 @@ import ballerina/jballerina.java;
 # byte[] key = secret.toBytes();
 # byte[] hash = crypto:hkdfSha256(key, 32);
 # ```
-# + input - The input key material to derive the key from
-# + length - The length of the output keying material (OKM) in bytes
-# + salt - Optional salt value, a non-secret random value
-# + info - Optional context and application-specific information
-# + return - The derived keying material (OKM) of the specified length
+# + input - The input key material, provided as a byte array
+# + length - The length of the output keying material (OKM) in bytes. Must be a positive integer
+# + salt - An optional salt value, provided as a byte array. Defaults to an empty array if not specified
+# + info - An optional context and application-specific information, provided as a byte array. Defaults to an empty array if not specified
+# + return - The derived keying material (OKM) of the specified length as a byte array, or a `crypto:Error` if an error occurs
 public isolated function hkdfSha256(byte[] input, int length, byte[] salt = [], byte[] info = []) returns byte[]|Error = @java:Method {
     name: "hkdfSha256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Kdf"

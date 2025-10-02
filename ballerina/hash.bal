@@ -30,9 +30,9 @@ public enum HmacAlgorithm {
 # byte[] hash = crypto:hashMd5(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The MD5 hash of the input data as a byte array
 public isolated function hashMd5(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashMd5",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -45,9 +45,9 @@ public isolated function hashMd5(byte[] input, byte[]? salt = ()) returns byte[]
 # byte[] hash = crypto:hashSha1(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The SHA-1 hash of the input data as a byte array
 public isolated function hashSha1(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha1",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -60,9 +60,9 @@ public isolated function hashSha1(byte[] input, byte[]? salt = ()) returns byte[
 # byte[] hash = crypto:hashSha256(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The SHA-256 hash of the input data as a byte array
 public isolated function hashSha256(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -75,9 +75,9 @@ public isolated function hashSha256(byte[] input, byte[]? salt = ()) returns byt
 # byte[] hash = crypto:hashSha384(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The SHA-384 hash of the input data as a byte array
 public isolated function hashSha384(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha384",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -90,23 +90,23 @@ public isolated function hashSha384(byte[] input, byte[]? salt = ()) returns byt
 # byte[] hash = crypto:hashSha512(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The SHA-512 hash of the input data as a byte array
 public isolated function hashSha512(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashSha512",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
 } external;
 
-# Returns the Hex-encoded CRC32B value for the given data.
+# Returns the Hex-encoded CRC32B checksum for the given data.
 # ```ballerina
 # string stringData = "Hello Ballerina";
 # byte[] data = stringData.toBytes();
 # string checksum = crypto:crc32b(data);
 # ```
 #
-# + input - Value for checksum generation
-# + return - The generated checksum
+# + input - The data to generate the checksum for, provided as a byte array
+# + return - The generated CRC32B checksum as a hexadecimal string
 public isolated function crc32b(byte[] input) returns string = @java:Method {
     name: "crc32b",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -119,9 +119,9 @@ public isolated function crc32b(byte[] input) returns string = @java:Method {
 # byte[] hash = crypto:hashKeccak256(data);
 # ```
 #
-# + input - Value to be hashed
-# + salt - Salt to be added
-# + return - Hashed output
+# + input - The data to be hashed, provided as a byte array
+# + salt - Optional salt to be added to the input, provided as a byte array
+# + return - The Keccak-256 hash of the input data as a byte array
 public isolated function hashKeccak256(byte[] input, byte[]? salt = ()) returns byte[] = @java:Method {
     name: "hashKeccak256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Hash"
@@ -135,7 +135,7 @@ public isolated function hashKeccak256(byte[] input, byte[]? salt = ()) returns 
 #
 # + password - Password string to be hashed
 # + workFactor - Optional work factor (cost parameter) between 4 and 31. Default is 12
-# + return - BCrypt hashed password string or Error if hashing fails
+# + return - The BCrypt hashed password string, or a `crypto:Error` if hashing fails
 public isolated function hashBcrypt(string password, int workFactor = 12) returns string|Error = @java:Method {
     name: "hashPassword",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
@@ -150,7 +150,7 @@ public isolated function hashBcrypt(string password, int workFactor = 12) return
 #
 # + password - Password string to verify
 # + hashedPassword - BCrypt hashed password to verify against
-# + return - Boolean indicating if password matches or Error if verification fails
+# + return - A boolean indicating if the password matches, or a `crypto:Error` if verification fails
 public isolated function verifyBcrypt(string password, string hashedPassword) returns boolean|Error = @java:Method {
     name: "verifyPassword",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
@@ -162,11 +162,11 @@ public isolated function verifyBcrypt(string password, string hashedPassword) re
 # string|crypto:Error hash = crypto:hashArgon2(password);
 # ```
 #
-# + password - Password string to be hashed
+# + password - The password string to be hashed
 # + iterations - Optional number of iterations. Default is 3
 # + memory - Optional memory usage in KB. Default is 65536 (64MB)
 # + parallelism - Optional degree of parallelism. Default is 4
-# + return - Argon2id hashed password string or Error if hashing fails
+# + return - The Argon2id hashed password string, or a `crypto:Error` if hashing fails
 public isolated function hashArgon2(string password, int iterations = 3, int memory = 65536, int parallelism = 4) returns string|Error = @java:Method {
     name: "hashPasswordArgon2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
@@ -180,8 +180,8 @@ public isolated function hashArgon2(string password, int iterations = 3, int mem
 # ```
 #
 # + password - Password string to verify
-# + hashedPassword - Argon2id hashed password to verify against
-# + return - Boolean indicating if password matches or Error if verification fails
+# + hashedPassword - The Argon2id hashed password string to verify against
+# + return - A boolean indicating if the password matches, or a `crypto:Error` if verification fails
 public isolated function verifyArgon2(string password, string hashedPassword) returns boolean|Error = @java:Method {
     name: "verifyPasswordArgon2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
@@ -193,10 +193,10 @@ public isolated function verifyArgon2(string password, string hashedPassword) re
 # string|crypto:Error hash = crypto:hashPbkdf2(password);
 # ```
 #
-# + password - Password string to be hashed
-# + iterations - Optional number of iterations. Default is 10000
+# + password - The password string to be hashed
+# + iterations - Optional number of iterations. Default is 10000. Must be a positive integer.
 # + algorithm - Optional HMAC algorithm (`SHA1`, `SHA256`, `SHA512`). Default is SHA256
-# + return - PBKDF2 hashed password string or Error if hashing fails
+# + return - The PBKDF2 hashed password string, or a `crypto:Error` if hashing fails
 public isolated function hashPbkdf2(string password, int iterations = 10000, HmacAlgorithm algorithm = SHA256) returns string|Error = @java:Method {
     name: "hashPasswordPBKDF2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
@@ -209,9 +209,9 @@ public isolated function hashPbkdf2(string password, int iterations = 10000, Hma
 # boolean|crypto:Error matches = crypto:verifyPbkdf2(password, hashedPassword);
 # ```
 #
-# + password - Password string to verify
-# + hashedPassword - PBKDF2 hashed password to verify against
-# + return - Boolean indicating if password matches or Error if verification fails
+# + password - The password string to verify
+# + hashedPassword - The PBKDF2 hashed password string to verify against
+# + return - A boolean indicating if the password matches, or a `crypto:Error` if verification fails
 public isolated function verifyPbkdf2(string password, string hashedPassword) returns boolean|Error = @java:Method {
     name: "verifyPasswordPBKDF2",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Password"
