@@ -138,3 +138,19 @@ isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPassphrase() 
         test:assertFail("Should return a crypto Error");
     }
 }
+
+@test:Config
+isolated function testInputStreamWithoutCloseForPgpEncrypt() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    string[] names = ["alice", "charlie"];
+    stream<byte[], error?> inputStream = from string name in names
+        select name.toString().toBytes();
+    stream<byte[], error?> encryptedStream = check encryptStreamAsPgp(inputStream, PGP_PUBLIC_KEY_PATH);
+    stream<byte[], error?> decryptStreamAsPgp = check decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+    byte[] actualBytes = [];
+    check from byte[] bytes in decryptStreamAsPgp
+        do {
+            actualBytes.push(...bytes);
+        };
+    test:assertEquals(check string:fromBytes(actualBytes), "alicecharlie");
+}
