@@ -19,7 +19,7 @@
 # + compressionAlgorithm - Specifies the compression algorithm used for PGP encryption
 # + symmetricKeyAlgorithm - Specifies the symmetric key algorithm used for encryption
 # + armor - Indicates whether ASCII armor is enabled for the encrypted output
-# + withIntegrityCheck - Indicates whether integrity check is included in the encryption
+# + withIntegrityCheck - Indicates whether an integrity check is included in the encryption
 public type Options record {|
     CompressionAlgorithmTags compressionAlgorithm = ZIP;
     SymmetricKeyAlgorithmTags symmetricKeyAlgorithm = AES_256;
@@ -29,10 +29,10 @@ public type Options record {|
 
 # Represents the compression algorithms available in PGP.
 # 
-# + UNCOMPRESSED - No compression
-# + ZIP - Uses (RFC 1951) compression
-# + ZLIB - Uses (RFC 1950) compression
-# + BZIP2 - Uses Burrows–Wheeler algorithm
+# + UNCOMPRESSED - No compression is applied
+# + ZIP - Uses ZIP compression as defined in RFC 1951
+# + ZLIB - Uses ZLIB compression as defined in RFC 1950
+# + BZIP2 - Uses Burrows–Wheeler algorithm for compression
 public enum CompressionAlgorithmTags {
     UNCOMPRESSED = "0",
     ZIP = "1",
@@ -42,20 +42,20 @@ public enum CompressionAlgorithmTags {
 
 # Represent the symmetric key algorithms available in PGP.
 # 
-# + NULL - No encryption
-# + IDEA - IDEA symmetric key algorithm
-# + TRIPLE_DES - Triple DES symmetric key algorithm
-# + CAST5 - CAST5 symmetric key algorithm
-# + BLOWFISH - Blowfish symmetric key algorithm
-# + SAFER - SAFER symmetric key algorithm
-# + DES - DES symmetric key algorithm
-# + AES_128 - AES 128-bit symmetric key algorithm
-# + AES_192 - AES 192-bit symmetric key algorithm
-# + AES_256 - AES 256-bit symmetric key algorithm
-# + TWOFISH - Twofish symmetric key algorithm
-# + CAMELLIA_128 - Camellia 128-bit symmetric key algorithm
-# + CAMELLIA_192 - Camellia 192-bit symmetric key algorithm
-# + CAMMELIA_256 - Camellia 256-bit symmetric key algorithm
+# + NULL - No encryption is applied
+# + IDEA - Uses the IDEA symmetric key algorithm
+# + TRIPLE_DES - Uses the Triple DES symmetric key algorithm
+# + CAST5 - Uses the CAST5 symmetric key algorithm
+# + BLOWFISH - Uses the Blowfish symmetric key algorithm
+# + SAFER - Uses the SAFER symmetric key algorithm
+# + DES - Uses the DES symmetric key algorithm
+# + AES_128 - Uses the AES 128-bit symmetric key algorithm
+# + AES_192 - Uses the AES 192-bit symmetric key algorithm
+# + AES_256 - Uses the AES 256-bit symmetric key algorithm for high security
+# + TWOFISH - Uses the Twofish symmetric key algorithm
+# + CAMELLIA_128 - Uses the Camellia 128-bit symmetric key algorithm
+# + CAMELLIA_192 - Uses the Camellia 192-bit symmetric key algorithm
+# + CAMMELIA_256 - Uses the Camellia 256-bit symmetric key algorithm
 public enum SymmetricKeyAlgorithmTags {
     NULL = "0",
     IDEA = "1",

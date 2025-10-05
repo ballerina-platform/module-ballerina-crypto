@@ -23,28 +23,28 @@ public type AesPadding NONE|PKCS5;
 public type RsaPadding PKCS1|OAEPwithMD5andMGF1|OAEPWithSHA1AndMGF1|OAEPWithSHA256AndMGF1|OAEPwithSHA384andMGF1|
                        OAEPwithSHA512andMGF1;
 
-# No padding.
+# Represents no padding for encryption or decryption.
 public const NONE = "NONE";
 
-# The `PKCS1` padding mode.
+# Represents the PKCS1 padding mode for RSA encryption and decryption.
 public const PKCS1 = "PKCS1";
 
-# The `PKCS5` padding mode.
+# Represents the PKCS5 padding mode for AES encryption and decryption.
 public const PKCS5 = "PKCS5";
 
-# The `OAEPwithMD5andMGF1` padding mode.
+# Represents the OAEP padding mode with MD5 and MGF1 for RSA encryption and decryption.
 public const OAEPwithMD5andMGF1 = "OAEPwithMD5andMGF1";
 
-# The `OAEPWithSHA1AndMGF1` padding mode.
+# Represents the OAEP padding mode with SHA-1 and MGF1 for RSA encryption and decryption.
 public const OAEPWithSHA1AndMGF1 = "OAEPWithSHA1AndMGF1";
 
-# The `OAEPWithSHA256AndMGF1` padding mode.
+# Represents the OAEP padding mode with SHA-256 and MGF1 for RSA encryption and decryption.
 public const OAEPWithSHA256AndMGF1 = "OAEPWithSHA256AndMGF1";
 
-# The `OAEPwithSHA384andMGF1` padding mode.
+# Represents the OAEP padding mode with SHA-384 and MGF1 for RSA encryption and decryption.
 public const OAEPwithSHA384andMGF1 = "OAEPwithSHA384andMGF1";
 
-# The `OAEPwithSHA512andMGF1` padding mode.
+# Represents the OAEP padding mode with SHA-512 and MGF1 for RSA encryption and decryption.
 public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 
 # Returns the RSA-encrypted value for the given data.
@@ -59,10 +59,10 @@ public const OAEPwithSHA512andMGF1 = "OAEPwithSHA512andMGF1";
 # byte[] cipherText = check crypto:encryptRsaEcb(data, publicKey);
 # ```
 #
-# + input - The content to be encrypted
-# + key - Private or public key used for encryption
-# + padding - The padding algorithm
-# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be encrypted, provided as a byte array
+# + key - The RSA key (private or public) used for encryption. The key must be compatible with the RSA algorithm
+# + padding - The padding algorithm to use. Supported values are `PKCS1`, `OAEPwithMD5andMGF1`, `OAEPWithSHA1AndMGF1`, `OAEPWithSHA256AndMGF1`, `OAEPwithSHA384andMGF1`, and `OAEPwithSHA512andMGF1`
+# + return - The encrypted data as a byte array, or a `crypto:Error` if the key is invalid or an error occurs during encryption
 public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "encryptRsaEcb",
@@ -84,11 +84,11 @@ public isolated function encryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # byte[] cipherText = check crypto:encryptAesCbc(data, key, initialVector);
 # ```
 #
-# + input - The content to be encrypted
-# + key - Encryption key
-# + iv - Initialization vector
-# + padding - The padding algorithm
-# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be encrypted, provided as a byte array
+# + key - The encryption key used for AES-CBC encryption
+# + iv - The initialization vector used to initialize the AES-CBC encryption process
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + return - The encrypted data as a byte array, or a `crypto:Error` if the key, IV, or padding is invalid
 public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesCbc",
@@ -106,10 +106,10 @@ public isolated function encryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # byte[] cipherText = check crypto:encryptAesEcb(data, key);
 # ```
 #
-# + input - The content to be encrypted
-# + key - Encryption key
-# + padding - The padding algorithm
-# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be encrypted, provided as a byte array
+# + key - The encryption key used for AES-ECB encryption
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + return - The encrypted data as a byte array, or a `crypto:Error` if the key or padding is invalid
 public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "encryptAesEcb",
@@ -131,12 +131,12 @@ public isolated function encryptAesEcb(byte[] input, byte[] key, AesPadding padd
 # byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
 # ```
 #
-# + input - The content to be encrypted
-# + key - Encryption key
-# + iv - Initialization vector
-# + padding - The padding algorithm
-# + tagSize - Tag size
-# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be encrypted, provided as a byte array
+# + key - The encryption key used for AES-GCM encryption
+# + iv - The initialization vector used to initialize the AES-GCM encryption process
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + tagSize - The size of the authentication tag in bits. Valid values are 128, 120, 112, 104, or 96
+# + return - The encrypted data as a byte array, or a `crypto:Error` if the key, IV, or tag size is invalid
 public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = NONE,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "encryptAesGcm",
@@ -157,10 +157,10 @@ public isolated function encryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # byte[] plainText = check crypto:decryptRsaEcb(cipherText, privateKey);
 # ```
 #
-# + input - The content to be decrypted
-# + key - Private or public key used for encryption
-# + padding - The padding algorithm
-# + return - Decrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be decrypted, provided as a byte array
+# + key - The RSA key (private or public) used for decryption. The key must be compatible with the RSA algorithm
+# + padding - The padding algorithm to use. Supported values are `PKCS1`, `OAEPwithMD5andMGF1`, `OAEPWithSHA1AndMGF1`, `OAEPWithSHA256AndMGF1`, `OAEPwithSHA384andMGF1`, and `OAEPwithSHA512andMGF1`
+# + return - The decrypted data as a byte array, or a `crypto:Error` if the key is invalid or an error occurs during decryption
 public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, RsaPadding padding = PKCS1)
                                        returns byte[]|Error = @java:Method {
     name: "decryptRsaEcb",
@@ -183,11 +183,11 @@ public isolated function decryptRsaEcb(byte[] input, PrivateKey|PublicKey key, R
 # byte[] plainText = check crypto:decryptAesCbc(cipherText, key, initialVector);
 # ```
 #
-# + input - The content to be decrypted
-# + key - Encryption key
-# + iv - Initialization vector
-# + padding - The padding algorithm
-# + return - Decrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be decrypted, provided as a byte array
+# + key - The encryption key used for AES-CBC decryption
+# + iv - The initialization vector used to initialize the AES-CBC decryption process
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + return - The decrypted data as a byte array, or a `crypto:Error` if the key, IV, or padding is invalid
 public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesCbc",
@@ -206,10 +206,10 @@ public isolated function decryptAesCbc(byte[] input, byte[] key, byte[] iv, AesP
 # byte[] plainText = check crypto:decryptAesEcb(cipherText, key);
 # ```
 #
-# + input - The content to be decrypted
-# + key - Encryption key
-# + padding - The padding algorithm
-# + return - Decrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be decrypted, provided as a byte array
+# + key - The encryption key used for AES-ECB decryption
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + return - The decrypted data as a byte array, or a `crypto:Error` if the key or padding is invalid
 public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padding = PKCS5)
                                        returns byte[]|Error = @java:Method {
     name: "decryptAesEcb",
@@ -232,12 +232,12 @@ public isolated function decryptAesEcb(byte[] input, byte[] key, AesPadding padd
 # byte[] plainText = check crypto:decryptAesGcm(cipherText, key, initialVector);
 # ```
 #
-# + input - The content to be decrypted
-# + key - Encryption key
-# + iv - Initialization vector
-# + padding - The padding algorithm
-# + tagSize - Tag size
-# + return - Decrypted data or else a `crypto:Error` if the key is invalid
+# + input - The content to be decrypted, provided as a byte array
+# + key - The encryption key used for AES-GCM decryption
+# + iv - The initialization vector used to initialize the AES-GCM decryption process
+# + padding - The padding algorithm to use. Supported value is `PKCS5`
+# + tagSize - The size of the authentication tag in bits. Valid values are 128, 120, 112, 104, or 96
+# + return - The decrypted data as a byte array, or a `crypto:Error` if the key, IV, or tag size is invalid
 public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesPadding padding = PKCS5,
                                        int tagSize = 128) returns byte[]|Error = @java:Method {
     name: "decryptAesGcm",
@@ -250,10 +250,10 @@ public isolated function decryptAesGcm(byte[] input, byte[] key, byte[] iv, AesP
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
 # ```
 #
-# + plainText - The content to be encrypted
-# + publicKey - Path to the public key
-# + options - PGP encryption options
-# + return - Encrypted data or else a `crypto:Error` if the key is invalid
+# + plainText - The content to be encrypted, provided as a byte array
+# + publicKey - Path to the public key file in ASCII-armored format
+# + options - Optional PGP encryption options, such as compression or cipher preferences
+# + return - The encrypted data as a byte array, or a `crypto:Error` if the public key is invalid or an error occurs during encryption
 public isolated function encryptPgp(byte[] plainText, string publicKey, *Options options)
                                        returns byte[]|Error = @java:Method {
     name: "encryptPgp",
@@ -266,10 +266,10 @@ public isolated function encryptPgp(byte[] plainText, string publicKey, *Options
 # stream<byte[], crypto:Error?>|crypto:Error encryptedStream = crypto:encryptStreamAsPgp(inputStream, "public_key.asc");
 # ```
 #
-# + inputStream - The content to be encrypted as a stream
-# + publicKey - Path to the public key
-# + options - PGP encryption options
-# + return - Encrypted stream or else a `crypto:Error` if the key is invalid
+# + inputStream - The content to be encrypted, provided as a stream of byte arrays
+# + publicKey - Path to the public key file in ASCII-armored format
+# + options - Optional PGP encryption options, such as compression or cipher preferences
+# + return - The encrypted content as a stream of byte arrays, or a `crypto:Error` if the public key is invalid or an error occurs during encryption
 public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, string publicKey,
         *Options options) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
@@ -284,10 +284,10 @@ public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, 
 # byte[] decryptedMessage = check crypto:decryptPgp(cipherText, "private_key.asc", passphrase);
 # ```
 #
-# + cipherText - The encrypted content to be decrypted
-# + privateKey - Path to the private key
-# + passphrase - passphrase of the private key
-# + return - Decrypted data or else a `crypto:Error` if the key or passphrase is invalid
+# + cipherText - The encrypted content to be decrypted, provided as a byte array
+# + privateKey - Path to the private key file in ASCII-armored format
+# + passphrase - The passphrase used to unlock the private key
+# + return - The decrypted data as a byte array, or a `crypto:Error` if the key or passphrase is invalid
 public isolated function decryptPgp(byte[] cipherText, string privateKey, byte[] passphrase)
                                        returns byte[]|Error = @java:Method {
     name: "decryptPgp",
@@ -301,10 +301,10 @@ public isolated function decryptPgp(byte[] cipherText, string privateKey, byte[]
 # stream<byte[], crypto:Error?>|crypto:Error decryptedStream = crypto:decryptStreamFromPgp(inputStream, "private_key.asc", passphrase);
 # ```
 #
-# + inputStream - The encrypted content as a stream
-# + privateKey - Path to the private key
-# + passphrase - passphrase of the private key
-# + return - Decrypted stream or else a `crypto:Error` if the key or passphrase is invalid
+# + inputStream - The encrypted content provided as a stream of byte arrays
+# + privateKey - Path to the private key file in ASCII-armored format
+# + passphrase - The passphrase used to unlock the private key
+# + return - The decrypted content as a stream of byte arrays, or a `crypto:Error` if the key or passphrase is invalid
 public isolated function decryptStreamFromPgp(stream<byte[], error?> inputStream, string privateKey,
         byte[] passphrase) returns stream<byte[], Error?>|Error = @java:Method {
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
