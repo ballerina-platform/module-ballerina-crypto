@@ -29,9 +29,7 @@ public enum CryptoRule {
     AVOID_FAST_HASH_ALGORITHMS(createRule(2,
             "Avoid using fast hashing algorithms", VULNERABILITY)),
     AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3,
-            "Avoid reusing counter mode initialization vectors", VULNERABILITY)),
-    AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS(createRule(4,
-            "Secure random number generators should not output predictable values", VULNERABILITY));
+            "Avoid reusing counter mode initialization vectors", VULNERABILITY));
 
     private final Rule rule;
 
