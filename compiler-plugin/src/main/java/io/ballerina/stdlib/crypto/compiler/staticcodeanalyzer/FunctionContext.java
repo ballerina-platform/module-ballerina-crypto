@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.addVariableDeclarationsUntil;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.collectVariableExpressionsUntilStatement;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getModuleLevelVarExpressions;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getModulePartNode;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getParamExpressions;
@@ -114,7 +114,7 @@ public class FunctionContext {
         }
 
         // Add variable declarations up to the function call statement
-        addVariableDeclarationsUntil(functionBodyOpt.get(), statementNode.get(), varExpressions);
+        collectVariableExpressionsUntilStatement(functionBodyOpt.get(), statementNode.get(), varExpressions);
         return new FunctionContext(semanticModel, reporter, document, functionName, location, paramExpressions,
                 varExpressions);
     }

@@ -65,6 +65,11 @@ public final class CryptoAnalyzerUtils {
     private static final String BALLERINA_ORG = "ballerina";
     private static final String CRYPTO = "crypto";
 
+    // Private constructor to prevent instantiation
+    private CryptoAnalyzerUtils() {
+
+    }
+
     /**
      * Retrieves the FunctionSymbol for a given FunctionCallExpressionNode if it belongs to the Ballerina
      * crypto module.
@@ -228,73 +233,21 @@ public final class CryptoAnalyzerUtils {
     }
 
     /**
-     * Adds variable declarations and assignments from the given block node
-     * to the provided map until the specified statement node is reached.
+     * Collects variable declarations and assignments from the given block node
+     * up to the specified statement node.
      *
      * @param blockNode      the block node (FunctionBodyBlockNode or BlockStatementNode)
      * @param statementNode  the statement node to stop at
      * @param varExpressions the map to store variable names and their expressions
      */
-    public static void addVariableDeclarationsUntil(Node blockNode, StatementNode statementNode,
-                                                    Map<String, ExpressionNode> varExpressions) {
-        NodeList<StatementNode> statements;
-        if (blockNode instanceof FunctionBodyBlockNode functionBody) {
-            statements = functionBody.statements();
-        } else if (blockNode instanceof BlockStatementNode blockStatementNode) {
-            statements = blockStatementNode.statements();
-        } else {
-            // Any other node type is unsupported
-            throw new IllegalArgumentException("Unsupported block node type: " + blockNode.kind());
-        }
-        addVarExpressionsUtil(statements, statementNode, varExpressions);
-    }
-
-    /**
-     * Utility method to add variable declarations and assignments from a list of statements
-     * to the provided map until the specified target statement is reached.
-     *
-     * @param statements      the list of statements
-     * @param targetStatement the target statement to stop at
-     * @param varExpressions  the map to store variable names and their expressions
-     */
-    public static void addVarExpressionsUtil(NodeList<StatementNode> statements, StatementNode targetStatement,
-                                             Map<String, ExpressionNode> varExpressions) {
-        for (StatementNode statement : statements) {
-            // If we find any block nodes in the middle we cannot verify the variable declarations or assignments
-            // since they may be changed within those blocks. It will become complex if there are conditional blocks
-            // etc. So we stop the analysis at that point and remove all collected variable expressions.
-            if (isBlockStatementNode(statement)) {
-                // Clean the collected variable expressions as we cannot guarantee their validity beyond this point
-                varExpressions.clear();
-                break;
-            }
-
-            if (statement.equals(targetStatement)) {
-                break;
-            }
-
-            if (statement instanceof AssignmentStatementNode assignmentNode) {
-                Node varRef = assignmentNode.varRef();
-                if (!(varRef instanceof IdentifierToken variableNameIdentifier)) {
-                    continue;
-                }
-                String varName = variableNameIdentifier.text();
-                varName = unescapeIdentifier(varName);
-                ExpressionNode expression = assignmentNode.expression();
-                varExpressions.put(varName, expression);
-            } else if (statement instanceof VariableDeclarationNode variableDeclarationNode) {
-                BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
-                // Only supporting capture binding patterns for variable declarations
-                if (variableDeclarationNode.initializer().isEmpty() ||
-                        !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
-                    break;
-                }
-                String varName = captureBindingPattern.variableName().text();
-                varName = unescapeIdentifier(varName);
-                ExpressionNode initializer = variableDeclarationNode.initializer().get();
-                varExpressions.put(varName, initializer);
-            }
-        }
+    public static void collectVariableExpressionsUntilStatement(Node blockNode, StatementNode statementNode,
+                                                                Map<String, ExpressionNode> varExpressions) {
+        NodeList<StatementNode> statements = switch (blockNode) {
+            case FunctionBodyBlockNode functionBody -> functionBody.statements();
+            case BlockStatementNode blockStatementNode -> blockStatementNode.statements();
+            default -> throw new IllegalArgumentException("Unsupported block node type: " + blockNode.kind());
+        };
+        processStatementsForVariableExpressions(statements, statementNode, varExpressions);
     }
 
     /**
@@ -335,13 +288,82 @@ public final class CryptoAnalyzerUtils {
         } else if (valueExpr instanceof NameReferenceNode refNode) {
             // Checking for constant values
             Optional<Symbol> refSymbol = context.semanticModel().symbol(refNode);
-            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef) {
-                if (constantRef.constValue() instanceof ConstantValue constantValue &&
-                        constantValue.value() instanceof String constString) {
-                    return Optional.of(constString);
-                }
+            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef &&
+                    constantRef.constValue() instanceof ConstantValue constantValue &&
+                    constantValue.value() instanceof String constString) {
+                return Optional.of(constString);
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Processes statements to collect variable declarations and assignments
+     * up to the specified target statement.
+     *
+     * @param statements      the list of statements
+     * @param targetStatement the target statement to stop at
+     * @param varExpressions  the map to store variable names and their expressions
+     */
+    public static void processStatementsForVariableExpressions(NodeList<StatementNode> statements,
+                                                               StatementNode targetStatement,
+                                                               Map<String, ExpressionNode> varExpressions) {
+        for (StatementNode statement : statements) {
+            boolean isBlockStatement = isBlockStatementNode(statement);
+
+            // Stop processing if we reach the target statement or found a block statement
+            if (statement.equals(targetStatement) || isBlockStatement) {
+                if (isBlockStatement) {
+                    // If we find any block nodes, we cannot verify variable declarations or assignments
+                    // since they may be changed within those blocks. Clear collected expressions and stop.
+                    varExpressions.clear();
+                }
+                break;
+            }
+
+            // Process assignment statements
+            if (statement instanceof AssignmentStatementNode assignmentNode) {
+                processAssignmentStatement(assignmentNode, varExpressions);
+            } else if (statement instanceof VariableDeclarationNode variableDeclarationNode) {
+                processVariableDeclaration(variableDeclarationNode, varExpressions);
+            }
+        }
+    }
+
+    /**
+     * Processes an assignment statement and adds it to the variable expressions map.
+     *
+     * @param assignmentNode the assignment statement node
+     * @param varExpressions the map to store variable names and their expressions
+     */
+    private static void processAssignmentStatement(AssignmentStatementNode assignmentNode,
+                                                   Map<String, ExpressionNode> varExpressions) {
+        Node varRef = assignmentNode.varRef();
+        if (varRef instanceof IdentifierToken variableNameIdentifier) {
+            String varName = unescapeIdentifier(variableNameIdentifier.text());
+            ExpressionNode expression = assignmentNode.expression();
+            varExpressions.put(varName, expression);
+        }
+    }
+
+    /**
+     * Processes a variable declaration statement and adds it to the variable expressions map.
+     *
+     * @param variableDeclarationNode the variable declaration node
+     * @param varExpressions         the map to store variable names and their expressions
+     */
+    private static void processVariableDeclaration(VariableDeclarationNode variableDeclarationNode,
+                                                   Map<String, ExpressionNode> varExpressions) {
+        BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
+
+        // Only supporting capture binding patterns for variable declarations
+        if (variableDeclarationNode.initializer().isEmpty() ||
+                !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
+            return;
+        }
+
+        String varName = unescapeIdentifier(captureBindingPattern.variableName().text());
+        ExpressionNode initializer = variableDeclarationNode.initializer().get();
+        varExpressions.put(varName, initializer);
     }
 }
