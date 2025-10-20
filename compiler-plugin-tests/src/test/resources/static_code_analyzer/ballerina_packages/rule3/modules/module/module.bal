@@ -14,9 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/crypto;
+public const IV_STRING_VALUE = "IV_CONST_VALUE";
 
-public function ArgonNamedArg() returns error? {
-    string password = "your-password";
-    string _ = check crypto:hashArgon2(password, iterations = 1, memory = 1024, parallelism = 0);
-}
+public string ivStringValue = "IV_VALUE";

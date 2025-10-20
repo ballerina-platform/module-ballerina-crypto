@@ -215,7 +215,7 @@ public class FunctionContext {
      * @param varName The name of the variable
      * @return An Optional containing the expression node if found, otherwise empty
      */
-    private Optional<ExpressionNode> getVarExpression(String varName) {
+    public Optional<ExpressionNode> getVarExpression(String varName) {
         varName = unescapeIdentifier(varName);
         if (!varExpressions.containsKey(varName)) {
             return Optional.empty();

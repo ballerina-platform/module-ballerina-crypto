@@ -17,6 +17,8 @@
  */
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules;
 
+import io.ballerina.compiler.api.symbols.Symbol;
+import io.ballerina.compiler.api.symbols.SymbolKind;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.ListConstructorExpressionNode;
 import io.ballerina.compiler.syntax.tree.MethodCallExpressionNode;
@@ -27,6 +29,7 @@ import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 
 import java.util.Optional;
 
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.unescapeIdentifier;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
 
 /**
@@ -51,7 +54,7 @@ public class AvoidReusingCounterModeVectorsRule implements CryptoFunctionRule {
                     + context.functionName());
         }
 
-        if (hasHardCodedIV(paramExpression.get())) {
+        if (hasHardCodedIV(paramExpression.get(), context)) {
             context.reporter().reportIssue(context.document(), context.functionLocation(), getRuleId());
         }
     }
@@ -68,19 +71,17 @@ public class AvoidReusingCounterModeVectorsRule implements CryptoFunctionRule {
         return functionName.equals(ENCRYPT_AES_CBC) || functionName.equals(ENCRYPT_AES_GCM);
     }
 
-    private boolean hasHardCodedIV(ExpressionNode ivExpression) {
+    private boolean hasHardCodedIV(ExpressionNode ivExpression, FunctionContext context) {
         // Check for list constructor with numeric literals (e.g., [1, 2, 3, ...])
         if (ivExpression instanceof ListConstructorExpressionNode listExpression) {
             return listExpression.expressions().stream()
                     .allMatch(expr -> expr.kind().equals(SyntaxKind.NUMERIC_LITERAL));
         }
 
-        // Check for toBytes() method called on a string literal or name reference
+        // Check for toBytes() method called on a string literal or name reference referring to a constant
         if (ivExpression instanceof MethodCallExpressionNode methodCallExpression) {
             ExpressionNode expression = methodCallExpression.expression();
-            if (!expression.kind().equals(SyntaxKind.STRING_LITERAL) &&
-                    !expression.kind().equals(SyntaxKind.SIMPLE_NAME_REFERENCE) &&
-                    !expression.kind().equals(SyntaxKind.QUALIFIED_NAME_REFERENCE)) {
+            if (!isMethodCallOnConstantExpr(expression, context)) {
                 return false;
             }
             NameReferenceNode nameReferenceNode = methodCallExpression.methodName();
@@ -89,6 +90,29 @@ public class AvoidReusingCounterModeVectorsRule implements CryptoFunctionRule {
             }
         }
 
+        return false;
+    }
+
+    private boolean isMethodCallOnConstantExpr(ExpressionNode expression, FunctionContext context) {
+        if (expression.kind().equals(SyntaxKind.STRING_LITERAL)) {
+            return true;
+        }
+        if (expression.kind().equals(SyntaxKind.SIMPLE_NAME_REFERENCE) ||
+                expression.kind().equals(SyntaxKind.QUALIFIED_NAME_REFERENCE)) {
+            Optional<Symbol> symbol = context.semanticModel().symbol(expression);
+            if (symbol.isPresent() && symbol.get().kind().equals(SymbolKind.CONSTANT)) {
+                return true;
+            }
+        }
+
+        // If the value is not constant, check if it's a parameter referring to a constant where the value can be
+        // determined at compile time
+        if (expression instanceof SimpleNameReferenceNode simpleNameRef) {
+            String varName = unescapeIdentifier(simpleNameRef.name().text());
+            Optional<ExpressionNode> paramExpression = context.getVarExpression(varName);
+            return paramExpression.isPresent() &&
+                    isMethodCallOnConstantExpr(paramExpression.get(), context);
+        }
         return false;
     }
 }

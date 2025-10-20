@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules;
 import io.ballerina.compiler.api.SemanticModel;
 import io.ballerina.compiler.api.symbols.ConstantSymbol;
 import io.ballerina.compiler.api.symbols.Symbol;
+import io.ballerina.compiler.api.values.ConstantValue;
 import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.NameReferenceNode;
@@ -54,7 +55,6 @@ public class AvoidFastHashAlgorithmsRule implements CryptoFunctionRule {
     public static final int BCRYPT_RECOMMENDED_WORK_FACTOR = 10;
     public static final int ARGON2_RECOMMENDED_ITERATIONS = 2;
     public static final int ARGON2_RECOMMENDED_MEMORY = 19456;
-    public static final int ARGON2_RECOMMENDED_PARALLELISM = 1;
     public static final int PBKDF2_RECOMMENDED_ITERATIONS_FOR_SHA1 = 1300000;
     public static final int PBKDF2_RECOMMENDED_ITERATIONS_FOR_SHA256 = 600000;
     public static final int PBKDF2_RECOMMENDED_ITERATIONS_FOR_SHA512 = 210000;
@@ -98,9 +98,10 @@ public class AvoidFastHashAlgorithmsRule implements CryptoFunctionRule {
         }
         SemanticModel semanticModel = context.semanticModel();
         // Check if any parameter is below the recommended threshold
+        // Parallelism should be a positive integer value and the minimum recommended value is 1
+        // So, we do not need to check for parallelism here
         return isArgon2ParamBelowThreshold(context, ITERATIONS, ARGON2_RECOMMENDED_ITERATIONS, semanticModel) ||
-               isArgon2ParamBelowThreshold(context, MEMORY, ARGON2_RECOMMENDED_MEMORY, semanticModel) ||
-               isArgon2ParamBelowThreshold(context, PARALLELISM, ARGON2_RECOMMENDED_PARALLELISM, semanticModel);
+               isArgon2ParamBelowThreshold(context, MEMORY, ARGON2_RECOMMENDED_MEMORY, semanticModel);
     }
 
     private boolean isArgon2ParamBelowThreshold(FunctionContext context, String paramName,
@@ -154,9 +155,10 @@ public class AvoidFastHashAlgorithmsRule implements CryptoFunctionRule {
             }
         } else if (valueExpr instanceof NameReferenceNode refNode) {
             Optional<Symbol> refSymbol = semanticModel.symbol(refNode);
-            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef) {
-                return constantRef.constValue() instanceof Integer &&
-                        ((Integer) constantRef.constValue()) < targetValue;
+            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef &&
+                    constantRef.constValue() instanceof ConstantValue constantValue &&
+                    constantValue.value() instanceof Long longValue) {
+                return longValue < targetValue;
             }
         }
         return false;

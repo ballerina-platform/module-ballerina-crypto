@@ -34,7 +34,6 @@ import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyBlockNode;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
-import io.ballerina.compiler.syntax.tree.IdentifierToken;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
 import io.ballerina.compiler.syntax.tree.ModuleVariableDeclarationNode;
@@ -44,6 +43,7 @@ import io.ballerina.compiler.syntax.tree.Node;
 import io.ballerina.compiler.syntax.tree.NodeList;
 import io.ballerina.compiler.syntax.tree.PositionalArgumentNode;
 import io.ballerina.compiler.syntax.tree.SeparatedNodeList;
+import io.ballerina.compiler.syntax.tree.SimpleNameReferenceNode;
 import io.ballerina.compiler.syntax.tree.StatementNode;
 import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.compiler.syntax.tree.VariableDeclarationNode;
@@ -339,8 +339,8 @@ public final class CryptoAnalyzerUtils {
     private static void processAssignmentStatement(AssignmentStatementNode assignmentNode,
                                                    Map<String, ExpressionNode> varExpressions) {
         Node varRef = assignmentNode.varRef();
-        if (varRef instanceof IdentifierToken variableNameIdentifier) {
-            String varName = unescapeIdentifier(variableNameIdentifier.text());
+        if (varRef instanceof SimpleNameReferenceNode simpleNameRef) {
+            String varName = unescapeIdentifier(simpleNameRef.name().text());
             ExpressionNode expression = assignmentNode.expression();
             varExpressions.put(varName, expression);
         }

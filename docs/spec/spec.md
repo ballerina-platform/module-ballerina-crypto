@@ -1252,11 +1252,11 @@ boolean isValid = check crypto:verifyPbkdf2(password, hashedPassword);
 
 The following static code rules are applied to the Crypto module.
 
-| Id                 | Kind          | Description                                                          |
-|--------------------|---------------|----------------------------------------------------------------------|
-| ballerina/crypto:1 | VULNERABILITY | Avoid using insecure cipher modes or padding schemes                 |
-| ballerina/crypto:2 | VULNERABILITY | Avoid using fast hashing algorithms                                  |
-| ballerina/crypto:3 | VULNERABILITY | Avoid reusing counter mode initialization vectors                    |
+| Id                 | Kind          | Description                                                                                                       |
+|--------------------|---------------|-------------------------------------------------------------------------------------------------------------------|
+| ballerina/crypto:1 | VULNERABILITY | [Avoid using insecure cipher modes or padding schemes](#111-avoid-using-insecure-cipher-modes-or-padding-schemes) |
+| ballerina/crypto:2 | VULNERABILITY | [Avoid using fast hashing algorithms](#112-avoid-using-fast-hashing-algorithms)                                   |
+| ballerina/crypto:3 | VULNERABILITY | [Avoid reusing counter mode initialization vectors](#113-avoid-reusing-counter-mode-initialization-vectors)       |
 
 ### 11.1 Avoid using insecure cipher modes or padding schemes
 
@@ -1366,7 +1366,7 @@ For Argon2:
 - Use the Argon2id variant (which Ballerina implements)
 - Minimum configuration of 19 MiB (19,456 KB) of memory
 - An iteration count of at least 2
-- At least 1 degree of parallelism
+- At least 1 degree of parallelism (this is enforced by Ballerina)
 
 For PBKDF2:
 
