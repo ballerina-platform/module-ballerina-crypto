@@ -1548,7 +1548,7 @@ public function encryptData(string data) returns [byte[], byte[16]]|error {
 
 This compliant approach generates a cryptographically secure random initialization vector for each encryption operation and returns it along with the encrypted data. The IV must be stored alongside the encrypted data (but doesn't need to be kept secret) to allow for decryption later.
 
-### 11.3.3.2 AES-CCM Encryption Example
+### 11.3.3.2 AES-CBC Encryption Example
 
 **Non-compliant code:**
 
@@ -1558,7 +1558,7 @@ public function encryptMessage(string message) returns byte[]|error {
     byte[12] nonce = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
     byte[16] key = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     byte[] messageBytes = message.toBytes();
-    return crypto:encryptAesCcm(messageBytes, key, nonce);
+    return crypto:encryptAesCbc(messageBytes, key, nonce);
 }
 ```
 
@@ -1576,7 +1576,7 @@ public function encryptMessage(string message) returns [byte[], byte[12]]|error 
     }
     byte[16] key = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     byte[] messageBytes = message.toBytes();
-    byte[] encryptedData = check crypto:encryptAesCcm(messageBytes, key, nonce);
+    byte[] encryptedData = check crypto:encryptAesCbc(messageBytes, key, nonce);
     return [encryptedData, nonce];
 }
 ```
