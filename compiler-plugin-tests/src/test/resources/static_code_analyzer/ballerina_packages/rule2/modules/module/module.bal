@@ -14,9 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/crypto;
+public const MEMORY = 16384;
+public const MINIMUM_ALLOWED_MEMORY = 19456;
 
-public function ArgonNamedArg() returns error? {
-    string password = "your-password";
-    string _ = check crypto:hashArgon2(password, iterations = 1, memory = 1024, parallelism = 0);
-}
+public int memory = 16384;

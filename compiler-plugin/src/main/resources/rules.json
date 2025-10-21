@@ -13,10 +13,5 @@
     "id": 3,
     "kind": "VULNERABILITY",
     "description": "Avoid reusing counter mode initialization vectors"
-  },
-  {
-    "id": 4,
-    "kind": "VULNERABILITY",
-    "description": "Secure random number generators should not output predictable values"
   }
 ]

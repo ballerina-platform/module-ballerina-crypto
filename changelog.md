@@ -7,13 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - [Introduce support for PBKDF2 password hashing and verification](https://github.com/ballerina-platform/ballerina-lang/issues/43926)
+- [Add static analysis rule - Encryption algorithms should be used with secure mode and padding scheme](https://github.com/ballerina-platform/ballerina-library/issues/7940)
+- [Add static analysis rule - Passwords should not be stored in plaintext or with a fast hashing algorithm](https://github.com/ballerina-platform/ballerina-library/issues/7950)
+- [Add static analysis rule - Counter Mode initialization vectors should not be reused](https://github.com/ballerina-platform/ballerina-library/issues/8010)
 
-### Changed
-- [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
-- [Optimize hardcoded IV detection using semantic model reference counting](https://github.com/ballerina-platform/ballerina-library/issues/8257)
+## [2.9.1] - 2025-09-29
 
 ### Fixed
 - [Implement optional close method check for BStream](https://github.com/ballerina-platform/ballerina-library/issues/8288)
+
+## [2.9.0] - 2025-03-12
+
+### Changed
+- [Update OIDS of NIST approved post quantum algorithms](https://github.com/ballerina-platform/ballerina-library/issues/7678)
+
 
 ## [2.8.0] - 2025-02-11
 

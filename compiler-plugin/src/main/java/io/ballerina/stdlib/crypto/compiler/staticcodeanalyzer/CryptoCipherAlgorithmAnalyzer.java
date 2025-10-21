@@ -18,42 +18,30 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
-import io.ballerina.compiler.syntax.tree.ExpressionNode;
+import io.ballerina.compiler.api.SemanticModel;
+import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
-import io.ballerina.compiler.syntax.tree.ImportOrgNameNode;
-import io.ballerina.compiler.syntax.tree.ImportPrefixNode;
-import io.ballerina.compiler.syntax.tree.ModulePartNode;
-import io.ballerina.compiler.syntax.tree.NamedArgumentNode;
-import io.ballerina.compiler.syntax.tree.Node;
-import io.ballerina.compiler.syntax.tree.PositionalArgumentNode;
-import io.ballerina.compiler.syntax.tree.QualifiedNameReferenceNode;
+import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.projects.Document;
 import io.ballerina.projects.plugins.AnalysisTask;
 import io.ballerina.projects.plugins.SyntaxNodeAnalysisContext;
 import io.ballerina.scan.Reporter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getCryptoFunctionSymbol;
 
 /**
  * Analyzer to detect the usage of weak cipher algorithms and insecure practices in the Ballerina crypto module.
  */
 public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
+
     private final Reporter reporter;
-    private static final String BALLERINA_ORG = "ballerina";
-    private static final String CRYPTO = "crypto";
-    private static final String IV = "iv";
-    private static final String RANDOM = "random";
-    private final Set<String> cryptoPrefixes = new HashSet<>();
-    private final Set<String> randomPrefixes = new HashSet<>();
+    private final CryptoFunctionRulesEngine rulesEngine;
 
     public CryptoCipherAlgorithmAnalyzer(Reporter reporter) {
         this.reporter = reporter;
-        this.cryptoPrefixes.add(CRYPTO);
-        this.randomPrefixes.add(RANDOM);
+        this.rulesEngine = new CryptoFunctionRulesEngine();
     }
 
     /**
@@ -63,263 +51,21 @@ public class CryptoCipherAlgorithmAnalyzer implements AnalysisTask<SyntaxNodeAna
      */
     @Override
     public void perform(SyntaxNodeAnalysisContext context) {
-        analyzeImports(context);
-
         FunctionCallExpressionNode functionCall = (FunctionCallExpressionNode) context.node();
-
-        if (!(functionCall.functionName() instanceof QualifiedNameReferenceNode qualifiedName)) {
-            return;
-        }
-
-        String modulePrefix = qualifiedName.modulePrefix().text();
-
-        if (!cryptoPrefixes.contains(modulePrefix)) {
-            return;
-        }
-
-        String functionName = qualifiedName.identifier().text();
-
-        if (CryptoAnalyzerUtils.isWeakCipherFunction(functionName)) {
-            report(context, CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS.getId());
-        }
-
-        if (CryptoAnalyzerUtils.requiresSecureIV(functionName)) {
-            checkHardcodedIVUsage(functionCall, context);
-            checkUnsecureRandomUsage(functionCall, context);
-        }
-
-        if (CryptoAnalyzerUtils.HASH_BCRYPT.equals(functionName)) {
-            checkWeakBcryptUsage(functionCall, context);
-        } else if (CryptoAnalyzerUtils.HASH_ARGON2.equals(functionName)) {
-            checkWeakArgon2Usage(functionCall, context);
-        } else if (CryptoAnalyzerUtils.HASH_PBKDF2.equals(functionName)) {
-            checkWeakPbkdf2Usage(functionCall, context);
-        }
-    }
-
-    /**
-     * Checks if the bcrypt hash function is used with weak parameters.
-     *
-     * @param functionCall the function call node
-     * @param context      the syntax node analysis context
-     */
-    private void checkWeakBcryptUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        if (functionCall.arguments().stream().count() < 2) {
-            return;
-        }
-
-        Node workFactor = functionCall.arguments().get(1);
-
-        if (workFactor instanceof PositionalArgumentNode positional) {
-            ExpressionNode expr = positional.expression();
-            if (CryptoAnalyzerUtils.isWeakBcryptParameter(expr)) {
-                report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
-            }
-        } else if (workFactor instanceof NamedArgumentNode named) {
-            ExpressionNode expr = named.expression();
-            if (CryptoAnalyzerUtils.isWeakBcryptParameter(expr)) {
-                report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
-            }
-        }
-    }
-
-    /**
-     * Checks if the Argon2 hash function is used with weak parameters.
-     *
-     * @param functionCall the function call node
-     * @param context      the syntax node analysis context
-     */
-    private void checkWeakArgon2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        int argsCount = (int) functionCall.arguments().stream().count();
-        if (argsCount < 2) {
-            return;
-        }
-
-        boolean hasWeakParameters = false;
-
-        for (Node arg : functionCall.arguments()) {
-            if (arg instanceof NamedArgumentNode named) {
-                String paramName = named.argumentName().name().text();
-                ExpressionNode expr = named.expression();
-
-                if (CryptoAnalyzerUtils.ITERATIONS.equals(paramName)) {
-                    hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(expr,
-                            CryptoAnalyzerUtils.ArgonParameter.ITERATIONS);
-                } else if (CryptoAnalyzerUtils.MEMORY.equals(paramName)) {
-                    hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(expr,
-                            CryptoAnalyzerUtils.ArgonParameter.MEMORY);
-                } else if (CryptoAnalyzerUtils.PARALLELISM.equals(paramName)) {
-                    hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(expr,
-                            CryptoAnalyzerUtils.ArgonParameter.PARALLELISM);
-                }
-            }
-        }
-
-        // Check for positional arguments
-        if (functionCall.arguments().get(1) instanceof PositionalArgumentNode iterationsArg) {
-            hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(iterationsArg.expression(),
-                    CryptoAnalyzerUtils.ArgonParameter.ITERATIONS);
-        }
-
-        if (argsCount >= 3 && functionCall.arguments().get(2) instanceof PositionalArgumentNode memoryArg) {
-            hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(memoryArg.expression(),
-                    CryptoAnalyzerUtils.ArgonParameter.MEMORY);
-        }
-
-        if (argsCount >= 4 && functionCall.arguments().get(3) instanceof PositionalArgumentNode parallelismArg) {
-            hasWeakParameters |= CryptoAnalyzerUtils.isWeakArgon2Parameter(parallelismArg.expression(),
-                    CryptoAnalyzerUtils.ArgonParameter.PARALLELISM);
-        }
-
-        if (hasWeakParameters) {
-            report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
-        }
-    }
-
-    /**
-     * Checks if the PBKDF2 hash function is used with weak parameters.
-     *
-     * @param functionCall the function call node
-     * @param context      the syntax node analysis context
-     */
-    private void checkWeakPbkdf2Usage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        int argsCount = (int) functionCall.arguments().stream().count();
-        if (argsCount < 2) {
-            report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
-            return;
-        }
-
-        boolean hasWeakParameters = false;
-
-        for (Node arg : functionCall.arguments()) {
-            if (arg instanceof NamedArgumentNode named) {
-                String paramName = named.argumentName().name().text();
-                if (CryptoAnalyzerUtils.ITERATIONS.equals(paramName)) {
-                    hasWeakParameters |= CryptoAnalyzerUtils.isWeakPbkdf2Parameter(named.expression());
-                }
-            }
-        }
-
-        if (functionCall.arguments().get(1) instanceof PositionalArgumentNode iterationsArg) {
-            hasWeakParameters |= CryptoAnalyzerUtils.isWeakPbkdf2Parameter(iterationsArg.expression());
-        }
-
-        if (hasWeakParameters) {
-            report(context, AVOID_FAST_HASH_ALGORITHMS.getId());
-        }
-    }
-
-    /**
-     * Checks if the AES-GCM/AES-ECB functions use hardcoded initialization vectors.
-     * For encryptAesGcm(input, key, iv, padding, tagSize), the third parameter (iv)
-     * is checked.
-     *
-     * @param functionCall the function call node
-     * @param context      the syntax node analysis context
-     */
-    private void checkHardcodedIVUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        if (functionCall.arguments().stream().count() < 3) {
-            return;
-        }
-
-        Node ivArgument = functionCall.arguments().get(2);
-
-        if (ivArgument instanceof PositionalArgumentNode positional) {
-            ExpressionNode expr = positional.expression();
-            if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
-                report(context, AVOID_REUSING_COUNTER_MODE_VECTORS.getId());
-            }
-        } else if (ivArgument instanceof NamedArgumentNode named) {
-            // Check for named arguments
-            String paramName = named.argumentName().name().text();
-            if (IV.equals(paramName)) {
-                ExpressionNode expr = named.expression();
-                if (CryptoAnalyzerUtils.isHardcodedIV(expr, context)) {
-                    report(context, AVOID_REUSING_COUNTER_MODE_VECTORS.getId());
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if the AES-GCM/AES-ECB functions use unsecure random number generation for
-     * initialization vectors.
-     * For encryptAes(input, key, iv, padding, tagSize), the third parameter (iv)
-     * is checked for usage of random:createIntInRange().
-     *
-     * @param functionCall the function call node
-     * @param context      the syntax node analysis context
-     */
-    private void checkUnsecureRandomUsage(FunctionCallExpressionNode functionCall, SyntaxNodeAnalysisContext context) {
-        if (functionCall.arguments().stream().count() < 3) {
-            return;
-        }
-
-        Node ivArgument = functionCall.arguments().get(2);
-
-        if (ivArgument instanceof PositionalArgumentNode positional) {
-            ExpressionNode expr = positional.expression();
-            if (CryptoAnalyzerUtils.usesUnsecureRandom(expr, randomPrefixes)) {
-                report(context, CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getId());
-            }
-        } else if (ivArgument instanceof NamedArgumentNode named) {
-            String paramName = named.argumentName().name().text();
-            if ("iv".equals(paramName)) {
-                ExpressionNode expr = named.expression();
-                if (CryptoAnalyzerUtils.usesUnsecureRandom(expr, randomPrefixes)) {
-                    report(context, CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getId());
-                }
-            }
-        }
-    }
-
-    /**
-     * Reports an issue for the given context and rule ID.
-     *
-     * @param context the syntax node analysis context
-     * @param ruleId  the ID of the rule to report
-     */
-    private void report(SyntaxNodeAnalysisContext context, int ruleId) {
-        reporter.reportIssue(
-                CryptoAnalyzerUtils.getDocument(context.currentPackage().module(context.moduleId()),
-                        context.documentId()),
-                context.node().location(),
-                ruleId);
-    }
-
-    /**
-     * Analyzes imports to identify all prefixes used for the crypto module.
-     *
-     * @param context the syntax node analysis context
-     */
-    private void analyzeImports(SyntaxNodeAnalysisContext context) {
+        SemanticModel semanticModel = context.semanticModel();
         Document document = CryptoAnalyzerUtils.getDocument(context.currentPackage().module(context.moduleId()),
                 context.documentId());
-
-        if (document.syntaxTree().rootNode() instanceof ModulePartNode modulePartNode) {
-            modulePartNode.imports().forEach(importDeclarationNode -> {
-                ImportOrgNameNode importOrgNameNode = importDeclarationNode.orgName().orElse(null);
-
-                if (importOrgNameNode != null && BALLERINA_ORG.equals(importOrgNameNode.orgName().text())) {
-                    if (importDeclarationNode.moduleName().stream()
-                            .anyMatch(moduleNameNode -> CRYPTO.equals(moduleNameNode.text()))) {
-
-                        ImportPrefixNode importPrefixNode = importDeclarationNode.prefix().orElse(null);
-                        String prefix = importPrefixNode != null ? importPrefixNode.prefix().text() : CRYPTO;
-
-                        cryptoPrefixes.add(prefix);
-                    }
-
-                    if (importDeclarationNode.moduleName().stream()
-                            .anyMatch(moduleNameNode -> RANDOM.equals(moduleNameNode.text()))) {
-
-                        ImportPrefixNode importPrefixNode = importDeclarationNode.prefix().orElse(null);
-                        String prefix = importPrefixNode != null ? importPrefixNode.prefix().text() : RANDOM;
-
-                        randomPrefixes.add(prefix);
-                    }
-                }
-            });
+        if (!(functionCall.functionName().kind().equals(SyntaxKind.QUALIFIED_NAME_REFERENCE))) {
+            return;
         }
+
+        Optional<FunctionSymbol> functionSymbolOpt = getCryptoFunctionSymbol(functionCall, semanticModel);
+        if (functionSymbolOpt.isEmpty()) {
+            return;
+        }
+
+        FunctionContext functionContext = FunctionContext.getInstance(semanticModel, this.reporter, document,
+                functionCall, functionSymbolOpt.get());
+        rulesEngine.executeRules(functionContext);
     }
 }

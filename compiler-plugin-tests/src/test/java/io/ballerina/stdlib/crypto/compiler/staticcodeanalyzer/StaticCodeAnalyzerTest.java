@@ -49,7 +49,6 @@ import java.util.stream.Collectors;
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -118,88 +117,126 @@ public class StaticCodeAnalyzerTest {
                 "ballerina/crypto:3",
                 AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
                 VULNERABILITY);
-        Assertions.assertRule(
-                rules,
-                "ballerina/crypto:4",
-                AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS.getDescription(),
-                VULNERABILITY);
     }
 
     private void validateIssues(CryptoRule rule, List<Issue> issues) {
+        int index;
         switch (rule) {
             case AVOID_WEAK_CIPHER_ALGORITHMS:
-                Assert.assertEquals(issues.size(), 6);
-                Assertions.assertIssue(issues, 0, "ballerina/crypto:1", "aes_cbc.bal",
+                index = 0;
+                Assert.assertEquals(issues.size(), 10);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc.bal",
                         30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 1, "ballerina/crypto:4", "aes_cbc.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc_as_import.bal",
                         30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 2, "ballerina/crypto:1", "aes_cbc_as_import.bal",
-                        30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 3, "ballerina/crypto:4", "aes_cbc_as_import.bal",
-                        30, 30, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 4, "ballerina/crypto:1", "aes_ecb.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_ecb.bal",
                         26, 26, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 5, "ballerina/crypto:1", "aes_ecb_as_import.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_ecb_as_import.bal",
                         26, 26, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
+                        27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "weak_cipher_algo.bal",
+                        27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
+                        35, 35, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
+                        36, 36, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:1", "weak_cipher_algo.bal",
+                        39, 39, Source.BUILT_IN);
                 break;
             case AVOID_FAST_HASH_ALGORITHMS:
-                Assert.assertEquals(issues.size(), 18);
-                Assertions.assertIssue(issues, 0, "ballerina/crypto:2", "argon_func_var_named_arg.bal",
+                Assert.assertEquals(issues.size(), 29);
+                index = 0;
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
+                        31, 31, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
+                        33, 33, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
+                        35, 35, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
+                        37, 37, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func_var_named_arg.bal",
                         23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 1, "ballerina/crypto:2", "argon_func_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func_var_pos_arg.bal",
                         23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 2, "ballerina/crypto:2", "argon_inline_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_inline_named_arg.bal",
                         20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 3, "ballerina/crypto:2", "argon_inline_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_inline_pos_arg.bal",
                         20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 4, "ballerina/crypto:2", "argon_mod_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_mod_var_named_arg.bal",
                         24, 24, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 5, "ballerina/crypto:2", "argon_mod_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_mod_var_pos_arg.bal",
                         24, 24, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 6, "ballerina/crypto:2", "bcrypt_func_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_func_var_named_arg.bal",
                         21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 7, "ballerina/crypto:2", "bcrypt_func_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_func_var_pos_arg.bal",
                         21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 8, "ballerina/crypto:2", "bcrypt_inline_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_named_arg.bal",
                         20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 9, "ballerina/crypto:2", "bcrypt_inline_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_pos_arg.bal",
                         20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 10, "ballerina/crypto:2", "bcrypt_mod_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_mod_var_named_arg.bal",
                         22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 11, "ballerina/crypto:2", "bcrypt_mod_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_mod_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 12, "ballerina/crypto:2", "pbkdf2_func_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
                         21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 13, "ballerina/crypto:2", "pbkdf2_func_var_pos_arg.bal",
-                        21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 14, "ballerina/crypto:2", "pbkdf2_inline_named_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 15, "ballerina/crypto:2", "pbkdf2_inline_pos_arg.bal",
-                        20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 16, "ballerina/crypto:2", "pbkdf2_mod_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
                         22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 17, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
+                        38, 38, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
+                        39, 39, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func.bal",
+                        40, 40, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func_var_named_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_func_var_pos_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_inline_named_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_inline_pos_arg.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "pbkdf2_mod_var_named_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
                 break;
             case AVOID_REUSING_COUNTER_MODE_VECTORS:
-                Assert.assertEquals(issues.size(), 6);
-                Assertions.assertIssue(issues, 0, "ballerina/crypto:3", "func_var_named_arg.bal",
+                Assert.assertEquals(issues.size(), 13);
+                index = 0;
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        26, 26, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        29, 29, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        32, 32, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        36, 36, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        39, 39, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        42, 42, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_var_named_arg.bal",
                         22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 1, "ballerina/crypto:3", "func_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 2, "ballerina/crypto:3", "inline_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "inline_named_arg.bal",
                         21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 3, "ballerina/crypto:3", "inline_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "inline_pos_arg.bal",
                         21, 21, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 4, "ballerina/crypto:3", "mod_var_named_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "mod_var_named_arg.bal",
                         23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, 5, "ballerina/crypto:3", "mod_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index, "ballerina/crypto:3", "mod_var_pos_arg.bal",
                         23, 23, Source.BUILT_IN);
-                break;
-            case AVOID_USING_UNSECURE_RANDOM_NUMBER_GENERATORS:
-                Assert.assertEquals(issues.size(), 1);
-                Assertions.assertIssue(issues, 0, "ballerina/crypto:4", "main.bal",
-                        27, 27, Source.BUILT_IN);
                 break;
             default:
                 Assert.fail("Unhandled rule in validateIssues: " + rule);

@@ -18,30 +18,43 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
+import io.ballerina.compiler.api.ModuleID;
 import io.ballerina.compiler.api.SemanticModel;
+import io.ballerina.compiler.api.symbols.ConstantSymbol;
+import io.ballerina.compiler.api.symbols.FunctionSymbol;
+import io.ballerina.compiler.api.symbols.ParameterSymbol;
 import io.ballerina.compiler.api.symbols.Symbol;
+import io.ballerina.compiler.api.values.ConstantValue;
+import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
+import io.ballerina.compiler.syntax.tree.BindingPatternNode;
+import io.ballerina.compiler.syntax.tree.BlockStatementNode;
 import io.ballerina.compiler.syntax.tree.CaptureBindingPatternNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
+import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyBlockNode;
-import io.ballerina.compiler.syntax.tree.ListConstructorExpressionNode;
+import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
 import io.ballerina.compiler.syntax.tree.ModuleVariableDeclarationNode;
+import io.ballerina.compiler.syntax.tree.NameReferenceNode;
+import io.ballerina.compiler.syntax.tree.NamedArgumentNode;
 import io.ballerina.compiler.syntax.tree.Node;
 import io.ballerina.compiler.syntax.tree.NodeList;
+import io.ballerina.compiler.syntax.tree.PositionalArgumentNode;
+import io.ballerina.compiler.syntax.tree.SeparatedNodeList;
 import io.ballerina.compiler.syntax.tree.SimpleNameReferenceNode;
 import io.ballerina.compiler.syntax.tree.StatementNode;
+import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.compiler.syntax.tree.VariableDeclarationNode;
 import io.ballerina.projects.Document;
 import io.ballerina.projects.DocumentId;
 import io.ballerina.projects.Module;
-import io.ballerina.projects.plugins.SyntaxNodeAnalysisContext;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 /**
  * Utility class containing helper methods for crypto cipher algorithm analysis.
@@ -49,428 +62,35 @@ import java.util.function.Predicate;
  * variable analysis.
  */
 public final class CryptoAnalyzerUtils {
-    public static final String ENCRYPT_AES_ECB = "encryptAesEcb";
-    public static final String ENCRYPT_AES_CBC = "encryptAesCbc";
-    public static final String ENCRYPT_AES_GCM = "encryptAesGcm";
-    public static final String HASH_BCRYPT = "hashBcrypt";
-    public static final String HASH_ARGON2 = "hashArgon2";
-    public static final String HASH_PBKDF2 = "hashPbkdf2";
-    public static final String ITERATIONS = "iterations";
-    public static final String MEMORY = "memory";
-    public static final String PARALLELISM = "parallelism";
-    public static final String CREATE_INT_IN_RANGE = "createIntInRange";
-    public static final int BCRYPT_RECOMMENDED_WORK_FACTOR = 10;
-    public static final int ARGON2_RECOMMENDED_ITERATIONS = 2;
-    public static final int ARGON2_RECOMMENDED_MEMORY = 19456;
-    public static final int ARGON2_RECOMMENDED_PARALLELISM = 1;
-    public static final int PBKDF2_RECOMMENDED_ITERATIONS = 100000;
+    private static final String BALLERINA_ORG = "ballerina";
+    private static final String CRYPTO = "crypto";
 
-    /**
-     * Enum representing the different parameters of Argon2.
-     */
-    public enum ArgonParameter {
-        ITERATIONS,
-        MEMORY,
-        PARALLELISM
-    }
-
+    // Private constructor to prevent instantiation
     private CryptoAnalyzerUtils() {
-        // Prevent instantiation
+
     }
 
     /**
-     * Checks if the given function name corresponds to a weak cipher function.
+     * Retrieves the FunctionSymbol for a given FunctionCallExpressionNode if it belongs to the Ballerina
+     * crypto module.
      *
-     * @param functionName the name of the function
-     * @return true if the function is a weak cipher function, false otherwise
+     * @param functionCall  the function call expression node
+     * @param semanticModel the semantic model
+     * @return an Optional containing the FunctionSymbol if it belongs to the crypto module, otherwise empty
      */
-    public static boolean isWeakCipherFunction(String functionName) {
-        return ENCRYPT_AES_ECB.equals(functionName) || ENCRYPT_AES_CBC.equals(functionName);
-    }
-
-    /**
-     * Checks if the given function requires secure initialization vectors.
-     *
-     * @param functionName the name of the function
-     * @return true if the function requires secure IVs, false otherwise
-     */
-    public static boolean requiresSecureIV(String functionName) {
-        return ENCRYPT_AES_GCM.equals(functionName) || ENCRYPT_AES_CBC.equals(functionName);
-    }
-
-    /**
-     * Checks if the given expression represents a weak bcrypt work factor.
-     *
-     * @param expression the expression to check
-     * @return true if the work factor is weak, false otherwise
-     */
-    public static boolean isWeakBcryptParameter(ExpressionNode expression) {
-        if (expression instanceof BasicLiteralNode basicLiteral) {
-            try {
-                return Integer.parseInt(basicLiteral.literalToken().text()) < BCRYPT_RECOMMENDED_WORK_FACTOR;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        } else if (expression instanceof SimpleNameReferenceNode varRef) {
-            return hasWeakParameterSettings(varRef, CryptoAnalyzerUtils::isWeakBcryptVariable);
+    public static Optional<FunctionSymbol> getCryptoFunctionSymbol(FunctionCallExpressionNode functionCall,
+                                                                   SemanticModel semanticModel) {
+        Optional<Symbol> functionCallSymbolOptional = semanticModel.symbol(functionCall);
+        if (functionCallSymbolOptional.isEmpty()
+                || !(functionCallSymbolOptional.get() instanceof FunctionSymbol functionSymbol)
+                || functionSymbol.getModule().isEmpty()) {
+            return Optional.empty();
         }
-        return false;
-    }
-
-    /**
-     * Checks if the given expression represents a weak Argon2 parameter value.
-     *
-     * @param expression the expression to check
-     * @param paramType  the parameter type (iterations, memory, or parallelism)
-     * @return true if the parameter is weak, false otherwise
-     */
-    public static boolean isWeakArgon2Parameter(ExpressionNode expression, ArgonParameter paramType) {
-        if (expression instanceof BasicLiteralNode basicLiteral) {
-            try {
-                int value = Integer.parseInt(basicLiteral.literalToken().text());
-                return switch (paramType) {
-                    case ITERATIONS -> value < ARGON2_RECOMMENDED_ITERATIONS;
-                    case MEMORY -> value < ARGON2_RECOMMENDED_MEMORY;
-                    case PARALLELISM -> value < ARGON2_RECOMMENDED_PARALLELISM;
-                };
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        } else if (expression instanceof SimpleNameReferenceNode varRef) {
-            return hasWeakParameterSettings(varRef, (stmt, varName) -> isWeakArgon2Variable(stmt, varName, paramType));
+        ModuleID moduleId = (functionCallSymbolOptional.get()).getModule().get().id();
+        if (BALLERINA_ORG.equals(moduleId.orgName()) && CRYPTO.equals(moduleId.packageName())) {
+            return Optional.of(functionSymbol);
         }
-        return false;
-    }
-
-    /**
-     * Checks if the given expression represents a weak PBKDF2 iterations count.
-     *
-     * @param expression the expression to check
-     * @return true if the iterations count is weak, false otherwise
-     */
-    public static boolean isWeakPbkdf2Parameter(ExpressionNode expression) {
-        if (expression instanceof BasicLiteralNode basicLiteral) {
-            try {
-                int value = Integer.parseInt(basicLiteral.literalToken().text());
-                return value < PBKDF2_RECOMMENDED_ITERATIONS;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        } else if (expression instanceof SimpleNameReferenceNode varRef) {
-            return hasWeakParameterSettings(varRef, CryptoAnalyzerUtils::isWeakPbkdf2Variable);
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the given statement declares a variable with a weak bcrypt work
-     * factor.
-     *
-     * @param stmt    the statement to check
-     * @param varName the name of the variable
-     * @return true if the statement declares a variable with a weak bcrypt work
-     * factor, false otherwise
-     */
-    public static boolean isWeakBcryptVariable(Node stmt, String varName) {
-        return isWeakVariableWithInitializer(stmt, varName, initText -> {
-            try {
-                return Integer.parseInt(initText) < BCRYPT_RECOMMENDED_WORK_FACTOR;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        });
-    }
-
-    /**
-     * Checks if the given statement declares a variable with a weak Argon2
-     * parameter value.
-     *
-     * @param stmt      the statement to check
-     * @param varName   the name of the variable
-     * @param paramType the parameter type (iterations, memory, or parallelism)
-     * @return true if the statement declares a variable with a weak parameter
-     * value, false otherwise
-     */
-    public static boolean isWeakArgon2Variable(Node stmt, String varName, ArgonParameter paramType) {
-        return isWeakVariableWithInitializer(stmt, varName, initText -> {
-            try {
-                int value = Integer.parseInt(initText);
-                return switch (paramType) {
-                    case ITERATIONS -> value < ARGON2_RECOMMENDED_ITERATIONS;
-                    case MEMORY -> value < ARGON2_RECOMMENDED_MEMORY;
-                    case PARALLELISM -> value < ARGON2_RECOMMENDED_PARALLELISM;
-                };
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        });
-    }
-
-    /**
-     * Checks if the given statement declares a variable with a weak PBKDF2
-     * iterations count.
-     *
-     * @param stmt    the statement to check
-     * @param varName the name of the variable
-     * @return true if the statement declares a variable with a weak iterations
-     * count, false otherwise
-     */
-    public static boolean isWeakPbkdf2Variable(Node stmt, String varName) {
-        return isWeakVariableWithInitializer(stmt, varName, CryptoAnalyzerUtils::checkPbkdf2InitializerValue);
-    }
-
-    /**
-     * Checks if the given initializer value is a weak PBKDF2 iterations count.
-     *
-     * @param initText the initializer text
-     * @return true if the initializer value is weak, false otherwise
-     */
-    public static boolean checkPbkdf2InitializerValue(String initText) {
-        try {
-            int value = Integer.parseInt(initText);
-            return value < PBKDF2_RECOMMENDED_ITERATIONS;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Checks if the given expression represents a hardcoded initialization vector.
-     * A hardcoded IV is considered one that contains literal values or array
-     * literals.
-     *
-     * @param expression the expression to check
-     * @return true if the expression is a hardcoded IV, false otherwise
-     */
-    public static boolean isHardcodedIV(ExpressionNode expression, SyntaxNodeAnalysisContext context) {
-        if (expression instanceof BasicLiteralNode || expression instanceof ListConstructorExpressionNode) {
-            return true;
-        } else if (expression instanceof SimpleNameReferenceNode varRef) {
-            SemanticModel semanticModel = context.semanticModel();
-            Optional<Symbol> symbolOpt = semanticModel.symbol(varRef);
-            return symbolOpt.isPresent() && semanticModel.references(symbolOpt.get()).size() == 2;
-        }
-        return false;
-    }
-
-    /**
-     * Generic method to check if a variable declaration has a weak initializer
-     * value.
-     *
-     * @param stmt               the statement to check
-     * @param varName            the name of the variable
-     * @param initializerChecker predicate to check if the initializer value is weak
-     * @return true if the statement declares a variable with a weak value, false
-     * otherwise
-     */
-    public static boolean isWeakVariableWithInitializer(Node stmt, String varName,
-                                                        Predicate<String> initializerChecker) {
-        if (stmt instanceof VariableDeclarationNode varDecl &&
-                varDecl.typedBindingPattern().bindingPattern() instanceof CaptureBindingPatternNode capture &&
-                capture.variableName().text().equals(varName) &&
-                varDecl.initializer().isPresent()) {
-            return initializerChecker.test(varDecl.initializer().get().toSourceCode());
-        }
-
-        if (stmt instanceof ModuleVariableDeclarationNode varDecl &&
-                varDecl.typedBindingPattern().bindingPattern() instanceof CaptureBindingPatternNode capture &&
-                capture.variableName().text().equals(varName) &&
-                varDecl.initializer().isPresent()) {
-            return initializerChecker.test(varDecl.initializer().get().toSourceCode());
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks if the given variable reference refers to a variable with a weak
-     * parameter value.
-     *
-     * @param varRef  the variable reference
-     * @param checker predicate to check if a statement declares a variable with a
-     *                weak value
-     * @return true if the variable has a weak parameter value, false otherwise
-     */
-    public static boolean hasWeakParameterSettings(SimpleNameReferenceNode varRef, BiPredicate<Node, String> checker) {
-        String varName = varRef.name().text();
-        return hasWeakParameterInScope(varRef.parent(), varName, checker);
-    }
-
-    /**
-     * Checks if a variable with the given name has weak parameter values within a
-     * specific scope.
-     *
-     * @param startNode the node to start searching from
-     * @param varName   the name of the variable
-     * @param checker   predicate to check if a statement declares a variable with a
-     *                  weak value
-     * @return true if a weak parameter value is found, false otherwise
-     */
-    public static boolean hasWeakParameterInScope(Node startNode, String varName, BiPredicate<Node, String> checker) {
-        Node current = startNode;
-        while (current != null) {
-            if (current instanceof FunctionBodyBlockNode functionBodyBlock) {
-                if (checkStatementsForWeakParameter(functionBodyBlock.statements(), varName, checker)) {
-                    return true;
-                }
-            } else if (current instanceof ModulePartNode modulePart
-                    && checkModuleMembersForWeakParameter(modulePart.members(), varName, checker)) {
-                return true;
-            }
-
-            current = current.parent();
-        }
-        return false;
-    }
-
-    /**
-     * Checks a list of statements for a weak parameter value.
-     *
-     * @param statements the statements to check
-     * @param varName    the name of the variable
-     * @param checker    predicate to check if a statement declares a variable with
-     *                   a weak value
-     * @return true if a weak parameter value is found, false otherwise
-     */
-    public static boolean checkStatementsForWeakParameter(NodeList<StatementNode> statements, String varName,
-                                                          BiPredicate<Node, String> checker) {
-        for (StatementNode stmt : statements) {
-            if (checker.test(stmt, varName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks a list of module members for a weak parameter value.
-     *
-     * @param members the module members to check
-     * @param varName the name of the variable
-     * @param checker predicate to check if a statement declares a variable with a
-     *                weak value
-     * @return true if a weak parameter value is found, false otherwise
-     */
-    public static boolean checkModuleMembersForWeakParameter(NodeList<ModuleMemberDeclarationNode> members,
-                                                             String varName,
-                                                             BiPredicate<Node, String> checker) {
-        for (ModuleMemberDeclarationNode member : members) {
-            if (checker.test(member, varName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the given expression uses unsecure random number generation.
-     * This includes checking for random:createIntInRange() calls with various
-     * prefixes.
-     *
-     * @param expression     the expression to check
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if the expression uses unsecure random, false otherwise
-     */
-    public static boolean usesUnsecureRandom(ExpressionNode expression, Set<String> randomPrefixes) {
-        if (expression instanceof SimpleNameReferenceNode varRef) {
-            return hasUnsecureRandomInVariableDeclaration(varRef, randomPrefixes);
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the given variable reference refers to a variable that uses
-     * unsecure random.
-     *
-     * @param varRef         the variable reference
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if the variable uses unsecure random, false otherwise
-     */
-    private static boolean hasUnsecureRandomInVariableDeclaration(SimpleNameReferenceNode varRef,
-            Set<String> randomPrefixes) {
-        String varName = varRef.name().text();
-        return hasUnsecureRandomInScope(varRef.parent(), varName, randomPrefixes);
-    }
-
-    /**
-     * Checks if a variable with the given name uses unsecure random within a
-     * specific scope.
-     *
-     * @param startNode      the node to start searching from
-     * @param varName        the name of the variable
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if unsecure random usage is found, false otherwise
-     */
-    private static boolean hasUnsecureRandomInScope(Node startNode, String varName, Set<String> randomPrefixes) {
-        Node current = startNode;
-        while (current != null) {
-            if (current instanceof FunctionBodyBlockNode functionBodyBlock) {
-                if (checkStatementsForUnsecureRandom(functionBodyBlock.statements(), varName, randomPrefixes)) {
-                    return true;
-                }
-            } else if (current instanceof ModulePartNode modulePart
-                    && checkModuleMembersForUnsecureRandom(modulePart.members(), varName, randomPrefixes)) {
-                return true;
-            }
-
-            current = current.parent();
-        }
-        return false;
-    }
-
-    /**
-     * Checks a list of statements for unsecure random usage.
-     *
-     * @param statements     the statements to check
-     * @param varName        the name of the variable
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if unsecure random usage is found, false otherwise
-     */
-    private static boolean checkStatementsForUnsecureRandom(NodeList<StatementNode> statements, String varName,
-            Set<String> randomPrefixes) {
-        for (StatementNode stmt : statements) {
-            if (containsUnsecureRandomUsage(stmt.toSourceCode(), varName, randomPrefixes)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks a list of module members for unsecure random usage.
-     *
-     * @param members        the module members to check
-     * @param varName        the name of the variable
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if unsecure random usage is found, false otherwise
-     */
-    private static boolean checkModuleMembersForUnsecureRandom(NodeList<ModuleMemberDeclarationNode> members,
-            String varName, Set<String> randomPrefixes) {
-        for (ModuleMemberDeclarationNode member : members) {
-            if (containsUnsecureRandomUsage(member.toSourceCode(), varName, randomPrefixes)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the source code contains unsecure random usage for a specific
-     * variable.
-     *
-     * @param sourceCode     the source code to check
-     * @param varName        the name of the variable
-     * @param randomPrefixes set of prefixes used for the random module
-     * @return true if unsecure random usage is found, false otherwise
-     */
-    private static boolean containsUnsecureRandomUsage(String sourceCode, String varName, Set<String> randomPrefixes) {
-        for (String prefix : randomPrefixes) {
-            String randomCallPattern = prefix + ":" + CREATE_INT_IN_RANGE;
-            if (sourceCode.contains(varName) && sourceCode.contains(randomCallPattern)) {
-                return true;
-            }
-        }
-        return false;
+        return Optional.empty();
     }
 
     /**
@@ -482,5 +102,268 @@ public final class CryptoAnalyzerUtils {
      */
     public static Document getDocument(Module module, DocumentId documentId) {
         return module.document(documentId);
+    }
+
+    /**
+     * Unescape the given identifier name by removing leading escape quote and backslashes.
+     *
+     * @param identifierName The identifier name to unescape
+     * @return The unescaped identifier name
+     */
+    public static String unescapeIdentifier(String identifierName) {
+        String result = identifierName;
+        if (result.startsWith("'")) {
+            result = result.substring(1);
+        }
+        return result.replace("\\\\", "");
+    }
+
+
+    /**
+     * Maps parameter names to their corresponding argument expressions in a function call.
+     *
+     * @param params    List of ParameterSymbol representing the function parameters
+     * @param arguments SeparatedNodeList of FunctionArgumentNode representing the function arguments
+     * @return A map where keys are parameter names and values are the corresponding argument expressions
+     */
+    public static Map<String, ExpressionNode> getParamExpressions(List<ParameterSymbol> params,
+                                                                  SeparatedNodeList<FunctionArgumentNode> arguments) {
+        Map<String, ExpressionNode> paramExpressions = new HashMap<>();
+        // Argument types: Positional, Named and Rest
+        // Parameter types: Required, Defaultable, Included and Rest
+        List<String> paramNames = params.stream()
+                .map(ParameterSymbol::getName)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(CryptoAnalyzerUtils::unescapeIdentifier)
+                .toList();
+        // For each argument we need to find the corresponding parameter name and added it to the map
+        for (int i = 0; i < arguments.size(); i++) {
+            FunctionArgumentNode argument = arguments.get(i);
+            if (argument instanceof PositionalArgumentNode positionalArg) {
+                if (i < paramNames.size()) {
+                    String paramName = paramNames.get(i);
+                    paramName = unescapeIdentifier(paramName);
+                    ExpressionNode expression = positionalArg.expression();
+                    paramExpressions.put(paramName, expression);
+                }
+            } else if (argument instanceof NamedArgumentNode namedArg) {
+                String paramName = namedArg.argumentName().name().text();
+                paramName = unescapeIdentifier(paramName);
+                ExpressionNode expression = namedArg.expression();
+                paramExpressions.put(paramName, expression);
+            }
+            // Not handling RestArgumentNode at the moment as crypto functions do not have rest parameters
+        }
+        return paramExpressions;
+    }
+
+    /**
+     * Retrieves the StatementNode that contains the given FunctionCallExpressionNode.
+     *
+     * @param functionCall the function call expression node
+     * @return an Optional containing the StatementNode if found, otherwise empty
+     */
+    public static Optional<StatementNode> getStatementNode(FunctionCallExpressionNode functionCall) {
+        Node parent = functionCall.parent();
+        if (parent.kind().equals(SyntaxKind.CHECK_EXPRESSION)) {
+            parent = parent.parent();
+        }
+        if (parent instanceof StatementNode statementNode) {
+            return Optional.of(statementNode);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Recursively retrieves the nearest parent block node (FunctionBodyBlockNode or BlockStatementNode)
+     * of the given node.
+     *
+     * @param node the starting node
+     * @return an Optional containing the parent block node if found, otherwise empty
+     */
+    public static Optional<Node> getParentBlockNode(Node node) {
+        Node parent = node.parent();
+        return switch (parent) {
+            case null -> Optional.empty();
+            case FunctionBodyBlockNode functionBody -> Optional.of(functionBody);
+            case BlockStatementNode blockStatementNode -> Optional.of(blockStatementNode);
+            default -> getParentBlockNode(parent);
+        };
+    }
+
+    /**
+     * Recursively retrieves the ModulePartNode that contains the given node.
+     *
+     * @param node the starting node
+     * @return an Optional containing the ModulePartNode if found, otherwise empty
+     */
+    public static Optional<ModulePartNode> getModulePartNode(Node node) {
+        Node parent = node.parent();
+        return switch (parent) {
+            case null -> Optional.empty();
+            case ModulePartNode modulePartNode -> Optional.of(modulePartNode);
+            default -> getModulePartNode(parent);
+        };
+    }
+
+    /**
+     * Retrieves a map of module-level variable names to their initializer expressions
+     * from the given ModulePartNode.
+     *
+     * @param modulePartNode the module part node
+     * @return a map where keys are variable names and values are their initializer expressions
+     */
+    public static Map<String, ExpressionNode> getModuleLevelVarExpressions(ModulePartNode modulePartNode) {
+        Map<String, ExpressionNode> varExpressions = new HashMap<>();
+        for (ModuleMemberDeclarationNode member : modulePartNode.members()) {
+            if (member instanceof ModuleVariableDeclarationNode variableDeclarationNode) {
+                BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
+                if (variableDeclarationNode.initializer().isEmpty() ||
+                        !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
+                    continue;
+                }
+                String varName = captureBindingPattern.variableName().text();
+                varName = unescapeIdentifier(varName);
+                ExpressionNode initializer = variableDeclarationNode.initializer().get();
+                varExpressions.put(varName, initializer);
+            }
+        }
+        return varExpressions;
+    }
+
+    /**
+     * Collects variable declarations and assignments from the given block node
+     * up to the specified statement node.
+     *
+     * @param blockNode      the block node (FunctionBodyBlockNode or BlockStatementNode)
+     * @param statementNode  the statement node to stop at
+     * @param varExpressions the map to store variable names and their expressions
+     */
+    public static void collectVariableExpressionsUntilStatement(Node blockNode, StatementNode statementNode,
+                                                                Map<String, ExpressionNode> varExpressions) {
+        NodeList<StatementNode> statements = switch (blockNode) {
+            case FunctionBodyBlockNode functionBody -> functionBody.statements();
+            case BlockStatementNode blockStatementNode -> blockStatementNode.statements();
+            default -> throw new IllegalArgumentException("Unsupported block node type: " + blockNode.kind());
+        };
+        processStatementsForVariableExpressions(statements, statementNode, varExpressions);
+    }
+
+    /**
+     * Checks if the given statement node is a block statement or not.
+     *
+     * @param statement the statement node to check
+     * @return true if the statement is a block statement, false otherwise
+     */
+    public static boolean isBlockStatementNode(StatementNode statement) {
+        SyntaxKind kind = statement.kind();
+        return kind.equals(SyntaxKind.BLOCK_STATEMENT) || kind.equals(SyntaxKind.DO_STATEMENT)
+                || kind.equals(SyntaxKind.FORK_STATEMENT) || kind.equals(SyntaxKind.IF_ELSE_STATEMENT)
+                || kind.equals(SyntaxKind.LOCK_STATEMENT) || kind.equals(SyntaxKind.MATCH_STATEMENT)
+                || kind.equals(SyntaxKind.FOREACH_STATEMENT) || kind.equals(SyntaxKind.WHILE_STATEMENT)
+                || kind.equals(SyntaxKind.TRANSACTION_STATEMENT) || kind.equals(SyntaxKind.RETRY_STATEMENT);
+    }
+
+    /**
+     * Retrieves the string value of a parameter from the function context.
+     *
+     * @param key     the parameter name
+     * @param context the function context
+     * @return an Optional containing the string value if found, otherwise empty
+     */
+    public static Optional<String> getStringValue(String key, FunctionContext context) {
+        Optional<ExpressionNode> valueExprOpt = context.getParamExpression(key);
+        if (valueExprOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        ExpressionNode valueExpr = valueExprOpt.get();
+        if (valueExpr.kind().equals(SyntaxKind.STRING_LITERAL)) {
+            // String literal values
+            String stringValue = ((BasicLiteralNode) valueExpr).literalToken().text();
+            // Remove the leading and trailing double quotes
+            stringValue = stringValue.substring(1, stringValue.length() - 1);
+            return Optional.of(stringValue);
+        } else if (valueExpr instanceof NameReferenceNode refNode) {
+            // Checking for constant values
+            Optional<Symbol> refSymbol = context.semanticModel().symbol(refNode);
+            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef &&
+                    constantRef.constValue() instanceof ConstantValue constantValue &&
+                    constantValue.value() instanceof String constString) {
+                return Optional.of(constString);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Processes statements to collect variable declarations and assignments
+     * up to the specified target statement.
+     *
+     * @param statements      the list of statements
+     * @param targetStatement the target statement to stop at
+     * @param varExpressions  the map to store variable names and their expressions
+     */
+    public static void processStatementsForVariableExpressions(NodeList<StatementNode> statements,
+                                                               StatementNode targetStatement,
+                                                               Map<String, ExpressionNode> varExpressions) {
+        for (StatementNode statement : statements) {
+            boolean isBlockStatement = isBlockStatementNode(statement);
+
+            // Stop processing if we reach the target statement or found a block statement
+            if (statement.equals(targetStatement) || isBlockStatement) {
+                if (isBlockStatement) {
+                    // If we find any block nodes, we cannot verify variable declarations or assignments
+                    // since they may be changed within those blocks. Clear collected expressions and stop.
+                    varExpressions.clear();
+                }
+                break;
+            }
+
+            // Process assignment statements
+            if (statement instanceof AssignmentStatementNode assignmentNode) {
+                processAssignmentStatement(assignmentNode, varExpressions);
+            } else if (statement instanceof VariableDeclarationNode variableDeclarationNode) {
+                processVariableDeclaration(variableDeclarationNode, varExpressions);
+            }
+        }
+    }
+
+    /**
+     * Processes an assignment statement and adds it to the variable expressions map.
+     *
+     * @param assignmentNode the assignment statement node
+     * @param varExpressions the map to store variable names and their expressions
+     */
+    private static void processAssignmentStatement(AssignmentStatementNode assignmentNode,
+                                                   Map<String, ExpressionNode> varExpressions) {
+        Node varRef = assignmentNode.varRef();
+        if (varRef instanceof SimpleNameReferenceNode simpleNameRef) {
+            String varName = unescapeIdentifier(simpleNameRef.name().text());
+            ExpressionNode expression = assignmentNode.expression();
+            varExpressions.put(varName, expression);
+        }
+    }
+
+    /**
+     * Processes a variable declaration statement and adds it to the variable expressions map.
+     *
+     * @param variableDeclarationNode the variable declaration node
+     * @param varExpressions         the map to store variable names and their expressions
+     */
+    private static void processVariableDeclaration(VariableDeclarationNode variableDeclarationNode,
+                                                   Map<String, ExpressionNode> varExpressions) {
+        BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
+
+        // Only supporting capture binding patterns for variable declarations
+        if (variableDeclarationNode.initializer().isEmpty() ||
+                !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
+            return;
+        }
+
+        String varName = unescapeIdentifier(captureBindingPattern.variableName().text());
+        ExpressionNode initializer = variableDeclarationNode.initializer().get();
+        varExpressions.put(varName, initializer);
     }
 }

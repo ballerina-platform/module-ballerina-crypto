@@ -1,4 +1,4 @@
-// Copyright (c) 2025 WSO2 LLC. (http://www.wso2.org)
+// Copyright (c) 2025 WSO2 LLC. (http://www.wso2.com)
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,16 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/crypto;
-import ballerina/random;
+public const IV_STRING_VALUE = "IV_CONST_VALUE";
 
-public isolated function main() returns error? {
-    string data = "Hello, World!";
-    byte[16] initialVector = [];
-    byte[16] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    byte[] dataBytes = data.toBytes();
-    foreach int i in 0 ... 15 {
-        initialVector[i] = <byte>(check random:createIntInRange(0, 255));
-    }
-    byte[] _ = check crypto:encryptAesGcm(dataBytes, key, initialVector);
-}
+public string ivStringValue = "IV_VALUE";

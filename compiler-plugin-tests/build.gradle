@@ -20,6 +20,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'com.github.spotbugs'
+    id 'jacoco'
 }
 
 description = 'Ballerina - Crypto Compiler Plugin Tests'
@@ -61,6 +62,18 @@ test {
             }
         }
     }
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/test.exec")
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+    }
+    sourceSets project(':crypto-compiler-plugin').sourceSets.main
 }
 
 spotbugsTest {

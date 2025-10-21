@@ -101,26 +101,6 @@
   },
   {
     "location": {
-      "filePath": "aes_cbc.bal",
-      "startLine": 30,
-      "endLine": 30,
-      "startColumn": 21,
-      "endColumn": 67,
-      "startOffset": 1203,
-      "length": 46
-    },
-    "rule": {
-      "id": "ballerina/crypto:4",
-      "numericId": 4,
-      "description": "Secure random number generators should not output predictable values",
-      "ruleKind": "VULNERABILITY"
-    },
-    "source": "BUILT_IN",
-    "fileName": "rule1/aes_cbc.bal",
-    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc.bal"
-  },
-  {
-    "location": {
       "filePath": "aes_cbc_as_import.bal",
       "startLine": 30,
       "endLine": 30,
@@ -133,26 +113,6 @@
       "id": "ballerina/crypto:1",
       "numericId": 1,
       "description": "Avoid using insecure cipher modes or padding schemes",
-      "ruleKind": "VULNERABILITY"
-    },
-    "source": "BUILT_IN",
-    "fileName": "rule1/aes_cbc_as_import.bal",
-    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_cbc_as_import.bal"
-  },
-  {
-    "location": {
-      "filePath": "aes_cbc_as_import.bal",
-      "startLine": 30,
-      "endLine": 30,
-      "startColumn": 21,
-      "endColumn": 62,
-      "startOffset": 1216,
-      "length": 41
-    },
-    "rule": {
-      "id": "ballerina/crypto:4",
-      "numericId": 4,
-      "description": "Secure random number generators should not output predictable values",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -198,5 +158,125 @@
     "source": "BUILT_IN",
     "fileName": "rule1/aes_ecb_as_import.bal",
     "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/aes_ecb_as_import.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 14,
+      "endColumn": 56,
+      "startOffset": 854,
+      "length": 42
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "Avoid using insecure cipher modes or padding schemes",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 14,
+      "endColumn": 60,
+      "startOffset": 1003,
+      "length": 46
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "Avoid using insecure cipher modes or padding schemes",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 14,
+      "endColumn": 60,
+      "startOffset": 1003,
+      "length": 46
+    },
+    "rule": {
+      "id": "ballerina/crypto:3",
+      "numericId": 3,
+      "description": "Avoid reusing counter mode initialization vectors",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 35,
+      "endLine": 35,
+      "startColumn": 14,
+      "endColumn": 71,
+      "startOffset": 1346,
+      "length": 57
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "Avoid using insecure cipher modes or padding schemes",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 36,
+      "endLine": 36,
+      "startColumn": 14,
+      "endColumn": 66,
+      "startOffset": 1419,
+      "length": 52
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "Avoid using insecure cipher modes or padding schemes",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 39,
+      "endLine": 39,
+      "startColumn": 14,
+      "endColumn": 57,
+      "startOffset": 1566,
+      "length": 43
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "Avoid using insecure cipher modes or padding schemes",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
   }
 ]
