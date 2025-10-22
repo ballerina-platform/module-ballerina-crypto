@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using insecure cipher modes or padding schemes"
+  },
+  {
+    "id": 2,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using fast hashing algorithms"
+  },
+  {
+    "id": 3,
+    "kind": "VULNERABILITY",
+    "description": "Avoid reusing counter mode initialization vectors"
+  }
+]
