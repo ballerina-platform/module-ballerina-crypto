@@ -1,9 +1,9 @@
 # Specification: Ballerina Crypto Library
 
-_Owners_: @shafreenAnfar @bhashinee  
-_Reviewers_: @shafreenAnfar  
-_Created_: 2022/08/23  
-_Updated_: 2025/10/17  
+_Owners_: @shafreenAnfar @bhashinee \
+_Reviewers_: @shafreenAnfar \
+_Created_: 2022/08/23 \
+_Updated_: 2025/10/17 \
 _Edition_: Swan Lake
 
 ## Introduction
