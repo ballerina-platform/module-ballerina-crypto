@@ -152,7 +152,6 @@ public isolated function signRsaSha512(byte[] input, PrivateKey privateKey) retu
 # + privateKey - Private key used for signing
 # + return - The generated signature or else a `crypto:Error` if the private key is invalid
 public isolated function signRsaSsaPss256(byte[] input, PrivateKey privateKey) returns byte[]|Error = @java:Method {
-    name: "signRsaSsaPss256",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
@@ -360,7 +359,6 @@ public isolated function verifyRsaSha512Signature(byte[] data, byte[] signature,
 # + return - Validity of the signature or else a `crypto:Error` if the public key is invalid
 public isolated function verifyRsaSsaPss256Signature(byte[] data, byte[] signature, PublicKey publicKey)
                                                     returns boolean|Error = @java:Method {
-    name: "verifyRsaSsaPss256Signature",
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Sign"
 } external;
 
