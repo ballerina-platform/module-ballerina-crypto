@@ -183,13 +183,13 @@ public final class PgpDecryptionGenerator {
                 .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
         InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory);
         JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
-        PGPCompressedData pgpCompressedData = (PGPCompressedData) decCompObjFac.nextObject();
-
-        InputStream compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
-        JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
-
-        Object message = pgpCompObjFac.nextObject();
-
+        Object message = decCompObjFac.nextObject();
+        InputStream compressedDataStream = null;
+        if (message instanceof PGPCompressedData pgpCompressedData) {
+            compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
+            JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
+            message = pgpCompObjFac.nextObject();
+        }
         if (message instanceof PGPLiteralData pgpLiteralData) {
             iteratorObj.addNativeData(KEY_ENCRYPTED_DATA, publicKeyEncryptedData);
             iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
