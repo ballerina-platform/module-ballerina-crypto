@@ -31,6 +31,14 @@ public class Compare {
 
     private Compare() {}
 
+    /**
+     * Compares two byte arrays in constant time.
+     *
+     * @param value         the Ballerina byte array to compare
+     * @param expectedValue the Ballerina byte array to compare against
+     * @return {@code true} if both arrays have the same length and content,
+     *         {@code false} otherwise
+     */
     public static boolean equalByteConstantTime(BArray value, BArray expectedValue) {
         byte[] valueBytes = value.getBytes();
         byte[] expectedBytes = expectedValue.getBytes();
