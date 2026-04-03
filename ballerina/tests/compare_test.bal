@@ -30,6 +30,7 @@ function makeLargeArray(int size) returns byte[] {
     return arr;
 }
 
+@test:BeforeGroups {value: ["timing"]}
 function timingWarmup() {
     byte[] a = "warmup-alpha".toBytes();
     byte[] b = "warmup-alpha".toBytes();
@@ -79,14 +80,15 @@ function timeBothStringInterleaved(string base, string altA, string altB) return
 function isSuspiciousTiming(decimal t1, decimal t2) returns boolean {
     decimal diff = t1 > t2 ? t1 - t2 : t2 - t1;
     decimal larger = t1 > t2 ? t1 : t2;
-    decimal ratio = larger == 0d ? 0d : diff / larger;
+    test:assertTrue(t1 != 0d, "Timing value t1 must not be zero");
+    test:assertTrue(t2 != 0d, "Timing value t2 must not be zero");
+    decimal ratio = diff / larger;
     decimal diffMs = diff * 1000d;
     return ratio > TIMING_RATIO_THRESHOLD && diffMs > TIMING_ABS_THRESHOLD_MS;
 }
 
-@test:Config {}
+@test:Config {groups: ["timing"]}
 function testEqualConstantTimeTimingDifferAtStartVsEnd() {
-    timingWarmup();
     byte[] base = makeLargeArray(100000);
     byte[] differAtStart = base.clone();
     byte[] differAtEnd = base.clone();
@@ -109,10 +111,8 @@ function testEqualConstantTimeTimingDifferAtStartVsEnd() {
     );
 }
 
-// Verifies match and mismatch at the midpoint take the same time (no early exit on equality).
-@test:Config {}
+@test:Config {groups: ["timing"], description: "Verifies match and mismatch at the midpoint take the same time (no early exit on equality)."}
 function testEqualConstantTimeTimingMatchVsMismatch() {
-    timingWarmup();
     byte[] base = makeLargeArray(100000);
     byte[] matching = base.clone();
     byte[] mismatch = base.clone();
@@ -135,10 +135,8 @@ function testEqualConstantTimeTimingMatchVsMismatch() {
     );
 }
 
-// Verifies the same constant-time property holds when inputs are strings.
-@test:Config {}
+@test:Config {groups: ["timing"], description: "Verifies the same constant-time property holds when inputs are strings."}
 function testEqualConstantTimeTimingStrings() {
-    timingWarmup();
     string base = "sha256=abcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
     string differAtStart = "sha256=Xbcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
     string differAtEnd = "sha256=abcdefghij1234567890abcdefghij1234567890abcdefghij1234567X";
