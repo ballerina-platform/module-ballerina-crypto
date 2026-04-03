@@ -111,7 +111,7 @@ function testEqualConstantTimeTimingDifferAtStartVsEnd() {
     );
 }
 
-@test:Config {groups: ["timing"], description: "Verifies match and mismatch at the midpoint take the same time (no early exit on equality)."}
+@test:Config {groups: ["timing"], "description": "Verifies match and mismatch at the midpoint take the same time (no early exit on equality)."}
 function testEqualConstantTimeTimingMatchVsMismatch() {
     byte[] base = makeLargeArray(100000);
     byte[] matching = base.clone();
@@ -135,7 +135,7 @@ function testEqualConstantTimeTimingMatchVsMismatch() {
     );
 }
 
-@test:Config {groups: ["timing"], description: "Verifies the same constant-time property holds when inputs are strings."}
+@test:Config {groups: ["timing"], "description": "Verifies the same constant-time property holds when inputs are strings."}
 function testEqualConstantTimeTimingStrings() {
     string base = "sha256=abcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
     string differAtStart = "sha256=Xbcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
