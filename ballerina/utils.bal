@@ -33,5 +33,5 @@ public isolated function equalConstantTime(HashValue value, HashValue expectedVa
 
 isolated function equalByteConstantTime(byte[] value, byte[] expectedValue) returns boolean = @java:Method {
     name: "equalByteConstantTime",
-    'class: "io.ballerina.stdlib.crypto.nativeimpl.Compare"
+    'class: "io.ballerina.stdlib.crypto.nativeimpl.Utils"
 } external;

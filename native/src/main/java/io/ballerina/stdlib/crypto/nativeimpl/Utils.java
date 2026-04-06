@@ -27,9 +27,9 @@ import java.security.MessageDigest;
  *
  * @since 2.11.0
  */
-public class Compare {
+public final class Utils {
 
-    private Compare() {}
+    private Utils() {}
 
     /**
      * Compares two byte arrays in constant time.

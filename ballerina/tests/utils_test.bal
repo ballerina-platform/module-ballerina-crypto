@@ -30,6 +30,15 @@ function makeLargeArray(int size) returns byte[] {
     return arr;
 }
 
+function makeLargeString(int size) returns string {
+    string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    string result = "";
+    foreach int i in 0 ..< size {
+        result += chars[i % chars.length()];
+    }
+    return result;
+}
+
 @test:BeforeGroups {value: ["timing"]}
 function timingWarmup() {
     byte[] a = "warmup-alpha".toBytes();
@@ -137,9 +146,9 @@ function testEqualConstantTimeTimingMatchVsMismatch() {
 
 @test:Config {groups: ["timing"], "description": "Verifies the same constant-time property holds when inputs are strings."}
 function testEqualConstantTimeTimingStrings() {
-    string base = "sha256=abcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
-    string differAtStart = "sha256=Xbcdefghij1234567890abcdefghij1234567890abcdefghij12345678";
-    string differAtEnd = "sha256=abcdefghij1234567890abcdefghij1234567890abcdefghij1234567X";
+    string base = makeLargeString(100000);
+    string differAtStart = "X" + base.substring(1);
+    string differAtEnd = base.substring(0, base.length() - 1) + "X";
 
     // Pre-warm with the actual test strings.
     foreach int i in 0 ..< TIMING_WARMUP {
