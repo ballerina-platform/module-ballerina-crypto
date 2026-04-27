@@ -58,6 +58,7 @@ public class Encrypt {
     private static final BString SYMMETRIC_KEY_ALGORITHM = StringUtils.fromString("symmetricKeyAlgorithm");
     private static final BString ARMOR = StringUtils.fromString("armor");
     private static final BString WITH_INTEGRITY_CHECK = StringUtils.fromString("withIntegrityCheck");
+    private static final BString MARK_FOR_YOUR_EYES_ONLY = StringUtils.fromString("markForYourEyesOnly");
     public static final String ERROR_OCCURRED_WHILE_READING_PUBLIC_KEY = "Error occurred while reading public key: ";
     public static final String ERROR_OCCURRED_WHILE_PGP_ENCRYPT = "Error occurred while PGP encrypt: ";
 
@@ -122,7 +123,8 @@ public class Encrypt {
                     Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
                     Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
                     Boolean.parseBoolean(options.get(ARMOR).toString()),
-                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
+                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString()),
+                    Boolean.parseBoolean(options.get(MARK_FOR_YOUR_EYES_ONLY).toString())
             );
             return pgpEncryptionGenerator.encrypt(plainText, publicKeyStream);
         } catch (IOException | PGPException e) {
@@ -145,7 +147,8 @@ public class Encrypt {
                     Integer.parseInt(options.get(COMPRESSION_ALGORITHM).toString()),
                     Integer.parseInt(options.get(SYMMETRIC_KEY_ALGORITHM).toString()),
                     Boolean.parseBoolean(options.get(ARMOR).toString()),
-                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString())
+                    Boolean.parseBoolean(options.get(WITH_INTEGRITY_CHECK).toString()),
+                    Boolean.parseBoolean(options.get(MARK_FOR_YOUR_EYES_ONLY).toString())
             );
             BObject iteratorObj = ValueCreator.createObjectValue(ModuleUtils.getModule(), "EncryptedStreamIterator");
             iteratorObj.addNativeData(END_OF_INPUT_STREAM, false);
