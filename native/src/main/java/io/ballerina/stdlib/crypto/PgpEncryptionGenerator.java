@@ -74,15 +74,17 @@ public class PgpEncryptionGenerator {
     private final int symmetricKeyAlgorithm;
     private final boolean armor;
     private final boolean withIntegrityCheck;
+    private final boolean markForYourEyesOnly;
     public static final int BUFFER_SIZE = 8192;
 
     // The constructor of the PGP encryption generator.
     public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
-                                  boolean withIntegrityCheck) {
+                                  boolean withIntegrityCheck, boolean markForYourEyesOnly) {
         this.compressionAlgorithm = compressionAlgorithm;
         this.symmetricKeyAlgorithm = symmetricKeyAlgorithm;
         this.armor = armor;
         this.withIntegrityCheck = withIntegrityCheck;
+        this.markForYourEyesOnly = markForYourEyesOnly;
     }
 
     private void encryptStream(OutputStream encryptOut, InputStream clearIn, InputStream publicKeyIn)
@@ -103,7 +105,7 @@ public class PgpEncryptionGenerator {
         }
 
         try (OutputStream cipherOutStream = pgpEncryptedDataGenerator.open(encryptOut, new byte[BUFFER_SIZE])) {
-            copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn);
+            copyAsLiteralData(compressedDataGenerator.open(cipherOutStream), clearIn, markForYourEyesOnly);
             compressedDataGenerator.close();
         }
         encryptOut.close();
@@ -137,7 +139,7 @@ public class PgpEncryptionGenerator {
         iteratorObj.addNativeData(DATA_STREAM, cipherOutStream);
         iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedOutStream);
         iteratorObj.addNativeData(COMPRESSED_DATA_GENERATOR, compressedDataGenerator);
-        copyAsLiteralData(compressedOutStream, iteratorObj);
+        copyAsLiteralData(compressedOutStream, iteratorObj, markForYourEyesOnly);
     }
 
     // Encrypts the given byte array of plain text data using PGP encryption.
@@ -163,11 +165,12 @@ public class PgpEncryptionGenerator {
         throw new PGPException("Invalid public key");
     }
 
-    private static void copyAsLiteralData(OutputStream outputStream, InputStream in)
+    private static void copyAsLiteralData(OutputStream outputStream, InputStream in, boolean markForYourEyesOnly)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
+        String fileName = markForYourEyesOnly ? PGPLiteralData.CONSOLE : "";
         byte[] buff = new byte[BUFFER_SIZE];
-        try (OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
+        try (OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, fileName,
                 Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[BUFFER_SIZE]);
              InputStream inputStream = in) {
 
@@ -180,10 +183,11 @@ public class PgpEncryptionGenerator {
         }
     }
 
-    private static void copyAsLiteralData(OutputStream outputStream, BObject iteratorObj)
+    private static void copyAsLiteralData(OutputStream outputStream, BObject iteratorObj, boolean markForYourEyesOnly)
             throws IOException {
         PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
-        OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE,
+        String fileName = markForYourEyesOnly ? PGPLiteralData.CONSOLE : "";
+        OutputStream pOut = lData.open(outputStream, PGPLiteralData.BINARY, fileName,
                 Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), new byte[BUFFER_SIZE]);
         iteratorObj.addNativeData(TARGET_STREAM, pOut);
     }

@@ -20,11 +20,13 @@
 # + symmetricKeyAlgorithm - Specifies the symmetric key algorithm used for encryption
 # + armor - Indicates whether ASCII armor is enabled for the encrypted output
 # + withIntegrityCheck - Indicates whether an integrity check is included in the encryption
+# + markForYourEyesOnly - Indicates whether the message is marked as "For Your Eyes Only". When `true`, the literal data packet filename is set to `_CONSOLE`, which signals PGP-compliant applications to treat the content as sensitive and avoid writing it to disk. Set to `false` to omit this marking
 public type Options record {|
     CompressionAlgorithmTags compressionAlgorithm = ZIP;
     SymmetricKeyAlgorithmTags symmetricKeyAlgorithm = AES_256;
     boolean armor = true;
     boolean withIntegrityCheck = true;
+    boolean markForYourEyesOnly = true;
 |};
 
 # Represents the compression algorithms available in PGP.
