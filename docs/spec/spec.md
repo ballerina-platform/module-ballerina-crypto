@@ -552,6 +552,7 @@ The following encryption options can be configured in the PGP encryption.
 | symmetricKeyAlgorithm | Specifies the symmetric key algorithm used for encryption         | AES_256       |
 | armor                 | Indicates whether ASCII armor is enabled for the encrypted output | true          |
 | withIntegrityCheck    | Indicates whether integrity check is included in the encryption   | true          |
+| markForYourEyesOnly   | When `true`, sets the literal data packet filename to `_CONSOLE`, marking the message as "For Your Eyes Only" per RFC 4880 §5.9. Set to `false` to use an empty filename and suppress the FYEO marking | true          |
 
 ```ballerina
 string input = "Hello Ballerina";

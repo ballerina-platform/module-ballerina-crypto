@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- [Add `markForYourEyesOnly` option to `Options` record to control PGP literal data packet "For Your Eyes Only" marking in `encryptPgp` and `encryptStreamAsPgp`](https://github.com/ballerina-platform/ballerina-lang/issues/44575)
+
+## [2.11.0] - 2026-04-07
+
+### Added
 - [Introduce `equalConstantTime` API for timing-safe comparison of byte arrays and strings](https://github.com/ballerina-platform/ballerina-library/issues/8733)
 
 ## [2.10.0] - 2025-12-10
