@@ -79,6 +79,15 @@ public class PgpEncryptionGenerator {
 
     // The constructor of the PGP encryption generator.
     public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
+                                  boolean withIntegrityCheck) {
+        this.compressionAlgorithm = compressionAlgorithm;
+        this.symmetricKeyAlgorithm = symmetricKeyAlgorithm;
+        this.armor = armor;
+        this.withIntegrityCheck = withIntegrityCheck;
+        this.markForYourEyesOnly = true;
+    }
+
+    public PgpEncryptionGenerator(int compressionAlgorithm, int symmetricKeyAlgorithm, boolean armor,
                                   boolean withIntegrityCheck, boolean markForYourEyesOnly) {
         this.compressionAlgorithm = compressionAlgorithm;
         this.symmetricKeyAlgorithm = symmetricKeyAlgorithm;
