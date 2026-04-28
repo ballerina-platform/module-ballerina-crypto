@@ -56,7 +56,7 @@ isolated function testNegativeEncryptAndDecryptWithPgpInvalidPassphrase() return
     byte[]|Error plainText = decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
     if plainText is Error {
         test:assertEquals(plainText.message(),
-                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+                "Error occurred while PGP decrypt: checksum mismatch in checksum of 20 bytes");
     } else {
         test:assertFail("Should return a crypto Error");
     }
@@ -130,7 +130,7 @@ isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPassphrase() 
         check encryptedStream.close();
         check inputStream.close();
         test:assertEquals(result.message(),
-                "Error occurred while PGP decrypt: checksum mismatch at in checksum of 20 bytes");
+                "Error occurred while PGP decrypt: checksum mismatch in checksum of 20 bytes");
     } else {
         check encryptedStream.close();
         check inputStream.close();
