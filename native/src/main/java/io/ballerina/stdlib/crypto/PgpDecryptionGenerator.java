@@ -156,6 +156,10 @@ public final class PgpDecryptionGenerator {
 
                 Object message = pgpCompObjFac.nextObject();
 
+                if (message instanceof PGPOnePassSignatureList) {
+                    message = pgpCompObjFac.nextObject();
+                }
+
                 if (message instanceof PGPLiteralData pgpLiteralData) {
                     try (InputStream decDataStream = pgpLiteralData.getInputStream()) {
                         byte[] buffer = new byte[1024];
@@ -164,8 +168,6 @@ public final class PgpDecryptionGenerator {
                             clearOut.write(buffer, 0, bytesRead);
                         }
                     }
-                } else if (message instanceof PGPOnePassSignatureList) {
-                    throw new PGPException("Encrypted message contains a signed message not literal data");
                 } else {
                     throw new PGPException("Unknown message type encountered during decryption");
                 }
@@ -185,18 +187,20 @@ public final class PgpDecryptionGenerator {
         JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
         Object message = decCompObjFac.nextObject();
         InputStream compressedDataStream = null;
+        JcaPGPObjectFactory currentFactory = decCompObjFac;
         if (message instanceof PGPCompressedData pgpCompressedData) {
             compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
-            JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
-            message = pgpCompObjFac.nextObject();
+            currentFactory = new JcaPGPObjectFactory(compressedDataStream);
+            message = currentFactory.nextObject();
+        }
+        if (message instanceof PGPOnePassSignatureList) {
+            message = currentFactory.nextObject();
         }
         if (message instanceof PGPLiteralData pgpLiteralData) {
             iteratorObj.addNativeData(KEY_ENCRYPTED_DATA, publicKeyEncryptedData);
             iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
             iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedDataStream);
             iteratorObj.addNativeData(DATA_STREAM, decryptedCompressedIn);
-        } else if (message instanceof PGPOnePassSignatureList) {
-            throw new PGPException("Encrypted message contains a signed message not literal data");
         } else {
             throw new PGPException("Unknown message type encountered during decryption");
         }
