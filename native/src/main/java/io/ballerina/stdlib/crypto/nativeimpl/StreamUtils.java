@@ -33,13 +33,13 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_GENERATOR;
+import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
+import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.ENCRYPTED_OUTPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.END_OF_INPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.INPUT_STREAM_TO_ENCRYPT;
 import static io.ballerina.stdlib.crypto.Constants.KEY_ENCRYPTED_DATA;
 import static io.ballerina.stdlib.crypto.Constants.PIPED_INPUT_STREAM;
-import static io.ballerina.stdlib.crypto.Constants.COMPRESSED_DATA_STREAM;
-import static io.ballerina.stdlib.crypto.Constants.DATA_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.PIPED_OUTPUT_STREAM;
 import static io.ballerina.stdlib.crypto.Constants.TARGET_STREAM;
 import static io.ballerina.stdlib.crypto.PgpEncryptionGenerator.BUFFER_SIZE;
@@ -61,8 +61,8 @@ public final class StreamUtils {
     public static final String MESSAGE_FAILED_INTEGRITY_CHECK = "Message failed integrity check";
     public static final String ERROR_OCCURRED_WHILE_VERIFYING_THE_INTEGRITY = "Error occurred while verifying the" +
             " integrity: %s";
-    public static final String ERROR_OCCURRED_WHILE_READING_FROM_THE_STREAM = "Error occurred while reading from " +
-            "the stream: %s";
+    public static final String ERROR_OCCURRED_WHILE_READING_FROM_THE_STREAM = "Error occurred while reading from" +
+            " the stream: %s";
 
     private StreamUtils() {
     }
@@ -77,7 +77,7 @@ public final class StreamUtils {
             int in = inputStream.read(buffer);
             if (in == -1) {
                 closeNativeStream(iterator, TARGET_STREAM);
-                performIntegrityCheck(iterator);
+                performMdcIntegrityCheck(iterator);
                 return null;
             }
             if (in < buffer.length) {
@@ -92,7 +92,7 @@ public final class StreamUtils {
         }
     }
 
-    private static void performIntegrityCheck(BObject iterator) throws IOException {
+    private static void performMdcIntegrityCheck(BObject iterator) throws IOException {
         Object publicKeyEncryptedDataObj = iterator.getNativeData(KEY_ENCRYPTED_DATA);
         if (Objects.isNull(publicKeyEncryptedDataObj) || !(publicKeyEncryptedDataObj instanceof
                 PGPPublicKeyEncryptedData publicKeyEncryptedData)) {
