@@ -38,6 +38,8 @@ const PGP_PUBLIC_KEY_PATH = "tests/resources/public_key.asc";
 const PGP_PRIVATE_KEY_PATH = "tests/resources/private_key.asc";
 const PGP_INVALID_PRIVATE_KEY_PATH = "tests/resources/invalid_private_key.asc";
 const PGP_PRIVATE_KEY_PASSPHRASE_PATH = "tests/resources/pgp_private_key_passphrase.txt";
+const PGP_SIGNED_ENCRYPTED_PATH = "tests/resources/signed_encrypted.pgp";
+const PGP_SIGNED_ENCRYPTED_SAMPLE_PATH = "tests/resources/signed_encrypted_sample.pgp";
 
 const SAMPLE_TEXT = "tests/resources/sample.txt";
 const TARGET_ENCRYPTION_OUTPUT = "target/encrypted_output.txt";
