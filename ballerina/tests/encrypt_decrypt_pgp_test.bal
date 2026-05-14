@@ -139,6 +139,35 @@ isolated function testNegativeEncryptAndDecryptStreamWithPgpInvalidPassphrase() 
     }
 }
 
+@test:Config {}
+isolated function testDecryptSignedAndEncryptedWithPgp() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    byte[] cipherText = check io:fileReadBytes(PGP_SIGNED_ENCRYPTED_PATH);
+    byte[] decryptData = check decryptPgp(cipherText, PGP_PRIVATE_KEY_PATH, passphrase);
+    string plainText = check string:fromBytes(decryptData);
+    test:assertEquals(plainText, "Hello Ballerina PGP signed+encrypted test");
+}
+
+@test:Config {
+    serialExecution: true
+}
+isolated function testDecryptSignedAndEncryptedStreamWithPgp() returns error? {
+    byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
+    byte[] fileData = check io:fileReadBytes(SAMPLE_TEXT);
+    string expectedValue = check string:fromBytes(fileData);
+    string expectedText = re `\r\n`.replaceAll(expectedValue, "\n");
+    stream<byte[], error?> encryptedStream = check io:fileReadBlocksAsStream(PGP_SIGNED_ENCRYPTED_SAMPLE_PATH);
+    stream<byte[], error?> decryptedStream = check decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
+    byte[] actual = [];
+    check from byte[] bytes in decryptedStream
+        do {
+            actual.push(...bytes);
+        };
+    string actualStr = check string:fromBytes(actual);
+    string actualText = re `\r\n`.replaceAll(actualStr, "\n");
+    test:assertEquals(actualText, expectedText);
+}
+
 @test:Config
 isolated function testInputStreamWithoutCloseForPgpEncrypt() returns error? {
     byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();

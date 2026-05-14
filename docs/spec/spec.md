@@ -1,9 +1,9 @@
 # Specification: Ballerina Crypto Library
 
-_Owners_: @shafreenAnfar @bhashinee  
-_Reviewers_: @shafreenAnfar  
-_Created_: 2022/08/23  
-_Updated_: 2026/04/06  
+_Authors_: @shafreenAnfar @bhashinee @Nuvindu
+_Reviewers_: @shafreenAnfar
+_Created_: 2022/08/23
+_Updated_: 2026/05/13
 _Edition_: Swan Lake
 
 ## Introduction
@@ -644,7 +644,8 @@ byte[] plainText = check crypto:decryptAesGcm(cipherText, key, initialVector);
 
 #### 5.2.5. PGP
 
-This API can be used to create the PGP-decrypted value for the given PGP-encrypted data.
+This API can be used to create the PGP-decrypted value for the given PGP-encrypted data. If the data is signed, the
+signature is silently skipped without verification; only decryption is performed.
 
 ```ballerina
 string input = "Hello Ballerina";
@@ -658,7 +659,8 @@ byte[] plainText = check crypto:decryptPgp(cipherText, privateKeyPath, passPhras
 ```
 
 In addition to the above, the following API can be used to read an encrypted content from a stream, decrypt it using the
-PGP private key and passphrase and return a decrypted stream.
+PGP private key and passphrase and return a decrypted stream. If the data is signed, the signature is silently skipped
+without verification; only decryption is performed.
 
 ```ballerina
 stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");

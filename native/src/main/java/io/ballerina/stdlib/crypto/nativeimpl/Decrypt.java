@@ -104,7 +104,6 @@ public class Decrypt {
         } catch (IOException e) {
             return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
-
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);
             return pgpDecryptionGenerator.decrypt(cipherText);
@@ -114,7 +113,7 @@ public class Decrypt {
     }
 
     public static Object decryptStreamFromPgp(Environment environment, BStream inputBalStream, BString privateKeyPath,
-                                          BArray passphrase) {
+                                              BArray passphrase) {
         byte[] passphraseInBytes = passphrase.getBytes();
         byte[] privateKey;
         try {
@@ -122,7 +121,6 @@ public class Decrypt {
         } catch (IOException e) {
             return CryptoUtils.createError(ERROR_OCCURRED_WHILE_READING_PRIVATE_KEY + e.getMessage());
         }
-
         try (InputStream keyStream = new ByteArrayInputStream(privateKey)) {
             InputStream cipherTextStream = new BallerinaInputStream(environment, inputBalStream);
             PgpDecryptionGenerator pgpDecryptionGenerator = new PgpDecryptionGenerator(keyStream, passphraseInBytes);

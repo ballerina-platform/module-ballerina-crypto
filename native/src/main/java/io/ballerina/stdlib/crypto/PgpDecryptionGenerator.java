@@ -90,12 +90,6 @@ public final class PgpDecryptionGenerator {
         }
     }
 
-    private void decryptStream(InputStream encryptedIn, OutputStream clearOut)
-            throws PGPException, IOException {
-        KeyEncryptedResult keyEncryptedResult = getKeyEncryptedResult(encryptedIn);
-        decrypt(clearOut, keyEncryptedResult.pgpPrivateKey(), keyEncryptedResult.publicKeyEncryptedData());
-    }
-
     private KeyEncryptedResult getKeyEncryptedResult(InputStream encryptedIn) throws IOException, PGPException {
         // Remove armour and return the underlying binary encrypted stream
         encryptedIn = PGPUtil.getDecoderStream(encryptedIn);
@@ -130,14 +124,15 @@ public final class PgpDecryptionGenerator {
 
     public void decryptStream(InputStream encryptedIn, BObject iteratorObj) throws PGPException, IOException {
         KeyEncryptedResult keyEncryptedResult = getKeyEncryptedResult(encryptedIn);
-        decrypt(keyEncryptedResult.pgpPrivateKey, keyEncryptedResult.publicKeyEncryptedData, iteratorObj);
+        decrypt(keyEncryptedResult.pgpPrivateKey(), keyEncryptedResult.publicKeyEncryptedData(), iteratorObj);
     }
 
     // Decrypts the given byte array of encrypted data using PGP decryption.
     public Object decrypt(byte[] encryptedBytes) throws PGPException, IOException {
         try (ByteArrayInputStream encryptedIn = new ByteArrayInputStream(encryptedBytes);
              ByteArrayOutputStream clearOut = new ByteArrayOutputStream()) {
-            decryptStream(encryptedIn, clearOut);
+            KeyEncryptedResult keyEncryptedResult = getKeyEncryptedResult(encryptedIn);
+            decrypt(clearOut, keyEncryptedResult.pgpPrivateKey(), keyEncryptedResult.publicKeyEncryptedData());
             return ValueCreator.createArrayValue(clearOut.toByteArray());
         }
     }
@@ -147,15 +142,19 @@ public final class PgpDecryptionGenerator {
         PublicKeyDataDecryptorFactory decryptorFactory = new JcePublicKeyDataDecryptorFactoryBuilder()
                 .setProvider(BouncyCastleProvider.PROVIDER_NAME).build(pgpPrivateKey);
         try (InputStream decryptedCompressedIn = publicKeyEncryptedData.getDataStream(decryptorFactory)) {
-
             JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
-            PGPCompressedData pgpCompressedData = (PGPCompressedData) decCompObjFac.nextObject();
-
-            try (InputStream compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream())) {
-                JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
-
-                Object message = pgpCompObjFac.nextObject();
-
+            Object message = decCompObjFac.nextObject();
+            InputStream compressedDataStream = null;
+            JcaPGPObjectFactory currentFactory = decCompObjFac;
+            try {
+                if (message instanceof PGPCompressedData pgpCompressedData) {
+                    compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
+                    currentFactory = new JcaPGPObjectFactory(compressedDataStream);
+                    message = currentFactory.nextObject();
+                }
+                if (message instanceof PGPOnePassSignatureList) {
+                    message = currentFactory.nextObject();
+                }
                 if (message instanceof PGPLiteralData pgpLiteralData) {
                     try (InputStream decDataStream = pgpLiteralData.getInputStream()) {
                         byte[] buffer = new byte[1024];
@@ -164,10 +163,12 @@ public final class PgpDecryptionGenerator {
                             clearOut.write(buffer, 0, bytesRead);
                         }
                     }
-                } else if (message instanceof PGPOnePassSignatureList) {
-                    throw new PGPException("Encrypted message contains a signed message not literal data");
                 } else {
                     throw new PGPException("Unknown message type encountered during decryption");
+                }
+            } finally {
+                if (compressedDataStream != null) {
+                    compressedDataStream.close();
                 }
             }
         }
@@ -185,18 +186,20 @@ public final class PgpDecryptionGenerator {
         JcaPGPObjectFactory decCompObjFac = new JcaPGPObjectFactory(decryptedCompressedIn);
         Object message = decCompObjFac.nextObject();
         InputStream compressedDataStream = null;
+        JcaPGPObjectFactory currentFactory = decCompObjFac;
         if (message instanceof PGPCompressedData pgpCompressedData) {
             compressedDataStream = new BufferedInputStream(pgpCompressedData.getDataStream());
-            JcaPGPObjectFactory pgpCompObjFac = new JcaPGPObjectFactory(compressedDataStream);
-            message = pgpCompObjFac.nextObject();
+            currentFactory = new JcaPGPObjectFactory(compressedDataStream);
+            message = currentFactory.nextObject();
+        }
+        if (message instanceof PGPOnePassSignatureList) {
+            message = currentFactory.nextObject();
         }
         if (message instanceof PGPLiteralData pgpLiteralData) {
             iteratorObj.addNativeData(KEY_ENCRYPTED_DATA, publicKeyEncryptedData);
             iteratorObj.addNativeData(TARGET_STREAM, pgpLiteralData.getDataStream());
             iteratorObj.addNativeData(COMPRESSED_DATA_STREAM, compressedDataStream);
             iteratorObj.addNativeData(DATA_STREAM, decryptedCompressedIn);
-        } else if (message instanceof PGPOnePassSignatureList) {
-            throw new PGPException("Encrypted message contains a signed message not literal data");
         } else {
             throw new PGPException("Unknown message type encountered during decryption");
         }

@@ -275,11 +275,12 @@ public isolated function encryptStreamAsPgp(stream<byte[], error?> inputStream, 
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Encrypt"
 } external;
 
-# Returns the PGP-decrypted value of the given PGP-encrypted data.
+# Returns the PGP-decrypted value of the given PGP-encrypted data. If the data is signed, the signature is silently
+# skipped without verification; only decryption is performed.
 # ```ballerina
 # byte[] message = "Hello Ballerina!".toBytes();
 # byte[] cipherText = check crypto:encryptPgp(message, "public_key.asc");
-# 
+#
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # byte[] decryptedMessage = check crypto:decryptPgp(cipherText, "private_key.asc", passphrase);
 # ```
@@ -294,7 +295,8 @@ public isolated function decryptPgp(byte[] cipherText, string privateKey, byte[]
     'class: "io.ballerina.stdlib.crypto.nativeimpl.Decrypt"
 } external;
 
-# Returns the PGP-decrypted stream of the content given in the input stream.
+# Returns the PGP-decrypted stream of the content given in the input stream. If the data is signed, the signature is
+# silently skipped without verification; only decryption is performed.
 # ```ballerina
 # byte[] passphrase = check io:fileReadBytes("pass_phrase.txt");
 # stream<byte[], error?> inputStream = check io:fileReadBlocksAsStream("pgb_encrypted.txt");
