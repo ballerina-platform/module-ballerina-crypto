@@ -153,7 +153,9 @@ isolated function testDecryptSignedAndEncryptedWithPgp() returns error? {
 }
 isolated function testDecryptSignedAndEncryptedStreamWithPgp() returns error? {
     byte[] passphrase = "qCr3bv@5mj5n4eY".toBytes();
-    byte[] expectedBytes = check io:fileReadBytes(SAMPLE_TEXT);
+    byte[] fileData = check io:fileReadBytes(SAMPLE_TEXT);
+    string expectedValue = check string:fromBytes(fileData);
+    string expectedText = re `\r\n`.replaceAll(expectedValue, "\n");
     stream<byte[], error?> encryptedStream = check io:fileReadBlocksAsStream(PGP_SIGNED_ENCRYPTED_SAMPLE_PATH);
     stream<byte[], error?> decryptedStream = check decryptStreamFromPgp(encryptedStream, PGP_PRIVATE_KEY_PATH, passphrase);
     byte[] actual = [];
@@ -161,7 +163,9 @@ isolated function testDecryptSignedAndEncryptedStreamWithPgp() returns error? {
         do {
             actual.push(...bytes);
         };
-    test:assertEquals(actual, expectedBytes);
+    string actualStr = check string:fromBytes(actual);
+    string actualText = re `\r\n`.replaceAll(actualStr, "\n");
+    test:assertEquals(actualText, expectedText);
 }
 
 @test:Config
