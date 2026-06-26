@@ -489,7 +489,8 @@ public class Decode {
                 publicKey = KeyFactory.getInstance(Constants.MLDSA65_ALGORITHM,
                         BouncyCastleProvider.PROVIDER_NAME)
                         .generatePublic(new X509EncodedKeySpec(publicKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException ignored) {
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
+                return CryptoUtils.createError("Error occurred while decoding ML-DSA-65 public key: " + e.getMessage());
             }
             return getPublicKeyRecord(certificate, certificateBMap, publicKey, Constants.MLDSA65_ALGORITHM);
         }
@@ -504,7 +505,8 @@ public class Decode {
                 publicKey = KeyFactory.getInstance(Constants.MLKEM768_ALGORITHM,
                         BouncyCastleProvider.PROVIDER_NAME)
                         .generatePublic(new X509EncodedKeySpec(publicKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException ignored) {
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
+                return CryptoUtils.createError("Error occurred while decoding ML-KEM-768 public key: " + e.getMessage());
             }
             return getPublicKeyRecord(certificate, certificateBMap, publicKey, Constants.MLKEM768_ALGORITHM);
         }
