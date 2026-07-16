@@ -26,9 +26,7 @@ import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
 import io.ballerina.stdlib.time.util.TimeValueHandler;
-import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
@@ -55,7 +53,6 @@ import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
@@ -65,9 +62,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 /**
@@ -249,15 +244,11 @@ public class Decode {
     }
 
     private static Object getPrivateKeyRecord(PrivateKey privateKey) {
-        return getPrivateKeyRecord(privateKey, privateKey.getAlgorithm());
-    }
-
-    private static Object getPrivateKeyRecord(PrivateKey privateKey, String algorithm) {
         BMap<BString, Object> privateKeyRecord = ValueCreator.
                 createRecordValue(ModuleUtils.getModule(), Constants.PRIVATE_KEY_RECORD);
         privateKeyRecord.addNativeData(Constants.NATIVE_DATA_PRIVATE_KEY, privateKey);
         privateKeyRecord.put(StringUtils.fromString(Constants.PRIVATE_KEY_RECORD_ALGORITHM_FIELD),
-                             StringUtils.fromString(algorithm));
+                             StringUtils.fromString(privateKey.getAlgorithm()));
         return privateKeyRecord;
     }
 
@@ -269,77 +260,19 @@ public class Decode {
     }
 
     private static Object buildMlDsa65PrivateKeyRecord(PrivateKey privateKey) {
-        if (isMlDsa65PrivateKey(privateKey)) {
-            try {
-                privateKey = (PrivateKey) KeyFactory.getInstance(Constants.MLDSA65_ALGORITHM,
-                        BouncyCastleProvider.PROVIDER_NAME)
-                        .generatePrivate(new PKCS8EncodedKeySpec(privateKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
-                return CryptoUtils.createError("Error occurred while decoding ML-DSA-65 private key: "
-                        + e.getMessage());
-            }
-            return getPrivateKeyRecord(privateKey, Constants.MLDSA65_ALGORITHM);
+        if (privateKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
+            return getPrivateKeyRecord(privateKey);
+        } else {
+            return CryptoUtils.createError("Not a valid ML-DSA-65 key");
         }
-        return CryptoUtils.createError("Not a valid ML-DSA-65 key");
     }
 
     private static Object buildMlKem768PrivateKeyRecord(PrivateKey privateKey) {
-        if (isMlKem768PrivateKey(privateKey)) {
-            try {
-                privateKey = (PrivateKey) KeyFactory.getInstance(Constants.MLKEM768_ALGORITHM,
-                        BouncyCastleProvider.PROVIDER_NAME)
-                        .generatePrivate(new PKCS8EncodedKeySpec(privateKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
-                return CryptoUtils.createError("Error occurred while decoding ML-KEM-768 private key: "
-                        + e.getMessage());
-            }
-            return getPrivateKeyRecord(privateKey, Constants.MLKEM768_ALGORITHM);
+        if (privateKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
+            return getPrivateKeyRecord(privateKey);
+        } else {
+            return CryptoUtils.createError("Not a valid ML-KEM-768 key");
         }
-        return CryptoUtils.createError("Not a valid ML-KEM-768 key");
-    }
-
-    private static boolean isMlDsa65PrivateKey(PrivateKey key) {
-        if (key.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
-            return true;
-        }
-        if ("ML-DSA".equals(key.getAlgorithm())) {
-            PrivateKeyInfo pki = PrivateKeyInfo.getInstance(key.getEncoded());
-            return NISTObjectIdentifiers.id_ml_dsa_65.equals(pki.getPrivateKeyAlgorithm().getAlgorithm());
-        }
-        return false;
-    }
-
-    private static boolean isMlKem768PrivateKey(PrivateKey key) {
-        if (key.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
-            return true;
-        }
-        if ("ML-KEM".equals(key.getAlgorithm())) {
-            PrivateKeyInfo pki = PrivateKeyInfo.getInstance(key.getEncoded());
-            return NISTObjectIdentifiers.id_alg_ml_kem_768.equals(pki.getPrivateKeyAlgorithm().getAlgorithm());
-        }
-        return false;
-    }
-
-    private static boolean isMlDsa65PublicKey(PublicKey key) {
-        if (key.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
-            return true;
-        }
-        if ("ML-DSA".equals(key.getAlgorithm())) {
-            SubjectPublicKeyInfo spki = SubjectPublicKeyInfo.getInstance(key.getEncoded());
-            return NISTObjectIdentifiers.id_ml_dsa_65.equals(spki.getAlgorithm().getAlgorithm());
-        }
-        return false;
-    }
-
-    private static boolean isMlKem768PublicKey(PublicKey key) {
-        if (key.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
-            return true;
-        }
-        if ("ML-KEM".equals(key.getAlgorithm())) {
-            SubjectPublicKeyInfo spki = SubjectPublicKeyInfo.getInstance(key.getEncoded());
-            return NISTObjectIdentifiers.id_alg_ml_kem_768.equals(spki.getAlgorithm().getAlgorithm());
-        }
-        return false;
     }
 
     public static Object decodeRsaPublicKeyFromTrustStore(BMap<BString, BString> trustStoreRecord, BString keyAlias) {
@@ -486,14 +419,8 @@ public class Decode {
     private static Object buildMlDsa65PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();
-        if (isMlDsa65PublicKey(publicKey)) {
-            try {
-                publicKey = KeyFactory.getInstance(Constants.MLDSA65_ALGORITHM,
-                        BouncyCastleProvider.PROVIDER_NAME)
-                        .generatePublic(new X509EncodedKeySpec(publicKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException ignored) {
-            }
-            return getPublicKeyRecord(certificate, certificateBMap, publicKey, Constants.MLDSA65_ALGORITHM);
+        if (publicKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
         return CryptoUtils.createError("Not a valid ML-DSA-65 public key");
     }
@@ -501,31 +428,20 @@ public class Decode {
     private static Object buildMlKem768PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
         PublicKey publicKey = certificate.getPublicKey();
-        if (isMlKem768PublicKey(publicKey)) {
-            try {
-                publicKey = KeyFactory.getInstance(Constants.MLKEM768_ALGORITHM,
-                        BouncyCastleProvider.PROVIDER_NAME)
-                        .generatePublic(new X509EncodedKeySpec(publicKey.getEncoded()));
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException ignored) {
-            }
-            return getPublicKeyRecord(certificate, certificateBMap, publicKey, Constants.MLKEM768_ALGORITHM);
+        if (publicKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
+            return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
         return CryptoUtils.createError("Not a valid ML-KEM-768 public key");
     }
 
     private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,
                                              PublicKey publicKey) {
-        return getPublicKeyRecord(certificate, certificateBMap, publicKey, publicKey.getAlgorithm());
-    }
-
-    private static Object getPublicKeyRecord(Certificate certificate, BMap<BString, Object> certificateBMap,
-                                             PublicKey publicKey, String algorithm) {
         BMap<BString, Object> publicKeyMap = ValueCreator.
                 createRecordValue(ModuleUtils.getModule(), Constants.PUBLIC_KEY_RECORD);
         publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY, publicKey);
         publicKeyMap.addNativeData(Constants.NATIVE_DATA_PUBLIC_KEY_CERTIFICATE, certificate);
         publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_ALGORITHM_FIELD),
-                         StringUtils.fromString(algorithm));
+                         StringUtils.fromString(publicKey.getAlgorithm()));
         if (certificateBMap.size() > 0) {
             publicKeyMap.put(StringUtils.fromString(Constants.PUBLIC_KEY_RECORD_CERTIFICATE_FIELD),
                     certificateBMap);

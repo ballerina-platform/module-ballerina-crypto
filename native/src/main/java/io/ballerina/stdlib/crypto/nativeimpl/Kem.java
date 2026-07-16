@@ -38,12 +38,8 @@ public class Kem {
     public static Object encapsulateMlKem768(BMap<?, ?> publicKey) {
         CryptoUtils.addBCProvider();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
-        String algo = key.getAlgorithm();
-        if (!algo.equals(Constants.MLKEM768_ALGORITHM) && !algo.equals("ML-KEM")) {
-            return CryptoUtils.createError(
-                    "Error occurred while generating encapsulated key: key generator locked to ML-KEM-768");
-        }
-        Object encapsulate = CryptoUtils.generateEncapsulated(algo, key, BouncyCastleProvider.PROVIDER_NAME);
+        Object encapsulate = CryptoUtils.generateEncapsulated(Constants.MLKEM768_ALGORITHM, key,
+                BouncyCastleProvider.PROVIDER_NAME);
         if (encapsulate instanceof SecretKeyWithEncapsulation secretKeyWithEncapsulation) {
             return getEncapsulationResultRecord(secretKeyWithEncapsulation);
         }
@@ -73,12 +69,8 @@ public class Kem {
         CryptoUtils.addBCProvider();
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
-        String algo = key.getAlgorithm();
-        if (!algo.equals(Constants.MLKEM768_ALGORITHM) && !algo.equals("ML-KEM")) {
-            return CryptoUtils.createError(
-                    "Error occurred while extracting secret: key generator locked to ML-KEM-768");
-        }
-        return CryptoUtils.extractSecret(input, algo, key, BouncyCastleProvider.PROVIDER_NAME);
+        return CryptoUtils.extractSecret(input, Constants.MLKEM768_ALGORITHM, key,
+                BouncyCastleProvider.PROVIDER_NAME);
     }
 
     public static Object decapsulateRsaKem(BArray inputValue, BMap<?, ?> privateKey) {
