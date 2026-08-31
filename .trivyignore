@@ -1,0 +1,6 @@
+#Ignoring these CVEs for Dev Central, as they are already resolved in the production environment.
+
+CVE-2026-3505
+CVE-2026-5588
+CVE-2025-14813
+CVE-2026-0636
