@@ -73,11 +73,8 @@ public class AvoidShortAuthenticationTagsRule implements CryptoFunctionRule {
 
     private boolean isBelowMinimum(ExpressionNode valueExpr, SemanticModel semanticModel) {
         if (valueExpr.kind().equals(SyntaxKind.NUMERIC_LITERAL)) {
-            try {
-                return Integer.parseInt(((BasicLiteralNode) valueExpr).literalToken().text()) < MINIMUM_TAG_SIZE;
-            } catch (NumberFormatException e) {
-                return false;
-            }
+            return parseIntegerLiteral(((BasicLiteralNode) valueExpr).literalToken().text())
+                    .filter(tagSize -> tagSize < MINIMUM_TAG_SIZE).isPresent();
         }
         if (valueExpr instanceof NameReferenceNode refNode) {
             Optional<Symbol> refSymbol = semanticModel.symbol(refNode);
@@ -88,5 +85,24 @@ public class AvoidShortAuthenticationTagsRule implements CryptoFunctionRule {
             }
         }
         return false;
+    }
+
+    /**
+     * Parses an integer literal written either in decimal or, with a {@code 0x} prefix, in hexadecimal. A literal
+     * that is not an integer - a float, or a value too large for a long - yields an empty result, which leaves the
+     * call unreported rather than guessing at its size.
+     *
+     * @param literal the literal token text
+     * @return the value of the literal, if it is an integer
+     */
+    private static Optional<Long> parseIntegerLiteral(String literal) {
+        try {
+            if (literal.startsWith("0x") || literal.startsWith("0X")) {
+                return Optional.of(Long.parseLong(literal.substring(2), 16));
+            }
+            return Optional.of(Long.parseLong(literal));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
     }
 }

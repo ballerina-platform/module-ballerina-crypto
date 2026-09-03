@@ -58,5 +58,25 @@
     "source": "BUILT_IN",
     "fileName": "rule8/short_tag.bal",
     "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule8/short_tag.bal"
+  },
+  {
+    "location": {
+      "filePath": "short_tag.bal",
+      "startLine": 33,
+      "endLine": 33,
+      "startColumn": 21,
+      "endColumn": 72,
+      "startOffset": 1266,
+      "length": 51
+    },
+    "rule": {
+      "id": "ballerina/crypto:8",
+      "numericId": 8,
+      "description": "Avoid using short authentication tags for counter mode encryption",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule8/short_tag.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule8/short_tag.bal"
   }
 ]

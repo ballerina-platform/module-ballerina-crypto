@@ -31,3 +31,16 @@ function verificationChecked(byte[] data, byte[] signature, crypto:PublicKey pub
         return error("signature verification failed");
     }
 }
+
+// Negative case - the result is handed to another call that acts on it, even though that call's own result is
+// discarded
+function verificationPassedOn(byte[] data, byte[] signature, crypto:PublicKey publicKey) returns error? {
+    boolean _ = check requireValid(check crypto:verifyRsaSha256Signature(data, signature, publicKey));
+}
+
+function requireValid(boolean valid) returns boolean|error {
+    if !valid {
+        return error("signature verification failed");
+    }
+    return valid;
+}

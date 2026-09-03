@@ -30,6 +30,10 @@ function shortTagOnDecrypt(byte[] data, byte[] key, byte[] iv) returns error? {
     byte[] _ = check crypto:decryptAesGcm(data, key, iv, tagSize = 32);
 }
 
+function shortTagHexLiteral(byte[] data, byte[] key, byte[] iv) returns error? {
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 0x20);
+}
+
 // Negative cases - the documented minimum and the default are not flagged
 function documentedMinimumTag(byte[] data, byte[] key, byte[] iv) returns error? {
     byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 96);

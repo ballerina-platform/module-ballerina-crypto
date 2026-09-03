@@ -322,13 +322,15 @@ public class StaticCodeAnalyzerTest {
                 break;
             case AVOID_SHORT_AUTHENTICATION_TAGS:
                 index = 0;
-                Assert.assertEquals(issues.size(), 3);
+                Assert.assertEquals(issues.size(), 4);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         21, 21, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         25, 25, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:8", "short_tag.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         29, 29, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:8", "short_tag.bal",
+                        33, 33, Source.BUILT_IN);
                 break;
             case ENSURE_SIGNATURE_VERIFICATION:
                 index = 0;

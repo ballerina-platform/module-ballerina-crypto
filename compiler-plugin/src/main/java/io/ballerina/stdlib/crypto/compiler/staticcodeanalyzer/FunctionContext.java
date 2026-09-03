@@ -22,6 +22,7 @@ import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.api.symbols.ParameterSymbol;
 import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
+import io.ballerina.compiler.syntax.tree.ExpressionStatementNode;
 import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.collectVariableExpressionsUntilStatement;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getModuleLevelVarExpressions;
@@ -54,6 +56,8 @@ import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnaly
  * @since 2.9.1
  */
 public class FunctionContext {
+    private static final Set<SyntaxKind> RESULT_PASS_THROUGH_KINDS = Set.of(SyntaxKind.CHECK_EXPRESSION,
+            SyntaxKind.BRACED_EXPRESSION, SyntaxKind.TYPE_CAST_EXPRESSION, SyntaxKind.TRAP_EXPRESSION);
     private final SemanticModel semanticModel;
     private final Reporter reporter;
     private final Document document;
@@ -199,28 +203,28 @@ public class FunctionContext {
     }
 
     /**
-     * Walk up from the call to the statement containing it, and report whether the result is bound to the wildcard
-     * {@code _}. Anything else - a named variable, a condition, an argument - counts as a use.
+     * Report whether the result of the call is thrown away: bound to the wildcard {@code _}, or written as a
+     * statement of its own. Only the binding directly enclosing the call is considered, since a call nested inside
+     * another expression - an argument, a condition, an operand - has its result used by that expression even when
+     * the enclosing statement discards its own result.
      *
      * @param functionCall the function call expression node
      * @return true if the result is discarded
      */
     private static boolean isResultDiscarded(FunctionCallExpressionNode functionCall) {
-        Node current = functionCall;
-        while (current != null) {
-            if (current instanceof VariableDeclarationNode variableDeclaration) {
-                return variableDeclaration.typedBindingPattern().bindingPattern().kind()
-                        .equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
-            }
-            if (current instanceof AssignmentStatementNode assignment) {
-                return assignment.varRef().kind().equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
-            }
-            if (current.kind().equals(SyntaxKind.FUNCTION_BODY_BLOCK)) {
-                return false;
-            }
-            current = current.parent();
+        Node parent = functionCall.parent();
+        // Skip over the expressions that hand the result of the call through to the enclosing binding unchanged.
+        while (parent != null && RESULT_PASS_THROUGH_KINDS.contains(parent.kind())) {
+            parent = parent.parent();
         }
-        return false;
+        if (parent instanceof VariableDeclarationNode variableDeclaration) {
+            return variableDeclaration.typedBindingPattern().bindingPattern().kind()
+                    .equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
+        }
+        if (parent instanceof AssignmentStatementNode assignment) {
+            return assignment.varRef().kind().equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
+        }
+        return parent instanceof ExpressionStatementNode;
     }
 
     /**
