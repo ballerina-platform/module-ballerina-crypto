@@ -24,6 +24,7 @@ import io.ballerina.compiler.api.symbols.ConstantSymbol;
 import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.api.symbols.ParameterSymbol;
 import io.ballerina.compiler.api.symbols.Symbol;
+import io.ballerina.compiler.api.symbols.SymbolKind;
 import io.ballerina.compiler.api.values.ConstantValue;
 import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
@@ -34,6 +35,8 @@ import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyBlockNode;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
+import io.ballerina.compiler.syntax.tree.ListConstructorExpressionNode;
+import io.ballerina.compiler.syntax.tree.MethodCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
 import io.ballerina.compiler.syntax.tree.ModuleVariableDeclarationNode;
@@ -64,6 +67,7 @@ import java.util.Optional;
 public final class CryptoAnalyzerUtils {
     private static final String BALLERINA_ORG = "ballerina";
     private static final String CRYPTO = "crypto";
+    private static final String TO_BYTES_METHOD = "toBytes";
 
     // Private constructor to prevent instantiation
     private CryptoAnalyzerUtils() {
@@ -263,6 +267,84 @@ public final class CryptoAnalyzerUtils {
                 || kind.equals(SyntaxKind.LOCK_STATEMENT) || kind.equals(SyntaxKind.MATCH_STATEMENT)
                 || kind.equals(SyntaxKind.FOREACH_STATEMENT) || kind.equals(SyntaxKind.WHILE_STATEMENT)
                 || kind.equals(SyntaxKind.TRANSACTION_STATEMENT) || kind.equals(SyntaxKind.RETRY_STATEMENT);
+    }
+
+    /**
+     * Check whether the given expression is a byte array literal written directly at this position.
+     * <p>
+     * Unlike {@link #isHardCodedByteArray}, this does not follow a variable back to its initialiser. A variable
+     * initialised with a literal may be overwritten before use - filling a key array with random bytes in a loop is
+     * a common and correct pattern - so resolving through variables would report code that is not hard-coded at all.
+     *
+     * @param expression the expression to check
+     * @return true if the expression is itself a compile-time constant byte array
+     */
+    public static boolean isByteArrayLiteral(ExpressionNode expression) {
+        if (expression instanceof ListConstructorExpressionNode listExpression) {
+            return !listExpression.expressions().isEmpty() && listExpression.expressions().stream()
+                    .allMatch(expr -> expr.kind().equals(SyntaxKind.NUMERIC_LITERAL));
+        }
+        if (expression instanceof MethodCallExpressionNode methodCallExpression
+                && methodCallExpression.expression().kind().equals(SyntaxKind.STRING_LITERAL)
+                && methodCallExpression.methodName() instanceof SimpleNameReferenceNode simpleNameRef) {
+            return simpleNameRef.name().text().equals(TO_BYTES_METHOD);
+        }
+        return false;
+    }
+
+    /**
+     * Check whether the given expression is a hard-coded byte array.
+     * <p>
+     * Recognises a list constructor of numeric literals, and {@code toBytes()} called on a string literal or on a
+     * constant. A value that cannot be resolved at compile time is not hard-coded as far as this check is concerned.
+     *
+     * @param expression the expression to check
+     * @param context    the function context, used to resolve variables to their assigned expressions
+     * @return true if the expression resolves to a compile-time constant byte array
+     */
+    public static boolean isHardCodedByteArray(ExpressionNode expression, FunctionContext context) {
+        if (expression instanceof ListConstructorExpressionNode listExpression) {
+            return !listExpression.expressions().isEmpty() && listExpression.expressions().stream()
+                    .allMatch(expr -> expr.kind().equals(SyntaxKind.NUMERIC_LITERAL));
+        }
+
+        if (expression instanceof MethodCallExpressionNode methodCallExpression) {
+            if (!isConstantExpression(methodCallExpression.expression(), context)) {
+                return false;
+            }
+            NameReferenceNode nameReferenceNode = methodCallExpression.methodName();
+            if (nameReferenceNode instanceof SimpleNameReferenceNode simpleNameRef) {
+                return simpleNameRef.name().text().equals(TO_BYTES_METHOD);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check whether the given expression resolves to a compile-time constant.
+     *
+     * @param expression the expression to check
+     * @param context    the function context
+     * @return true if the expression is a string literal, a constant, or a variable holding either
+     */
+    public static boolean isConstantExpression(ExpressionNode expression, FunctionContext context) {
+        if (expression.kind().equals(SyntaxKind.STRING_LITERAL)) {
+            return true;
+        }
+        if (expression.kind().equals(SyntaxKind.SIMPLE_NAME_REFERENCE) ||
+                expression.kind().equals(SyntaxKind.QUALIFIED_NAME_REFERENCE)) {
+            Optional<Symbol> symbol = context.semanticModel().symbol(expression);
+            if (symbol.isPresent() && symbol.get().kind().equals(SymbolKind.CONSTANT)) {
+                return true;
+            }
+        }
+        if (expression instanceof SimpleNameReferenceNode simpleNameRef) {
+            String varName = unescapeIdentifier(simpleNameRef.name().text());
+            Optional<ExpressionNode> varExpression = context.getVarExpression(varName);
+            return varExpression.isPresent() && isConstantExpression(varExpression.get(), context);
+        }
+        return false;
     }
 
     /**

@@ -20,6 +20,7 @@ package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 import io.ballerina.compiler.api.SemanticModel;
 import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.api.symbols.ParameterSymbol;
+import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
@@ -28,6 +29,8 @@ import io.ballerina.compiler.syntax.tree.Node;
 import io.ballerina.compiler.syntax.tree.SeparatedNodeList;
 import io.ballerina.compiler.syntax.tree.SimpleNameReferenceNode;
 import io.ballerina.compiler.syntax.tree.StatementNode;
+import io.ballerina.compiler.syntax.tree.SyntaxKind;
+import io.ballerina.compiler.syntax.tree.VariableDeclarationNode;
 import io.ballerina.projects.Document;
 import io.ballerina.scan.Reporter;
 import io.ballerina.tools.diagnostics.Location;
@@ -56,6 +59,7 @@ public class FunctionContext {
     private final Document document;
     private final String functionName;
     private final Location functionLocation;
+    private final boolean resultDiscarded;
     private  Map<String, ExpressionNode> paramExpressions = Map.of();
     private Map<String, ExpressionNode> varExpressions = Map.of();
 
@@ -84,7 +88,7 @@ public class FunctionContext {
         Optional<List<ParameterSymbol>> params = functionSymbol.typeDescriptor().params();
         // Create a default FunctionContext in case of missing parameters or arguments
         FunctionContext defaultFunctionContext = new FunctionContext(semanticModel, reporter, document, functionName,
-                location);
+                location, isResultDiscarded(functionCall));
         if (params.isEmpty() || arguments.isEmpty()) {
             return defaultFunctionContext;
         }
@@ -115,13 +119,14 @@ public class FunctionContext {
 
         // Add variable declarations up to the function call statement
         collectVariableExpressionsUntilStatement(functionBodyOpt.get(), statementNode.get(), varExpressions);
-        return new FunctionContext(semanticModel, reporter, document, functionName, location, paramExpressions,
-                varExpressions);
+        return new FunctionContext(semanticModel, reporter, document, functionName, location,
+                isResultDiscarded(functionCall), paramExpressions, varExpressions);
     }
 
     // Private constructor to enforce the use of the instance method
     private FunctionContext(SemanticModel semanticModel, Reporter reporter, Document document, String functionName,
-                            Location functionLocation) {
+                            Location functionLocation, boolean resultDiscarded) {
+        this.resultDiscarded = resultDiscarded;
         this.semanticModel = semanticModel;
         this.reporter = reporter;
         this.document = document;
@@ -131,9 +136,10 @@ public class FunctionContext {
 
     // Private constructor to enforce the use of the instance method
     private FunctionContext(SemanticModel semanticModel, Reporter reporter, Document document, String functionName,
-                            Location functionLocation, Map<String, ExpressionNode> paramExpressions,
+                            Location functionLocation, boolean resultDiscarded,
+                            Map<String, ExpressionNode> paramExpressions,
                             Map<String, ExpressionNode> varExpressions) {
-        this(semanticModel, reporter, document, functionName, functionLocation);
+        this(semanticModel, reporter, document, functionName, functionLocation, resultDiscarded);
         this.paramExpressions = paramExpressions;
         this.varExpressions = varExpressions;
     }
@@ -181,6 +187,55 @@ public class FunctionContext {
      */
     public Location functionLocation() {
         return functionLocation;
+    }
+
+    /**
+     * Returns whether the result of this call is bound to the wildcard {@code _} and therefore discarded.
+     *
+     * @return true if the result is discarded
+     */
+    public boolean isResultDiscarded() {
+        return resultDiscarded;
+    }
+
+    /**
+     * Walk up from the call to the statement containing it, and report whether the result is bound to the wildcard
+     * {@code _}. Anything else - a named variable, a condition, an argument - counts as a use.
+     *
+     * @param functionCall the function call expression node
+     * @return true if the result is discarded
+     */
+    private static boolean isResultDiscarded(FunctionCallExpressionNode functionCall) {
+        Node current = functionCall;
+        while (current != null) {
+            if (current instanceof VariableDeclarationNode variableDeclaration) {
+                return variableDeclaration.typedBindingPattern().bindingPattern().kind()
+                        .equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
+            }
+            if (current instanceof AssignmentStatementNode assignment) {
+                return assignment.varRef().kind().equals(SyntaxKind.WILDCARD_BINDING_PATTERN);
+            }
+            if (current.kind().equals(SyntaxKind.FUNCTION_BODY_BLOCK)) {
+                return false;
+            }
+            current = current.parent();
+        }
+        return false;
+    }
+
+    /**
+     * Returns the argument expression written at the call site for the given parameter, without resolving a
+     * variable reference to whatever it was assigned.
+     * <p>
+     * Use this when the rule cares about what the author wrote at this position rather than about the value that
+     * reaches it. Resolving through a variable would both report code that is not literal at the call site and, for
+     * a variable that is reassigned later, report a value that is never actually used.
+     *
+     * @param paramName the parameter name
+     * @return the argument expression as written, if the parameter was supplied
+     */
+    public Optional<ExpressionNode> getRawParamExpression(String paramName) {
+        return Optional.ofNullable(paramExpressions.get(unescapeIdentifier(paramName)));
     }
 
     /**
