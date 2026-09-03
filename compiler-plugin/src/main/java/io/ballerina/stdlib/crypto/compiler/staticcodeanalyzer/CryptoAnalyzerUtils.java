@@ -24,7 +24,6 @@ import io.ballerina.compiler.api.symbols.ConstantSymbol;
 import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.api.symbols.ParameterSymbol;
 import io.ballerina.compiler.api.symbols.Symbol;
-import io.ballerina.compiler.api.symbols.SymbolKind;
 import io.ballerina.compiler.api.values.ConstantValue;
 import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
@@ -270,11 +269,12 @@ public final class CryptoAnalyzerUtils {
     }
 
     /**
-     * Check whether the given expression is a byte array literal written directly at this position.
+     * Check whether the given expression is a byte array literal written directly at this position: a list
+     * constructor of numeric literals, or {@code toBytes()} called on a string literal.
      * <p>
-     * Unlike {@link #isHardCodedByteArray}, this does not follow a variable back to its initialiser. A variable
-     * initialised with a literal may be overwritten before use - filling a key array with random bytes in a loop is
-     * a common and correct pattern - so resolving through variables would report code that is not hard-coded at all.
+     * A variable is deliberately not followed back to its initialiser. One initialised with a literal may be
+     * overwritten before use - filling a key array with random bytes in a loop is a common and correct pattern - so
+     * resolving through variables would report code that is not hard-coded at all.
      *
      * @param expression the expression to check
      * @return true if the expression is itself a compile-time constant byte array
@@ -288,61 +288,6 @@ public final class CryptoAnalyzerUtils {
                 && methodCallExpression.expression().kind().equals(SyntaxKind.STRING_LITERAL)
                 && methodCallExpression.methodName() instanceof SimpleNameReferenceNode simpleNameRef) {
             return simpleNameRef.name().text().equals(TO_BYTES_METHOD);
-        }
-        return false;
-    }
-
-    /**
-     * Check whether the given expression is a hard-coded byte array.
-     * <p>
-     * Recognises a list constructor of numeric literals, and {@code toBytes()} called on a string literal or on a
-     * constant. A value that cannot be resolved at compile time is not hard-coded as far as this check is concerned.
-     *
-     * @param expression the expression to check
-     * @param context    the function context, used to resolve variables to their assigned expressions
-     * @return true if the expression resolves to a compile-time constant byte array
-     */
-    public static boolean isHardCodedByteArray(ExpressionNode expression, FunctionContext context) {
-        if (expression instanceof ListConstructorExpressionNode listExpression) {
-            return !listExpression.expressions().isEmpty() && listExpression.expressions().stream()
-                    .allMatch(expr -> expr.kind().equals(SyntaxKind.NUMERIC_LITERAL));
-        }
-
-        if (expression instanceof MethodCallExpressionNode methodCallExpression) {
-            if (!isConstantExpression(methodCallExpression.expression(), context)) {
-                return false;
-            }
-            NameReferenceNode nameReferenceNode = methodCallExpression.methodName();
-            if (nameReferenceNode instanceof SimpleNameReferenceNode simpleNameRef) {
-                return simpleNameRef.name().text().equals(TO_BYTES_METHOD);
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check whether the given expression resolves to a compile-time constant.
-     *
-     * @param expression the expression to check
-     * @param context    the function context
-     * @return true if the expression is a string literal, a constant, or a variable holding either
-     */
-    public static boolean isConstantExpression(ExpressionNode expression, FunctionContext context) {
-        if (expression.kind().equals(SyntaxKind.STRING_LITERAL)) {
-            return true;
-        }
-        if (expression.kind().equals(SyntaxKind.SIMPLE_NAME_REFERENCE) ||
-                expression.kind().equals(SyntaxKind.QUALIFIED_NAME_REFERENCE)) {
-            Optional<Symbol> symbol = context.semanticModel().symbol(expression);
-            if (symbol.isPresent() && symbol.get().kind().equals(SymbolKind.CONSTANT)) {
-                return true;
-            }
-        }
-        if (expression instanceof SimpleNameReferenceNode simpleNameRef) {
-            String varName = unescapeIdentifier(simpleNameRef.name().text());
-            Optional<ExpressionNode> varExpression = context.getVarExpression(varName);
-            return varExpression.isPresent() && isConstantExpression(varExpression.get(), context);
         }
         return false;
     }
