@@ -1325,6 +1325,13 @@ The following static code rules are applied to the Crypto module.
 
 Using weak or outdated encryption modes and padding schemes can compromise the security of encrypted data, even when strong algorithms are used.
 
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:1 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-327](https://cwe.mitre.org/data/definitions/327.html), [CWE-780](https://cwe.mitre.org/data/definitions/780.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
+
 #### 12.1.1. Why this is an issue?
 
 Encryption algorithms are essential for protecting sensitive information and ensuring secure communications. When implementing encryption, it's critical to select not only strong algorithms but also secure modes of operation and padding schemes. Using weak or outdated encryption modes can compromise the security of otherwise strong algorithms.
@@ -1411,6 +1418,13 @@ OAEP such as OAEPwithMD5andMGF1, OAEPWithSHA1AndMGF1, OAEPWithSHA256AndMGF1, OAE
 ### 12.2. Avoid using fast hashing algorithms
 
 Storing passwords in plaintext or using fast hashing algorithms creates significant security vulnerabilities. If an attacker gains access to your database, plaintext passwords are immediately compromised. Similarly, passwords hashed with fast algorithms (like MD5, SHA-1, or SHA-256 without sufficient iterations) can be rapidly cracked using modern hardware.
+
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:2 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-916](https://cwe.mitre.org/data/definitions/916.html), [CWE-327](https://cwe.mitre.org/data/definitions/327.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
 
 #### 12.2.1. Why this is an issue?
 
@@ -1545,6 +1559,13 @@ public function hashPassword() returns error? {
 
 When using encryption algorithms in counter mode (such as AES-GCM, AES-CCM, or AES-CTR), initialization vectors (IVs) or nonces should never be reused with the same encryption key. Reusing IVs with the same key can completely compromise the security of the encryption.
 
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:3 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-323](https://cwe.mitre.org/data/definitions/323.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
+
 #### 12.3.1. Why this is an issue?
 
 Counter mode encryption relies on unique initialization vectors to ensure security. When the same IV is used with the same encryption key for different plaintexts, it creates serious vulnerabilities that can lead to:
@@ -1660,6 +1681,13 @@ public function encryptMessage(string message) returns [byte[], byte[12]]|error 
 
 MD5 and SHA-1 are broken for any purpose that depends on collision resistance.
 
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:4 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-327](https://cwe.mitre.org/data/definitions/327.html), [CWE-328](https://cwe.mitre.org/data/definitions/328.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
+
 #### 12.4.1. Why this is an issue?
 
 Practical collision attacks exist against both MD5 and SHA-1: an attacker can construct two different inputs with the same digest at modest cost. A signature is computed over a digest, so a signature scheme built on either algorithm inherits that weakness directly.
@@ -1695,6 +1723,13 @@ byte[] signature = check crypto:signRsaSha256("payload".toBytes(), privateKey);
 ### 12.5. Avoid hard-coded key material
 
 A key written into the source is shared with everyone who can read the source.
+
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:5 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-321](https://cwe.mitre.org/data/definitions/321.html), [CWE-798](https://cwe.mitre.org/data/definitions/798.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
 
 #### 12.5.1. Why this is an issue?
 
@@ -1736,6 +1771,13 @@ byte[] mac = check crypto:hmacSha256("payload".toBytes(), key);
 
 The PGP symmetric algorithm decides the strength of the encryption, and `NULL` disables it.
 
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:6 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-327](https://cwe.mitre.org/data/definitions/327.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
+
 #### 12.6.1. Why this is an issue?
 
 `Options.symmetricKeyAlgorithm` selects the cipher used for the message body. `DES`, `TRIPLE_DES`, `IDEA`, `BLOWFISH`, `CAST5` and `SAFER` are obsolete: their block or key sizes are too small to resist current attacks. `NULL` performs no encryption at all, so the message is carried in the clear inside a container that appears encrypted.
@@ -1772,6 +1814,13 @@ byte[] encrypted = check crypto:encryptPgp("payload".toBytes(), "public_key.asc"
 ### 12.7. Avoid disabling integrity protection for PGP encryption
 
 Without the modification detection code, tampering with the ciphertext is undetectable.
+
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:7 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-353](https://cwe.mitre.org/data/definitions/353.html), [CWE-354](https://cwe.mitre.org/data/definitions/354.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
 
 #### 12.7.1. Why this is an issue?
 
@@ -1811,6 +1860,13 @@ byte[] encrypted = check crypto:encryptPgp("payload".toBytes(), "public_key.asc"
 
 A short GCM tag can be forged, which removes the authentication the mode provides.
 
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:8 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-327](https://cwe.mitre.org/data/definitions/327.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
+
 #### 12.8.1. Why this is an issue?
 
 The authentication tag is what makes GCM an authenticated mode: it is the value the recipient checks to know the ciphertext was not altered. Its length sets the work required to forge one, and the strength falls exponentially as it shortens. The documented minimum is 96 bits.
@@ -1845,6 +1901,13 @@ byte[] encrypted = check crypto:encryptAesGcm("payload".toBytes(), key, iv, cryp
 ### 12.9. Avoid discarding the result of a signature verification
 
 A verification whose result is thrown away has not verified anything.
+
+| Property              | Description |
+|-----------------------|-------------|
+| **Rule ID**           | ballerina/crypto:9 |
+| **Rule Kind**         | Vulnerability |
+| **CWE**               | [CWE-347](https://cwe.mitre.org/data/definitions/347.html) |
+| **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
 
 #### 12.9.1. Why this is an issue?
 
