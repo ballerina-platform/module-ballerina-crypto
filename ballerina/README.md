@@ -1,8 +1,19 @@
 ## Overview
 
-This module provides common cryptographic mechanisms based on different algorithms.
+This module provides common cryptographic mechanisms based on different algorithms. It provides APIs for hashing, HMAC generation, checksum generation, encryption and decryption, and digital signing and verification.
 
-The Ballerina `crypto` module facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
+## Key Features
+
+- Hashing with MD5, SHA1, SHA256, SHA384, SHA512, Keccak256, and CRC32B checksum
+- HMAC generation with MD5, SHA1, SHA256, SHA384, and SHA512
+- Decoding RSA private/public keys from `.p12`, `PEM`, and `X509` files
+- Symmetric (AES) and asymmetric (RSA) encryption and decryption
+- Digital signing and verification, including the ML-DSA-65 post-quantum algorithm
+- HMAC-based Key Derivation Function (HKDF)
+- Key Exchange Mechanisms (KEM), including RSA-KEM and post-quantum ML-KEM-768
+- Hybrid Public Key Encryption (HPKE)
+
+## Module Details
 
 ### Hashes
 
@@ -35,4 +46,3 @@ The `crypto` module supports Key Exchange Mechanisms (KEM). It includes RSA-KEM 
 ### Hybrid Public Key Encryption (HPKE)
 
 The `crypto` module supports Hybrid Public Key Encryption (HPKE). It supports post-quantum ML-KEM-768-HPKE and RSA-KEM-ML-KEM-768-HPKE for encryption and decryption.
-
