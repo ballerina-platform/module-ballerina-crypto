@@ -1,0 +1,22 @@
+[
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 19,
+      "endLine": 19,
+      "startColumn": 21,
+      "endColumn": 87,
+      "startOffset": 774,
+      "length": 66
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "Avoid disabling integrity protection for PGP encryption",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  }
+]
