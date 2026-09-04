@@ -13,8 +13,6 @@ This module provides common cryptographic mechanisms based on different algorith
 - Key Exchange Mechanisms (KEM), including RSA-KEM and post-quantum ML-KEM-768
 - Hybrid Public Key Encryption (HPKE)
 
-## Module Details
-
 ### Hashes
 
 The `crypto` module supports generating hashes with 6 different hash algorithms MD5, SHA1, SHA256, SHA384, SHA512, and Keccak256. Also, it supports generating the CRC32B checksum.

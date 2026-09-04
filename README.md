@@ -11,19 +11,6 @@
 
 This module provides common cryptographic mechanisms based on different algorithms. It provides APIs for hashing, HMAC generation, checksum generation, encryption and decryption, and digital signing and verification.
 
-## Key Features
-
-- Hashing with MD5, SHA1, SHA256, SHA384, SHA512, Keccak256, and CRC32B checksum
-- HMAC generation with MD5, SHA1, SHA256, SHA384, and SHA512
-- Decoding RSA private/public keys from `.p12`, `PEM`, and `X509` files
-- Symmetric (AES) and asymmetric (RSA) encryption and decryption
-- Digital signing and verification, including the ML-DSA-65 post-quantum algorithm
-- HMAC-based Key Derivation Function (HKDF)
-- Key Exchange Mechanisms (KEM), including RSA-KEM and post-quantum ML-KEM-768
-- Hybrid Public Key Encryption (HPKE)
-
-## Module Details
-
 ### Hashes
 
 The `crypto` library supports generating hashes with 6 different hash algorithms MD5, SHA1, SHA256, SHA384, SHA512, and Keccak256. Also, it supports generating the CRC32B checksum.
