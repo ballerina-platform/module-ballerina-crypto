@@ -1,5 +1,4 @@
-Ballerina Crypto Library
-===================
+# Ballerina Crypto Library
 
   [![Build](https://github.com/ballerina-platform/module-ballerina-crypto/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerina-crypto/actions/workflows/build-timestamped-master.yml)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto/branch/master/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerina-crypto)
@@ -8,9 +7,9 @@ Ballerina Crypto Library
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerina-crypto.svg?label=Last%20Commit)](https://github.com/ballerina-platform/module-ballerina-crypto/commits/master)
   [![GitHub issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/crypto.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fcrypto)
 
-This library provides common cryptographic mechanisms based on different algorithms.
+## Overview
 
-The Ballerina `crypto` library facilitates APIs to do operations like hashing, HMAC generation, checksum generation, encryption, decryption, signing data digitally, verifying digitally signed data, etc., with different cryptographic algorithms.
+This module provides common cryptographic mechanisms based on different algorithms. It provides APIs for hashing, HMAC generation, checksum generation, encryption and decryption, and digital signing and verification.
 
 ### Hashes
 
@@ -114,7 +113,7 @@ Execute the commands below to build from the source.
 
 ## Contribute to Ballerina
 
-As an open source project, Ballerina welcomes contributions from the community.
+As an open-source project, Ballerina welcomes contributions from the community.
 
 For more information, go to the [contribution guidelines](https://github.com/ballerina-platform/ballerina-lang/blob/master/CONTRIBUTING.md).
 
