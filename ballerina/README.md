@@ -2,7 +2,7 @@
 
 This module provides common cryptographic mechanisms based on different algorithms. It provides APIs for hashing, HMAC generation, checksum generation, encryption and decryption, and digital signing and verification.
 
-## Key Features
+### Key Features
 
 - Hashing with MD5, SHA1, SHA256, SHA384, SHA512, Keccak256, and CRC32B checksum
 - HMAC generation with MD5, SHA1, SHA256, SHA384, and SHA512
