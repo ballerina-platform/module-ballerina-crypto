@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - [Add `markForYourEyesOnly` option to `Options` record to control PGP literal data packet "For Your Eyes Only" marking in `encryptPgp` and `encryptStreamAsPgp`](https://github.com/ballerina-platform/ballerina-lang/issues/44575)
 - [Support decrypting signed PGP data in `decryptPgp` and `decryptStreamFromPgp`, where the signature is silently skipped without verification](https://github.com/ballerina-platform/ballerina-library/issues/)
 
+### Changed
+- [[#9114] Updated Keywords and Reformat README for Connector Store Discoverability](https://github.com/ballerina-platform/ballerina-library/issues/9114)
+
 ## [2.11.0] - 2026-04-07
 
 ### Added
