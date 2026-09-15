@@ -1,0 +1,62 @@
+[
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 80,
+      "startOffset": 786,
+      "length": 59
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "Avoid hard-coded key material",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 25,
+      "endLine": 25,
+      "startColumn": 21,
+      "endColumn": 87,
+      "startOffset": 937,
+      "length": 66
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "Avoid hard-coded key material",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 29,
+      "endLine": 29,
+      "startColumn": 21,
+      "endColumn": 93,
+      "startOffset": 1117,
+      "length": 72
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "Avoid hard-coded key material",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  }
+]
