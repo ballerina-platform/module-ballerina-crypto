@@ -49,6 +49,12 @@ import java.util.stream.Collectors;
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_HARDCODED_KEY_MATERIAL;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_PGP_ALGORITHMS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_PGP_INTEGRITY_CHECK;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_SHORT_AUTHENTICATION_TAGS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_SIGNATURE_VERIFICATION;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_HASH_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -116,6 +122,36 @@ public class StaticCodeAnalyzerTest {
                 rules,
                 "ballerina/crypto:3",
                 AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:4",
+                AVOID_WEAK_HASH_ALGORITHMS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:5",
+                AVOID_HARDCODED_KEY_MATERIAL.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:6",
+                AVOID_WEAK_PGP_ALGORITHMS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:7",
+                ENSURE_PGP_INTEGRITY_CHECK.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:8",
+                AVOID_SHORT_AUTHENTICATION_TAGS.getDescription(),
+                VULNERABILITY);
+        Assertions.assertRule(
+                rules,
+                "ballerina/crypto:9",
+                ENSURE_SIGNATURE_VERIFICATION.getDescription(),
                 VULNERABILITY);
     }
 
@@ -238,6 +274,72 @@ public class StaticCodeAnalyzerTest {
                 Assertions.assertIssue(issues, index, "ballerina/crypto:3", "mod_var_pos_arg.bal",
                         23, 23, Source.BUILT_IN);
                 break;
+            case AVOID_WEAK_HASH_ALGORITHMS:
+                index = 0;
+                Assert.assertEquals(issues.size(), 8);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
+                        19, 19, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
+                        25, 25, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_signature.bal",
+                        19, 19, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_signature.bal",
+                        20, 20, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_signature.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:4", "weak_signature.bal",
+                        25, 25, Source.BUILT_IN);
+                break;
+            case AVOID_HARDCODED_KEY_MATERIAL:
+                index = 0;
+                Assert.assertEquals(issues.size(), 3);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        25, 25, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:5", "hardcoded_key.bal",
+                        29, 29, Source.BUILT_IN);
+                break;
+            case AVOID_WEAK_PGP_ALGORITHMS:
+                index = 0;
+                Assert.assertEquals(issues.size(), 3);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        19, 19, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        27, 27, Source.BUILT_IN);
+                break;
+            case ENSURE_PGP_INTEGRITY_CHECK:
+                index = 0;
+                Assert.assertEquals(issues.size(), 1);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:7", "pgp_integrity.bal",
+                        19, 19, Source.BUILT_IN);
+                break;
+            case AVOID_SHORT_AUTHENTICATION_TAGS:
+                index = 0;
+                Assert.assertEquals(issues.size(), 4);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        25, 25, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        29, 29, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:8", "short_tag.bal",
+                        33, 33, Source.BUILT_IN);
+                break;
+            case ENSURE_SIGNATURE_VERIFICATION:
+                index = 0;
+                Assert.assertEquals(issues.size(), 2);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_verification.bal",
+                        19, 19, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:9", "discarded_verification.bal",
+                        23, 23, Source.BUILT_IN);
+                break;
             default:
                 Assert.fail("Unhandled rule in validateIssues: " + rule);
                 break;
@@ -274,7 +376,7 @@ public class StaticCodeAnalyzerTest {
             ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
             JsonNode node = mapper.readTree(json);
             String normalizedJson = mapper.writeValueAsString(node)
-                    .replaceAll(":\".*" + MODULE_BALLERINA_CRYPTO, ":\"" + MODULE_BALLERINA_CRYPTO);
+                    .replaceAll(":\"[^\"]*" + MODULE_BALLERINA_CRYPTO, ":\"" + MODULE_BALLERINA_CRYPTO);
             return isWindows() ? normalizedJson.replace("/", "\\\\") : normalizedJson;
         } catch (Exception ignore) {
             return json;

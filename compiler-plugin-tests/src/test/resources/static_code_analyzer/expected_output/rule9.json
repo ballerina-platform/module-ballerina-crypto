@@ -1,0 +1,42 @@
+[
+  {
+    "location": {
+      "filePath": "discarded_verification.bal",
+      "startLine": 19,
+      "endLine": 19,
+      "startColumn": 22,
+      "endColumn": 81,
+      "startOffset": 799,
+      "length": 59
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "Avoid discarding the result of a signature verification",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_verification.bal"
+  },
+  {
+    "location": {
+      "filePath": "discarded_verification.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 14,
+      "endColumn": 73,
+      "startOffset": 984,
+      "length": 59
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "Avoid discarding the result of a signature verification",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_verification.bal"
+  }
+]
