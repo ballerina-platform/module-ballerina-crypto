@@ -242,6 +242,26 @@
   {
     "location": {
       "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 36,
+      "endLine": 36,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1427,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:3",
+      "numericId": 3,
+      "description": "Avoid reusing counter mode initialization vectors",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
       "startLine": 39,
       "endLine": 39,
       "startColumn": 14,
