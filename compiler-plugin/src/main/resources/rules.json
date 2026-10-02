@@ -13,5 +13,35 @@
     "id": 3,
     "kind": "VULNERABILITY",
     "description": "Avoid reusing counter mode initialization vectors"
+  },
+  {
+    "id": 4,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using weak hashing and signature algorithms"
+  },
+  {
+    "id": 5,
+    "kind": "VULNERABILITY",
+    "description": "Avoid hard-coded key material"
+  },
+  {
+    "id": 6,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using weak symmetric algorithms for PGP encryption"
+  },
+  {
+    "id": 7,
+    "kind": "VULNERABILITY",
+    "description": "Avoid disabling integrity protection for PGP encryption"
+  },
+  {
+    "id": 8,
+    "kind": "VULNERABILITY",
+    "description": "Avoid using short authentication tags for counter mode encryption"
+  },
+  {
+    "id": 9,
+    "kind": "VULNERABILITY",
+    "description": "Avoid discarding the result of a signature verification"
   }
 ]

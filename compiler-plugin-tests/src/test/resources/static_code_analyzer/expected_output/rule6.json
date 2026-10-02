@@ -1,0 +1,62 @@
+[
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 19,
+      "endLine": 19,
+      "startColumn": 21,
+      "endColumn": 95,
+      "startOffset": 768,
+      "length": 74
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "Avoid using weak symmetric algorithms for PGP encryption",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 96,
+      "startOffset": 945,
+      "length": 75
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "Avoid using weak symmetric algorithms for PGP encryption",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 21,
+      "endColumn": 102,
+      "startOffset": 1120,
+      "length": 81
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "Avoid using weak symmetric algorithms for PGP encryption",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  }
+]
