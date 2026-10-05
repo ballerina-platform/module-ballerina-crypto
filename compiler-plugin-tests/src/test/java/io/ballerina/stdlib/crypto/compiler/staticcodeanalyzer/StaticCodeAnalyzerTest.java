@@ -41,14 +41,12 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_HARD_CODED_INITIALIZATION_VECTORS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -64,10 +62,43 @@ public class StaticCodeAnalyzerTest {
 
     @Test
     public void validateRulesJson() throws IOException {
-        String expectedRules = "[" + Arrays.stream(CryptoRule.values())
-                .map(CryptoRule::toString).collect(Collectors.joining(",")) + "]";
-        String actualRules = Files.readString(JSON_RULES_FILE_PATH);
-        assertJsonEqual(actualRules, expectedRules);
+        JsonNode rulesArray = new ObjectMapper().readTree(Files.readString(JSON_RULES_FILE_PATH));
+        Assert.assertEquals(rulesArray.size(), CryptoRule.values().length);
+        for (CryptoRule rule : CryptoRule.values()) {
+            JsonNode ruleNode = findRuleById(rulesArray, rule.getId());
+            Assert.assertNotNull(ruleNode, "Rule with id " + rule.getId() + " not found in rules.json");
+            Assert.assertEquals(ruleNode.get("kind").asText(), VULNERABILITY.toString());
+            Assert.assertEquals(ruleNode.get("description").asText(), rule.getDescription());
+            validateEnrichedRuleMetadata(ruleNode);
+        }
+    }
+
+    private void validateEnrichedRuleMetadata(JsonNode ruleNode) {
+        assertNonBlankText(ruleNode, "name");
+        assertNonBlankText(ruleNode, "severity");
+        assertNonBlankText(ruleNode, "fullDescription");
+
+        JsonNode tags = ruleNode.get("tags");
+        Assert.assertTrue(tags != null && tags.isArray() && !tags.isEmpty(), "tags should be a non-empty array");
+
+        JsonNode standards = ruleNode.get("standards");
+        Assert.assertTrue(standards != null && standards.isObject() && !standards.isEmpty(),
+                "standards should be a non-empty object");
+    }
+
+    private void assertNonBlankText(JsonNode ruleNode, String field) {
+        JsonNode fieldNode = ruleNode.get(field);
+        Assert.assertTrue(fieldNode != null && fieldNode.isTextual() && !fieldNode.asText().isBlank(),
+                field + " should be a non-blank string");
+    }
+
+    private JsonNode findRuleById(JsonNode rulesArray, int id) {
+        for (JsonNode ruleNode : rulesArray) {
+            if (ruleNode.get("id").asInt() == id) {
+                return ruleNode;
+            }
+        }
+        return null;
     }
 
     @Test
@@ -115,7 +146,7 @@ public class StaticCodeAnalyzerTest {
         Assertions.assertRule(
                 rules,
                 "ballerina/crypto:3",
-                AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
+                AVOID_HARD_CODED_INITIALIZATION_VECTORS.getDescription(),
                 VULNERABILITY);
     }
 
@@ -208,7 +239,7 @@ public class StaticCodeAnalyzerTest {
                 Assertions.assertIssue(issues, index, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
                 break;
-            case AVOID_REUSING_COUNTER_MODE_VECTORS:
+            case AVOID_HARD_CODED_INITIALIZATION_VECTORS:
                 Assert.assertEquals(issues.size(), 13);
                 index = 0;
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",

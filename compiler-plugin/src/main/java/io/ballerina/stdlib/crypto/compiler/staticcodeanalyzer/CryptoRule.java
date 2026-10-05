@@ -24,12 +24,12 @@ import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory.createRule;
 
 public enum CryptoRule {
-    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1,
-            "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
-    AVOID_FAST_HASH_ALGORITHMS(createRule(2,
-            "Avoid using fast hashing algorithms", VULNERABILITY)),
-    AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3,
-            "Avoid reusing counter mode initialization vectors", VULNERABILITY));
+    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "An encryption operation uses a cipher mode or padding scheme " +
+            "that is known to be insecure.", VULNERABILITY)),
+    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "A password hashing function is configured with a work factor " +
+            "too low to resist brute-force attacks.", VULNERABILITY)),
+    AVOID_HARD_CODED_INITIALIZATION_VECTORS(createRule(3, "An AES-CBC or AES-GCM encryption operation uses a " +
+            "hard-coded initialization vector.", VULNERABILITY));
 
     private final Rule rule;
 

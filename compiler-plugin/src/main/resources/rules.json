@@ -2,16 +2,75 @@
   {
     "id": 1,
     "kind": "VULNERABILITY",
-    "description": "Avoid using insecure cipher modes or padding schemes"
+    "name": "Avoid using insecure cipher modes or padding schemes",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-1",
+    "severity": "HIGH",
+    "description": "An encryption operation uses a cipher mode or padding scheme that is known to be insecure.",
+    "fullDescription": "Cipher modes such as ECB encrypt identical plaintext blocks to identical ciphertext blocks, revealing structure in the data, and padding schemes such as PKCS#1 v1.5 are open to padding oracle attacks that recover plaintext. Use an authenticated mode such as GCM, and OAEP padding for RSA.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        327,
+        780
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 2,
     "kind": "VULNERABILITY",
-    "description": "Avoid using fast hashing algorithms"
+    "name": "Avoid using fast hashing algorithms",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-2",
+    "severity": "HIGH",
+    "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
+    "fullDescription": "A password hashing function such as BCrypt or Argon2 is only as strong as its cost parameters. Configured with too low a work factor, too little memory, or too few iterations, it degrades into a fast hash that an attacker who obtains the hashes can test billions of candidates against. Use a BCrypt work factor of at least 10, or Argon2id with at least 19456 KiB of memory and 2 iterations.",
+    "tags": [
+      "crypto",
+      "hashing"
+    ],
+    "standards": {
+      "cwe": [
+        916,
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 3,
     "kind": "VULNERABILITY",
-    "description": "Avoid reusing counter mode initialization vectors"
+    "name": "Avoid hard-coded initialization vectors",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-3",
+    "severity": "HIGH",
+    "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+    "fullDescription": "A hard-coded initialization vector is likely to be reused across encryptions with the same key. In GCM, reusing an initialization vector repeats the keystream, which can let an attacker recover plaintext by combining ciphertexts and can expose the authentication key. In CBC, a fixed initialization vector makes identical plaintext prefixes produce identical ciphertext. Generate a fresh, random initialization vector for every encryption.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        323
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   }
 ]

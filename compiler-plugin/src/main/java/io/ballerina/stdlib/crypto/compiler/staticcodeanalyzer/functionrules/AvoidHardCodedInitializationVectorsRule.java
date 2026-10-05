@@ -30,15 +30,14 @@ import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 import java.util.Optional;
 
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.unescapeIdentifier;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_HARD_CODED_INITIALIZATION_VECTORS;
 
 /**
- * Rule to avoid reusing initialization vectors (IVs) in counter mode encryption algorithms such as AES-CBC
- * and AES-GCM.
+ * Rule to avoid hard-coded initialization vectors (IVs) in AES-CBC and AES-GCM encryption.
  *
  * @since 2.9.1
  */
-public class AvoidReusingCounterModeVectorsRule implements CryptoFunctionRule {
+public class AvoidHardCodedInitializationVectorsRule implements CryptoFunctionRule {
 
     public static final String ENCRYPT_AES_CBC = "encryptAesCbc";
     public static final String ENCRYPT_AES_GCM = "encryptAesGcm";
@@ -61,7 +60,7 @@ public class AvoidReusingCounterModeVectorsRule implements CryptoFunctionRule {
 
     @Override
     public int getRuleId() {
-        return AVOID_REUSING_COUNTER_MODE_VECTORS.getId();
+        return AVOID_HARD_CODED_INITIALIZATION_VECTORS.getId();
 
     }
 

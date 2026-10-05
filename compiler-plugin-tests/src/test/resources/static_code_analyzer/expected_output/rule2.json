@@ -412,7 +412,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -432,7 +432,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -452,7 +452,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -472,7 +472,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -492,7 +492,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -512,7 +512,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -532,7 +532,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -552,7 +552,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -572,7 +572,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -592,7 +592,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -612,7 +612,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -632,7 +632,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -652,7 +652,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -672,7 +672,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -692,7 +692,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -712,7 +712,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -732,7 +732,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -752,7 +752,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -772,7 +772,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -792,7 +792,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -812,7 +812,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -832,7 +832,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -852,7 +852,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -872,7 +872,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -892,7 +892,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -912,7 +912,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -932,7 +932,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -952,7 +952,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -972,7 +972,7 @@
     "rule": {
       "id": "ballerina/crypto:2",
       "numericId": 2,
-      "description": "Avoid using fast hashing algorithms",
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
