@@ -212,7 +212,7 @@
     "rule": {
       "id": "ballerina/crypto:3",
       "numericId": 3,
-      "description": "A counter-mode encryption operation reuses a fixed initialization vector across encryptions.",
+      "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

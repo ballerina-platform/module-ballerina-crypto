@@ -52,11 +52,11 @@
   {
     "id": 3,
     "kind": "VULNERABILITY",
-    "name": "Avoid reusing counter mode initialization vectors",
+    "name": "Avoid hard-coded initialization vectors",
     "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-3",
     "severity": "HIGH",
-    "description": "A counter-mode encryption operation reuses a fixed initialization vector across encryptions.",
-    "fullDescription": "Reusing an initialization vector with the same key in a counter-based mode such as CTR or GCM produces the same keystream twice, which lets an attacker recover plaintext by combining the two ciphertexts, and for GCM can expose the authentication key. Generate a fresh, unpredictable initialization vector for every encryption.",
+    "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+    "fullDescription": "A hard-coded initialization vector is likely to be reused across encryptions with the same key. In GCM, reusing an initialization vector repeats the keystream, which can let an attacker recover plaintext by combining ciphertexts and can expose the authentication key. In CBC, a fixed initialization vector makes identical plaintext prefixes produce identical ciphertext. Generate a fresh, random initialization vector for every encryption.",
     "tags": [
       "crypto",
       "cipher"

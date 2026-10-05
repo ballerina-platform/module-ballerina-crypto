@@ -46,7 +46,7 @@ import java.util.Locale;
 
 import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_REUSING_COUNTER_MODE_VECTORS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_HARD_CODED_INITIALIZATION_VECTORS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -146,7 +146,7 @@ public class StaticCodeAnalyzerTest {
         Assertions.assertRule(
                 rules,
                 "ballerina/crypto:3",
-                AVOID_REUSING_COUNTER_MODE_VECTORS.getDescription(),
+                AVOID_HARD_CODED_INITIALIZATION_VECTORS.getDescription(),
                 VULNERABILITY);
     }
 
@@ -239,7 +239,7 @@ public class StaticCodeAnalyzerTest {
                 Assertions.assertIssue(issues, index, "ballerina/crypto:2", "pbkdf2_mod_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
                 break;
-            case AVOID_REUSING_COUNTER_MODE_VECTORS:
+            case AVOID_HARD_CODED_INITIALIZATION_VECTORS:
                 Assert.assertEquals(issues.size(), 13);
                 index = 0;
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",

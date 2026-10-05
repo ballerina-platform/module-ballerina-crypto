@@ -28,8 +28,8 @@ public enum CryptoRule {
             "that is known to be insecure.", VULNERABILITY)),
     AVOID_FAST_HASH_ALGORITHMS(createRule(2, "A password hashing function is configured with a work factor " +
             "too low to resist brute-force attacks.", VULNERABILITY)),
-    AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3, "A counter-mode encryption operation reuses a fixed " +
-            "initialization vector across encryptions.", VULNERABILITY));
+    AVOID_HARD_CODED_INITIALIZATION_VECTORS(createRule(3, "An AES-CBC or AES-GCM encryption operation uses a " +
+            "hard-coded initialization vector.", VULNERABILITY));
 
     private final Rule rule;
 
