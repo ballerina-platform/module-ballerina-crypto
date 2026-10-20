@@ -1,0 +1,6 @@
+# ballerina:14 flags identifier names that contain "secret"/"password" even though no literal secret is assigned.
+# In this package they are (a) values computed at runtime by KEM/HPKE operations (sharedSecret, encapsulatedSecret,
+# slices/results of encapsulation calls) and (b) public API parameters `keyPassword = ()` where the default is a
+# nil "no password" marker, not a credential. Renaming would break the public API; no fixed secret is embedded.
+[rule]
+exclude = ["ballerina:14"]
