@@ -2,5 +2,8 @@
 # In this package they are (a) values computed at runtime by KEM/HPKE operations (sharedSecret, encapsulatedSecret,
 # slices/results of encapsulation calls) and (b) public API parameters `keyPassword = ()` where the default is a
 # nil "no password" marker, not a credential. Renaming would break the public API; no fixed secret is embedded.
+# TODO: replace this rule exclusion with a targeted scan suppression (with a reason) once `bal scan` supports it
+# (planned for v0.13.0), and fix the false positives on the scan tool side: a secret-named identifier should only be
+# reported when it is assigned a fixed value.
 [rule]
 exclude = ["ballerina:14"]
