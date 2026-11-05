@@ -24,24 +24,24 @@ import static io.ballerina.scan.RuleKind.VULNERABILITY;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.RuleFactory.createRule;
 
 public enum CryptoRule {
-    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1,
-            "Avoid using insecure cipher modes or padding schemes", VULNERABILITY)),
-    AVOID_FAST_HASH_ALGORITHMS(createRule(2,
-            "Avoid using fast hashing algorithms", VULNERABILITY)),
-    AVOID_REUSING_COUNTER_MODE_VECTORS(createRule(3,
-            "Avoid reusing counter mode initialization vectors", VULNERABILITY)),
-    AVOID_WEAK_HASH_ALGORITHMS(createRule(4,
-            "Avoid using weak hashing and signature algorithms", VULNERABILITY)),
-    AVOID_HARDCODED_KEY_MATERIAL(createRule(5,
-            "Avoid hard-coded key material", VULNERABILITY)),
-    AVOID_WEAK_PGP_ALGORITHMS(createRule(6,
-            "Avoid using weak symmetric algorithms for PGP encryption", VULNERABILITY)),
-    ENSURE_PGP_INTEGRITY_CHECK(createRule(7,
-            "Avoid disabling integrity protection for PGP encryption", VULNERABILITY)),
-    AVOID_SHORT_AUTHENTICATION_TAGS(createRule(8,
-            "Avoid using short authentication tags for counter mode encryption", VULNERABILITY)),
-    ENSURE_SIGNATURE_VERIFICATION(createRule(9,
-            "Avoid discarding the result of a signature verification", VULNERABILITY));
+    AVOID_WEAK_CIPHER_ALGORITHMS(createRule(1, "An encryption operation uses a cipher mode or padding scheme " +
+            "that is known to be insecure.", VULNERABILITY)),
+    AVOID_FAST_HASH_ALGORITHMS(createRule(2, "A password hashing function is configured with a work factor " +
+            "too low to resist brute-force attacks.", VULNERABILITY)),
+    AVOID_HARD_CODED_INITIALIZATION_VECTORS(createRule(3, "An AES-CBC or AES-GCM encryption operation uses a " +
+            "hard-coded initialization vector.", VULNERABILITY)),
+    AVOID_WEAK_HASH_ALGORITHMS(createRule(4, "A hashing, message authentication or digital signature operation " +
+            "uses the MD5 or SHA-1 algorithm.", VULNERABILITY)),
+    AVOID_HARDCODED_KEY_MATERIAL(createRule(5, "A cryptographic operation uses key material that is hard-coded " +
+            "in the source.", VULNERABILITY)),
+    AVOID_WEAK_PGP_ALGORITHMS(createRule(6, "A PGP encryption operation uses a weak symmetric key algorithm or " +
+            "no encryption.", VULNERABILITY)),
+    ENSURE_PGP_INTEGRITY_CHECK(createRule(7, "A PGP encryption operation disables the integrity check.",
+            VULNERABILITY)),
+    AVOID_SHORT_AUTHENTICATION_TAGS(createRule(8, "An AES-GCM operation uses an authentication tag shorter than " +
+            "96 bits.", VULNERABILITY)),
+    ENSURE_SIGNATURE_VERIFICATION(createRule(9, "The result of a signature verification is discarded.",
+            VULNERABILITY));
 
     private final Rule rule;
 

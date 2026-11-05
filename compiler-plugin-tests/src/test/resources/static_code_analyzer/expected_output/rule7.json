@@ -12,7 +12,7 @@
     "rule": {
       "id": "ballerina/crypto:7",
       "numericId": 7,
-      "description": "Avoid disabling integrity protection for PGP encryption",
+      "description": "A PGP encryption operation disables the integrity check.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

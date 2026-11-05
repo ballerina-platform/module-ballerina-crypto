@@ -5,12 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [2.13.0] - 2026-10-08
+
 ### Added
 - [Add `markForYourEyesOnly` option to `Options` record to control PGP literal data packet "For Your Eyes Only" marking in `encryptPgp` and `encryptStreamAsPgp`](https://github.com/ballerina-platform/ballerina-lang/issues/44575)
 - [Support decrypting signed PGP data in `decryptPgp` and `decryptStreamFromPgp`, where the signature is silently skipped without verification](https://github.com/ballerina-platform/ballerina-library/issues/)
 
 ### Changed
-- [[#9114] Updated Keywords and Reformat README for Connector Store Discoverability](https://github.com/ballerina-platform/ballerina-library/issues/9114)
+- [[#9132] Updated Keywords and Reformat README for Connector Store Discoverability](https://github.com/ballerina-platform/ballerina-library/issues/9132)
+- Update the Java platform to 25
+- Upgrade Gradle to 9.5.1 and the Ballerina Gradle plugin to 4.0.0
+
+### Fixed
+- Update Bouncy Castle to 1.85 to address `CVE-2026-8763` and `CVE-2026-13506` vulnerabilities
 
 ## [2.11.0] - 2026-04-07
 

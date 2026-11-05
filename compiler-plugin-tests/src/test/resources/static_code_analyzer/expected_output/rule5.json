@@ -12,7 +12,7 @@
     "rule": {
       "id": "ballerina/crypto:5",
       "numericId": 5,
-      "description": "Avoid hard-coded key material",
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -32,7 +32,7 @@
     "rule": {
       "id": "ballerina/crypto:5",
       "numericId": 5,
-      "description": "Avoid hard-coded key material",
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -52,7 +52,7 @@
     "rule": {
       "id": "ballerina/crypto:5",
       "numericId": 5,
-      "description": "Avoid hard-coded key material",
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

@@ -2,46 +2,223 @@
   {
     "id": 1,
     "kind": "VULNERABILITY",
-    "description": "Avoid using insecure cipher modes or padding schemes"
+    "name": "Avoid using insecure cipher modes or padding schemes",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-1",
+    "severity": "HIGH",
+    "description": "An encryption operation uses a cipher mode or padding scheme that is known to be insecure.",
+    "fullDescription": "Cipher modes such as ECB encrypt identical plaintext blocks to identical ciphertext blocks, revealing structure in the data, and padding schemes such as PKCS#1 v1.5 are open to padding oracle attacks that recover plaintext. Use an authenticated mode such as GCM, and OAEP padding for RSA.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        327,
+        780
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 2,
     "kind": "VULNERABILITY",
-    "description": "Avoid using fast hashing algorithms"
+    "name": "Avoid using fast hashing algorithms",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-2",
+    "severity": "HIGH",
+    "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
+    "fullDescription": "A password hashing function such as BCrypt or Argon2 is only as strong as its cost parameters. Configured with too low a work factor, too little memory, or too few iterations, it degrades into a fast hash that an attacker who obtains the hashes can test billions of candidates against. Use a BCrypt work factor of at least 10, or Argon2id with at least 19456 KiB of memory and 2 iterations.",
+    "tags": [
+      "crypto",
+      "hashing"
+    ],
+    "standards": {
+      "cwe": [
+        916,
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 3,
     "kind": "VULNERABILITY",
-    "description": "Avoid reusing counter mode initialization vectors"
+    "name": "Avoid hard-coded initialization vectors",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-3",
+    "severity": "HIGH",
+    "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+    "fullDescription": "A hard-coded initialization vector is likely to be reused across encryptions with the same key. In GCM, reusing an initialization vector repeats the keystream, which can let an attacker recover plaintext by combining ciphertexts and can expose the authentication key. In CBC, a fixed initialization vector makes identical plaintext prefixes produce identical ciphertext. Generate a fresh, random initialization vector for every encryption.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        323
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 4,
     "kind": "VULNERABILITY",
-    "description": "Avoid using weak hashing and signature algorithms"
+    "name": "Avoid using weak hashing and signature algorithms",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-4",
+    "severity": "MEDIUM",
+    "description": "A hashing, message authentication or digital signature operation uses the MD5 or SHA-1 algorithm.",
+    "fullDescription": "Practical collision attacks exist against MD5 and SHA-1, so a digest, message authentication code or signature built on either no longer establishes what was hashed or signed. Use SHA-256 or stronger for hashing, message authentication and signing.",
+    "tags": [
+      "crypto",
+      "hashing",
+      "signature"
+    ],
+    "standards": {
+      "cwe": [
+        327,
+        328
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 5,
     "kind": "VULNERABILITY",
-    "description": "Avoid hard-coded key material"
+    "name": "Avoid hard-coded key material",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-5",
+    "severity": "HIGH",
+    "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+    "fullDescription": "Key material embedded in the source is present in the repository, every clone, build artefacts and images built from them. It cannot be rotated without a code change and is identical across every environment. Declare the key as a configurable variable supplied at deployment, or read it from a key store.",
+    "tags": [
+      "crypto",
+      "secrets"
+    ],
+    "standards": {
+      "cwe": [
+        321,
+        798
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 6,
     "kind": "VULNERABILITY",
-    "description": "Avoid using weak symmetric algorithms for PGP encryption"
+    "name": "Avoid using weak symmetric algorithms for PGP encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-6",
+    "severity": "HIGH",
+    "description": "A PGP encryption operation uses a weak symmetric key algorithm or no encryption.",
+    "fullDescription": "The PGP symmetric key algorithm decides the strength of the message encryption. DES, Triple DES, IDEA, Blowfish, CAST5 and SAFER have block or key sizes too small to resist current attacks, and NULL performs no encryption at all. Use AES-256, or leave the option unset to take the library default.",
+    "tags": [
+      "crypto",
+      "pgp"
+    ],
+    "standards": {
+      "cwe": [
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 7,
     "kind": "VULNERABILITY",
-    "description": "Avoid disabling integrity protection for PGP encryption"
+    "name": "Avoid disabling integrity protection for PGP encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-7",
+    "severity": "HIGH",
+    "description": "A PGP encryption operation disables the integrity check.",
+    "fullDescription": "PGP encryption carries a modification detection code that lets the recipient detect a ciphertext altered in transit. Disabling it lets an attacker modify the decrypted message without detection and enables chosen-ciphertext attacks. Leave withIntegrityCheck at its default of true.",
+    "tags": [
+      "crypto",
+      "pgp"
+    ],
+    "standards": {
+      "cwe": [
+        353,
+        354
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 8,
     "kind": "VULNERABILITY",
-    "description": "Avoid using short authentication tags for counter mode encryption"
+    "name": "Avoid using short authentication tags for counter mode encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-8",
+    "severity": "MEDIUM",
+    "description": "An AES-GCM operation uses an authentication tag shorter than 96 bits.",
+    "fullDescription": "The GCM authentication tag is what the recipient checks to know the ciphertext was not altered, and its length sets the work required to forge one. A tag shorter than 96 bits weakens authentication. Use the default 128-bit tag.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   },
   {
     "id": 9,
     "kind": "VULNERABILITY",
-    "description": "Avoid discarding the result of a signature verification"
+    "name": "Avoid discarding the result of a signature verification",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-9",
+    "severity": "HIGH",
+    "description": "The result of a signature verification is discarded.",
+    "fullDescription": "The signature verification functions return a boolean that says whether the signature matched; they do not fail when it does not. Discarding that result means the signature is checked and then ignored, so a forged or tampered message is accepted. Bind the result and act on it.",
+    "tags": [
+      "crypto",
+      "signature"
+    ],
+    "standards": {
+      "cwe": [
+        347
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   }
 ]
