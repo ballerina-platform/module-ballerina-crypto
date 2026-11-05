@@ -126,3 +126,18 @@ isolated function testEncryptAndDecryptWithAesGcmPkcs5WithInvalidTagValue() {
         test:assertFail("Expected error not found.");
     }
 }
+
+@test:Config {}
+isolated function testEncryptWithAesGcmRejectsTagShorterThan96Bits() {
+    byte[] message = "Ballerina crypto test".toBytes();
+    byte[] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    byte[] iv = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    foreach int tagSize in [32, 63, 64] {
+        byte[]|Error result = encryptAesGcm(message, key, iv, tagSize = tagSize);
+        if result is Error {
+            test:assertTrue(result.message().includes("Invalid tag size. Valid tag sizes in bytes:"));
+        } else {
+            test:assertFail("Expected error not found for tag size " + tagSize.toString());
+        }
+    }
+}
