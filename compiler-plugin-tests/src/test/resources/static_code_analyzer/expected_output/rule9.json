@@ -1,6 +1,86 @@
 [
   {
     "location": {
+      "filePath": "discarded_password_verification.bal",
+      "startLine": 19,
+      "endLine": 19,
+      "startColumn": 22,
+      "endColumn": 63,
+      "startOffset": 769,
+      "length": 41
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_password_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_password_verification.bal"
+  },
+  {
+    "location": {
+      "filePath": "discarded_password_verification.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 14,
+      "endColumn": 55,
+      "startOffset": 907,
+      "length": 41
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_password_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_password_verification.bal"
+  },
+  {
+    "location": {
+      "filePath": "discarded_password_verification.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 22,
+      "endColumn": 63,
+      "startOffset": 1053,
+      "length": 41
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_password_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_password_verification.bal"
+  },
+  {
+    "location": {
+      "filePath": "discarded_password_verification.bal",
+      "startLine": 31,
+      "endLine": 31,
+      "startColumn": 16,
+      "endColumn": 66,
+      "startOffset": 1198,
+      "length": 50
+    },
+    "rule": {
+      "id": "ballerina/crypto:9",
+      "numericId": 9,
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule9/discarded_password_verification.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule9/discarded_password_verification.bal"
+  },
+  {
+    "location": {
       "filePath": "discarded_verification.bal",
       "startLine": 19,
       "endLine": 19,
@@ -12,7 +92,7 @@
     "rule": {
       "id": "ballerina/crypto:9",
       "numericId": 9,
-      "description": "The result of a signature verification is discarded.",
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -32,7 +112,7 @@
     "rule": {
       "id": "ballerina/crypto:9",
       "numericId": 9,
-      "description": "The result of a signature verification is discarded.",
+      "description": "The result of a signature, password hash or MAC verification is discarded.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

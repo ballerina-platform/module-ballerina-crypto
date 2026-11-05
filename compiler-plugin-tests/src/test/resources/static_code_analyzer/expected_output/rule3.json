@@ -182,6 +182,26 @@
   {
     "location": {
       "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 24,
+      "endLine": 24,
+      "startColumn": 14,
+      "endColumn": 107,
+      "startOffset": 937,
+      "length": 93
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
       "startLine": 26,
       "endLine": 26,
       "startColumn": 14,
@@ -193,6 +213,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 26,
+      "endLine": 26,
+      "startColumn": 14,
+      "endColumn": 79,
+      "startOffset": 1047,
+      "length": 65
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -222,6 +262,26 @@
   {
     "location": {
       "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 29,
+      "endLine": 29,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1209,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
       "startLine": 32,
       "endLine": 32,
       "startColumn": 14,
@@ -233,6 +293,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 32,
+      "endLine": 32,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1307,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -262,6 +342,26 @@
   {
     "location": {
       "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 36,
+      "endLine": 36,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1427,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
       "startLine": 39,
       "endLine": 39,
       "startColumn": 14,
@@ -273,6 +373,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 39,
+      "endLine": 39,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1517,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -301,6 +421,26 @@
   },
   {
     "location": {
+      "filePath": "func_hardcoded_iv_param.bal",
+      "startLine": 51,
+      "endLine": 51,
+      "startColumn": 14,
+      "endColumn": 54,
+      "startOffset": 1988,
+      "length": 40
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_hardcoded_iv_param.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_hardcoded_iv_param.bal"
+  },
+  {
+    "location": {
       "filePath": "func_var_named_arg.bal",
       "startLine": 22,
       "endLine": 22,
@@ -313,6 +453,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_var_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "func_var_named_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 77,
+      "startOffset": 953,
+      "length": 56
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -341,6 +501,26 @@
   },
   {
     "location": {
+      "filePath": "func_var_pos_arg.bal",
+      "startLine": 22,
+      "endLine": 22,
+      "startColumn": 21,
+      "endColumn": 72,
+      "startOffset": 951,
+      "length": 51
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/func_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/func_var_pos_arg.bal"
+  },
+  {
+    "location": {
       "filePath": "inline_named_arg.bal",
       "startLine": 21,
       "endLine": 21,
@@ -353,6 +533,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/inline_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/inline_named_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "inline_named_arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 119,
+      "startOffset": 866,
+      "length": 98
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",
@@ -381,6 +581,26 @@
   },
   {
     "location": {
+      "filePath": "inline_pos_arg.bal",
+      "startLine": 21,
+      "endLine": 21,
+      "startColumn": 21,
+      "endColumn": 114,
+      "startOffset": 864,
+      "length": 93
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/inline_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/inline_pos_arg.bal"
+  },
+  {
+    "location": {
       "filePath": "mod_var_named_arg.bal",
       "startLine": 23,
       "endLine": 23,
@@ -401,6 +621,26 @@
   },
   {
     "location": {
+      "filePath": "mod_var_named_arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 85,
+      "startOffset": 957,
+      "length": 64
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/mod_var_named_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/mod_var_named_arg.bal"
+  },
+  {
+    "location": {
       "filePath": "mod_var_pos_arg.bal",
       "startLine": 23,
       "endLine": 23,
@@ -413,6 +653,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule3/mod_var_pos_arg.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule3/mod_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "mod_var_pos_arg.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 78,
+      "startOffset": 953,
+      "length": 57
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

@@ -26,7 +26,7 @@ import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.Avoi
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidWeakPgpAlgorithmsRule;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.CryptoFunctionRule;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.EnsurePgpIntegrityCheckRule;
-import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.EnsureSignatureVerificationRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.EnsureVerificationResultUsedRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class CryptoFunctionRulesEngine {
         addRule(new AvoidWeakPgpAlgorithmsRule());
         addRule(new EnsurePgpIntegrityCheckRule());
         addRule(new AvoidShortAuthenticationTagsRule());
-        addRule(new EnsureSignatureVerificationRule());
+        addRule(new EnsureVerificationResultUsedRule());
         // Add more default rules here as needed
     }
 }

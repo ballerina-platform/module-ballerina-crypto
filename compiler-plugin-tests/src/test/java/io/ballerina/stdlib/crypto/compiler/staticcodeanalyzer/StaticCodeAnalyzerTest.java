@@ -51,7 +51,7 @@ import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_PGP_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_PGP_INTEGRITY_CHECK;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_SHORT_AUTHENTICATION_TAGS;
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_SIGNATURE_VERIFICATION;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_VERIFICATION_RESULT_USED;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_HASH_ALGORITHMS;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_CIPHER_ALGORITHMS;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -182,7 +182,7 @@ public class StaticCodeAnalyzerTest {
         Assertions.assertRule(
                 rules,
                 "ballerina/crypto:9",
-                ENSURE_SIGNATURE_VERIFICATION.getDescription(),
+                ENSURE_VERIFICATION_RESULT_USED.getDescription(),
                 VULNERABILITY);
     }
 
@@ -191,7 +191,7 @@ public class StaticCodeAnalyzerTest {
         switch (rule) {
             case AVOID_WEAK_CIPHER_ALGORITHMS:
                 index = 0;
-                Assert.assertEquals(issues.size(), 10);
+                Assert.assertEquals(issues.size(), 12);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc.bal",
                         30, 30, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "aes_cbc_as_import.bal",
@@ -202,9 +202,13 @@ public class StaticCodeAnalyzerTest {
                         26, 26, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
                         23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "weak_cipher_algo.bal",
+                        23, 23, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
                         27, 27, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "weak_cipher_algo.bal",
+                        27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "weak_cipher_algo.bal",
                         27, 27, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "weak_cipher_algo.bal",
                         35, 35, Source.BUILT_IN);
@@ -214,8 +218,8 @@ public class StaticCodeAnalyzerTest {
                         39, 39, Source.BUILT_IN);
                 break;
             case AVOID_FAST_HASH_ALGORITHMS:
-                Assert.assertEquals(issues.size(), 29);
                 index = 0;
+                Assert.assertEquals(issues.size(), 30);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
                         31, 31, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "argon_func.bal",
@@ -240,6 +244,8 @@ public class StaticCodeAnalyzerTest {
                         21, 21, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_func_var_pos_arg.bal",
                         21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_hex_work_factor.bal",
+                        20, 20, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_named_arg.bal",
                         20, 20, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:2", "bcrypt_inline_pos_arg.bal",
@@ -276,46 +282,68 @@ public class StaticCodeAnalyzerTest {
                         22, 22, Source.BUILT_IN);
                 break;
             case AVOID_HARD_CODED_INITIALIZATION_VECTORS:
-                Assert.assertEquals(issues.size(), 13);
                 index = 0;
+                Assert.assertEquals(issues.size(), 26);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        24, 24, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
                         24, 24, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
                         26, 26, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
+                        26, 26, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        29, 29, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
                         29, 29, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
                         32, 32, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
+                        32, 32, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
+                        36, 36, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
                         36, 36, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
                         39, 39, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
+                        39, 39, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_hardcoded_iv_param.bal",
                         42, 42, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_hardcoded_iv_param.bal",
+                        51, 51, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_var_named_arg.bal",
+                        22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_var_named_arg.bal",
                         22, 22, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "func_var_pos_arg.bal",
                         22, 22, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "func_var_pos_arg.bal",
+                        22, 22, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "inline_named_arg.bal",
+                        21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "inline_named_arg.bal",
                         21, 21, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "inline_pos_arg.bal",
                         21, 21, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "inline_pos_arg.bal",
+                        21, 21, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "mod_var_named_arg.bal",
                         23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:3", "mod_var_pos_arg.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "mod_var_named_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:3", "mod_var_pos_arg.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:5", "mod_var_pos_arg.bal",
                         23, 23, Source.BUILT_IN);
                 break;
             case AVOID_WEAK_HASH_ALGORITHMS:
                 index = 0;
-                Assert.assertEquals(issues.size(), 8);
+                Assert.assertEquals(issues.size(), 6);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
                         19, 19, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
                         20, 20, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
-                        24, 24, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_hash.bal",
-                        25, 25, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_signature.bal",
                         19, 19, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:4", "weak_signature.bal",
@@ -327,45 +355,93 @@ public class StaticCodeAnalyzerTest {
                 break;
             case AVOID_HARDCODED_KEY_MATERIAL:
                 index = 0;
-                Assert.assertEquals(issues.size(), 3);
+                Assert.assertEquals(issues.size(), 13);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
-                        21, 21, Source.BUILT_IN);
+                        26, 26, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
-                        25, 25, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:5", "hardcoded_key.bal",
                         29, 29, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        33, 33, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        37, 37, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        42, 42, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:1", "hardcoded_key.bal",
+                        47, 47, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        47, 47, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        51, 51, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        55, 55, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        59, 59, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        63, 63, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:5", "hardcoded_key.bal",
+                        67, 67, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:5", "hardcoded_key.bal",
+                        71, 71, Source.BUILT_IN);
                 break;
             case AVOID_WEAK_PGP_ALGORITHMS:
                 index = 0;
-                Assert.assertEquals(issues.size(), 3);
+                Assert.assertEquals(issues.size(), 6);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
                         19, 19, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
                         23, 23, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
                         27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        31, 31, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        36, 36, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:6", "weak_pgp_algorithm.bal",
+                        40, 40, Source.BUILT_IN);
                 break;
             case ENSURE_PGP_INTEGRITY_CHECK:
                 index = 0;
-                Assert.assertEquals(issues.size(), 1);
+                Assert.assertEquals(issues.size(), 5);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:7", "pgp_integrity.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:7", "pgp_integrity.bal",
+                        27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:7", "pgp_integrity.bal",
+                        32, 32, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:7", "pgp_integrity.bal",
+                        36, 36, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index, "ballerina/crypto:7", "pgp_integrity.bal",
-                        19, 19, Source.BUILT_IN);
+                        40, 40, Source.BUILT_IN);
                 break;
             case AVOID_SHORT_AUTHENTICATION_TAGS:
                 index = 0;
-                Assert.assertEquals(issues.size(), 4);
-                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
-                        21, 21, Source.BUILT_IN);
+                Assert.assertEquals(issues.size(), 7);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         25, 25, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         29, 29, Source.BUILT_IN);
-                Assertions.assertIssue(issues, index, "ballerina/crypto:8", "short_tag.bal",
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
                         33, 33, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        37, 37, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        42, 42, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:8", "short_tag.bal",
+                        46, 46, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index, "ballerina/crypto:8", "short_tag.bal",
+                        50, 50, Source.BUILT_IN);
                 break;
-            case ENSURE_SIGNATURE_VERIFICATION:
+            case ENSURE_VERIFICATION_RESULT_USED:
                 index = 0;
-                Assert.assertEquals(issues.size(), 2);
+                Assert.assertEquals(issues.size(), 6);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_password_verification.bal",
+                        19, 19, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_password_verification.bal",
+                        23, 23, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_password_verification.bal",
+                        27, 27, Source.BUILT_IN);
+                Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_password_verification.bal",
+                        31, 31, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index++, "ballerina/crypto:9", "discarded_verification.bal",
                         19, 19, Source.BUILT_IN);
                 Assertions.assertIssue(issues, index, "ballerina/crypto:9", "discarded_verification.bal",

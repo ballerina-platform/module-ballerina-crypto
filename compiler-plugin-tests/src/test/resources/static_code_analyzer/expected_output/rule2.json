@@ -181,6 +181,26 @@
   },
   {
     "location": {
+      "filePath": "bcrypt_hex_work_factor.bal",
+      "startLine": 18,
+      "endLine": 18,
+      "startColumn": 0,
+      "endColumn": 6,
+      "startOffset": 669,
+      "length": 6
+    },
+    "rule": {
+      "id": "ballerina:3",
+      "numericId": 3,
+      "description": "Non isolated public function",
+      "ruleKind": "CODE_SMELL"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_hex_work_factor.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_hex_work_factor.bal"
+  },
+  {
+    "location": {
       "filePath": "bcrypt_inline_named_arg.bal",
       "startLine": 18,
       "endLine": 18,
@@ -638,6 +658,26 @@
     "source": "BUILT_IN",
     "fileName": "rule2/bcrypt_func_var_pos_arg.bal",
     "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_func_var_pos_arg.bal"
+  },
+  {
+    "location": {
+      "filePath": "bcrypt_hex_work_factor.bal",
+      "startLine": 20,
+      "endLine": 20,
+      "startColumn": 21,
+      "endColumn": 66,
+      "startOffset": 784,
+      "length": 45
+    },
+    "rule": {
+      "id": "ballerina/crypto:2",
+      "numericId": 2,
+      "description": "A password hashing function is configured with a work factor too low to resist brute-force attacks.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule2/bcrypt_hex_work_factor.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule2/bcrypt_hex_work_factor.bal"
   },
   {
     "location": {

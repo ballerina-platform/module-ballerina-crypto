@@ -19,12 +19,12 @@
 
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules;
 
-import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 
-import java.util.Optional;
-import java.util.Set;
-
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.PGP_ENCRYPT_FUNCTIONS;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.PGP_OPTIONS_PARAM;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getBooleanValue;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getIncludedRecordField;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_PGP_INTEGRITY_CHECK;
 
 /**
@@ -33,19 +33,20 @@ import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.
  * Setting {@code withIntegrityCheck} to false omits the modification detection code from the message. Without it a
  * recipient cannot tell whether the ciphertext was altered in transit, so tampering succeeds silently.
  *
- * @since 2.12.2
+ * @since 2.13.1
  */
 public class EnsurePgpIntegrityCheckRule implements CryptoFunctionRule {
 
-    private static final String WITH_INTEGRITY_CHECK_PARAM = "withIntegrityCheck";
-    private static final Set<String> PGP_ENCRYPT_FUNCTIONS = Set.of("encryptPgp", "encryptStreamAsPgp");
+    private static final String WITH_INTEGRITY_CHECK_FIELD = "withIntegrityCheck";
 
     @Override
     public void analyze(FunctionContext context) {
-        Optional<ExpressionNode> integrityCheck = context.getParamExpression(WITH_INTEGRITY_CHECK_PARAM);
-        // Only an explicit `false` is actionable. The default is true, and a non-literal value cannot be resolved.
-        if (integrityCheck.isPresent()
-                && "false".equals(integrityCheck.get().toSourceCode().trim())) {
+        // Only a known `false` is actionable. The default is true, and a non-constant value cannot be resolved.
+        boolean disabled = getIncludedRecordField(context, PGP_OPTIONS_PARAM, WITH_INTEGRITY_CHECK_FIELD)
+                .flatMap(expr -> getBooleanValue(expr, context.semanticModel()))
+                .filter(value -> !value)
+                .isPresent();
+        if (disabled) {
             context.reporter().reportIssue(context.document(), context.functionLocation(), getRuleId());
         }
     }

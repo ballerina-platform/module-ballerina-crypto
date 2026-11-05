@@ -58,5 +58,65 @@
     "source": "BUILT_IN",
     "fileName": "rule6/weak_pgp_algorithm.bal",
     "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 31,
+      "endLine": 31,
+      "startColumn": 21,
+      "endColumn": 103,
+      "startOffset": 1317,
+      "length": 82
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "A PGP encryption operation uses a weak symmetric key algorithm or no encryption.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 36,
+      "endLine": 36,
+      "startColumn": 21,
+      "endColumn": 65,
+      "startOffset": 1581,
+      "length": 44
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "A PGP encryption operation uses a weak symmetric key algorithm or no encryption.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_pgp_algorithm.bal",
+      "startLine": 40,
+      "endLine": 40,
+      "startColumn": 21,
+      "endColumn": 108,
+      "startOffset": 1740,
+      "length": 87
+    },
+    "rule": {
+      "id": "ballerina/crypto:6",
+      "numericId": 6,
+      "description": "A PGP encryption operation uses a weak symmetric key algorithm or no encryption.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule6/weak_pgp_algorithm.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule6/weak_pgp_algorithm.bal"
   }
 ]

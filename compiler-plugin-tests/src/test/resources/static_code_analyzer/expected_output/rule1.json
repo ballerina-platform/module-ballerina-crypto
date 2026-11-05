@@ -182,6 +182,26 @@
   {
     "location": {
       "filePath": "weak_cipher_algo.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 14,
+      "endColumn": 56,
+      "startOffset": 854,
+      "length": 42
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
       "startLine": 27,
       "endLine": 27,
       "startColumn": 14,
@@ -213,6 +233,26 @@
       "id": "ballerina/crypto:3",
       "numericId": 3,
       "description": "An AES-CBC or AES-GCM encryption operation uses a hard-coded initialization vector.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule1/weak_cipher_algo.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule1/weak_cipher_algo.bal"
+  },
+  {
+    "location": {
+      "filePath": "weak_cipher_algo.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 14,
+      "endColumn": 60,
+      "startOffset": 1003,
+      "length": 46
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
       "ruleKind": "VULNERABILITY"
     },
     "source": "BUILT_IN",

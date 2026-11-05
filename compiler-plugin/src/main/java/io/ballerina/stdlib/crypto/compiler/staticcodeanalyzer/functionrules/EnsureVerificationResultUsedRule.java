@@ -22,18 +22,17 @@ import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 
 import java.util.Set;
 
-import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_SIGNATURE_VERIFICATION;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.ENSURE_VERIFICATION_RESULT_USED;
 
 /**
- * Rule to ensure the result of a signature verification is used.
+ * Rule to ensure the result of a signature, password hash or MAC verification is used.
  * <p>
- * The verify functions return whether the signature is valid; they do not fail when it is invalid. Discarding that
- * boolean means the signature is computed and then ignored, so a forged or tampered message is accepted. The code
- * reads as though verification is happening, which is what makes this worth reporting.
+ * These functions return whether the check passed; they do not fail when it does not. Discarding that boolean means
+ * a forged message or a wrong password is accepted, while the code reads as though verification is happening.
  *
- * @since 2.12.2
+ * @since 2.13.1
  */
-public class EnsureSignatureVerificationRule implements CryptoFunctionRule {
+public class EnsureVerificationResultUsedRule implements CryptoFunctionRule {
 
     private static final Set<String> VERIFY_FUNCTIONS = Set.of(
             "verifyRsaMd5Signature",
@@ -44,7 +43,11 @@ public class EnsureSignatureVerificationRule implements CryptoFunctionRule {
             "verifyRsaSsaPss256Signature",
             "verifySha256withEcdsaSignature",
             "verifySha384withEcdsaSignature",
-            "verifyMlDsa65Signature");
+            "verifyMlDsa65Signature",
+            "verifyBcrypt",
+            "verifyArgon2",
+            "verifyPbkdf2",
+            "equalConstantTime");
 
     @Override
     public void analyze(FunctionContext context) {
@@ -55,7 +58,7 @@ public class EnsureSignatureVerificationRule implements CryptoFunctionRule {
 
     @Override
     public int getRuleId() {
-        return ENSURE_SIGNATURE_VERIFICATION.getId();
+        return ENSURE_VERIFICATION_RESULT_USED.getId();
     }
 
     @Override

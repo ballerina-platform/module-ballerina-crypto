@@ -21,14 +21,16 @@ function weakHashes(string data) {
     byte[] _ = crypto:hashSha1(data.toBytes());
 }
 
-function weakHmacs(string data, byte[] key) {
-    byte[] _ = crypto:hmacMd5(data.toBytes(), key);
-    byte[] _ = crypto:hmacSha1(data.toBytes(), key);
-}
-
 // Negative cases - these algorithms are not flagged
-function strongHashes(string data, byte[] key) {
+function strongHashes(string data) {
     byte[] _ = crypto:hashSha256(data.toBytes());
     byte[] _ = crypto:hashSha512(data.toBytes());
-    byte[] _ = crypto:hmacSha256(data.toBytes(), key);
+}
+
+// Negative cases - HMAC does not depend on the collision resistance of the hash, so HMAC-MD5 and HMAC-SHA1 are
+// not flagged
+function hmacs(string data, byte[] key) returns error? {
+    byte[] _ = check crypto:hmacMd5(data.toBytes(), key);
+    byte[] _ = check crypto:hmacSha1(data.toBytes(), key);
+    byte[] _ = check crypto:hmacSha256(data.toBytes(), key);
 }

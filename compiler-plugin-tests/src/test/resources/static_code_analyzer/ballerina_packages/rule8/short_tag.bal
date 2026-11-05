@@ -18,8 +18,12 @@ import ballerina/crypto;
 
 const int SHORT_TAG = 32;
 
+configurable int configuredTagSize = 32;
+
+int moduleTagSize = 32;
+
 function shortTagInline(byte[] data, byte[] key, byte[] iv) returns error? {
-    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 64);
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 32);
 }
 
 function shortTagConstant(byte[] data, byte[] key, byte[] iv) returns error? {
@@ -34,6 +38,19 @@ function shortTagHexLiteral(byte[] data, byte[] key, byte[] iv) returns error? {
     byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 0x20);
 }
 
+function shortTagInLocalVariable(byte[] data, byte[] key, byte[] iv) returns error? {
+    int tagSize = 32;
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = tagSize);
+}
+
+function shortTagInNestedCall(byte[] data, byte[] key, byte[] iv) returns error? {
+    int _ = consume(check crypto:encryptAesGcm(data, key, iv, tagSize = 32));
+}
+
+function shortTagUnderTrap(byte[] data, byte[] key, byte[] iv) returns byte[]|error {
+    return trap crypto:encryptAesGcm(data, key, iv, tagSize = 32);
+}
+
 // Negative cases - the documented minimum and the default are not flagged
 function documentedMinimumTag(byte[] data, byte[] key, byte[] iv) returns error? {
     byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = 96);
@@ -42,3 +59,24 @@ function documentedMinimumTag(byte[] data, byte[] key, byte[] iv) returns error?
 function defaultTag(byte[] data, byte[] key, byte[] iv) returns error? {
     byte[] _ = check crypto:encryptAesGcm(data, key, iv);
 }
+
+// Negative cases - values that can change outside the analysed code are not resolved
+function configurableTag(byte[] data, byte[] key, byte[] iv) returns error? {
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = configuredTagSize);
+}
+
+function moduleVariableTag(byte[] data, byte[] key, byte[] iv) returns error? {
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = moduleTagSize);
+}
+
+function shadowedTag(byte[] data, byte[] key, byte[] iv, int moduleTagSize) returns error? {
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = moduleTagSize);
+}
+
+function compoundAssignedTag(byte[] data, byte[] key, byte[] iv) returns error? {
+    int tagSize = 32;
+    tagSize += 96;
+    byte[] _ = check crypto:encryptAesGcm(data, key, iv, tagSize = tagSize);
+}
+
+function consume(byte[] value) returns int => value.length();

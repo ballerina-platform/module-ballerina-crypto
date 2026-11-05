@@ -16,15 +16,41 @@
 
 import ballerina/crypto;
 
+const boolean NO_MDC = false;
+
+boolean moduleIntegrity = false;
+
 function integrityCheckDisabled(byte[] data, string publicKeyPath) returns error? {
     byte[] _ = check crypto:encryptPgp(data, publicKeyPath, withIntegrityCheck = false);
 }
 
-// Negative case - integrity protection is on by default
+function integrityCheckDisabledInOptionsRecord(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, {withIntegrityCheck: false});
+}
+
+function integrityCheckDisabledInOptionsVariable(byte[] data, string publicKeyPath) returns error? {
+    crypto:Options opts = {withIntegrityCheck: false};
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, opts);
+}
+
+function integrityCheckDisabledByConstant(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, withIntegrityCheck = NO_MDC);
+}
+
+function integrityCheckDisabledInBraces(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, withIntegrityCheck = (false));
+}
+
+// Negative cases - integrity protection is on by default
 function integrityCheckEnabled(byte[] data, string publicKeyPath) returns error? {
     byte[] _ = check crypto:encryptPgp(data, publicKeyPath, withIntegrityCheck = true);
 }
 
 function integrityCheckDefault(byte[] data, string publicKeyPath) returns error? {
     byte[] _ = check crypto:encryptPgp(data, publicKeyPath);
+}
+
+// Negative case - a non-final module variable can be changed before use
+function integrityCheckFromModuleVariable(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, withIntegrityCheck = moduleIntegrity);
 }

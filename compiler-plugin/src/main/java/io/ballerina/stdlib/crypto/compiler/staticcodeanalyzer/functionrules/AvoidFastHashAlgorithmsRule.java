@@ -18,18 +18,13 @@
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules;
 
 import io.ballerina.compiler.api.SemanticModel;
-import io.ballerina.compiler.api.symbols.ConstantSymbol;
-import io.ballerina.compiler.api.symbols.Symbol;
-import io.ballerina.compiler.api.values.ConstantValue;
-import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
-import io.ballerina.compiler.syntax.tree.NameReferenceNode;
-import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 
 import java.util.Optional;
 
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.getStringValue;
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.hasLowerIntegerValue;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_FAST_HASH_ALGORITHMS;
 
 /**
@@ -141,26 +136,5 @@ public class AvoidFastHashAlgorithmsRule implements CryptoFunctionRule {
             default -> throw new IllegalArgumentException("Unsupported HMAC algorithm: " + algorithm +
                     " found for PBKDF2 hashing function");
         };
-    }
-
-    private static boolean hasLowerIntegerValue(ExpressionNode valueExpr, Integer targetValue,
-                                                SemanticModel semanticModel) {
-        if (valueExpr.kind().equals(SyntaxKind.NUMERIC_LITERAL)) {
-            String iterationsValue = ((BasicLiteralNode) valueExpr).literalToken().text();
-            try {
-                int iterationsInt = Integer.parseInt(iterationsValue);
-                return iterationsInt < targetValue;
-            } catch (NumberFormatException e) {
-                // Ignore and continue
-            }
-        } else if (valueExpr instanceof NameReferenceNode refNode) {
-            Optional<Symbol> refSymbol = semanticModel.symbol(refNode);
-            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef &&
-                    constantRef.constValue() instanceof ConstantValue constantValue &&
-                    constantValue.value() instanceof Long longValue) {
-                return longValue < targetValue;
-            }
-        }
-        return false;
     }
 }

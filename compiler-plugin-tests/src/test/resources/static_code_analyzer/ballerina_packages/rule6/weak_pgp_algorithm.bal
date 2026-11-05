@@ -28,7 +28,24 @@ function tripleDesPgp(byte[] data, string publicKeyPath) returns error? {
     byte[] _ = check crypto:encryptPgp(data, publicKeyPath, symmetricKeyAlgorithm = crypto:TRIPLE_DES);
 }
 
-// Negative case - AES-256 is the default and is not flagged
+function weakAlgorithmInOptionsRecord(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, {symmetricKeyAlgorithm: crypto:TRIPLE_DES});
+}
+
+function weakAlgorithmInOptionsVariable(byte[] data, string publicKeyPath) returns error? {
+    crypto:Options opts = {symmetricKeyAlgorithm: crypto:NULL};
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, opts);
+}
+
+function weakAlgorithmInNamedOptions(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, options = {symmetricKeyAlgorithm: crypto:CAST5});
+}
+
+// Negative cases - AES-256 is the default and is not flagged
 function strongPgpAlgorithm(byte[] data, string publicKeyPath) returns error? {
     byte[] _ = check crypto:encryptPgp(data, publicKeyPath, symmetricKeyAlgorithm = crypto:AES_256);
+}
+
+function strongAlgorithmInOptionsRecord(byte[] data, string publicKeyPath) returns error? {
+    byte[] _ = check crypto:encryptPgp(data, publicKeyPath, {symmetricKeyAlgorithm: crypto:AES_256});
 }

@@ -79,8 +79,8 @@
     "name": "Avoid using weak hashing and signature algorithms",
     "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-4",
     "severity": "MEDIUM",
-    "description": "A hashing, message authentication or digital signature operation uses the MD5 or SHA-1 algorithm.",
-    "fullDescription": "Practical collision attacks exist against MD5 and SHA-1, so a digest, message authentication code or signature built on either no longer establishes what was hashed or signed. Use SHA-256 or stronger for hashing, message authentication and signing.",
+    "description": "A hashing or digital signature operation uses the MD5 or SHA-1 algorithm.",
+    "fullDescription": "Practical collision attacks exist against MD5 and SHA-1, so a digest or signature built on either no longer establishes what was hashed or signed. An attacker can produce a second input with the same digest, letting tampered content pass an integrity check or carry a signature made for other content. Use SHA-256 or stronger for hashing and signing.",
     "tags": [
       "crypto",
       "hashing",
@@ -176,11 +176,11 @@
   {
     "id": 8,
     "kind": "VULNERABILITY",
-    "name": "Avoid using short authentication tags for counter mode encryption",
+    "name": "Avoid using short authentication tags for AES-GCM encryption",
     "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-8",
     "severity": "MEDIUM",
     "description": "An AES-GCM operation uses an authentication tag shorter than 96 bits.",
-    "fullDescription": "The GCM authentication tag is what the recipient checks to know the ciphertext was not altered, and its length sets the work required to forge one. A tag shorter than 96 bits weakens authentication. Use the default 128-bit tag.",
+    "fullDescription": "The GCM authentication tag is what the recipient checks to know the ciphertext was not altered, and its length sets the work required to forge one. A tag shorter than 96 bits weakens authentication, and the runtime rejects such sizes, so the call fails. Use the default 128-bit tag.",
     "tags": [
       "crypto",
       "cipher"
@@ -200,18 +200,20 @@
   {
     "id": 9,
     "kind": "VULNERABILITY",
-    "name": "Avoid discarding the result of a signature verification",
+    "name": "Avoid discarding the result of a verification",
     "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-9",
     "severity": "HIGH",
-    "description": "The result of a signature verification is discarded.",
-    "fullDescription": "The signature verification functions return a boolean that says whether the signature matched; they do not fail when it does not. Discarding that result means the signature is checked and then ignored, so a forged or tampered message is accepted. Bind the result and act on it.",
+    "description": "The result of a signature, password hash or MAC verification is discarded.",
+    "fullDescription": "Signature, password hash and constant-time MAC verification functions return a boolean that says whether the check passed; they do not fail when it does not. Discarding that result means the check runs and establishes nothing, so a forged message or a wrong password is accepted. Bind the result and act on it.",
     "tags": [
       "crypto",
-      "signature"
+      "signature",
+      "authentication"
     ],
     "standards": {
       "cwe": [
-        347
+        347,
+        252
       ],
       "owasp": [
         {

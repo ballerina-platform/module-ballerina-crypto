@@ -24,17 +24,24 @@ import io.ballerina.compiler.api.symbols.ConstantSymbol;
 import io.ballerina.compiler.api.symbols.FunctionSymbol;
 import io.ballerina.compiler.api.symbols.ParameterSymbol;
 import io.ballerina.compiler.api.symbols.Symbol;
+import io.ballerina.compiler.api.symbols.SymbolKind;
 import io.ballerina.compiler.api.values.ConstantValue;
 import io.ballerina.compiler.syntax.tree.AssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.BasicLiteralNode;
 import io.ballerina.compiler.syntax.tree.BindingPatternNode;
 import io.ballerina.compiler.syntax.tree.BlockStatementNode;
+import io.ballerina.compiler.syntax.tree.BracedExpressionNode;
 import io.ballerina.compiler.syntax.tree.CaptureBindingPatternNode;
+import io.ballerina.compiler.syntax.tree.CompoundAssignmentStatementNode;
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
+import io.ballerina.compiler.syntax.tree.FieldAccessExpressionNode;
 import io.ballerina.compiler.syntax.tree.FunctionArgumentNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyBlockNode;
 import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
+import io.ballerina.compiler.syntax.tree.IndexedExpressionNode;
 import io.ballerina.compiler.syntax.tree.ListConstructorExpressionNode;
+import io.ballerina.compiler.syntax.tree.MappingConstructorExpressionNode;
+import io.ballerina.compiler.syntax.tree.MappingFieldNode;
 import io.ballerina.compiler.syntax.tree.MethodCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
@@ -46,17 +53,22 @@ import io.ballerina.compiler.syntax.tree.NodeList;
 import io.ballerina.compiler.syntax.tree.PositionalArgumentNode;
 import io.ballerina.compiler.syntax.tree.SeparatedNodeList;
 import io.ballerina.compiler.syntax.tree.SimpleNameReferenceNode;
+import io.ballerina.compiler.syntax.tree.SpecificFieldNode;
 import io.ballerina.compiler.syntax.tree.StatementNode;
 import io.ballerina.compiler.syntax.tree.SyntaxKind;
+import io.ballerina.compiler.syntax.tree.Token;
 import io.ballerina.compiler.syntax.tree.VariableDeclarationNode;
 import io.ballerina.projects.Document;
 import io.ballerina.projects.DocumentId;
 import io.ballerina.projects.Module;
+import io.ballerina.tools.text.LineRange;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.UnaryOperator;
 
 /**
  * Utility class containing helper methods for crypto cipher algorithm analysis.
@@ -64,9 +76,23 @@ import java.util.Optional;
  * variable analysis.
  */
 public final class CryptoAnalyzerUtils {
+    public static final Set<String> PGP_ENCRYPT_FUNCTIONS = Set.of("encryptPgp", "encryptStreamAsPgp");
+    public static final String PGP_OPTIONS_PARAM = "options";
+
     private static final String BALLERINA_ORG = "ballerina";
     private static final String CRYPTO = "crypto";
     private static final String TO_BYTES_METHOD = "toBytes";
+
+    /**
+     * A variable's most recently known value, together with where the variable is declared.
+     *
+     * @param value       the expression last assigned to the variable, or null if it has not been assigned
+     * @param declaration the location of the variable name in its declaration, or null if it is not known
+     * @param stable      whether the value can be relied on: false for a configurable or non-final module variable,
+     *                    whose value can change outside the code being analysed
+     */
+    public record VariableBinding(ExpressionNode value, LineRange declaration, boolean stable) {
+    }
 
     // Private constructor to prevent instantiation
     private CryptoAnalyzerUtils() {
@@ -162,18 +188,19 @@ public final class CryptoAnalyzerUtils {
     }
 
     /**
-     * Retrieves the StatementNode that contains the given FunctionCallExpressionNode.
+     * Retrieves the nearest StatementNode enclosing the given FunctionCallExpressionNode, however deeply the call
+     * is nested inside expressions.
      *
      * @param functionCall the function call expression node
      * @return an Optional containing the StatementNode if found, otherwise empty
      */
     public static Optional<StatementNode> getStatementNode(FunctionCallExpressionNode functionCall) {
         Node parent = functionCall.parent();
-        if (parent.kind().equals(SyntaxKind.CHECK_EXPRESSION)) {
+        while (parent != null && !(parent instanceof ModuleMemberDeclarationNode)) {
+            if (parent instanceof StatementNode statementNode) {
+                return Optional.of(statementNode);
+            }
             parent = parent.parent();
-        }
-        if (parent instanceof StatementNode statementNode) {
-            return Optional.of(statementNode);
         }
         return Optional.empty();
     }
@@ -211,14 +238,13 @@ public final class CryptoAnalyzerUtils {
     }
 
     /**
-     * Retrieves a map of module-level variable names to their initializer expressions
-     * from the given ModulePartNode.
+     * Retrieves the bindings of the module-level variables declared in the given ModulePartNode.
      *
      * @param modulePartNode the module part node
-     * @return a map where keys are variable names and values are their initializer expressions
+     * @return a map where keys are variable names and values are their bindings
      */
-    public static Map<String, ExpressionNode> getModuleLevelVarExpressions(ModulePartNode modulePartNode) {
-        Map<String, ExpressionNode> varExpressions = new HashMap<>();
+    public static Map<String, VariableBinding> getModuleLevelVarExpressions(ModulePartNode modulePartNode) {
+        Map<String, VariableBinding> varExpressions = new HashMap<>();
         for (ModuleMemberDeclarationNode member : modulePartNode.members()) {
             if (member instanceof ModuleVariableDeclarationNode variableDeclarationNode) {
                 BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
@@ -226,13 +252,20 @@ public final class CryptoAnalyzerUtils {
                         !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
                     continue;
                 }
-                String varName = captureBindingPattern.variableName().text();
-                varName = unescapeIdentifier(varName);
+                String varName = unescapeIdentifier(captureBindingPattern.variableName().text());
                 ExpressionNode initializer = variableDeclarationNode.initializer().get();
-                varExpressions.put(varName, initializer);
+                boolean isFinal = hasQualifier(variableDeclarationNode.qualifiers(), SyntaxKind.FINAL_KEYWORD);
+                boolean isConfigurable = hasQualifier(variableDeclarationNode.qualifiers(),
+                        SyntaxKind.CONFIGURABLE_KEYWORD);
+                varExpressions.put(varName, new VariableBinding(initializer,
+                        captureBindingPattern.variableName().location().lineRange(), isFinal && !isConfigurable));
             }
         }
         return varExpressions;
+    }
+
+    private static boolean hasQualifier(NodeList<Token> qualifiers, SyntaxKind qualifier) {
+        return qualifiers.stream().anyMatch(token -> token.kind().equals(qualifier));
     }
 
     /**
@@ -241,10 +274,10 @@ public final class CryptoAnalyzerUtils {
      *
      * @param blockNode      the block node (FunctionBodyBlockNode or BlockStatementNode)
      * @param statementNode  the statement node to stop at
-     * @param varExpressions the map to store variable names and their expressions
+     * @param varExpressions the map to store variable names and their bindings
      */
     public static void collectVariableExpressionsUntilStatement(Node blockNode, StatementNode statementNode,
-                                                                Map<String, ExpressionNode> varExpressions) {
+                                                                Map<String, VariableBinding> varExpressions) {
         NodeList<StatementNode> statements = switch (blockNode) {
             case FunctionBodyBlockNode functionBody -> functionBody.statements();
             case BlockStatementNode blockStatementNode -> blockStatementNode.statements();
@@ -269,27 +302,100 @@ public final class CryptoAnalyzerUtils {
     }
 
     /**
-     * Check whether the given expression is a byte array literal written directly at this position: a list
-     * constructor of numeric literals, or {@code toBytes()} called on a string literal.
-     * <p>
-     * A variable is deliberately not followed back to its initialiser. One initialised with a literal may be
-     * overwritten before use - filling a key array with random bytes in a loop is a common and correct pattern - so
-     * resolving through variables would report code that is not hard-coded at all.
+     * Check whether the given expression is a compile-time constant byte array: a non-empty list constructor of
+     * numeric literals, a {@code base16}/{@code base64} byte array literal, or {@code toBytes()} called on a string
+     * literal or constant. Variables are followed through the given resolver.
      *
      * @param expression the expression to check
-     * @return true if the expression is itself a compile-time constant byte array
+     * @param context    the function context, used to look up symbols
+     * @param resolver   resolves a variable reference to its known value, or returns it unchanged
+     * @return true if the expression is a compile-time constant byte array
      */
-    public static boolean isByteArrayLiteral(ExpressionNode expression) {
-        if (expression instanceof ListConstructorExpressionNode listExpression) {
+    public static boolean isByteArrayLiteral(ExpressionNode expression, FunctionContext context,
+                                             UnaryOperator<ExpressionNode> resolver) {
+        ExpressionNode resolved = resolver.apply(unwrapBraces(expression));
+        if (resolved.kind().equals(SyntaxKind.BYTE_ARRAY_LITERAL)) {
+            return true;
+        }
+        if (resolved instanceof ListConstructorExpressionNode listExpression) {
             return !listExpression.expressions().isEmpty() && listExpression.expressions().stream()
                     .allMatch(expr -> expr.kind().equals(SyntaxKind.NUMERIC_LITERAL));
         }
-        if (expression instanceof MethodCallExpressionNode methodCallExpression
-                && methodCallExpression.expression().kind().equals(SyntaxKind.STRING_LITERAL)
-                && methodCallExpression.methodName() instanceof SimpleNameReferenceNode simpleNameRef) {
-            return simpleNameRef.name().text().equals(TO_BYTES_METHOD);
+        if (resolved instanceof MethodCallExpressionNode methodCallExpression
+                && methodCallExpression.methodName() instanceof SimpleNameReferenceNode simpleNameRef
+                && simpleNameRef.name().text().equals(TO_BYTES_METHOD)) {
+            return isConstantString(methodCallExpression.expression(), context, resolver);
         }
         return false;
+    }
+
+    private static boolean isConstantString(ExpressionNode expression, FunctionContext context,
+                                            UnaryOperator<ExpressionNode> resolver) {
+        ExpressionNode unwrapped = unwrapBraces(expression);
+        if (unwrapped.kind().equals(SyntaxKind.STRING_LITERAL) || isConstantReference(unwrapped, context)) {
+            return true;
+        }
+        ExpressionNode resolved = resolver.apply(unwrapped);
+        return resolved != unwrapped && isConstantString(resolved, context, resolver);
+    }
+
+    private static boolean isConstantReference(ExpressionNode expression, FunctionContext context) {
+        if (!(expression instanceof NameReferenceNode)) {
+            return false;
+        }
+        Optional<Symbol> symbol = context.semanticModel().symbol(expression);
+        return symbol.isPresent() && symbol.get().kind().equals(SymbolKind.CONSTANT);
+    }
+
+    /**
+     * Check whether the given expression is an integer literal or integer constant below the given threshold. An
+     * integer literal may be written in decimal or, with a {@code 0x} prefix, in hexadecimal.
+     *
+     * @param valueExpr     the expression to check
+     * @param threshold     the exclusive lower bound
+     * @param semanticModel the semantic model
+     * @return true only if the value is known and below the threshold
+     */
+    public static boolean hasLowerIntegerValue(ExpressionNode valueExpr, long threshold,
+                                               SemanticModel semanticModel) {
+        return getIntegerValue(unwrapBraces(valueExpr), semanticModel).filter(value -> value < threshold)
+                .isPresent();
+    }
+
+    private static Optional<Long> getIntegerValue(ExpressionNode valueExpr, SemanticModel semanticModel) {
+        if (valueExpr.kind().equals(SyntaxKind.NUMERIC_LITERAL)) {
+            String literal = ((BasicLiteralNode) valueExpr).literalToken().text();
+            try {
+                if (literal.startsWith("0x") || literal.startsWith("0X")) {
+                    return Optional.of(Long.parseLong(literal.substring(2), 16));
+                }
+                return Optional.of(Long.parseLong(literal));
+            } catch (NumberFormatException e) {
+                return Optional.empty();
+            }
+        }
+        if (getConstantValue(valueExpr, semanticModel) instanceof Long longValue) {
+            return Optional.of(longValue);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Retrieves the boolean value of a boolean literal or boolean constant.
+     *
+     * @param valueExpr     the expression
+     * @param semanticModel the semantic model
+     * @return the boolean value, if the expression is a literal or constant
+     */
+    public static Optional<Boolean> getBooleanValue(ExpressionNode valueExpr, SemanticModel semanticModel) {
+        ExpressionNode unwrapped = unwrapBraces(valueExpr);
+        if (unwrapped.kind().equals(SyntaxKind.BOOLEAN_LITERAL)) {
+            return Optional.of(((BasicLiteralNode) unwrapped).literalToken().kind().equals(SyntaxKind.TRUE_KEYWORD));
+        }
+        if (getConstantValue(unwrapped, semanticModel) instanceof Boolean booleanValue) {
+            return Optional.of(booleanValue);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -300,28 +406,73 @@ public final class CryptoAnalyzerUtils {
      * @return an Optional containing the string value if found, otherwise empty
      */
     public static Optional<String> getStringValue(String key, FunctionContext context) {
-        Optional<ExpressionNode> valueExprOpt = context.getParamExpression(key);
-        if (valueExprOpt.isEmpty()) {
+        return context.getParamExpression(key).flatMap(expr -> getStringValue(expr, context.semanticModel()));
+    }
+
+    /**
+     * Retrieves the value of a string literal or string constant.
+     *
+     * @param valueExpr     the expression
+     * @param semanticModel the semantic model
+     * @return the string value, if the expression is a literal or constant
+     */
+    public static Optional<String> getStringValue(ExpressionNode valueExpr, SemanticModel semanticModel) {
+        ExpressionNode unwrapped = unwrapBraces(valueExpr);
+        if (unwrapped.kind().equals(SyntaxKind.STRING_LITERAL)) {
+            String stringValue = ((BasicLiteralNode) unwrapped).literalToken().text();
+            return Optional.of(stringValue.substring(1, stringValue.length() - 1));
+        }
+        if (getConstantValue(unwrapped, semanticModel) instanceof String constString) {
+            return Optional.of(constString);
+        }
+        return Optional.empty();
+    }
+
+    private static Object getConstantValue(ExpressionNode valueExpr, SemanticModel semanticModel) {
+        if (valueExpr instanceof NameReferenceNode refNode
+                && semanticModel.symbol(refNode).orElse(null) instanceof ConstantSymbol constantRef
+                && constantRef.constValue() instanceof ConstantValue constantValue) {
+            return constantValue.value();
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves a field of an included record parameter, whether it is passed as a named argument or as a field of
+     * a mapping constructor bound to the included record parameter itself. Both are resolved through variables with
+     * {@link FunctionContext#resolveStable}.
+     *
+     * @param context        the function context
+     * @param includedParam  the name of the included record parameter
+     * @param fieldName      the field name
+     * @return the field value expression, if it can be determined
+     */
+    public static Optional<ExpressionNode> getIncludedRecordField(FunctionContext context, String includedParam,
+                                                                  String fieldName) {
+        Optional<ExpressionNode> namedArgument = context.getStableParamExpression(fieldName);
+        if (namedArgument.isPresent()) {
+            return namedArgument;
+        }
+        Optional<ExpressionNode> record = context.getStableParamExpression(includedParam);
+        if (record.isEmpty() || !(unwrapBraces(record.get()) instanceof MappingConstructorExpressionNode mapping)) {
             return Optional.empty();
         }
-
-        ExpressionNode valueExpr = valueExprOpt.get();
-        if (valueExpr.kind().equals(SyntaxKind.STRING_LITERAL)) {
-            // String literal values
-            String stringValue = ((BasicLiteralNode) valueExpr).literalToken().text();
-            // Remove the leading and trailing double quotes
-            stringValue = stringValue.substring(1, stringValue.length() - 1);
-            return Optional.of(stringValue);
-        } else if (valueExpr instanceof NameReferenceNode refNode) {
-            // Checking for constant values
-            Optional<Symbol> refSymbol = context.semanticModel().symbol(refNode);
-            if (refSymbol.isPresent() && refSymbol.get() instanceof ConstantSymbol constantRef &&
-                    constantRef.constValue() instanceof ConstantValue constantValue &&
-                    constantValue.value() instanceof String constString) {
-                return Optional.of(constString);
+        for (MappingFieldNode field : mapping.fields()) {
+            if (field instanceof SpecificFieldNode specificField
+                    && fieldName.equals(unescapeIdentifier(specificField.fieldName().toSourceCode().trim()
+                            .replace("\"", "")))) {
+                return specificField.valueExpr().map(context::resolveStable);
             }
         }
         return Optional.empty();
+    }
+
+    private static ExpressionNode unwrapBraces(ExpressionNode expression) {
+        ExpressionNode current = expression;
+        while (current instanceof BracedExpressionNode braced) {
+            current = braced.expression();
+        }
+        return current;
     }
 
     /**
@@ -330,11 +481,11 @@ public final class CryptoAnalyzerUtils {
      *
      * @param statements      the list of statements
      * @param targetStatement the target statement to stop at
-     * @param varExpressions  the map to store variable names and their expressions
+     * @param varExpressions  the map to store variable names and their bindings
      */
     public static void processStatementsForVariableExpressions(NodeList<StatementNode> statements,
                                                                StatementNode targetStatement,
-                                                               Map<String, ExpressionNode> varExpressions) {
+                                                               Map<String, VariableBinding> varExpressions) {
         for (StatementNode statement : statements) {
             boolean isBlockStatement = isBlockStatementNode(statement);
 
@@ -348,49 +499,58 @@ public final class CryptoAnalyzerUtils {
                 break;
             }
 
-            // Process assignment statements
             if (statement instanceof AssignmentStatementNode assignmentNode) {
                 processAssignmentStatement(assignmentNode, varExpressions);
+            } else if (statement instanceof CompoundAssignmentStatementNode compoundAssignment) {
+                getRootVariableName(compoundAssignment.lhsExpression()).ifPresent(varExpressions::remove);
             } else if (statement instanceof VariableDeclarationNode variableDeclarationNode) {
                 processVariableDeclaration(variableDeclarationNode, varExpressions);
             }
         }
     }
 
-    /**
-     * Processes an assignment statement and adds it to the variable expressions map.
-     *
-     * @param assignmentNode the assignment statement node
-     * @param varExpressions the map to store variable names and their expressions
-     */
     private static void processAssignmentStatement(AssignmentStatementNode assignmentNode,
-                                                   Map<String, ExpressionNode> varExpressions) {
+                                                   Map<String, VariableBinding> varExpressions) {
         Node varRef = assignmentNode.varRef();
         if (varRef instanceof SimpleNameReferenceNode simpleNameRef) {
             String varName = unescapeIdentifier(simpleNameRef.name().text());
-            ExpressionNode expression = assignmentNode.expression();
-            varExpressions.put(varName, expression);
+            VariableBinding previous = varExpressions.get(varName);
+            LineRange declaration = previous == null ? null : previous.declaration();
+            varExpressions.put(varName, new VariableBinding(assignmentNode.expression(), declaration, true));
+            return;
+        }
+        // A member or field written in place changes the value the variable holds.
+        getRootVariableName(varRef).ifPresent(varExpressions::remove);
+    }
+
+    private static Optional<String> getRootVariableName(Node node) {
+        Node current = node;
+        while (true) {
+            switch (current) {
+                case SimpleNameReferenceNode simpleNameRef -> {
+                    return Optional.of(unescapeIdentifier(simpleNameRef.name().text()));
+                }
+                case IndexedExpressionNode indexed -> current = indexed.containerExpression();
+                case FieldAccessExpressionNode fieldAccess -> current = fieldAccess.expression();
+                default -> {
+                    return Optional.empty();
+                }
+            }
         }
     }
 
-    /**
-     * Processes a variable declaration statement and adds it to the variable expressions map.
-     *
-     * @param variableDeclarationNode the variable declaration node
-     * @param varExpressions         the map to store variable names and their expressions
-     */
     private static void processVariableDeclaration(VariableDeclarationNode variableDeclarationNode,
-                                                   Map<String, ExpressionNode> varExpressions) {
+                                                   Map<String, VariableBinding> varExpressions) {
         BindingPatternNode bindingPatternNode = variableDeclarationNode.typedBindingPattern().bindingPattern();
 
         // Only supporting capture binding patterns for variable declarations
-        if (variableDeclarationNode.initializer().isEmpty() ||
-                !(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
+        if (!(bindingPatternNode instanceof CaptureBindingPatternNode captureBindingPattern)) {
             return;
         }
 
         String varName = unescapeIdentifier(captureBindingPattern.variableName().text());
-        ExpressionNode initializer = variableDeclarationNode.initializer().get();
-        varExpressions.put(varName, initializer);
+        ExpressionNode initializer = variableDeclarationNode.initializer().orElse(null);
+        varExpressions.put(varName, new VariableBinding(initializer,
+                captureBindingPattern.variableName().location().lineRange(), true));
     }
 }

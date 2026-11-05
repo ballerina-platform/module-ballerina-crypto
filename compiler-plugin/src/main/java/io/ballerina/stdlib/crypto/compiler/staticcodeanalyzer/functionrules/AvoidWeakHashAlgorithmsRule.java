@@ -25,16 +25,13 @@ import java.util.Set;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_WEAK_HASH_ALGORITHMS;
 
 /**
- * Rule to avoid MD5 and SHA-1 for hashing, message authentication and digital signatures.
+ * Rule to avoid MD5 and SHA-1 for hashing and digital signatures.
  * <p>
- * Both algorithms are broken for security purposes: practical collisions exist for MD5 and SHA-1, so neither
- * provides the collision resistance that integrity checking and signature verification depend on. SHA-256 or
- * stronger should be used instead.
- * <p>
- * This rule is distinct from {@code crypto:2}, which covers the parameters of the password hashing functions.
- * Here the algorithm itself is unsuitable regardless of how it is configured.
+ * Practical collisions exist for MD5 and SHA-1, so neither provides the collision resistance that digests and
+ * signatures depend on. HMAC does not rely on collision resistance, so {@code hmacMd5} and {@code hmacSha1} (and
+ * PBKDF2 with SHA-1) are not reported.
  *
- * @since 2.12.2
+ * @since 2.13.1
  */
 public class AvoidWeakHashAlgorithmsRule implements CryptoFunctionRule {
 
@@ -42,9 +39,6 @@ public class AvoidWeakHashAlgorithmsRule implements CryptoFunctionRule {
             // Hashing
             "hashMd5",
             "hashSha1",
-            // Message authentication
-            "hmacMd5",
-            "hmacSha1",
             // Digital signatures
             "signRsaMd5",
             "signRsaSha1",

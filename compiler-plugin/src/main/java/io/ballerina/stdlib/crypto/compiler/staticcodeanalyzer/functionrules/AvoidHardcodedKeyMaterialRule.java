@@ -20,13 +20,12 @@
 package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules;
 
 import io.ballerina.compiler.syntax.tree.ExpressionNode;
-import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.FunctionContext;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
+import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils.isByteArrayLiteral;
 import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.AVOID_HARDCODED_KEY_MATERIAL;
 
 /**
@@ -39,7 +38,7 @@ import static io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoRule.
  * This rule covers byte-array key material only. String literals in credential-shaped fields are covered by the
  * language-level hard-coded secret rule; reporting them here as well would produce two findings for one problem.
  *
- * @since 2.12.2
+ * @since 2.13.1
  */
 public class AvoidHardcodedKeyMaterialRule implements CryptoFunctionRule {
 
@@ -60,15 +59,17 @@ public class AvoidHardcodedKeyMaterialRule implements CryptoFunctionRule {
             Map.entry("decryptAesEcb", KEY_PARAM),
             Map.entry("decryptAesGcm", KEY_PARAM),
             Map.entry("decryptPgp", PASSPHRASE_PARAM),
-            Map.entry("decryptStreamFromPgp", PASSPHRASE_PARAM));
-
-    private static final Set<String> APPLICABLE_FUNCTIONS = KEY_MATERIAL_PARAMS.keySet();
+            Map.entry("decryptStreamFromPgp", PASSPHRASE_PARAM),
+            Map.entry("decodeRsaPrivateKeyFromContent", "content"),
+            Map.entry("hkdfSha256", "input"));
 
     @Override
     public void analyze(FunctionContext context) {
         Optional<ExpressionNode> keyExpression =
                 context.getRawParamExpression(KEY_MATERIAL_PARAMS.get(context.functionName()));
-        if (keyExpression.isPresent() && CryptoAnalyzerUtils.isByteArrayLiteral(keyExpression.get())) {
+        // Non-final module variables and configurables are left unresolved, as is any variable written to in a
+        // nested block or element by element, so a key filled at run time is not reported.
+        if (keyExpression.isPresent() && isByteArrayLiteral(keyExpression.get(), context, context::resolveStable)) {
             context.reporter().reportIssue(context.document(), context.functionLocation(), getRuleId());
         }
     }
@@ -80,6 +81,6 @@ public class AvoidHardcodedKeyMaterialRule implements CryptoFunctionRule {
 
     @Override
     public boolean isApplicable(FunctionContext context) {
-        return APPLICABLE_FUNCTIONS.contains(context.functionName());
+        return KEY_MATERIAL_PARAMS.containsKey(context.functionName());
     }
 }
