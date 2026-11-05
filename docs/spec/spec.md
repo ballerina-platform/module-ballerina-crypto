@@ -119,8 +119,8 @@ The conforming implementation of the specification is released and included in t
     - 12.5 [Avoid hard-coded key material](#125-avoid-hard-coded-key-material)
     - 12.6 [Avoid using weak symmetric algorithms for PGP encryption](#126-avoid-using-weak-symmetric-algorithms-for-pgp-encryption)
     - 12.7 [Avoid disabling integrity protection for PGP encryption](#127-avoid-disabling-integrity-protection-for-pgp-encryption)
-    - 12.8 [Avoid using short authentication tags for counter mode encryption](#128-avoid-using-short-authentication-tags-for-counter-mode-encryption)
-    - 12.9 [Avoid discarding the result of a signature verification](#129-avoid-discarding-the-result-of-a-signature-verification)
+    - 12.8 [Avoid using short authentication tags for AES-GCM encryption](#128-avoid-using-short-authentication-tags-for-aes-gcm-encryption)
+    - 12.9 [Avoid discarding the result of a verification](#129-avoid-discarding-the-result-of-a-verification)
 
 ## 1. Overview
 
@@ -1318,8 +1318,8 @@ The following static code rules are applied to the Crypto module.
 | ballerina/crypto:5 | VULNERABILITY | [Avoid hard-coded key material](#125-avoid-hard-coded-key-material) |
 | ballerina/crypto:6 | VULNERABILITY | [Avoid using weak symmetric algorithms for PGP encryption](#126-avoid-using-weak-symmetric-algorithms-for-pgp-encryption) |
 | ballerina/crypto:7 | VULNERABILITY | [Avoid disabling integrity protection for PGP encryption](#127-avoid-disabling-integrity-protection-for-pgp-encryption) |
-| ballerina/crypto:8 | VULNERABILITY | [Avoid using short authentication tags for counter mode encryption](#128-avoid-using-short-authentication-tags-for-counter-mode-encryption) |
-| ballerina/crypto:9 | VULNERABILITY | [Avoid discarding the result of a signature verification](#129-avoid-discarding-the-result-of-a-signature-verification) |
+| ballerina/crypto:8 | VULNERABILITY | [Avoid using short authentication tags for AES-GCM encryption](#128-avoid-using-short-authentication-tags-for-aes-gcm-encryption) |
+| ballerina/crypto:9 | VULNERABILITY | [Avoid discarding the result of a verification](#129-avoid-discarding-the-result-of-a-verification) |
 
 ### 12.1. Avoid using insecure cipher modes or padding schemes
 
@@ -1666,7 +1666,7 @@ public function encryptMessage(string message) returns [byte[], byte[16]]|error 
 
 ### 12.4. Avoid using weak hashing and signature algorithms
 
-MD5 and SHA-1 are broken for any purpose that depends on collision resistance.
+MD5 and SHA-1 are broken for any purpose that depends on collision resistance. This rule reports `crypto:hashMd5`, `crypto:hashSha1`, `crypto:signRsaMd5`, `crypto:signRsaSha1`, `crypto:verifyRsaMd5Signature` and `crypto:verifyRsaSha1Signature`.
 
 | Property              | Description |
 |-----------------------|-------------|
@@ -1679,13 +1679,15 @@ MD5 and SHA-1 are broken for any purpose that depends on collision resistance.
 
 Practical collision attacks exist against both MD5 and SHA-1: an attacker can construct two different inputs with the same digest at modest cost. A signature is computed over a digest, so a signature scheme built on either algorithm inherits that weakness directly.
 
+HMAC does not depend on the collision resistance of the underlying hash, so `crypto:hmacMd5`, `crypto:hmacSha1` and `crypto:hashPbkdf2` with `crypto:SHA1` are not reported by this rule. HMAC-SHA1 remains approved by NIST SP 800-131A and is required by protocols such as TOTP and HOTP; prefer HMAC-SHA256 or stronger where the protocol allows it.
+
 #### 12.4.2. What is the potential impact?
 
 An attacker can produce a second document that carries a signature made for the first, so a signature no longer establishes what was signed. Where the digest is used to detect tampering, modified content passes the check.
 
 #### 12.4.3. How can I fix this?
 
-Use SHA-256 or stronger for hashing, and the matching signature functions.
+Use SHA-256 or stronger for hashing, and sign with `crypto:signRsaSha256` or stronger. When verifying a signature whose algorithm is fixed by a third party that still signs with MD5 or SHA-1, ask that party to move to SHA-256 or stronger; until then, keep the verification in one place, treat the signed content as lower assurance, and suppress the finding at that call site only, so new uses of the weak functions are still reported.
 
 **Non-compliant code:**
 
@@ -1724,7 +1726,7 @@ Key material embedded in a program is present in the repository, in every clone 
 
 The rule reports a byte array literal used as key material, which is the form a name-based check cannot see: a literal such as `[1, 2, 3, ...]` passed as an HMAC key looks nothing like a credential. String literals in fields such as `KeyStore.password` are left to the language-level hard-coded secret rule so the same finding is not reported twice.
 
-The rule reads the expression written at the call site rather than resolving a variable back to its initialiser. A key that is declared with a literal and then filled with random bytes is not hard-coded, and resolving would report it.
+A local variable is followed back to the value last assigned to it in the same block, and a `final` module-level variable to its initializer. A variable is not followed when its value can change outside that straight-line code: a `configurable` or non-final module-level variable, a function parameter, or a local that is written element by element, by a compound assignment, or inside a nested block such as a `foreach` loop that fills the key with random bytes. The rule also reports `base16` and `base64` byte array literals, `toBytes()` called on a string literal or constant, an embedded private key passed to `crypto:decodeRsaPrivateKeyFromContent`, and literal input keying material passed to `crypto:hkdfSha256`.
 
 #### 12.5.2. What is the potential impact?
 
@@ -1843,7 +1845,7 @@ byte[] encrypted = check crypto:encryptPgp("payload".toBytes(), "public_key.asc"
 - [CWE-354: Improper Validation of Integrity Check Value](https://cwe.mitre.org/data/definitions/354.html)
 - [OWASP Top 10:2025 A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/)
 
-### 12.8. Avoid using short authentication tags for counter mode encryption
+### 12.8. Avoid using short authentication tags for AES-GCM encryption
 
 A short GCM tag can be forged, which removes the authentication the mode provides.
 
@@ -1858,11 +1860,11 @@ A short GCM tag can be forged, which removes the authentication the mode provide
 
 The authentication tag is what makes GCM an authenticated mode: it is the value the recipient checks to know the ciphertext was not altered. Its length sets the work required to forge one, and the strength falls exponentially as it shortens. The documented minimum is 96 bits.
 
-The native validator accepts values below that minimum without complaint, so a caller can weaken authentication to the point of forgeability and see nothing at run time. This rule reports any `tagSize` below 96, written in decimal or hexadecimal.
+The runtime rejects a tag size below 96 bits, so a call that passes one returns a `crypto:Error` on every invocation. This rule reports any `tagSize` below 96, written in decimal or hexadecimal or held in a constant or a local variable, so the mistake is caught at compile time rather than as a run-time failure, and the code is not left one runtime change away from silently producing forgeable tags.
 
 #### 12.8.2. What is the potential impact?
 
-An attacker can construct ciphertext that passes the authentication check, so the recipient accepts data the sender never produced.
+Every encryption or decryption that passes the short tag fails at run time. If the runtime were to accept it, an attacker could construct ciphertext that passes the authentication check, so the recipient would accept data the sender never produced.
 
 #### 12.8.3. How can I fix this?
 
@@ -1885,26 +1887,26 @@ byte[] encrypted = check crypto:encryptAesGcm("payload".toBytes(), key, iv, cryp
 - [CWE-327: Use of a Broken or Risky Cryptographic Algorithm](https://cwe.mitre.org/data/definitions/327.html)
 - [OWASP Top 10:2025 A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/)
 
-### 12.9. Avoid discarding the result of a signature verification
+### 12.9. Avoid discarding the result of a verification
 
-A verification whose result is thrown away has not verified anything.
+A verification whose result is thrown away has not verified anything. This rule covers the `verify*Signature` functions, the password hash verification functions `crypto:verifyBcrypt`, `crypto:verifyArgon2` and `crypto:verifyPbkdf2`, and `crypto:equalConstantTime`.
 
 | Property              | Description |
 |-----------------------|-------------|
 | **Rule ID**           | ballerina/crypto:9 |
 | **Rule Kind**         | Vulnerability |
-| **CWE**               | [CWE-347](https://cwe.mitre.org/data/definitions/347.html) |
+| **CWE**               | [CWE-347](https://cwe.mitre.org/data/definitions/347.html), [CWE-252](https://cwe.mitre.org/data/definitions/252.html) |
 | **OWASP Top 10:2025** | [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) |
 
 #### 12.9.1. Why this is an issue?
 
-The `verify*Signature` functions return a `boolean` saying whether the signature matched. They do not fail when it does not. Discarding that result means the call runs, succeeds, and establishes nothing, while the code around it reads as though the signature had been checked.
+These functions return a `boolean` saying whether the signature, password or MAC matched. They do not fail when it does not. Discarding that result means the call runs, succeeds, and establishes nothing, while the code around it reads as though the check had been made.
 
-The rule reports only a result that is provably discarded: bound to a wildcard, assigned to a wildcard, or used as an expression statement. A result passed onward through `check`, a braced expression, a type cast or `trap` is still consumed and is not reported.
+The rule reports only a result that is provably discarded: bound to a wildcard, assigned to a wildcard, or used as an expression statement. `check`, a braced expression, a type cast and `trap` do not consume the result: they pass it through unchanged, so `boolean _ = check crypto:verifyRsaSha256Signature(...)` is still reported. A result passed to another call, used in a condition or an operand, or returned is consumed and is not reported.
 
 #### 12.9.2. What is the potential impact?
 
-Every signature is effectively accepted, so a forged or altered message passes the same path a genuine one does. The defect is invisible in review because the verification call is present.
+Every signature, password or MAC is effectively accepted, so a forged or altered message, or a wrong password, passes the same path a genuine one does. The defect is invisible in review because the verification call is present.
 
 #### 12.9.3. How can I fix this?
 
@@ -1914,6 +1916,7 @@ Bind the result and act on it.
 
 ```ballerina
 boolean _ = check crypto:verifyRsaSha256Signature(payload, signature, publicKey);
+boolean _ = check crypto:verifyBcrypt(password, storedHash);
 ```
 
 **Compliant code:**
@@ -1923,9 +1926,14 @@ boolean verified = check crypto:verifyRsaSha256Signature(payload, signature, pub
 if !verified {
     return error("signature verification failed");
 }
+boolean passwordValid = check crypto:verifyBcrypt(password, storedHash);
+if !passwordValid {
+    return error("password verification failed");
+}
 ```
 
 #### 12.9.4. Additional Resources
 
 - [CWE-347: Improper Verification of Cryptographic Signature](https://cwe.mitre.org/data/definitions/347.html)
+- [CWE-252: Unchecked Return Value](https://cwe.mitre.org/data/definitions/252.html)
 - [OWASP Top 10:2025 A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/)
