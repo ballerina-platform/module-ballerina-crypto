@@ -1,0 +1,102 @@
+[
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 23,
+      "endLine": 23,
+      "startColumn": 21,
+      "endColumn": 87,
+      "startOffset": 839,
+      "length": 66
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "A PGP encryption operation disables the integrity check.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  },
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 27,
+      "endLine": 27,
+      "startColumn": 21,
+      "endColumn": 88,
+      "startOffset": 1030,
+      "length": 67
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "A PGP encryption operation disables the integrity check.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  },
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 32,
+      "endLine": 32,
+      "startColumn": 21,
+      "endColumn": 65,
+      "startOffset": 1279,
+      "length": 44
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "A PGP encryption operation disables the integrity check.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  },
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 36,
+      "endLine": 36,
+      "startColumn": 21,
+      "endColumn": 88,
+      "startOffset": 1443,
+      "length": 67
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "A PGP encryption operation disables the integrity check.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  },
+  {
+    "location": {
+      "filePath": "pgp_integrity.bal",
+      "startLine": 40,
+      "endLine": 40,
+      "startColumn": 21,
+      "endColumn": 89,
+      "startOffset": 1628,
+      "length": 68
+    },
+    "rule": {
+      "id": "ballerina/crypto:7",
+      "numericId": 7,
+      "description": "A PGP encryption operation disables the integrity check.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule7/pgp_integrity.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule7/pgp_integrity.bal"
+  }
+]

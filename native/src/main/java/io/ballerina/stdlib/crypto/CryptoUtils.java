@@ -96,7 +96,7 @@ public class CryptoUtils {
     /**
      * Valid tag sizes usable with GCM mode encryption.
      */
-    private static final int[] VALID_GCM_TAG_SIZES = new int[]{32, 63, 96, 104, 112, 120, 128};
+    private static final int[] VALID_GCM_TAG_SIZES = new int[]{96, 104, 112, 120, 128};
 
     /**
      * Valid AES key sizes.

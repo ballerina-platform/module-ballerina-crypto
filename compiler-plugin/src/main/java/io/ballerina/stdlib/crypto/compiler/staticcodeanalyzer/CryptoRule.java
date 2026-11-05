@@ -29,7 +29,19 @@ public enum CryptoRule {
     AVOID_FAST_HASH_ALGORITHMS(createRule(2, "A password hashing function is configured with a work factor " +
             "too low to resist brute-force attacks.", VULNERABILITY)),
     AVOID_HARD_CODED_INITIALIZATION_VECTORS(createRule(3, "An AES-CBC or AES-GCM encryption operation uses a " +
-            "hard-coded initialization vector.", VULNERABILITY));
+            "hard-coded initialization vector.", VULNERABILITY)),
+    AVOID_WEAK_HASH_ALGORITHMS(createRule(4, "A hashing or digital signature operation uses the MD5 or SHA-1 " +
+            "algorithm.", VULNERABILITY)),
+    AVOID_HARDCODED_KEY_MATERIAL(createRule(5, "A cryptographic operation uses key material that is hard-coded " +
+            "in the source.", VULNERABILITY)),
+    AVOID_WEAK_PGP_ALGORITHMS(createRule(6, "A PGP encryption operation uses a weak symmetric key algorithm or " +
+            "no encryption.", VULNERABILITY)),
+    ENSURE_PGP_INTEGRITY_CHECK(createRule(7, "A PGP encryption operation disables the integrity check.",
+            VULNERABILITY)),
+    AVOID_SHORT_AUTHENTICATION_TAGS(createRule(8, "An AES-GCM operation uses an authentication tag shorter than " +
+            "96 bits.", VULNERABILITY)),
+    ENSURE_VERIFICATION_RESULT_USED(createRule(9, "The result of a signature, password hash or MAC " +
+            "verification is discarded.", VULNERABILITY));
 
     private final Rule rule;
 

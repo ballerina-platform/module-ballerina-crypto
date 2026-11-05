@@ -20,4 +20,11 @@
         <Class name="io.ballerina.stdlib.crypto.BallerinaInputStream" />
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
+    <Match>
+        <Class name="io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.CryptoAnalyzerUtils$VariableBinding" />
+        <Or>
+            <Bug pattern="EI_EXPOSE_REP" />
+            <Bug pattern="EI_EXPOSE_REP2" />
+        </Or>
+    </Match>
 </FindBugsFilter>

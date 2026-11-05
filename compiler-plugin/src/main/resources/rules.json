@@ -72,5 +72,155 @@
         }
       ]
     }
+  },
+  {
+    "id": 4,
+    "kind": "VULNERABILITY",
+    "name": "Avoid using weak hashing and signature algorithms",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-4",
+    "severity": "MEDIUM",
+    "description": "A hashing or digital signature operation uses the MD5 or SHA-1 algorithm.",
+    "fullDescription": "Practical collision attacks exist against MD5 and SHA-1, so a digest or signature built on either no longer establishes what was hashed or signed. An attacker can produce a second input with the same digest, letting tampered content pass an integrity check or carry a signature made for other content. Use SHA-256 or stronger for hashing and signing.",
+    "tags": [
+      "crypto",
+      "hashing",
+      "signature"
+    ],
+    "standards": {
+      "cwe": [
+        327,
+        328
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "kind": "VULNERABILITY",
+    "name": "Avoid hard-coded key material",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-5",
+    "severity": "HIGH",
+    "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+    "fullDescription": "Key material embedded in the source is present in the repository, every clone, build artefacts and images built from them. It cannot be rotated without a code change and is identical across every environment. Declare the key as a configurable variable supplied at deployment, or read it from a key store.",
+    "tags": [
+      "crypto",
+      "secrets"
+    ],
+    "standards": {
+      "cwe": [
+        321,
+        798
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "kind": "VULNERABILITY",
+    "name": "Avoid using weak symmetric algorithms for PGP encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-6",
+    "severity": "HIGH",
+    "description": "A PGP encryption operation uses a weak symmetric key algorithm or no encryption.",
+    "fullDescription": "The PGP symmetric key algorithm decides the strength of the message encryption. DES, Triple DES, IDEA, Blowfish, CAST5 and SAFER have block or key sizes too small to resist current attacks, and NULL performs no encryption at all. Use AES-256, or leave the option unset to take the library default.",
+    "tags": [
+      "crypto",
+      "pgp"
+    ],
+    "standards": {
+      "cwe": [
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "kind": "VULNERABILITY",
+    "name": "Avoid disabling integrity protection for PGP encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-7",
+    "severity": "HIGH",
+    "description": "A PGP encryption operation disables the integrity check.",
+    "fullDescription": "PGP encryption carries a modification detection code that lets the recipient detect a ciphertext altered in transit. Disabling it lets an attacker modify the decrypted message without detection and enables chosen-ciphertext attacks. Leave withIntegrityCheck at its default of true.",
+    "tags": [
+      "crypto",
+      "pgp"
+    ],
+    "standards": {
+      "cwe": [
+        353,
+        354
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "kind": "VULNERABILITY",
+    "name": "Avoid using short authentication tags for AES-GCM encryption",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-8",
+    "severity": "MEDIUM",
+    "description": "An AES-GCM operation uses an authentication tag shorter than 96 bits.",
+    "fullDescription": "The GCM authentication tag is what the recipient checks to know the ciphertext was not altered, and its length sets the work required to forge one. A tag shorter than 96 bits weakens authentication, and the runtime rejects such sizes, so the call fails. Use the default 128-bit tag.",
+    "tags": [
+      "crypto",
+      "cipher"
+    ],
+    "standards": {
+      "cwe": [
+        327
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "kind": "VULNERABILITY",
+    "name": "Avoid discarding the result of a verification",
+    "helpUri": "https://ballerina.io/learn/scan-rules/#ballerina-crypto-9",
+    "severity": "HIGH",
+    "description": "The result of a signature, password hash or MAC verification is discarded.",
+    "fullDescription": "Signature, password hash and constant-time MAC verification functions return a boolean that says whether the check passed; they do not fail when it does not. Discarding that result means the check runs and establishes nothing, so a forged message or a wrong password is accepted. Bind the result and act on it.",
+    "tags": [
+      "crypto",
+      "signature",
+      "authentication"
+    ],
+    "standards": {
+      "cwe": [
+        347,
+        252
+      ],
+      "owasp": [
+        {
+          "year": 2025,
+          "categories": [4]
+        }
+      ]
+    }
   }
 ]

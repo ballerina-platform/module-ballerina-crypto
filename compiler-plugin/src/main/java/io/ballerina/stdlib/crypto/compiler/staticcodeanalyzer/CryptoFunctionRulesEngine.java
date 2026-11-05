@@ -19,8 +19,14 @@ package io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer;
 
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidFastHashAlgorithmsRule;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidHardCodedInitializationVectorsRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidHardcodedKeyMaterialRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidShortAuthenticationTagsRule;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidWeakCipherAlgorithmsRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidWeakHashAlgorithmsRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.AvoidWeakPgpAlgorithmsRule;
 import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.CryptoFunctionRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.EnsurePgpIntegrityCheckRule;
+import io.ballerina.stdlib.crypto.compiler.staticcodeanalyzer.functionrules.EnsureVerificationResultUsedRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +63,12 @@ public class CryptoFunctionRulesEngine {
         addRule(new AvoidWeakCipherAlgorithmsRule());
         addRule(new AvoidFastHashAlgorithmsRule());
         addRule(new AvoidHardCodedInitializationVectorsRule());
+        addRule(new AvoidWeakHashAlgorithmsRule());
+        addRule(new AvoidHardcodedKeyMaterialRule());
+        addRule(new AvoidWeakPgpAlgorithmsRule());
+        addRule(new EnsurePgpIntegrityCheckRule());
+        addRule(new AvoidShortAuthenticationTagsRule());
+        addRule(new EnsureVerificationResultUsedRule());
         // Add more default rules here as needed
     }
 }

@@ -1,0 +1,262 @@
+[
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 26,
+      "endLine": 26,
+      "startColumn": 36,
+      "endColumn": 88,
+      "startOffset": 939,
+      "length": 52
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 29,
+      "endLine": 29,
+      "startColumn": 21,
+      "endColumn": 80,
+      "startOffset": 1071,
+      "length": 59
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 33,
+      "endLine": 33,
+      "startColumn": 21,
+      "endColumn": 87,
+      "startOffset": 1222,
+      "length": 66
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 37,
+      "endLine": 37,
+      "startColumn": 21,
+      "endColumn": 93,
+      "startOffset": 1402,
+      "length": 72
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 42,
+      "endLine": 42,
+      "startColumn": 21,
+      "endColumn": 59,
+      "startOffset": 1639,
+      "length": 38
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 47,
+      "endLine": 47,
+      "startColumn": 21,
+      "endColumn": 57,
+      "startOffset": 1806,
+      "length": 36
+    },
+    "rule": {
+      "id": "ballerina/crypto:1",
+      "numericId": 1,
+      "description": "An encryption operation uses a cipher mode or padding scheme that is known to be insecure.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 47,
+      "endLine": 47,
+      "startColumn": 21,
+      "endColumn": 57,
+      "startOffset": 1806,
+      "length": 36
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 51,
+      "endLine": 51,
+      "startColumn": 21,
+      "endColumn": 97,
+      "startOffset": 1927,
+      "length": 76
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 55,
+      "endLine": 55,
+      "startColumn": 21,
+      "endColumn": 72,
+      "startOffset": 2080,
+      "length": 51
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 59,
+      "endLine": 59,
+      "startColumn": 21,
+      "endColumn": 65,
+      "startOffset": 2211,
+      "length": 44
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 63,
+      "endLine": 63,
+      "startColumn": 32,
+      "endColumn": 110,
+      "startOffset": 2339,
+      "length": 78
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 67,
+      "endLine": 67,
+      "startColumn": 21,
+      "endColumn": 68,
+      "startOffset": 2495,
+      "length": 47
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  },
+  {
+    "location": {
+      "filePath": "hardcoded_key.bal",
+      "startLine": 71,
+      "endLine": 71,
+      "startColumn": 22,
+      "endColumn": 69,
+      "startOffset": 2630,
+      "length": 47
+    },
+    "rule": {
+      "id": "ballerina/crypto:5",
+      "numericId": 5,
+      "description": "A cryptographic operation uses key material that is hard-coded in the source.",
+      "ruleKind": "VULNERABILITY"
+    },
+    "source": "BUILT_IN",
+    "fileName": "rule5/hardcoded_key.bal",
+    "filePath": "module-ballerina-crypto/compiler-plugin-tests/src/test/resources/static_code_analyzer/ballerina_packages/rule5/hardcoded_key.bal"
+  }
+]
