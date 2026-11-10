@@ -31,16 +31,6 @@ allprojects {
 
     repositories {
         mavenLocal()
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url = 'https://repo.maven.apache.org/maven2'
-                }
-            }
-            filter {
-                includeGroup 'org.bouncycastle'
-            }
-        }
         maven {
             url = 'https://maven.wso2.org/nexus/content/repositories/releases/'
         }
