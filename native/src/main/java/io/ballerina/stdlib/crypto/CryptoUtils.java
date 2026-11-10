@@ -23,6 +23,10 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.stdlib.crypto.nativeimpl.ModuleUtils;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.SecretWithEncapsulation;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -38,9 +42,11 @@ import org.bouncycastle.jcajce.spec.KEMExtractSpec;
 import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -53,7 +59,10 @@ import java.security.SignatureException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -74,6 +83,10 @@ import static io.ballerina.stdlib.crypto.Constants.CRYPTO_ERROR;
  * @since 0.95.1
  */
 public class CryptoUtils {
+
+    private static final Map<String, ASN1ObjectIdentifier> PQC_ALGORITHM_OIDS = Map.of(
+            Constants.MLDSA65_ALGORITHM, NISTObjectIdentifiers.id_ml_dsa_65,
+            Constants.MLKEM768_ALGORITHM, NISTObjectIdentifiers.id_alg_ml_kem_768);
 
     /**
      * Cipher mode that is used to decide if encryption or decryption operation should be performed.
@@ -144,8 +157,22 @@ public class CryptoUtils {
      * @return calculated signature or error if key is invalid
      */
     public static Object sign(String algorithm, PrivateKey privateKey, byte[] input) {
+        return sign(algorithm, privateKey, input, null);
+    }
+
+    /**
+     * Generate signature of a byte array based on the provided signing algorithm and security provider.
+     *
+     * @param algorithm  algorithm used during signing
+     * @param privateKey private key to be used during signing
+     * @param input      input byte array for signing
+     * @param provider   security provider to be used, or null to use the default provider search order
+     * @return calculated signature or error if key is invalid
+     */
+    public static Object sign(String algorithm, PrivateKey privateKey, byte[] input, String provider) {
         try {
-            Signature sig = Signature.getInstance(algorithm);
+            Signature sig = provider == null ? Signature.getInstance(algorithm)
+                    : Signature.getInstance(algorithm, provider);
             sig.initSign(privateKey);
             sig.update(input);
             return ValueCreator.createArrayValue(sig.sign());
@@ -153,7 +180,7 @@ public class CryptoUtils {
             return CryptoUtils.createError("Uninitialized private key: " + e.getMessage());
         } catch (SignatureException e) {
             return CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         }
     }
@@ -168,8 +195,24 @@ public class CryptoUtils {
      * @return validity of the signature or error if key is invalid
      */
     public static Object verify(String algorithm, PublicKey publicKey, byte[] data, byte[] signature) {
+        return verify(algorithm, publicKey, data, signature, null);
+    }
+
+    /**
+     * Verify signature of a byte array based on the provided signing algorithm and security provider.
+     *
+     * @param algorithm algorithm used during verification
+     * @param publicKey public key to be used during verification
+     * @param data      input byte array for verification
+     * @param signature signature byte array for verification
+     * @param provider  security provider to be used, or null to use the default provider search order
+     * @return validity of the signature or error if key is invalid
+     */
+    public static Object verify(String algorithm, PublicKey publicKey, byte[] data, byte[] signature,
+                                String provider) {
         try {
-            Signature sig = Signature.getInstance(algorithm);
+            Signature sig = provider == null ? Signature.getInstance(algorithm)
+                    : Signature.getInstance(algorithm, provider);
             sig.initVerify(publicKey);
             sig.update(data);
             return sig.verify(signature);
@@ -177,7 +220,7 @@ public class CryptoUtils {
             return CryptoUtils.createError("Uninitialized public key: " + e.getMessage());
         } catch (SignatureException e) {
             return CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw CryptoUtils.createError("Error occurred while calculating signature: " + e.getMessage());
         }
     }
@@ -343,6 +386,73 @@ public class CryptoUtils {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
+    }
+
+    /**
+     * Re-materialize a post-quantum private key as a Bouncy Castle key.
+     * <p>
+     * From JDK 24 onwards the built-in providers also implement ML-DSA and ML-KEM. Since Bouncy Castle is registered
+     * at the lowest preference, unqualified {@code getInstance} lookups now resolve to the JDK, which names such keys
+     * by algorithm family ({@code ML-DSA}) rather than by parameter set ({@code ML-DSA-65}) the way Bouncy Castle
+     * does. The Bouncy Castle KEM and signature implementations also only accept their own key objects. Converting
+     * here keeps the rest of the module provider-agnostic.
+     * <p>
+     * The parameter set is confirmed against the NIST algorithm identifier in the encoded key, so a key of a
+     * different parameter set within the same family is left untouched and rejected by the caller.
+     *
+     * @param privateKey private key to convert
+     * @param algorithm  expected parameter set name, e.g. {@code ML-DSA-65}
+     * @return the Bouncy Castle key, or the original key if it is not of the expected parameter set or cannot be
+     *         converted
+     */
+    public static PrivateKey toBcPqcKey(PrivateKey privateKey, String algorithm) {
+        if (!isPqcAlgorithm(privateKey.getAlgorithm())) {
+            return privateKey;
+        }
+        try {
+            byte[] encoded = privateKey.getEncoded();
+            ASN1ObjectIdentifier keyOid = PrivateKeyInfo.getInstance(encoded).getPrivateKeyAlgorithm().getAlgorithm();
+            if (!PQC_ALGORITHM_OIDS.get(algorithm).equals(keyOid)) {
+                return privateKey;
+            }
+            return getBcKeyFactory(algorithm).generatePrivate(new PKCS8EncodedKeySpec(encoded));
+        } catch (GeneralSecurityException | IllegalArgumentException e) {
+            return privateKey;
+        }
+    }
+
+    /**
+     * Re-materialize a post-quantum public key as a Bouncy Castle key. See {@link #toBcPqcKey(PrivateKey, String)}.
+     *
+     * @param publicKey public key to convert
+     * @param algorithm expected parameter set name, e.g. {@code ML-KEM-768}
+     * @return the Bouncy Castle key, or the original key if it is not of the expected parameter set or cannot be
+     *         converted
+     */
+    public static PublicKey toBcPqcKey(PublicKey publicKey, String algorithm) {
+        if (!isPqcAlgorithm(publicKey.getAlgorithm())) {
+            return publicKey;
+        }
+        try {
+            byte[] encoded = publicKey.getEncoded();
+            ASN1ObjectIdentifier keyOid = SubjectPublicKeyInfo.getInstance(encoded).getAlgorithm().getAlgorithm();
+            if (!PQC_ALGORITHM_OIDS.get(algorithm).equals(keyOid)) {
+                return publicKey;
+            }
+            return getBcKeyFactory(algorithm).generatePublic(new X509EncodedKeySpec(encoded));
+        } catch (GeneralSecurityException | IllegalArgumentException e) {
+            return publicKey;
+        }
+    }
+
+    private static KeyFactory getBcKeyFactory(String algorithm) throws GeneralSecurityException {
+        addBCProvider();
+        return KeyFactory.getInstance(algorithm, BouncyCastleProvider.PROVIDER_NAME);
+    }
+
+    private static boolean isPqcAlgorithm(String keyAlgorithm) {
+        return keyAlgorithm.startsWith(Constants.MLDSA_ALGORITHM_FAMILY)
+                || keyAlgorithm.startsWith(Constants.MLKEM_ALGORITHM_FAMILY);
     }
 
     /**

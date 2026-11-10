@@ -599,3 +599,33 @@ isolated function testBuildPublicKeyFromJwkWithInvalidModulus() {
         test:assertFail("Expected error not found.");
     }
 }
+
+@test:Config {}
+isolated function testParseMlDsa65PrivateKeyAsMlKem768FromKeyFile() {
+    PrivateKey|Error result = decodeMlKem768PrivateKeyFromKeyFile(MLDSA_PRIVATE_KEY_PATH, "ballerina");
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid ML-KEM-768 key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testParseMlKem768PublicKeyAsMlDsa65FromCertFile() {
+    PublicKey|Error result = decodeMlDsa65PublicKeyFromCertFile(MLKEM_CERT_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid ML-DSA-65 public key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
+
+@test:Config {}
+isolated function testParseMlDsa65PublicKeyAsMlKem768FromCertFile() {
+    PublicKey|Error result = decodeMlKem768PublicKeyFromCertFile(MLDSA_CERT_PATH);
+    if result is Error {
+        test:assertEquals(result.message(), "Not a valid ML-KEM-768 public key");
+    } else {
+        test:assertFail("Expected error not found.");
+    }
+}
