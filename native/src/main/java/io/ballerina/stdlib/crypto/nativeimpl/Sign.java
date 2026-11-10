@@ -22,6 +22,7 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.stdlib.crypto.Constants;
 import io.ballerina.stdlib.crypto.CryptoUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -38,7 +39,8 @@ public class Sign {
     public static Object signMlDsa65(BArray inputValue, BMap<?, ?> privateKey) {
         byte[] input = inputValue.getBytes();
         PrivateKey key = (PrivateKey) privateKey.getNativeData(Constants.NATIVE_DATA_PRIVATE_KEY);
-        return CryptoUtils.sign(Constants.MLDSA65_ALGORITHM, key, input);
+        CryptoUtils.addBCProvider();
+        return CryptoUtils.sign(Constants.MLDSA65_ALGORITHM, key, input, BouncyCastleProvider.PROVIDER_NAME);
     }
 
     public static Object signRsaMd5(BArray inputValue, BMap<?, ?> privateKey) {
@@ -94,7 +96,9 @@ public class Sign {
         byte[] data = dataValue.getBytes();
         byte[] signature = signatureValue.getBytes();
         PublicKey key = (PublicKey) publicKey.getNativeData(Constants.NATIVE_DATA_PUBLIC_KEY);
-        return CryptoUtils.verify(Constants.MLDSA65_ALGORITHM, key, data, signature);
+        CryptoUtils.addBCProvider();
+        return CryptoUtils.verify(Constants.MLDSA65_ALGORITHM, key, data, signature,
+                BouncyCastleProvider.PROVIDER_NAME);
     }
 
     public static Object verifyRsaMd5Signature(BArray dataValue, BArray signatureValue,
