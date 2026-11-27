@@ -112,6 +112,10 @@ public class Constants {
     // ML-KEM-768 key encapsulation mechanism
     public static final String MLKEM768_ALGORITHM = "ML-KEM-768";
 
+    // Algorithm family names, which is how the JDK providers name ML-DSA and ML-KEM keys from JDK 24 onwards
+    public static final String MLDSA_ALGORITHM_FAMILY = "ML-DSA";
+    public static final String MLKEM_ALGORITHM_FAMILY = "ML-KEM";
+
     // EC key algorithm
     public static final String EC_ALGORITHM = "EC";
 

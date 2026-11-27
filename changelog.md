@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+- [Update the bundled Bouncy Castle libraries to 1.85](https://github.com/ballerina-platform/ballerina-library/issues/9645)
+
 ## [2.10.0] - 2025-12-10
 
 ### Added
