@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [2.11.1] - 2026-11-27
+
 ### Changed
 - [Update the bundled Bouncy Castle libraries to 1.85](https://github.com/ballerina-platform/ballerina-library/issues/9645)
+
+## [2.11.0] - 2026-04-07
 
 ### Added
 - [Introduce `equalConstantTime` API for timing-safe comparison of byte arrays and strings](https://github.com/ballerina-platform/ballerina-library/issues/8733)
