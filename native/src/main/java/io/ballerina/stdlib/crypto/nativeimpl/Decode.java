@@ -259,7 +259,8 @@ public class Decode {
         return CryptoUtils.createError("Not a valid EC key");
     }
 
-    private static Object buildMlDsa65PrivateKeyRecord(PrivateKey privateKey) {
+    private static Object buildMlDsa65PrivateKeyRecord(PrivateKey key) {
+        PrivateKey privateKey = CryptoUtils.toBcPqcKey(key, Constants.MLDSA65_ALGORITHM);
         if (privateKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
@@ -267,7 +268,8 @@ public class Decode {
         }
     }
 
-    private static Object buildMlKem768PrivateKeyRecord(PrivateKey privateKey) {
+    private static Object buildMlKem768PrivateKeyRecord(PrivateKey key) {
+        PrivateKey privateKey = CryptoUtils.toBcPqcKey(key, Constants.MLKEM768_ALGORITHM);
         if (privateKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
             return getPrivateKeyRecord(privateKey);
         } else {
@@ -418,7 +420,7 @@ public class Decode {
 
     private static Object buildMlDsa65PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
-        PublicKey publicKey = certificate.getPublicKey();
+        PublicKey publicKey = CryptoUtils.toBcPqcKey(certificate.getPublicKey(), Constants.MLDSA65_ALGORITHM);
         if (publicKey.getAlgorithm().equals(Constants.MLDSA65_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
@@ -427,7 +429,7 @@ public class Decode {
 
     private static Object buildMlKem768PublicKeyRecord(Certificate certificate) {
         BMap<BString, Object> certificateBMap = enrichPublicKeyInfo(certificate);
-        PublicKey publicKey = certificate.getPublicKey();
+        PublicKey publicKey = CryptoUtils.toBcPqcKey(certificate.getPublicKey(), Constants.MLKEM768_ALGORITHM);
         if (publicKey.getAlgorithm().equals(Constants.MLKEM768_ALGORITHM)) {
             return getPublicKeyRecord(certificate, certificateBMap, publicKey);
         }
